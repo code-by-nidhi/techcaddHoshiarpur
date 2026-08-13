@@ -1,0 +1,190 @@
+"use client";
+
+import { motion } from "framer-motion";
+import { ArrowUpRight, Clock, Flame } from "lucide-react";
+import { POSTS, TOPICS } from "@/lib/site";
+import Reveal from "@/components/UI/Reveal";
+import SectionHeading from "@/components/UI/SectionHeading";
+
+export default function KnowledgeHub() {
+  const [hero, ...others] = POSTS;
+  const secondary = others.slice(0, 2);
+  const trending = others.slice(2);
+
+  return (
+    <section id="blog" className="relative bg-white py-28 lg:py-36">
+      <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
+        <SectionHeading
+          tone="light"
+          eyebrow="Knowledge hub"
+          title="Techcadd Knowledge Hub"
+          sub="Written by the mentors who teach here — interview prep, stack decisions and career notes."
+        />
+
+        <div className="mt-16 grid gap-6 lg:grid-cols-12">
+          {/* featured hero article */}
+          <Reveal className="lg:col-span-7">
+            <motion.article
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 220, damping: 22 }}
+              className="group relative flex h-full flex-col justify-end overflow-hidden rounded-[30px] bg-gradient-to-br from-[#2563EB] to-[#4F46E5] p-9 text-white shadow-[0_30px_70px_-38px_rgba(37,99,235,0.95)]"
+            >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-24 -top-28 size-80 rounded-full bg-white/15 blur-3xl"
+              />
+
+              <div className="relative flex items-center gap-2.5">
+                <span className="rounded-full bg-white/20 px-3 py-1 text-[11.5px] font-semibold uppercase tracking-[0.1em] ring-1 ring-inset ring-white/30">
+                  {hero.category}
+                </span>
+                {hero.trending && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#F59E0B] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[#0F172A]">
+                    <Flame aria-hidden className="size-3" />
+                    Trending
+                  </span>
+                )}
+              </div>
+
+              <h3 className="relative mt-6 max-w-xl font-[family-name:var(--font-poppins)] text-[clamp(1.5rem,2.6vw,2.2rem)] font-extrabold leading-[1.18] tracking-[-0.02em]">
+                {hero.title}
+              </h3>
+              <p className="relative mt-4 max-w-lg text-[15px] leading-relaxed text-white/85">
+                {hero.excerpt}
+              </p>
+
+              <div className="relative mt-8 flex flex-wrap items-center gap-4 border-t border-white/20 pt-6">
+                <span className="grid size-11 place-items-center rounded-full bg-white/20 font-[family-name:var(--font-poppins)] text-[14px] font-bold ring-1 ring-inset ring-white/30">
+                  {hero.author.split(" ").map((w) => w[0]).join("")}
+                </span>
+                <span className="mr-auto">
+                  <span className="block text-[14px] font-semibold">{hero.author}</span>
+                  <span className="block text-[12.5px] text-white/70">{hero.role}</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[13px] text-white/80">
+                  <Clock aria-hidden className="size-3.5" />
+                  {hero.minutes} min read
+                </span>
+                <ArrowUpRight
+                  aria-hidden
+                  className="size-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                />
+              </div>
+            </motion.article>
+          </Reveal>
+
+          {/* secondary articles */}
+          <div className="grid gap-6 lg:col-span-5">
+            {secondary.map((p, i) => (
+              <Reveal key={p.title} delay={0.08 + i * 0.06}>
+                <motion.article
+                  whileHover={{ y: -5 }}
+                  transition={{ type: "spring", stiffness: 240, damping: 22 }}
+                  className="group h-full rounded-[26px] border border-slate-200/80 bg-white p-7 shadow-[0_14px_40px_-32px_rgba(15,23,42,0.8)] transition-shadow duration-500 hover:shadow-[0_28px_60px_-34px_rgba(37,99,235,0.55)]"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span
+                      className={`rounded-full bg-gradient-to-r ${p.tone} px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-white`}
+                    >
+                      {p.category}
+                    </span>
+                    {p.trending && (
+                      <span className="inline-flex items-center gap-1 text-[11.5px] font-semibold text-[#F59E0B]">
+                        <Flame aria-hidden className="size-3.5" />
+                        Trending
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 className="mt-4 font-[family-name:var(--font-poppins)] text-[18px] font-bold leading-snug text-[#0F172A] transition-colors duration-300 group-hover:text-[#2563EB]">
+                    {p.title}
+                  </h3>
+                  <p className="mt-2.5 text-[13.5px] leading-relaxed text-[#475569]">{p.excerpt}</p>
+
+                  <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4 text-[12.5px] text-[#64748B]">
+                    <span className="font-medium text-[#0F172A]">{p.author}</span>
+                    <span aria-hidden>·</span>
+                    <span>{p.date}</span>
+                    <span className="ml-auto inline-flex items-center gap-1.5">
+                      <Clock aria-hidden className="size-3.5" />
+                      {p.minutes} min
+                    </span>
+                  </div>
+                </motion.article>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* trending list */}
+          <Reveal delay={0.1} className="lg:col-span-7">
+            <div className="h-full rounded-[26px] border border-slate-200/80 bg-[#F8FAFC] p-7">
+              <p className="flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-[#94A3B8]">
+                <Flame aria-hidden className="size-3.5 text-[#F59E0B]" />
+                Trending this month
+              </p>
+
+              <ol className="mt-5 divide-y divide-slate-200">
+                {trending.map((p, i) => (
+                  <li key={p.title}>
+                    <a
+                      href="#blog"
+                      className="group flex items-start gap-5 py-4 transition-colors"
+                    >
+                      <span className="font-[family-name:var(--font-poppins)] text-[20px] font-extrabold text-slate-300 transition-colors duration-300 group-hover:text-[#2563EB]">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="flex-1">
+                        <span className="block text-[15px] font-semibold leading-snug text-[#0F172A] transition-colors duration-300 group-hover:text-[#2563EB]">
+                          {p.title}
+                        </span>
+                        <span className="mt-1 block text-[12.5px] text-[#64748B]">
+                          {p.category} · {p.author} · {p.minutes} min read
+                        </span>
+                      </span>
+                      <ArrowUpRight
+                        aria-hidden
+                        className="mt-1 size-4 shrink-0 text-slate-300 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#2563EB]"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </Reveal>
+
+          {/* popular topics */}
+          <Reveal delay={0.16} className="lg:col-span-5">
+            <div className="h-full rounded-[26px] border border-slate-200/80 bg-white p-7">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-[#94A3B8]">
+                Popular topics
+              </p>
+              <ul className="mt-5 flex flex-wrap gap-2.5">
+                {TOPICS.map((t) => (
+                  <li key={t}>
+                    <a
+                      href="#blog"
+                      className="inline-block rounded-full border border-slate-200 px-4 py-2 text-[13.5px] font-medium text-[#334155] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#2563EB] hover:text-[#2563EB] hover:shadow-[0_10px_24px_-16px_rgba(37,99,235,0.9)]"
+                    >
+                      {t}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href="#blog"
+                className="group mt-8 inline-flex items-center gap-2 text-[14px] font-semibold text-[#2563EB]"
+              >
+                Browse the full hub
+                <ArrowUpRight
+                  aria-hidden
+                  className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
