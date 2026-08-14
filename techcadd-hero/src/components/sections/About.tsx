@@ -115,7 +115,7 @@ export default function About() {
             </Reveal>
             <Reveal delay={0.06}>
               <h3 className="mt-5 font-[family-name:var(--font-poppins)] text-[clamp(1.8rem,3vw,2.6rem)] font-extrabold leading-[1.1] tracking-[-0.028em] text-[#0F172A]">
-                Two decades,
+                A decade,
                 <br />
                 five turning points
               </h3>

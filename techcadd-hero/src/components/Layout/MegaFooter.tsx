@@ -157,7 +157,7 @@ export default function MegaFooter() {
                 className="h-[46px] w-auto"
               />
               <p className="mt-6 max-w-xs text-[13.5px] leading-relaxed text-white/60">
-                Two decades of turning students into working engineers — through live projects,
+                A decade of turning students into working engineers — through live projects,
                 industry mentors and career support that doesn&apos;t stop at the certificate.
               </p>
 

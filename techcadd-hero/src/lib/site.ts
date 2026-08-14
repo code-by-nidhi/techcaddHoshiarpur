@@ -7,10 +7,10 @@ import {
 
 export const ABOUT = {
   eyebrow: "About Techcadd",
-  title: "Two Decades Of Building Future Engineers",
+  title: "A Decade Of Building Future Engineers",
   body: [
-    "Techcadd began as a single classroom in Jalandhar with one conviction: that a training institute should be judged by the careers it starts, not the certificates it prints.",
-    "Two decades on, that principle still runs the place. Our trainers ship production software. Our labs mirror the stacks companies actually hire for. Every programme ends where it should — with a student in a job they were genuinely prepared for.",
+    "Techcadd began as a single classroom in Hoshiarpur with one conviction: that a training institute should be judged by the careers it starts, not the certificates it prints.",
+    "A decade on, that principle still runs the place. Our trainers ship production software. Our labs mirror the stacks companies actually hire for. Every programme ends where it should — with a student in a job they were genuinely prepared for.",
   ],
   stats: [
     { value: "45", unit: "Days", label: "Fast-track training" },
@@ -292,10 +292,10 @@ export const MEGA_FOOTER = {
 /* --------------------------- about page ------------------------------- */
 
 export const MILESTONES = [
-  { year: "2004", title: "One classroom in Jalandhar", copy: "Techcadd opens with a single lab, a handful of machines, and one conviction: judge a training institute by the careers it starts." },
-  { year: "2009", title: "First industry partnerships", copy: "Local software firms begin sending live briefs to our students — the beginning of the live project floor." },
-  { year: "2014", title: "Internship programme formalised", copy: "Six-month placements inside working teams become part of the core tracks rather than an optional extra." },
-  { year: "2019", title: "AI and cloud labs open", copy: "GPU workstations and cloud sandboxes arrive as the hiring market shifts toward data and infrastructure roles." },
+  { year: "2016", title: "One classroom in Hoshiarpur", copy: "Techcadd opens with a single lab, a handful of machines, and one conviction: judge a training institute by the careers it starts." },
+  { year: "2018", title: "First industry partnerships", copy: "Local software firms begin sending live briefs to our students — the beginning of the live project floor." },
+  { year: "2020", title: "Internship programme formalised", copy: "Six-month placements inside working teams become part of the core tracks rather than an optional extra." },
+  { year: "2023", title: "AI and cloud labs open", copy: "GPU workstations and cloud sandboxes arrive as the hiring market shifts toward data and infrastructure roles." },
   { year: "2026", title: "25,000 students later", copy: "Alumni working across Bengaluru, Mohali, Gurugram, Pune, Hyderabad and beyond — and the same conviction." },
 ];
 
