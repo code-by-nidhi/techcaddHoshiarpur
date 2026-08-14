@@ -261,3 +261,15 @@ body {
   animation: ctadrift 18s ease-in-out infinite;
   will-change: transform;
 }
+
+/* ---------- Hero stage ---------- */
+
+/* The stage holds a 9:8 box. On desktop its width is additionally capped by
+   the height the hero has left after its own padding, so a short viewport
+   scales the whole composition down instead of overflowing the section and
+   clipping the robot's head. 1.125 is the 9:8 ratio. */
+@media (min-width: 1024px) {
+  .robot-stage {
+    width: min(100%, calc((100svh - 10rem) * 1.125));
+  }
+}

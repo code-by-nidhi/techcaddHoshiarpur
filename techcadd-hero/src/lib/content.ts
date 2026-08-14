@@ -12,7 +12,7 @@ export const NAV_LINKS = [
   { label: "Contact Us", href: "#contact", dropdown: false, active: false },
 ] as const;
 
-export const BADGE = "TECHCADD JALANDHAR • AI & SOFTWARE TRAINING";
+export const BADGE = "TECHCADD HOSHIARPUR • AI & SOFTWARE TRAINING";
 
 /** Line breaks match the reference exactly. */
 export const HEADING = {

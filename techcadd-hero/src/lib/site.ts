@@ -282,7 +282,7 @@ export const MEGA_FOOTER = {
     { title: "Support", links: ["Admissions", "Fees & Instalments", "Batch Schedules", "Doubt Sessions", "Alumni Support"] },
   ],
   contact: {
-    address: "Techcadd, Jalandhar, Punjab",
+    address: "Techcadd, Hoshiarpur, Punjab",
     phone: "+91 00000 00000",
     whatsapp: "+91 00000 00000",
     email: "hello@techcadd.com",
@@ -303,7 +303,7 @@ export const FOUNDER = {
   quote:
     "We never wanted to be the biggest institute in Punjab. We wanted to be the one where a student's first job is better than the one they imagined when they walked in. Everything else — the labs, the projects, the mentor hours — exists to serve that single outcome.",
   name: "Founder & Director",
-  role: "Techcadd, Jalandhar",
+  role: "Techcadd, Hoshiarpur",
 };
 
 export const VALUES = [

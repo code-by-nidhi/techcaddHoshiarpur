@@ -34,15 +34,15 @@ const SITE = "https://techcadd.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
-    default: "TechCadd Jalandhar — AI & Software Training",
-    template: "%s | TechCadd Jalandhar",
+    default: "TechCadd Hoshiarpur — AI & Software Training",
+    template: "%s | TechCadd Hoshiarpur",
   },
   description:
     "Industry-focused training, real-world projects, and expert mentorship to help you launch your dream tech career in AI and software.",
   keywords: [
-    "AI training Jalandhar",
+    "AI training Hoshiarpur",
     "software training institute Punjab",
-    "Python course Jalandhar",
+    "Python course Hoshiarpur",
     "machine learning course",
     "web development training",
     "TechCadd",
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE,
-    siteName: "TechCadd Jalandhar",
-    title: "TechCadd Jalandhar — AI & Software Training",
+    siteName: "TechCadd Hoshiarpur",
+    title: "TechCadd Hoshiarpur — AI & Software Training",
     description:
       "Build the skills that turn you into a job-ready engineer in AI and software.",
     images: [
@@ -60,14 +60,14 @@ export const metadata: Metadata = {
         url: "/og.jpg",
         width: 1200,
         height: 630,
-        alt: "TechCadd Jalandhar — AI & Software Training",
+        alt: "TechCadd Hoshiarpur — AI & Software Training",
       },
     ],
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: "TechCadd Jalandhar — AI & Software Training",
+    title: "TechCadd Hoshiarpur — AI & Software Training",
     description:
       "Build the skills that turn you into a job-ready engineer in AI and software.",
     images: ["/og.jpg"],

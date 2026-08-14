@@ -22,9 +22,20 @@ import { robotBus, type RobotFocus } from "@/lib/robotBus";
  * "techcadd" and "02" decals on the body.
  */
 const FACE_RIGHT = false;
-const IDLE_FLOAT = false;
+const IDLE_FLOAT = true;
 
 const ROBOT = "/images/robot-cutout.webp";
+
+/** Ambient motes drifting around the stage, purely decorative. */
+const MOTES = [
+  { left: "14%", top: "26%", size: 3, drift: 16, duration: 7.5, delay: 0 },
+  { left: "31%", top: "12%", size: 2, drift: 12, duration: 9, delay: 1.2 },
+  { left: "72%", top: "18%", size: 3, drift: 18, duration: 8.2, delay: 0.6 },
+  { left: "84%", top: "44%", size: 2, drift: 14, duration: 10, delay: 2.1 },
+  { left: "22%", top: "58%", size: 2, drift: 11, duration: 8.8, delay: 1.8 },
+  { left: "63%", top: "64%", size: 3, drift: 15, duration: 9.6, delay: 0.9 },
+  { left: "48%", top: "8%", size: 2, drift: 13, duration: 11, delay: 2.6 },
+];
 
 export default function RobotShowcase() {
   const reduced = useReducedMotion();
@@ -39,7 +50,12 @@ export default function RobotShowcase() {
 
   return (
     <div className="relative z-10 mx-auto w-full max-w-[760px] lg:max-w-none">
-      <div className="relative aspect-[9/8] w-full">
+      {/*
+       * The stage keeps its 9:8 ratio, but on desktop its width is also capped
+       * by the height the hero has left over — otherwise a short viewport
+       * overflows the section, which clips the robot's head off the top.
+       */}
+      <div className="robot-stage group relative mx-auto aspect-[9/8] w-full">
         {/* ambient glow pool — takes the colour of the hovered course tag */}
         <div
           aria-hidden
@@ -49,8 +65,43 @@ export default function RobotShowcase() {
           }}
         />
 
+        {/* second pool, revealed on hover so the glow lifts without any scaling */}
+        <div
+          aria-hidden
+          className="absolute left-1/2 top-[54%] size-[86%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.26)_0%,rgba(168,85,247,0.16)_48%,transparent_72%)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+        />
+
+        {/* light beam falling from behind the robot */}
+        <div
+          aria-hidden
+          className="absolute left-1/2 top-0 h-[78%] w-[48%] -translate-x-1/2 opacity-50 blur-2xl transition-opacity duration-500 group-hover:opacity-80"
+          style={{
+            clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
+            background:
+              "linear-gradient(to bottom, rgba(147,197,253,0) 0%, rgba(96,165,250,0.20) 46%, rgba(168,85,247,0.24) 100%)",
+          }}
+        />
+
         <OrbitArcs />
         <PlatformRings />
+
+        {/* drifting motes */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+          {MOTES.map((m) => (
+            <motion.span
+              key={`${m.left}-${m.top}`}
+              style={{ left: m.left, top: m.top, width: m.size, height: m.size }}
+              animate={reduced ? undefined : { y: [0, -m.drift, 0], opacity: [0.2, 0.75, 0.2] }}
+              transition={{
+                duration: m.duration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: m.delay,
+              }}
+              className="absolute rounded-full bg-[#93c5fd] shadow-[0_0_8px_2px_rgba(147,197,253,0.55)]"
+            />
+          ))}
+        </div>
 
         {/* floor reflection */}
         <div
@@ -60,6 +111,12 @@ export default function RobotShowcase() {
           <Image src={ROBOT} alt="" fill sizes="40vw" className="object-contain object-top" />
         </div>
 
+        {/* soft ground shadow, so the robot reads as standing on the platform */}
+        <div
+          aria-hidden
+          className="absolute left-1/2 top-[73%] z-0 h-[7%] w-[40%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(2,6,23,0.8)_0%,transparent_72%)] blur-md"
+        />
+
         {/* the robot */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -68,7 +125,7 @@ export default function RobotShowcase() {
           className="absolute inset-0 z-10"
         >
           <motion.div
-            animate={IDLE_FLOAT && !reduced ? { y: [0, -12, 0] } : undefined}
+            animate={IDLE_FLOAT && !reduced ? { y: [0, -6, 0] } : undefined}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
             className={`absolute left-[16%] top-[8%] h-[68%] w-[68%] drop-shadow-[0_28px_44px_rgba(2,6,23,0.85)] ${flip}`}
           >

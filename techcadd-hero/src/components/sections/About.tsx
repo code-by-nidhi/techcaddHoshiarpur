@@ -21,26 +21,27 @@ import Counter from "@/components/UI/Counter";
  */
 const GALLERY = {
   featured: {
-    src: "/images/team.jpg",
-    alt: "The Techcadd team at the Jalandhar campus",
+    // the file on disk carries a space in its name, hence the %20
+    src: "/images/team%20photo.jpeg",
+    alt: "The Techcadd team and students outside the Hoshiarpur campus",
     caption: "Team Techcadd",
     chip: "Industry-Oriented Training",
   },
   secondary: [
     {
-      src: "/images/classroom.jpg",
-      alt: "A Techcadd trainer running a classroom session",
+      src: "/images/classroom.png",
+      alt: "A full auditorium of Techcadd students during a training session",
       caption: "Classroom training",
       chip: "Live Projects",
     },
     {
-      src: "/images/projects.jpg",
-      alt: "Students building live projects in the Techcadd lab",
+      src: "/images/lab.png",
+      alt: "Students working at machines in the Techcadd computer lab",
       caption: "Lab & project floor",
       chip: "Placement Assistance",
     },
   ],
-  badge: { value: "20+", label: "Years Experience" },
+  badge: { value: "10+", label: "Years Experience" },
   founder: {
     src: "/images/founder.jpeg",
     alt: "Techcadd's founder on stage with the institute's robotics platform",
@@ -388,7 +389,8 @@ function AboutCollage() {
           {...GALLERY.featured}
           priority
           sizes="(max-width: 1023px) 92vw, 46vw"
-          className="aspect-[16/11] sm:aspect-[16/10]"
+          /* 4:3 matches the group photo, so no one gets cropped out of frame */
+          className="aspect-[4/3]"
         >
           <figcaption className="absolute inset-x-5 bottom-5 flex items-center gap-2 sm:inset-x-6 sm:bottom-6">
             <span aria-hidden className="size-1.5 rounded-full bg-[#60A5FA]" />
@@ -542,7 +544,7 @@ function YearsBadge() {
           aria-hidden
           className="grid size-9 shrink-0 place-content-center rounded-xl bg-gradient-to-br from-[#2563EB] to-[#38BDF8] font-[family-name:var(--font-poppins)] text-[11px] font-extrabold text-white shadow-[0_10px_22px_-10px_rgba(37,99,235,0.9)]"
         >
-          20
+          {GALLERY.badge.value.replace("+", "")}
         </span>
         <span className="leading-tight">
           <span className="block font-[family-name:var(--font-poppins)] text-[13.5px] font-extrabold tracking-[-0.01em] text-[#0F172A] sm:text-[14.5px]">
