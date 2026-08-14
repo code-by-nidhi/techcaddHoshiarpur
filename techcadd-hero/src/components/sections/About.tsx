@@ -15,32 +15,37 @@ import Counter from "@/components/UI/Counter";
  */
 
 /**
- * Collage imagery. Drop the photographs into public/images/about/ under these
- * filenames — until they exist each frame falls back to a branded gradient
- * carrying its caption, so the section never renders a broken image.
+ * Collage imagery, served from public/images. Any frame whose file is not in
+ * place yet falls back to a branded gradient carrying its caption, so the
+ * section never renders a broken image.
  */
 const GALLERY = {
   featured: {
-    src: "/images/about/team.jpg",
+    src: "/images/team.jpg",
     alt: "The Techcadd team at the Jalandhar campus",
     caption: "Team Techcadd",
     chip: "Industry-Oriented Training",
   },
   secondary: [
     {
-      src: "/images/about/classroom.jpg",
+      src: "/images/classroom.jpg",
       alt: "A Techcadd trainer running a classroom session",
       caption: "Classroom training",
       chip: "Live Projects",
     },
     {
-      src: "/images/about/projects.jpg",
+      src: "/images/projects.jpg",
       alt: "Students building live projects in the Techcadd lab",
       caption: "Lab & project floor",
       chip: "Placement Assistance",
     },
   ],
   badge: { value: "20+", label: "Years Experience" },
+  founder: {
+    src: "/images/founder.jpeg",
+    alt: "Techcadd's founder on stage with the institute's robotics platform",
+    caption: "Founder photo",
+  },
 };
 
 /** The five training formats, shown as glass cards under the opening copy. */
@@ -145,11 +150,18 @@ export default function About() {
         {/* founder vision */}
         <Reveal>
           <figure className="grid items-center gap-10 rounded-[36px] bg-[#F8FAFC] p-10 lg:grid-cols-[0.55fr_1fr] lg:gap-16 lg:p-16">
-            <div className="relative aspect-square w-full max-w-[280px] overflow-hidden rounded-[28px] bg-gradient-to-br from-[#DBEAFE] to-[#E0E7FF]">
-              {/* replace with the founder's photograph */}
-              <div className="absolute inset-0 grid place-content-center text-center">
-                <p className="text-[13px] text-[#94A3B8]">Founder photo</p>
-              </div>
+            <div className="relative w-full max-w-[420px]">
+              <span
+                aria-hidden
+                className="absolute -inset-2 -z-10 rotate-[1.6deg] rounded-[30px] bg-gradient-to-br from-[#2563EB]/12 via-[#38BDF8]/8 to-transparent"
+              />
+              {/* 5:4 matches the source, so the frame crops nothing off the stage */}
+              <Shot
+                {...GALLERY.founder}
+                scrim={false}
+                sizes="(max-width: 1023px) 88vw, 420px"
+                className="aspect-[5/4]"
+              />
             </div>
 
             <div>
@@ -427,6 +439,7 @@ function Shot({
   sizes,
   className,
   priority = false,
+  scrim = true,
   children,
 }: {
   src: string;
@@ -435,6 +448,8 @@ function Shot({
   sizes: string;
   className?: string;
   priority?: boolean;
+  /** the dark wash exists to keep overlays legible — off for bare portraits */
+  scrim?: boolean;
   children?: ReactNode;
 }) {
   const [loaded, setLoaded] = useState(false);
@@ -461,10 +476,12 @@ function Shot({
       )}
 
       {/* scrim keeps the overlays legible, and gives the placeholder depth */}
-      <div
-        aria-hidden
-        className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent"
-      />
+      {scrim && (
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent"
+        />
+      )}
 
       {failed && (
         <p className="absolute inset-x-6 top-1/2 -translate-y-1/2 text-center text-[12.5px] font-medium text-[#64748B]">
