@@ -13,7 +13,7 @@ export default function HeroContent() {
       variants={stagger(0.12, 0.1)}
       initial="hidden"
       animate="show"
-      className="relative z-10 w-full max-w-[680px] lg:pr-6"
+      className="relative z-10 w-full max-w-[680px] lg:max-w-[780px] lg:pr-6"
     >
       <motion.div variants={fadeUp}>
         <HeroBadge />
@@ -22,11 +22,18 @@ export default function HeroContent() {
       <motion.h1
         id="hero-heading"
         variants={fadeUp}
-        className="mt-[46px] font-[family-name:var(--font-sora)] text-[clamp(2.1rem,4.05vw,4.15rem)] font-extrabold leading-[1.09] tracking-[-0.022em] text-white lg:[&>span]:whitespace-nowrap"
+        /* 3.5vw keeps the longest line inside the 44% column — the spans cannot
+           wrap on lg, so an oversized value pushes them toward the robot */
+        className="mt-[40px] font-[family-name:var(--font-sora)] text-[clamp(2.1rem,3.5vw,4.15rem)] font-extrabold leading-[1.09] tracking-[-0.022em] text-white lg:[&>span]:whitespace-nowrap"
       >
         <span className="block">{HEADING.line1}</span>
         <span className="block">{HEADING.line2}</span>
-        <span className="block bg-gradient-to-r from-[#3b82f6] via-[#6366f1] to-[#a855f7] bg-clip-text text-transparent">
+        {/*
+          w-max is load-bearing: bg-clip-text only paints glyphs that fall
+          inside the element's background box, so any letter overflowing a
+          fixed-width box renders transparent — that is the missing "r".
+        */}
+        <span className="block bg-gradient-to-r from-[#3b82f6] via-[#6366f1] to-[#a855f7] bg-clip-text pr-[0.08em] text-transparent lg:w-max">
           {HEADING.gradient}
         </span>
         <span className="block">{HEADING.line4}</span>
@@ -43,7 +50,7 @@ export default function HeroContent() {
         <HeroButtons />
       </motion.div>
 
-      <motion.div variants={fadeUp} className="mt-[52px]">
+      <motion.div variants={fadeUp} className="mt-[46px]">
         <FeatureCards />
       </motion.div>
     </motion.div>
