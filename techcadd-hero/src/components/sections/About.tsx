@@ -3,15 +3,18 @@
 import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { ArrowRight, Phone } from "lucide-react";
+import {
+  ArrowRight, Bot, Briefcase, GraduationCap, Handshake, Phone, School, Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 import { ABOUT, MEGA_FOOTER, MILESTONES, FOUNDER, VALUES } from "@/lib/site";
 import Reveal from "@/components/UI/Reveal";
 import Counter from "@/components/UI/Counter";
 
 /**
  * Editorial about page: white throughout, generous spacing, a layered
- * photographic collage opposite the opening statement, a vertical milestone
- * timeline, founder vision, and mission values in an offset two-column rhythm.
+ * photographic collage opposite the opening statement, a milestone card grid,
+ * founder vision, and mission values in an offset two-column rhythm.
  */
 
 /**
@@ -105,48 +108,7 @@ export default function About() {
           </div>
         </div>
 
-        {/* timeline */}
-        <div className="grid gap-12 py-24 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20 lg:py-32">
-          <div className="lg:sticky lg:top-32 lg:self-start">
-            <Reveal>
-              <span className="font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.22em] text-[#2563EB]">
-                Our story
-              </span>
-            </Reveal>
-            <Reveal delay={0.06}>
-              <h3 className="mt-5 font-[family-name:var(--font-poppins)] text-[clamp(1.8rem,3vw,2.6rem)] font-extrabold leading-[1.1] tracking-[-0.028em] text-[#0F172A]">
-                A decade,
-                <br />
-                five turning points
-              </h3>
-            </Reveal>
-          </div>
-
-          <ol className="relative">
-            <span aria-hidden className="absolute left-[7px] top-2 h-full w-px bg-slate-200" />
-            {MILESTONES.map((m, i) => (
-              <Reveal key={m.year} delay={i * 0.05}>
-                <li className="relative pb-12 pl-12 last:pb-0">
-                  <motion.span
-                    aria-hidden
-                    initial={{ scale: 0.4, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                    className="absolute left-0 top-1.5 size-[15px] rounded-full border-[3px] border-white bg-[#2563EB] ring-1 ring-slate-200"
-                  />
-                  <p className="font-[family-name:var(--font-mono-face)] text-[12px] tracking-[0.16em] text-[#2563EB]">
-                    {m.year}
-                  </p>
-                  <h4 className="mt-2 font-[family-name:var(--font-poppins)] text-[19px] font-bold text-[#0F172A]">
-                    {m.title}
-                  </h4>
-                  <p className="mt-2 max-w-xl text-[14.5px] leading-[1.8] text-[#475569]">{m.copy}</p>
-                </li>
-              </Reveal>
-            ))}
-          </ol>
-        </div>
+        <Milestones />
 
         {/* founder vision */}
         <Reveal>
@@ -293,6 +255,91 @@ function StatCards() {
         );
       })}
     </motion.dl>
+  );
+}
+
+/* ------------------------------- milestones ------------------------------- */
+
+/**
+ * Keyed by year rather than index, so re-ordering or inserting a milestone in
+ * site.ts can never silently shift every icon by one.
+ */
+const MILESTONE_ICONS: Record<string, LucideIcon> = {
+  "2016": School,
+  "2018": Handshake,
+  "2020": Briefcase,
+  "2023": Bot,
+  "2026": GraduationCap,
+};
+
+/** Five milestones as a card grid: three across, then two wider ones. */
+function Milestones() {
+  return (
+    <div className="relative py-20 lg:py-24">
+      {/* subtle blue accent behind the grid */}
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-24 -z-10 h-[26rem]">
+        <div className="absolute left-[12%] top-0 size-[24rem] rounded-full bg-[#2563EB]/[0.06] blur-[110px]" />
+        <div className="absolute right-[8%] top-16 size-[26rem] rounded-full bg-[#38BDF8]/[0.07] blur-[120px]" />
+      </div>
+
+      <Reveal>
+        <span className="inline-flex items-center gap-2.5 font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.22em] text-[#2563EB]">
+          <span aria-hidden className="h-px w-7 bg-[#2563EB]/50" />
+          Our story
+        </span>
+      </Reveal>
+      <Reveal delay={0.06}>
+        <h3 className="mt-5 max-w-2xl font-[family-name:var(--font-poppins)] text-[clamp(1.8rem,3vw,2.6rem)] font-extrabold leading-[1.1] tracking-[-0.028em] text-[#0F172A]">
+          A decade, five turning points
+        </h3>
+      </Reveal>
+
+      <motion.ol
+        variants={cardStack}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, margin: "-80px" }}
+        /* six columns so the last row holds two half-width cards rather than
+           leaving an orphan gap where a fourth would sit */
+        className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-6"
+      >
+        {MILESTONES.map((m, i) => {
+          const Icon = MILESTONE_ICONS[m.year] ?? Sparkles;
+          const wide = i >= MILESTONES.length - 2;
+
+          return (
+            <motion.li
+              key={m.year}
+              variants={cardItem}
+              className={`group relative flex h-full flex-col overflow-hidden rounded-[26px] border border-slate-200/70 bg-white/70 p-7 shadow-[0_16px_44px_-32px_rgba(15,23,42,0.6)] backdrop-blur-xl transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-[#2563EB]/25 hover:shadow-[0_36px_70px_-32px_rgba(37,99,235,0.5)] motion-reduce:hover:translate-y-0 ${
+                wide ? "lg:col-span-3" : "lg:col-span-2"
+              }`}
+            >
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -right-12 -top-14 size-40 rounded-full bg-[#2563EB]/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+              />
+
+              <span className="relative grid size-16 place-content-center rounded-full bg-gradient-to-br from-[#2563EB] to-[#38BDF8] shadow-[0_14px_30px_-14px_rgba(37,99,235,0.8)] transition-shadow duration-500 group-hover:shadow-[0_18px_44px_-12px_rgba(37,99,235,1)]">
+                <Icon aria-hidden className="size-7 text-white" />
+              </span>
+
+              <time
+                dateTime={m.year}
+                className="relative mt-6 block font-[family-name:var(--font-poppins)] text-[clamp(1.9rem,2.6vw,2.4rem)] font-extrabold leading-none tracking-[-0.03em] text-[#2563EB]"
+              >
+                {m.year}
+              </time>
+
+              <h4 className="relative mt-3 font-[family-name:var(--font-poppins)] text-[19px] font-bold leading-snug tracking-[-0.015em] text-[#0F172A]">
+                {m.title}
+              </h4>
+              <p className="relative mt-2.5 text-[14.5px] leading-[1.8] text-[#475569]">{m.copy}</p>
+            </motion.li>
+          );
+        })}
+      </motion.ol>
+    </div>
   );
 }
 
