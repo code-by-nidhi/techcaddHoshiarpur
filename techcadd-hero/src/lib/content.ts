@@ -5,7 +5,7 @@ export const NAV_LINKS = [
   { label: "Home", href: "#home", dropdown: false, active: false },
   { label: "About Us", href: "#about", dropdown: true, active: false },
   { label: "AI", href: "#ai", dropdown: false, active: true },
-  { label: "Courses", href: "#courses", dropdown: true, active: false },
+  { label: "Courses", href: "#programs", dropdown: true, active: false },
   { label: "Internship & Training", href: "#internship", dropdown: true, active: false },
   { label: "After 12th", href: "#after-12th", dropdown: true, active: false },
   { label: "Resources", href: "#resources", dropdown: true, active: false },

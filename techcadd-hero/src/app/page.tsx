@@ -2,7 +2,6 @@ import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import Hero from "@/components/Hero/Hero";
 import About from "@/components/sections/About";
-import CourseCategories from "@/components/sections/CourseCategories";
 import FeaturedCourses from "@/components/sections/FeaturedCourses";
 import WhyChoose from "@/components/sections/WhyChoose";
 import CareerOutcomes from "@/components/sections/CareerOutcomes";
@@ -26,7 +25,6 @@ export default function Home() {
       <main id="home">
         <Hero />
         <About />
-        <CourseCategories />
         <FeaturedCourses />
         <WhyChoose />
         <CareerOutcomes />

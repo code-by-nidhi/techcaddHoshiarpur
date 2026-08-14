@@ -306,7 +306,7 @@ function CallToAction() {
     <Reveal delay={0.1} y={18}>
       <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
         <a
-          href="#courses"
+          href="#programs"
           className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#0F172A] px-7 py-3.5 text-[15px] font-semibold text-white shadow-[0_20px_45px_-24px_rgba(15,23,42,0.9)] transition-all duration-300 hover:bg-[#2563EB] hover:shadow-[0_22px_48px_-18px_rgba(37,99,235,0.8)]"
         >
           Find your course

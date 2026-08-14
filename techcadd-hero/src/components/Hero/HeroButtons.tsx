@@ -7,7 +7,7 @@ export default function HeroButtons() {
   return (
     <div className="flex flex-wrap items-center gap-4">
       <motion.a
-        href="#courses"
+        href="#programs"
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: "spring", stiffness: 340, damping: 22 }}
