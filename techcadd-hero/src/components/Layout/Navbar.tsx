@@ -34,17 +34,22 @@ export default function Navbar() {
       initial={{ opacity: 0, y: -14 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed inset-x-0 top-0 z-50"
+      className="fixed inset-x-0 top-0 z-[9999]"
     >
       <div
         className={`transition-all duration-500 ${
           scrolled
-            ? "mx-auto mt-3 max-w-[1360px] rounded-2xl border border-white/10 bg-[#020617]/70 px-2 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+            ? "mx-auto mt-3 max-w-[1360px] rounded-2xl border border-white/10 bg-[#020617]/85 px-2 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
             : "border-b border-transparent"
         }`}
       >
+        {/*
+         * flex-nowrap + whitespace-nowrap throughout: without them the long
+         * labels wrap at ~1280-1400px, which makes the bar grow a second row
+         * and sit over the hero copy.
+         */}
         <nav
-          className={`mx-auto flex w-full max-w-[1600px] items-center justify-between gap-6 px-6 transition-all duration-500 lg:px-[4.5rem] ${
+          className={`mx-auto flex w-full max-w-[1600px] flex-nowrap items-center justify-between gap-4 whitespace-nowrap px-6 transition-all duration-500 lg:gap-6 lg:px-[4.5rem] xl:px-8 2xl:px-[4.5rem] ${
             scrolled ? "h-[68px] lg:px-6" : "h-[86px]"
           }`}
         >
@@ -55,19 +60,21 @@ export default function Navbar() {
               width={899}
               height={242}
               priority
-              className={`w-auto transition-all duration-500 ${scrolled ? "h-[42px]" : "h-[52px]"}`}
+              className={`w-auto transition-all duration-500 ${
+                scrolled ? "h-[38px] sm:h-[42px]" : "h-[40px] sm:h-[52px]"
+              }`}
             />
           </a>
 
           {/* desktop navigation */}
-          <ul className="hidden items-center gap-x-[26px] xl:flex">
+          <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[18px] xl:flex 2xl:gap-x-[26px]">
             {NAV_LINKS.map((link) =>
               link.active ? (
                 <li key={link.label}>
                   <a
                     href={link.href}
                     aria-current="page"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-[22px] py-[9px] text-[15px] font-medium text-white shadow-[0_0_30px_-2px_rgba(37,99,235,0.75)] transition-shadow duration-300 hover:shadow-[0_0_44px_0_rgba(37,99,235,0.95)]"
+                    className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-[18px] py-[9px] text-[14px] font-medium text-white shadow-[0_0_30px_-2px_rgba(37,99,235,0.75)] transition-shadow duration-300 hover:shadow-[0_0_44px_0_rgba(37,99,235,0.95)] 2xl:px-[22px] 2xl:text-[15px]"
                   >
                     {link.label}
                     <span aria-hidden className="text-[13px] text-white/80">+</span>
@@ -77,7 +84,7 @@ export default function Navbar() {
                 <li key={link.label}>
                   <a
                     href={link.href}
-                    className="group inline-flex items-center gap-1 text-[15px] text-white/90 transition-all duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)]"
+                    className="group inline-flex items-center gap-1 whitespace-nowrap text-[14px] text-white/90 transition-all duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px]"
                   >
                     {link.label}
                     {link.dropdown && (
@@ -92,13 +99,13 @@ export default function Navbar() {
             )}
           </ul>
 
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
             <motion.a
               href="#contact"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 340, damping: 20 }}
-              className="hidden rounded-full bg-white px-[26px] py-[11px] text-[15px] font-semibold text-[#0a0f1e] shadow-[0_6px_24px_-6px_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[0_10px_34px_-6px_rgba(255,255,255,0.55)] sm:inline-block"
+              className="inline-block whitespace-nowrap rounded-full bg-white px-[18px] py-[9px] text-[13.5px] font-semibold text-[#0a0f1e] shadow-[0_6px_24px_-6px_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[0_10px_34px_-6px_rgba(255,255,255,0.55)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
             >
               Book Demo
             </motion.a>
