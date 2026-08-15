@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
@@ -13,6 +15,10 @@ import { NAV_LINKS } from "@/lib/content";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  /** Only route links can be current; section links land on the home page. */
+  const isActive = (href: string) => !href.includes("#") && pathname === href;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -53,7 +59,7 @@ export default function Navbar() {
             scrolled ? "h-[68px] lg:px-6" : "h-[86px]"
           }`}
         >
-          <a href="#home" aria-label="TechCadd — home" className="shrink-0">
+          <Link href="/" aria-label="TechCadd — home" className="shrink-0">
             <Image
               src="/images/techcadd-logo-white.png"
               alt="TechCadd — Your Skill & Technology Partner"
@@ -64,27 +70,21 @@ export default function Navbar() {
                 scrolled ? "h-[38px] sm:h-[42px]" : "h-[40px] sm:h-[52px]"
               }`}
             />
-          </a>
+          </Link>
 
           {/* desktop navigation */}
-          <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[18px] xl:flex 2xl:gap-x-[26px]">
-            {NAV_LINKS.map((link) =>
-              link.active ? (
+          <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[20px] xl:flex 2xl:gap-x-[28px]">
+            {NAV_LINKS.map((link) => {
+              const current = isActive(link.href);
+
+              return (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
-                    aria-current="page"
-                    className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-[18px] py-[9px] text-[14px] font-medium text-white shadow-[0_0_30px_-2px_rgba(37,99,235,0.75)] transition-shadow duration-300 hover:shadow-[0_0_44px_0_rgba(37,99,235,0.95)] 2xl:px-[22px] 2xl:text-[15px]"
-                  >
-                    {link.label}
-                    <span aria-hidden className="text-[13px] text-white/80">+</span>
-                  </a>
-                </li>
-              ) : (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="group inline-flex items-center gap-1 whitespace-nowrap text-[14px] text-white/90 transition-all duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px]"
+                    aria-current={current ? "page" : undefined}
+                    className={`group relative inline-flex items-center gap-1 whitespace-nowrap py-1 text-[14px] transition-colors duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px] ${
+                      current ? "font-medium text-white" : "text-white/90"
+                    }`}
                   >
                     {link.label}
                     {link.dropdown && (
@@ -93,22 +93,41 @@ export default function Navbar() {
                         className="size-3.5 translate-y-px text-white/60 transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-white/90"
                       />
                     )}
-                  </a>
+
+                    {/* blue indicator: parked under the current link, drawn in
+                        from the left on hover for the others */}
+                    <span
+                      aria-hidden
+                      className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa] shadow-[0_0_10px_rgba(59,130,246,0.9)] transition-[width] duration-300 ease-out ${
+                        current ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
+                    />
+                  </Link>
                 </li>
-              )
-            )}
+              );
+            })}
           </ul>
 
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+            {/* the site's standing CTA, room permitting */}
             <motion.a
-              href="#contact"
+              href="/#contact"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
               transition={{ type: "spring", stiffness: 340, damping: 20 }}
-              className="inline-block whitespace-nowrap rounded-full bg-white px-[18px] py-[9px] text-[13.5px] font-semibold text-[#0a0f1e] shadow-[0_6px_24px_-6px_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[0_10px_34px_-6px_rgba(255,255,255,0.55)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
+              className="hidden whitespace-nowrap rounded-full bg-white px-[22px] py-[10px] text-[14px] font-semibold text-[#0a0f1e] shadow-[0_6px_24px_-6px_rgba(255,255,255,0.35)] transition-shadow duration-300 hover:shadow-[0_10px_34px_-6px_rgba(255,255,255,0.55)] 2xl:inline-block"
             >
               Book Demo
             </motion.a>
+
+            <motion.div whileHover={{ y: -2, scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 340, damping: 20 }}>
+              <Link
+                href="/contact"
+                className="inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-[18px] py-[9px] text-[13.5px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
+              >
+                Free Counselling
+              </Link>
+            </motion.div>
 
             <button
               type="button"
@@ -147,26 +166,34 @@ export default function Navbar() {
                     show: { opacity: 1, x: 0 },
                   }}
                 >
-                  <a
+                  <Link
                     href={link.href}
                     onClick={() => setOpen(false)}
+                    aria-current={isActive(link.href) ? "page" : undefined}
                     className={`flex items-center justify-between rounded-xl px-4 py-3.5 text-[15px] transition-colors ${
-                      link.active
+                      isActive(link.href)
                         ? "bg-gradient-to-r from-[#2563eb]/25 to-transparent font-medium text-white"
                         : "text-white/85 hover:bg-white/5"
                     }`}
                   >
                     {link.label}
                     {link.dropdown && <ChevronDown aria-hidden className="size-4 text-white/40" />}
-                  </a>
+                  </Link>
                 </motion.li>
               ))}
               <motion.li
                 variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}
-                className="p-2 pt-3"
+                className="space-y-2 p-2 pt-3"
               >
+                <Link
+                  href="/contact"
+                  onClick={() => setOpen(false)}
+                  className="block rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-6 py-3 text-center text-[15px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
+                >
+                  Free Counselling
+                </Link>
                 <a
-                  href="#contact"
+                  href="/#contact"
                   onClick={() => setOpen(false)}
                   className="block rounded-full bg-white px-6 py-3 text-center text-[15px] font-semibold text-[#0a0f1e]"
                 >

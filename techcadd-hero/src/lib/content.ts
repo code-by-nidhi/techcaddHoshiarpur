@@ -1,15 +1,17 @@
 import { Users, Code2, BriefcaseBusiness } from "lucide-react";
 import type { RobotEffect } from "./robotBus";
 
+/**
+ * Section links are written as "/#id" rather than "#id" so they still resolve
+ * from routes other than the home page, such as /contact.
+ */
 export const NAV_LINKS = [
-  { label: "Home", href: "#home", dropdown: false, active: false },
-  { label: "About Us", href: "#about", dropdown: true, active: false },
-  { label: "AI", href: "#ai", dropdown: false, active: true },
-  { label: "Courses", href: "#programs", dropdown: true, active: false },
-  { label: "Internship & Training", href: "#internship", dropdown: true, active: false },
-  { label: "After 12th", href: "#after-12th", dropdown: true, active: false },
-  { label: "Resources", href: "#resources", dropdown: true, active: false },
-  { label: "Contact Us", href: "#contact", dropdown: false, active: false },
+  { label: "Home", href: "/", dropdown: false },
+  { label: "Courses", href: "/#programs", dropdown: true },
+  { label: "About Us", href: "/#about", dropdown: true },
+  { label: "Placement", href: "/#outcomes", dropdown: false },
+  { label: "Resources", href: "/#blog", dropdown: true },
+  { label: "Contact Us", href: "/contact", dropdown: false },
 ] as const;
 
 export const BADGE = "TECHCADD HOSHIARPUR • AI & SOFTWARE TRAINING";
