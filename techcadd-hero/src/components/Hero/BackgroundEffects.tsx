@@ -75,18 +75,45 @@ export default function BackgroundEffects() {
     resize();
     window.addEventListener("resize", resize);
 
+    /*
+     * The loop only runs while the hero is on screen and the tab is visible.
+     * Without the observer it kept repainting 110 particles for the whole
+     * length of the page, which is pure CPU cost once the hero is scrolled
+     * away and shows up as input latency further down.
+     */
+    let onScreen = true;
+    const stop = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+    const start = () => {
+      if (reduced || raf || !onScreen || document.hidden) return;
+      raf = requestAnimationFrame(draw);
+    };
+
     if (reduced) paint();
-    else raf = requestAnimationFrame(draw);
+    else start();
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        if (onScreen) start();
+        else stop();
+      },
+      { rootMargin: "120px" },
+    );
+    observer.observe(canvas);
 
     const onVisibility = () => {
       if (reduced) return;
-      cancelAnimationFrame(raf);
-      if (!document.hidden) raf = requestAnimationFrame(draw);
+      if (document.hidden) stop();
+      else start();
     };
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
-      cancelAnimationFrame(raf);
+      stop();
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
     };

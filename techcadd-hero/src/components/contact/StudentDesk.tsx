@@ -74,7 +74,7 @@ export default function StudentDesk() {
 
               <div className="relative aspect-square w-full overflow-hidden rounded-[24px] shadow-[0_30px_70px_-34px_rgba(15,23,42,0.55)] ring-1 ring-inset ring-slate-900/[0.06]">
                 <Image
-                  src="/images/form.png"
+                  src="/images/form.webp"
                   alt="Students working at the machines in a TechCadd lab"
                   fill
                   sizes="(max-width: 991px) 88vw, 38vw"

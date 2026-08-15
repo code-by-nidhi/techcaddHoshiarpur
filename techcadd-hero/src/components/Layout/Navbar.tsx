@@ -6,12 +6,23 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
+import dynamic from "next/dynamic";
 import { NAV_LINKS } from "@/lib/content";
-import MegaMenu from "./MegaMenu";
-import MegaMenuMobile from "./MegaMenuMobile";
 
-/** Nav items that open the course catalogue instead of navigating away. */
-const MEGA_TRIGGERS = new Set(["Courses"]);
+/*
+ * Both panels are split out of the navbar chunk: their markup, their images
+ * and the resources data only travel once someone actually opens one. The
+ * navbar itself is on every route, so keeping it small matters.
+ */
+const MegaMenu = dynamic(() => import("./MegaMenu"));
+const MegaMenuMobile = dynamic(() => import("./MegaMenuMobile"));
+
+/** The one nav item that opens the resources panel. */
+const MEGA_TRIGGERS = new Set(["Resources"]);
+
+/** Panel geometry, in px. */
+const PANEL_W = 1240;
+const EDGE = 16;
 
 /**
  * Transparent over the hero (so the reference composition holds), then it
@@ -27,6 +38,25 @@ export default function Navbar() {
    * Hover intent: a short grace period on leave, so crossing the gap between
    * the trigger and the panel does not snap the menu shut.
    */
+  const triggerRef = useRef<HTMLLIElement>(null);
+  const [anchor, setAnchor] = useState({ left: 0, top: 0, width: PANEL_W, arrow: 0 });
+
+  /**
+   * Centre the panel under the trigger, then pull it back inside the viewport
+   * if that would push it off the edge, and report where the pointer has to
+   * sit so it still lands under the item.
+   */
+  const measure = useCallback(() => {
+    const el = triggerRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const vw = document.documentElement.clientWidth;
+    const width = Math.min(PANEL_W, vw - EDGE * 2);
+    const centre = r.left + r.width / 2;
+    const left = Math.min(Math.max(EDGE, centre - width / 2), vw - width - EDGE);
+    setAnchor({ left, top: r.bottom, width, arrow: centre - left });
+  }, []);
+
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cancelClose = useCallback(() => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -38,6 +68,18 @@ export default function Navbar() {
   }, [cancelClose]);
 
   useEffect(() => cancelClose, [cancelClose]);
+
+  // the bar changes height as it condenses, so re-measure while it is open
+  useEffect(() => {
+    if (!mega) return;
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("scroll", measure, { passive: true });
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", measure);
+    };
+  }, [mega, measure]);
 
   /** Only route links can be current; section links land on the home page. */
   const isActive = (href: string) => !href.includes("#") && pathname === href;
@@ -157,33 +199,27 @@ export default function Navbar() {
               return (
                 <li
                   key={link.label}
+                  ref={opensMega ? triggerRef : undefined}
                   onMouseEnter={opensMega ? cancelClose : undefined}
                   onMouseLeave={opensMega ? scheduleClose : undefined}
                 >
-                  {opensMega ? (
-                    /* a disclosure button, not a link: it opens a panel rather
-                       than navigating, so it must announce itself as such */
-                    <button
-                      type="button"
-                      aria-expanded={mega}
-                      aria-controls="mega-menu"
-                      onMouseEnter={() => setMega(true)}
-                      onFocus={() => setMega(true)}
-                      onClick={() => setMega((v) => !v)}
-                      className={face_class}
-                    >
-                      {face}
-                    </button>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      aria-current={current ? "page" : undefined}
-                      onMouseEnter={() => setMega(false)}
-                      className={face_class}
-                    >
-                      {face}
-                    </Link>
-                  )}
+                  {/*
+                   * Hover and focus open the panel; the click still follows the
+                   * href, so the item never becomes a dead end.
+                   */}
+                  <Link
+                    href={link.href}
+                    aria-current={current ? "page" : undefined}
+                    aria-haspopup={opensMega ? "true" : undefined}
+                    aria-expanded={opensMega ? mega : undefined}
+                    aria-controls={opensMega ? "mega-menu" : undefined}
+                    onMouseEnter={() => setMega(opensMega)}
+                    onFocus={() => setMega(opensMega)}
+                    onClick={opensMega ? () => setMega(false) : undefined}
+                    className={face_class}
+                  >
+                    {face}
+                  </Link>
                 </li>
               );
             })}
@@ -243,16 +279,22 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* desktop mega panel, floating under the bar */}
+        {/*
+         * Desktop resources panel. Positioned from the measured trigger rect,
+         * and the wrapper starts flush with the bar's underside — the pt-2.5
+         * gap is inside the hover area, so moving the pointer down from
+         * Resources never leaves both elements at once.
+         */}
         <AnimatePresence>
           {mega && (
             <div
               id="mega-menu"
               onMouseEnter={cancelClose}
               onMouseLeave={scheduleClose}
-              className="absolute inset-x-0 top-full hidden justify-center px-6 pt-2 xl:flex"
+              style={{ left: anchor.left, top: anchor.top, width: anchor.width }}
+              className="fixed hidden pt-2.5 xl:block"
             >
-              <MegaMenu onNavigate={() => setMega(false)} />
+              <MegaMenu arrow={anchor.arrow} onNavigate={() => setMega(false)} />
             </div>
           )}
         </AnimatePresence>

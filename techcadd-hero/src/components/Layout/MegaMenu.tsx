@@ -1,167 +1,176 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { FiArrowRight, FiArrowUpRight, FiCheck, FiTrendingUp } from "react-icons/fi";
-import {
-  MEGA_COLUMNS, MEGA_FEATURED, MEGA_QUOTE, MEGA_VIEW_ALL, type MegaCourse,
-} from "@/lib/megaMenu";
+import { FiArrowRight } from "react-icons/fi";
+import { RESOURCES, RESOURCE_CARDS, type ResourceCard } from "@/lib/megaMenu";
 
-/** The panel itself: fade, rise and a touch of scale. */
 export const panelIn: Variants = {
-  hidden: { opacity: 0, y: -12, scale: 0.985 },
+  hidden: { opacity: 0, y: -12 },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.05 },
+    transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1], staggerChildren: 0.07, delayChildren: 0.04 },
   },
-  exit: { opacity: 0, y: -10, scale: 0.99, transition: { duration: 0.2, ease: "easeIn" } },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.18, ease: "easeIn" } },
 };
 
-const columnIn: Variants = {
+const itemIn: Variants = {
   hidden: { opacity: 0, y: 14 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] } },
 };
 
 /**
- * Desktop mega panel. Rendered by the navbar inside its fixed header, so it
- * floats under the bar and stays centred at any width.
+ * Resources mega menu: a rail of destinations on the left, three featured
+ * cards on the right.
+ *
+ * `arrow` is the pointer's offset from the panel's own left edge, in px — the
+ * navbar measures it so the tip lands under the Resources item even when the
+ * panel has been nudged inward to stay on screen.
  */
-export default function MegaMenu({ onNavigate }: { onNavigate: () => void }) {
+export default function MegaMenu({
+  arrow,
+  onNavigate,
+}: {
+  arrow: number;
+  onNavigate: () => void;
+}) {
+  const [active, setActive] = useState(RESOURCES[0].id);
+
   return (
-    <motion.div
-      variants={panelIn}
-      initial="hidden"
-      animate="show"
-      exit="exit"
-      className="relative w-[min(1400px,calc(100vw-3rem))] rounded-[30px] border border-white/[0.14] bg-[#070c1c]/90 p-8 shadow-[0_40px_90px_-30px_rgba(2,6,23,0.95),0_0_60px_-20px_rgba(37,99,235,0.55)] backdrop-blur-2xl"
-    >
-      {/* premium border glow */}
+    <motion.div variants={panelIn} initial="hidden" animate="show" exit="exit" className="relative">
+      {/* pointer connecting the panel to the nav item */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -inset-px rounded-[30px] bg-[linear-gradient(120deg,rgba(96,165,250,0.35),rgba(168,85,247,0.25),rgba(56,189,248,0.35))] opacity-40"
-        style={{ WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)", WebkitMaskComposite: "xor", maskComposite: "exclude", padding: 1 }}
+        style={{ left: arrow }}
+        className="absolute -top-[7px] size-3.5 -translate-x-1/2 rotate-45 rounded-[3px] border-l border-t border-white/80 bg-white/95 backdrop-blur-2xl"
       />
 
-      <div className="row g-4">
-        {MEGA_COLUMNS.map((col) => (
-          <motion.div key={col.id} variants={columnIn} className="col-12 col-md-6 col-xl-3">
-            <p className="font-[family-name:var(--font-mono-face)] text-[11px] tracking-[0.22em] text-[#60A5FA]">
-              {col.index}
-            </p>
-            <h3 className="mt-2 font-[family-name:var(--font-sora)] text-[15.5px] font-bold leading-snug text-white">
-              {col.title}
-            </h3>
-            <p className="mt-1.5 text-[12.5px] leading-relaxed text-white/45">{col.description}</p>
+      <div className="relative overflow-hidden rounded-[32px] border border-white/80 bg-white/95 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35),0_50px_100px_-45px_rgba(37,99,235,0.65)] backdrop-blur-2xl">
+        {/* blue gradient accent along the top edge */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(37,99,235,0.75),transparent)]"
+        />
 
-            <ul className="mt-4 space-y-0.5">
-              {col.courses.map((course) => (
-                <li key={course.label}>
-                  <CourseLink course={course} onNavigate={onNavigate} />
-                </li>
+        <div className="row g-0">
+          {/* rail */}
+          <div className="col-12 col-lg-3">
+            <motion.ul
+              variants={itemIn}
+              className="h-full border-b border-slate-200/70 bg-[linear-gradient(180deg,rgba(37,99,235,0.05),transparent)] p-4 lg:border-b-0 lg:border-r"
+            >
+              {RESOURCES.map((item) => {
+                const on = item.id === active;
+                const Icon = item.icon;
+
+                return (
+                  <li key={item.id}>
+                    <Link
+                      href={item.href}
+                      onMouseEnter={() => setActive(item.id)}
+                      onFocus={() => setActive(item.id)}
+                      onClick={onNavigate}
+                      className={`group/row mb-1 flex items-center gap-3 rounded-2xl px-3.5 py-3 text-[14px] transition-[background-color,color,transform] duration-300 ${
+                        on
+                          ? "translate-x-0.5 bg-gradient-to-r from-[#2563EB] to-[#7C3AED] font-semibold text-white shadow-[0_14px_30px_-14px_rgba(37,99,235,0.95)]"
+                          : "text-[#475569] hover:bg-white hover:text-[#0F172A]"
+                      }`}
+                    >
+                      <span
+                        className={`grid size-8 shrink-0 place-content-center rounded-xl transition-colors duration-300 ${
+                          on ? "bg-white/20 text-white" : "bg-slate-100 text-[#64748B]"
+                        }`}
+                      >
+                        <Icon aria-hidden className="size-[15px]" />
+                      </span>
+                      <span className="min-w-0 truncate">{item.label}</span>
+                      <FiArrowRight
+                        aria-hidden
+                        className={`ml-auto size-3.5 shrink-0 transition-all duration-300 ${
+                          on ? "opacity-90" : "-translate-x-1 opacity-0"
+                        }`}
+                      />
+                    </Link>
+                  </li>
+                );
+              })}
+            </motion.ul>
+          </div>
+
+          {/* featured cards */}
+          <div className="col-12 col-lg-9">
+            <div className="row g-3 p-4 sm:g-4 sm:p-5">
+              {RESOURCE_CARDS.map((card) => (
+                <div key={card.id} className="col-12 col-md-6 col-xl-4">
+                  <FeatureCard card={card} onNavigate={onNavigate} />
+                </div>
               ))}
-            </ul>
-          </motion.div>
-        ))}
-
-        {/* featured */}
-        <motion.div variants={columnIn} className="col-12 col-xl-3">
-          <FeaturedCard onNavigate={onNavigate} />
-        </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* footer strip */}
-      <motion.div
-        variants={columnIn}
-        className="mt-7 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center"
-      >
-        <p className="text-[13px] italic text-white/45">&ldquo;{MEGA_QUOTE}&rdquo;</p>
-        <Link
-          href={MEGA_VIEW_ALL.href}
-          onClick={onNavigate}
-          className="group inline-flex items-center gap-2 text-[13.5px] font-semibold text-[#93C5FD] transition-colors hover:text-white"
-        >
-          {MEGA_VIEW_ALL.label}
-          <FiArrowRight
-            aria-hidden
-            className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-          />
-        </Link>
-      </motion.div>
     </motion.div>
   );
 }
 
-/* --------------------------------- pieces --------------------------------- */
+/* --------------------------------- card ----------------------------------- */
 
-/** One catalogue row: slides right, glows blue, reveals its arrow. */
-export function CourseLink({
-  course,
+export function FeatureCard({
+  card,
   onNavigate,
 }: {
-  course: MegaCourse;
+  card: ResourceCard;
   onNavigate: () => void;
 }) {
   return (
-    <Link
-      href={course.href}
-      onClick={onNavigate}
-      className="group/item flex items-center gap-2 rounded-xl px-2.5 py-[7px] text-[13.5px] text-white/70 transition-[background-color,color,transform] duration-300 hover:translate-x-1 hover:bg-white/[0.06] hover:text-white hover:shadow-[0_0_24px_-10px_rgba(59,130,246,0.9)] focus-visible:bg-white/[0.06] focus-visible:text-white"
-    >
-      <span className="truncate">{course.label}</span>
-
-      {course.trending && (
-        <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-2 py-[3px] text-[9.5px] font-semibold uppercase tracking-[0.08em] text-white">
-          <FiTrendingUp aria-hidden className="size-2.5" />
-          Trending
-        </span>
-      )}
-
-      <FiArrowUpRight
-        aria-hidden
-        className="ml-auto size-3.5 shrink-0 text-[#60A5FA] opacity-0 transition-all duration-300 group-hover/item:opacity-100 group-focus-visible/item:opacity-100"
-      />
-    </Link>
-  );
-}
-
-/** The gradient promo card that closes the row. */
-export function FeaturedCard({ onNavigate }: { onNavigate: () => void }) {
-  return (
-    <div className="group relative h-full overflow-hidden rounded-[24px] bg-[linear-gradient(150deg,#1e3a8a_0%,#2563eb_45%,#7c3aed_100%)] p-6 shadow-[0_26px_60px_-28px_rgba(37,99,235,0.95)] transition-transform duration-500 hover:-translate-y-1.5 motion-reduce:hover:translate-y-0">
-      <span
-        aria-hidden
-        className="pointer-events-none absolute -right-14 -top-16 size-44 rounded-full bg-white/25 opacity-60 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
-      />
-
-      <p className="relative font-[family-name:var(--font-mono-face)] text-[10.5px] uppercase tracking-[0.2em] text-white/70">
-        {MEGA_FEATURED.eyebrow}
-      </p>
-      <h3 className="relative mt-2.5 font-[family-name:var(--font-sora)] text-[18px] font-extrabold leading-snug text-white">
-        <span aria-hidden>🚀</span> {MEGA_FEATURED.title}
-      </h3>
-
-      <ul className="relative mt-4 grid grid-cols-1 gap-x-3 gap-y-1.5 sm:grid-cols-2 xl:grid-cols-1">
-        {MEGA_FEATURED.features.map((f) => (
-          <li key={f} className="flex items-center gap-1.5 text-[12px] text-white/85">
-            <FiCheck aria-hidden className="size-3 shrink-0 text-[#93C5FD]" />
-            <span className="truncate">{f}</span>
-          </li>
-        ))}
-      </ul>
-
+    <motion.div variants={itemIn} className="h-full">
       <Link
-        href={MEGA_FEATURED.cta.href}
+        href={card.href}
         onClick={onNavigate}
-        className="relative mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-[13px] font-semibold text-[#0a0f1e] transition-shadow duration-300 hover:shadow-[0_0_36px_-6px_rgba(255,255,255,0.8)]"
+        className="group/card relative flex h-full flex-col rounded-[24px] p-px transition-transform duration-500 hover:-translate-y-1.5 motion-reduce:hover:translate-y-0"
       >
-        {MEGA_FEATURED.cta.label}
-        <FiArrowRight
+        {/* gradient border glow, lit on hover */}
+        <span
           aria-hidden
-          className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
+          className="absolute inset-0 rounded-[24px] bg-[linear-gradient(130deg,rgba(37,99,235,0.85),rgba(124,58,237,0.6),rgba(56,189,248,0.85))] opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
         />
+
+        <div className="relative flex h-full flex-col overflow-hidden rounded-[23px] border border-slate-200/80 bg-white/90 shadow-[0_14px_36px_-26px_rgba(15,23,42,0.6)] backdrop-blur-xl transition-shadow duration-500 group-hover/card:shadow-[0_30px_64px_-30px_rgba(37,99,235,0.55)]">
+          <div className="relative aspect-[16/10] w-full overflow-hidden">
+            <Image
+              src={card.image.src}
+              alt={card.image.alt}
+              fill
+              sizes="(max-width: 767px) 90vw, 300px"
+              className="object-cover transition-transform duration-700 ease-out group-hover/card:scale-105 motion-reduce:group-hover/card:scale-100"
+            />
+          </div>
+
+          <div className="flex flex-1 flex-col p-4">
+            <div className="flex items-center gap-2">
+              <h3 className="font-[family-name:var(--font-sora)] text-[15.5px] font-bold tracking-[-0.015em] text-[#0F172A]">
+                {card.title}
+              </h3>
+              <span className="rounded-full bg-[#2563EB]/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[#2563EB]">
+                {card.badge}
+              </span>
+            </div>
+
+            <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-[#475569]">{card.copy}</p>
+
+            <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[#2563EB]">
+              {card.cta}
+              <FiArrowRight
+                aria-hidden
+                className="size-3.5 transition-transform duration-300 group-hover/card:translate-x-1"
+              />
+            </span>
+          </div>
+        </div>
       </Link>
-    </div>
+    </motion.div>
   );
 }

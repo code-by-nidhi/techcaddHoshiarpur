@@ -1,6 +1,6 @@
 import Navbar from "@/components/Layout/Navbar";
-import MegaFooter from "@/components/Layout/MegaFooter";
 import Hero from "@/components/Hero/Hero";
+import MegaFooter from "@/components/Layout/MegaFooter";
 import About from "@/components/sections/About";
 import FeaturedCourses from "@/components/sections/FeaturedCourses";
 import WhyChoose from "@/components/sections/WhyChoose";
@@ -12,6 +12,7 @@ import CommandCenter from "@/components/sections/CommandCenter";
 import HelpCenter from "@/components/sections/HelpCenter";
 import KnowledgeHub from "@/components/sections/KnowledgeHub";
 import LaunchCenter from "@/components/sections/LaunchCenter";
+
 
 /**
  * The dark hero opens, then the page runs white/#F8FAFC the whole way down

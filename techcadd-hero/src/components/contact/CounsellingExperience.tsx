@@ -168,7 +168,7 @@ export default function CounsellingExperience() {
 
               <div className="relative aspect-square w-full overflow-hidden rounded-[28px] bg-gradient-to-br from-[#EEF2FF] via-[#E0F2FE] to-[#F8FAFC] shadow-[0_30px_70px_-34px_rgba(15,23,42,0.5)] ring-1 ring-inset ring-slate-900/[0.06] lg:h-full">
                 <Image
-                  src="/images/form.png"
+                  src="/images/form.webp"
                   alt="Students working at the machines in a TechCadd lab"
                   fill
                   sizes="(max-width: 991px) 88vw, 38vw"

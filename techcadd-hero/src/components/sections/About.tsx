@@ -25,20 +25,20 @@ import Counter from "@/components/UI/Counter";
 const GALLERY = {
   featured: {
     // the file on disk carries a space in its name, hence the %20
-    src: "/images/team%20photo.jpeg",
+    src: "/images/team-photo.webp",
     alt: "The Techcadd team and students outside the Hoshiarpur campus",
     caption: "Team Techcadd",
     chip: "Industry-Oriented Training",
   },
   secondary: [
     {
-      src: "/images/classroom.png",
+      src: "/images/classroom.webp",
       alt: "A full auditorium of Techcadd students during a training session",
       caption: "Classroom training",
       chip: "Live Projects",
     },
     {
-      src: "/images/lab.png",
+      src: "/images/lab.webp",
       alt: "Students working at machines in the Techcadd computer lab",
       caption: "Lab & project floor",
       chip: "Placement Assistance",

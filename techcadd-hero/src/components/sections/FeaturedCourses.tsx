@@ -30,34 +30,34 @@ const cardIn: Variants = {
  */
 const IMAGERY: Record<string, { src: string; alt: string; tone: string }> = {
   "AI & Machine Learning": {
-    src: "/images/ai.png",
+    src: "/images/ai.webp",
     alt: "A student training a model, with accuracy and loss charts on screen",
     tone: "from-[#1E293B] via-[#243352] to-[#0F172A]",
   },
   "Full Stack Development": {
     // the file on disk is named for the MERN stack it shows
-    src: "/images/mern.png",
+    src: "/images/mern.webp",
     alt: "A developer working across React and Node source on two monitors",
     tone: "from-[#241E3B] via-[#2E2750] to-[#14101F]",
   },
   "Data Science": {
     // the file on disk carries a space in its name, hence the %20
-    src: "/images/data%20science.png",
+    src: "/images/data-science.webp",
     alt: "An analyst reading a sales dashboard beside a data science process board",
     tone: "from-[#12303A] via-[#164050] to-[#0B1F27]",
   },
   "Cyber Security": {
-    src: "/images/cyber.png",
+    src: "/images/cyber.webp",
     alt: "A security analyst watching a live threat map and network monitor",
     tone: "from-[#1B2A4A] via-[#1F3560] to-[#0D1526]",
   },
   "Digital Marketing": {
-    src: "/images/digital.png",
+    src: "/images/digital.webp",
     alt: "A campaign dashboard surrounded by SEO, content and analytics panels",
     tone: "from-[#3A2036] via-[#4A2748] to-[#1E1020]",
   },
   "Cloud & DevOps": {
-    src: "/images/cloud.png",
+    src: "/images/cloud.webp",
     alt: "An engineer reviewing a cloud architecture and deployment pipeline",
     tone: "from-[#15303B] via-[#1B4150] to-[#0A1D24]",
   },
