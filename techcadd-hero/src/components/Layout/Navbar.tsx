@@ -45,7 +45,10 @@ export default function Navbar() {
       <div
         className={`transition-all duration-500 ${
           scrolled
-            ? "mx-auto mt-3 max-w-[1360px] rounded-2xl border border-white/10 bg-[#020617]/85 px-2 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+            ? /* the condensed bar is a floating pill: it needs a margin on
+                 phones too, or its rounded corners sit flush to the screen
+                 edges and it reads as a stretched full-bleed strip */
+              "mx-3 mt-2 rounded-2xl border border-white/10 bg-[#020617]/85 px-1.5 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:mx-auto sm:mt-3 sm:max-w-[1360px] sm:px-2"
             : "border-b border-transparent"
         }`}
       >
@@ -55,14 +58,15 @@ export default function Navbar() {
          * and sit over the hero copy.
          */}
         <nav
-          className={`mx-auto flex w-full max-w-[1600px] flex-nowrap items-center justify-between gap-3 overflow-x-hidden whitespace-nowrap px-4 transition-all duration-500 sm:px-6 lg:gap-6 lg:px-[4.5rem] xl:px-8 2xl:px-[4.5rem] ${
-            scrolled ? "h-[68px] lg:px-6" : "h-[86px]"
+          className={`mx-auto flex w-full max-w-full flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap px-3 transition-all duration-500 sm:max-w-[1600px] sm:gap-3 sm:px-6 lg:gap-6 lg:px-[4.5rem] xl:px-8 2xl:px-[4.5rem] ${
+            scrolled ? "h-[60px] sm:h-[68px] lg:px-6" : "h-[68px] sm:h-[86px]"
           }`}
         >
           {/*
-           * The logo is the only element allowed to give ground — capped at
-           * 130px on phones so the CTA and the menu button always fit on one
-           * row. Both of those stay shrink-0.
+           * The logo is the only element allowed to give ground. On phones it
+           * is bounded by BOTH an explicit height and a max-width, so it
+           * condenses on scroll exactly as it does on desktop and can never
+           * push the CTA or the menu button off the row.
            */}
           <Link href="/" aria-label="TechCadd — home" className="min-w-0 shrink">
             <Image
@@ -71,8 +75,10 @@ export default function Navbar() {
               width={899}
               height={242}
               priority
-              className={`h-auto w-auto max-w-[130px] object-contain transition-all duration-500 sm:max-w-none ${
-                scrolled ? "sm:h-[42px]" : "sm:h-[52px]"
+              className={`w-auto object-contain transition-all duration-500 sm:max-w-none ${
+                scrolled
+                  ? "h-[30px] max-w-[112px] sm:h-[42px]"
+                  : "h-[34px] max-w-[124px] sm:h-[52px]"
               }`}
             />
           </Link>
@@ -113,7 +119,7 @@ export default function Navbar() {
             })}
           </ul>
 
-          <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
             {/* the site's standing CTA, room permitting */}
             <motion.a
               href="/#contact"
@@ -133,7 +139,7 @@ export default function Navbar() {
             >
               <Link
                 href="/contact"
-                className="inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-4 py-2.5 text-[14px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
+                className="inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-3.5 py-2 text-[13.5px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
               >
                 {/* the label sheds a word below 576px, where space runs out */}
                 <span className="min-[576px]:hidden">Counselling</span>
@@ -148,7 +154,7 @@ export default function Navbar() {
               aria-expanded={open}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 18 }}
-              className="grid size-10 shrink-0 place-items-center rounded-lg text-white/85 transition-colors hover:bg-white/5 xl:hidden"
+              className="grid size-9 shrink-0 place-items-center rounded-lg text-white/85 transition-colors hover:bg-white/5 sm:size-10 xl:hidden"
             >
               {/* the two glyphs cross-fade with a quarter turn */}
               <AnimatePresence mode="wait" initial={false}>
@@ -176,7 +182,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto", y: 0 }}
             exit={{ opacity: 0, height: 0, y: -8 }}
             transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-4 mt-2 overflow-hidden rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-xl xl:hidden"
+            className="mx-3 mt-2 max-w-full overflow-hidden rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-xl xl:hidden"
           >
             <motion.ul
               initial="hidden"
