@@ -9,7 +9,7 @@ export default function FinalCta() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative py-20 lg:py-28">
+    <section className="relative bg-[#EEF4FF] pb-24 pt-4 lg:pb-28">
       <Shell>
         <motion.div
           variants={stagger}

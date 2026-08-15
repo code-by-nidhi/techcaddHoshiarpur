@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiChevronDown } from "react-icons/fi";
-import { GLASS, SectionTitle, Shell, fadeUp, stagger } from "./shared";
+import { LIGHT_GLASS, SectionTitle, Shell, fadeUp, stagger } from "./shared";
 
 const FAQS = [
   {
@@ -32,10 +32,11 @@ export default function ContactFaq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="relative py-20 lg:py-28">
+    <section className="relative bg-[#EEF4FF] py-24 lg:py-28">
       <Shell>
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-90px" }}>
           <SectionTitle
+            tone="light"
             eyebrow="Answers"
             title="Frequently Asked Questions"
             sub="The five questions counsellors are asked most often."
@@ -51,8 +52,8 @@ export default function ContactFaq() {
                     <motion.li
                       key={q}
                       variants={fadeUp}
-                      className={`overflow-hidden rounded-[22px] transition-colors duration-500 ${GLASS} ${
-                        isOpen ? "border-[#3B82F6]/40" : ""
+                      className={`overflow-hidden rounded-[22px] transition-colors duration-500 ${LIGHT_GLASS} ${
+                        isOpen ? "border-[#2563EB]/30 shadow-[0_24px_54px_-30px_rgba(37,99,235,0.45)]" : ""
                       }`}
                     >
                       <h3>
@@ -61,9 +62,9 @@ export default function ContactFaq() {
                           onClick={() => setOpen(isOpen ? null : i)}
                           aria-expanded={isOpen}
                           aria-controls={`faq-panel-${i}`}
-                          className="flex w-full items-center justify-between gap-5 px-6 py-5 text-left transition-colors duration-300 hover:bg-white/[0.03] sm:px-7"
+                          className="flex w-full items-center justify-between gap-5 px-6 py-5 text-left transition-colors duration-300 hover:bg-white/60 sm:px-7"
                         >
-                          <span className="font-[family-name:var(--font-sora)] text-[16px] font-semibold text-white sm:text-[17px]">
+                          <span className="font-[family-name:var(--font-sora)] text-[16px] font-semibold text-[#0F172A] sm:text-[17px]">
                             {q}
                           </span>
                           <motion.span
@@ -73,7 +74,7 @@ export default function ContactFaq() {
                             className={`grid size-9 shrink-0 place-items-center rounded-full transition-colors duration-300 ${
                               isOpen
                                 ? "bg-gradient-to-br from-[#2563EB] to-[#38BDF8] text-white"
-                                : "bg-white/[0.06] text-[#93C5FD]"
+                                : "bg-[#2563EB]/10 text-[#2563EB]"
                             }`}
                           >
                             <FiChevronDown className="size-4" />
@@ -91,7 +92,7 @@ export default function ContactFaq() {
                             transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
                             className="overflow-hidden"
                           >
-                            <p className="px-6 pb-6 text-[14.5px] leading-[1.85] text-white/60 sm:px-7">
+                            <p className="px-6 pb-6 text-[14.5px] leading-[1.85] text-[#475569] sm:px-7">
                               {a}
                             </p>
                           </motion.div>

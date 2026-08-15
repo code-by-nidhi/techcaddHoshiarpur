@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { FiAward, FiHome, FiUsers } from "react-icons/fi";
 import type { IconType } from "react-icons";
-import { GLASS, SectionTitle, Shell, fadeUp, stagger } from "./shared";
+import { LIGHT_GLASS, SectionTitle, Shell, fadeUp, stagger } from "./shared";
 
 const DESKS: { icon: IconType; title: string; copy: string; tint: string }[] = [
   {
@@ -28,10 +28,12 @@ const DESKS: { icon: IconType; title: string; copy: string; tint: string }[] = [
 
 export default function SupportHub() {
   return (
-    <section className="relative py-20 lg:py-28">
+    /* carries the white form section down into the tinted lower half */
+    <section className="relative bg-[linear-gradient(180deg,#ffffff_0%,#f5f8ff_40%,#eef4ff_100%)] py-24 lg:py-28">
       <Shell>
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-90px" }}>
           <SectionTitle
+            tone="light"
             eyebrow="Support"
             title="Support & Assistance"
             sub="Three desks, each answering a different kind of question."
@@ -44,11 +46,11 @@ export default function SupportHub() {
                   variants={fadeUp}
                   whileHover={{ y: -8, scale: 1.015 }}
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
-                  className={`group relative flex h-full flex-col overflow-hidden rounded-[26px] p-8 transition-shadow duration-500 hover:shadow-[0_30px_64px_-28px_rgba(37,99,235,0.6)] ${GLASS}`}
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-[26px] p-8 transition-shadow duration-500 hover:shadow-[0_34px_70px_-32px_rgba(37,99,235,0.45)] ${LIGHT_GLASS}`}
                 >
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute inset-x-6 -top-16 h-32 rounded-full bg-[#3B82F6]/30 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                    className="pointer-events-none absolute inset-x-6 -top-16 h-32 rounded-full bg-[#3B82F6]/20 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
                   />
 
                   <span
@@ -57,10 +59,10 @@ export default function SupportHub() {
                     <Icon aria-hidden className="size-6 text-white" />
                   </span>
 
-                  <h3 className="relative mt-6 font-[family-name:var(--font-sora)] text-[19px] font-bold leading-snug text-white">
+                  <h3 className="relative mt-6 font-[family-name:var(--font-sora)] text-[19px] font-bold leading-snug text-[#0F172A]">
                     {title}
                   </h3>
-                  <p className="relative mt-2.5 text-[14px] leading-relaxed text-white/60">{copy}</p>
+                  <p className="relative mt-2.5 text-[14px] leading-relaxed text-[#475569]">{copy}</p>
                 </motion.article>
               </div>
             ))}

@@ -22,7 +22,12 @@ export default function ContactLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <Navbar />
-      <main className="relative overflow-hidden bg-[#020617] text-white">{children}</main>
+      {/*
+       * No inherited text colour here: the page runs dark, then white, then
+       * light blue, so each section declares its own. A blanket text-white
+       * would go invisible the moment the background turns light.
+       */}
+      <main className="relative overflow-hidden bg-white">{children}</main>
       <MegaFooter />
     </>
   );

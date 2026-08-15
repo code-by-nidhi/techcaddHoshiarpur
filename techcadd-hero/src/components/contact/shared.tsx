@@ -3,9 +3,13 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
-/** The glass recipe every panel on this page shares. */
+/** Glass for the dark blocks: the hero and the closing CTA. */
 export const GLASS =
   "border border-white/[0.15] bg-white/[0.08] shadow-[0_10px_40px_rgba(0,0,0,0.15)] backdrop-blur-[20px]";
+
+/** Glass for everything on the light half of the page. */
+export const LIGHT_GLASS =
+  "border border-white/80 bg-white/70 shadow-[0_10px_40px_rgba(15,23,42,0.07)] backdrop-blur-[20px]";
 
 /** Real contact details, kept in one place so every card and link agrees. */
 export const CONTACT = {
@@ -89,12 +93,26 @@ export function Divider({ className = "" }: { className?: string }) {
   );
 }
 
-export function Eyebrow({ children }: { children: ReactNode }) {
+export type Tone = "dark" | "light";
+
+export function Eyebrow({ children, tone = "dark" }: { children: ReactNode; tone?: Tone }) {
+  const skin =
+    tone === "dark"
+      ? `text-[#93C5FD] ${GLASS}`
+      : `border border-[#2563EB]/15 bg-white/80 text-[#2563EB] shadow-[0_10px_30px_-22px_rgba(37,99,235,0.9)] backdrop-blur-xl`;
+
   return (
     <span
-      className={`inline-flex items-center gap-2.5 rounded-full px-4 py-2 font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.22em] text-[#93C5FD] ${GLASS}`}
+      className={`inline-flex items-center gap-2.5 rounded-full px-4 py-2 font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.22em] ${skin}`}
     >
-      <span aria-hidden className="size-1.5 rounded-full bg-[#60A5FA] shadow-[0_0_10px_2px_rgba(96,165,250,0.8)]" />
+      <span
+        aria-hidden
+        className={`size-1.5 rounded-full ${
+          tone === "dark"
+            ? "bg-[#60A5FA] shadow-[0_0_10px_2px_rgba(96,165,250,0.8)]"
+            : "bg-[#2563EB]"
+        }`}
+      />
       {children}
     </span>
   );
@@ -106,22 +124,36 @@ export function SectionTitle({
   title,
   sub,
   center = true,
+  tone = "dark",
 }: {
   eyebrow?: string;
   title: string;
   sub?: string;
   center?: boolean;
+  tone?: Tone;
 }) {
   return (
     <motion.div
       variants={fadeUp}
       className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}
     >
-      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2 className="mt-6 font-[family-name:var(--font-sora)] text-[clamp(1.8rem,3.2vw,2.7rem)] font-extrabold leading-[1.12] tracking-[-0.028em] text-white">
+      {eyebrow && <Eyebrow tone={tone}>{eyebrow}</Eyebrow>}
+      <h2
+        className={`font-[family-name:var(--font-sora)] text-[clamp(1.8rem,3.2vw,2.7rem)] font-extrabold leading-[1.12] tracking-[-0.028em] ${
+          eyebrow ? "mt-6" : ""
+        } ${tone === "dark" ? "text-white" : "text-[#0F172A]"}`}
+      >
         {title}
       </h2>
-      {sub && <p className="mt-4 text-[15px] leading-[1.8] text-white/60">{sub}</p>}
+      {sub && (
+        <p
+          className={`mt-4 text-[15px] leading-[1.8] ${
+            tone === "dark" ? "text-white/60" : "text-[#475569]"
+          }`}
+        >
+          {sub}
+        </p>
+      )}
     </motion.div>
   );
 }

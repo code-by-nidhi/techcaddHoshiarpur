@@ -3,7 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { FiArrowRight, FiCheck, FiPhone } from "react-icons/fi";
 import {
-  CONTACT, Eyebrow, GLASS, Particles, Shell, fadeUp, phoneDigits, stagger,
+  Ambience, CONTACT, Eyebrow, GLASS, Particles, Shell, fadeUp, phoneDigits, stagger,
 } from "./shared";
 
 const PROOF = [
@@ -17,7 +17,8 @@ export default function ContactHero() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden pb-24 pt-[132px] lg:pb-32 lg:pt-[168px]">
+    <section className="relative overflow-hidden bg-[#020817] pb-24 pt-[132px] lg:pb-32 lg:pt-[168px]">
+      <Ambience />
       <Particles />
 
       <Shell>
