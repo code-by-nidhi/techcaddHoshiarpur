@@ -68,6 +68,27 @@ body {
   border-radius: 6px;
 }
 
+/* ---------- Custom cursor ---------- */
+
+/*
+ * The class is added by CursorFollower once it has decided the device should
+ * get the effect, so the native cursor survives touch, reduced motion and a
+ * page where JavaScript never runs.
+ */
+html.custom-cursor,
+html.custom-cursor * {
+  cursor: none;
+}
+
+/* Text entry keeps its own cursor: knowing where the caret will land matters
+   more than the effect does. */
+html.custom-cursor input,
+html.custom-cursor textarea,
+html.custom-cursor select,
+html.custom-cursor [contenteditable="true"] {
+  cursor: auto;
+}
+
 /* ---------- Surfaces ---------- */
 
 .glass {

@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap-grid.min.css";
 
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter, Poppins, JetBrains_Mono } from "next/font/google";
+import CursorFollower from "@/components/UI/CursorFollower";
 import "./globals.css";
 
 const sora = Sora({
@@ -103,6 +104,12 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+
+        {/* Mounted here rather than per page, so the cursor does not blink out
+            of existence on a route change. It renders nothing at all unless the
+            device has a fine pointer and allows motion. */}
+        <CursorFollower />
+
         {children}
       </body>
     </html>
