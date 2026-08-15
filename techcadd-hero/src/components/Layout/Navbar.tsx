@@ -55,19 +55,24 @@ export default function Navbar() {
          * and sit over the hero copy.
          */}
         <nav
-          className={`mx-auto flex w-full max-w-[1600px] flex-nowrap items-center justify-between gap-4 whitespace-nowrap px-6 transition-all duration-500 lg:gap-6 lg:px-[4.5rem] xl:px-8 2xl:px-[4.5rem] ${
+          className={`mx-auto flex w-full max-w-[1600px] flex-nowrap items-center justify-between gap-3 overflow-x-hidden whitespace-nowrap px-4 transition-all duration-500 sm:px-6 lg:gap-6 lg:px-[4.5rem] xl:px-8 2xl:px-[4.5rem] ${
             scrolled ? "h-[68px] lg:px-6" : "h-[86px]"
           }`}
         >
-          <Link href="/" aria-label="TechCadd — home" className="shrink-0">
+          {/*
+           * The logo is the only element allowed to give ground — capped at
+           * 130px on phones so the CTA and the menu button always fit on one
+           * row. Both of those stay shrink-0.
+           */}
+          <Link href="/" aria-label="TechCadd — home" className="min-w-0 shrink">
             <Image
               src="/images/techcadd-logo-white.png"
               alt="TechCadd — Your Skill & Technology Partner"
               width={899}
               height={242}
               priority
-              className={`w-auto transition-all duration-500 ${
-                scrolled ? "h-[38px] sm:h-[42px]" : "h-[40px] sm:h-[52px]"
+              className={`h-auto w-auto max-w-[130px] object-contain transition-all duration-500 sm:max-w-none ${
+                scrolled ? "sm:h-[42px]" : "sm:h-[52px]"
               }`}
             />
           </Link>
@@ -120,24 +125,45 @@ export default function Navbar() {
               Book Demo
             </motion.a>
 
-            <motion.div whileHover={{ y: -2, scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 340, damping: 20 }}>
+            <motion.div
+              className="shrink-0"
+              whileHover={{ y: -2, scale: 1.03 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 340, damping: 20 }}
+            >
               <Link
                 href="/contact"
-                className="inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-[18px] py-[9px] text-[13.5px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
+                className="inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-4 py-2.5 text-[14px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
               >
-                Free Counselling
+                {/* the label sheds a word below 576px, where space runs out */}
+                <span className="min-[576px]:hidden">Counselling</span>
+                <span className="hidden min-[576px]:inline">Free Counselling</span>
               </Link>
             </motion.div>
 
-            <button
+            <motion.button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
-              className="grid size-10 place-items-center rounded-lg text-white/85 transition-colors hover:bg-white/5 xl:hidden"
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 400, damping: 18 }}
+              className="grid size-10 shrink-0 place-items-center rounded-lg text-white/85 transition-colors hover:bg-white/5 xl:hidden"
             >
-              {open ? <X className="size-5" /> : <Menu className="size-5" />}
-            </button>
+              {/* the two glyphs cross-fade with a quarter turn */}
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.span
+                  key={open ? "close" : "open"}
+                  initial={{ rotate: -90, opacity: 0, scale: 0.7 }}
+                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                  exit={{ rotate: 90, opacity: 0, scale: 0.7 }}
+                  transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+                  className="grid place-items-center"
+                >
+                  {open ? <X className="size-5" /> : <Menu className="size-5" />}
+                </motion.span>
+              </AnimatePresence>
+            </motion.button>
           </div>
         </nav>
       </div>
@@ -146,11 +172,11 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-3 mt-2 overflow-hidden rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-xl xl:hidden"
+            initial={{ opacity: 0, height: 0, y: -8 }}
+            animate={{ opacity: 1, height: "auto", y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -8 }}
+            transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-4 mt-2 overflow-hidden rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-xl xl:hidden"
           >
             <motion.ul
               initial="hidden"

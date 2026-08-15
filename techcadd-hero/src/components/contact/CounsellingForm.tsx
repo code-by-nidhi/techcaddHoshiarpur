@@ -3,8 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { FiAlertCircle, FiArrowRight, FiAward, FiCheckCircle, FiClock, FiUsers } from "react-icons/fi";
-import type { IconType } from "react-icons";
+import { FiAlertCircle, FiArrowRight, FiCheckCircle } from "react-icons/fi";
 import { SectionTitle, Shell, fadeUp, stagger } from "./shared";
 
 const STATUSES = ["12th Pass", "Student", "Graduate", "Working Professional", "Business Owner"];
@@ -16,31 +15,6 @@ const COURSE_OPTIONS = [
   "Cyber Security",
   "Cloud & DevOps",
   "Digital Marketing",
-];
-
-/** Floating proof over the photograph. */
-const METRICS: { icon: IconType; value: string; label: string; place: string; delay: number }[] = [
-  {
-    icon: FiClock,
-    value: "Under 1 hr",
-    label: "Average response time",
-    place: "-left-4 top-8 sm:-left-8",
-    delay: 0,
-  },
-  {
-    icon: FiAward,
-    value: "95%",
-    label: "Placement assistance",
-    place: "-right-3 top-1/2 -translate-y-1/2 sm:-right-7",
-    delay: 1.1,
-  },
-  {
-    icon: FiUsers,
-    value: "25,000+",
-    label: "Students guided",
-    place: "-left-4 bottom-8 sm:-left-8",
-    delay: 2.2,
-  },
 ];
 
 type Fields = {
@@ -110,7 +84,7 @@ export default function CounsellingForm() {
           />
 
           <div className="row g-5 align-items-center mt-4">
-            {/* photograph with floating proof */}
+            {/* photograph */}
             <div className="col-12 col-lg-5">
               <motion.div variants={fadeUp} className="relative mx-auto max-w-[460px] px-4 sm:px-8 lg:px-0">
                 <span
@@ -118,42 +92,15 @@ export default function CounsellingForm() {
                   className="pointer-events-none absolute -inset-6 -z-10 rounded-[44px] bg-[radial-gradient(circle_at_30%_20%,rgba(37,99,235,0.16),transparent_62%),radial-gradient(circle_at_75%_85%,rgba(168,85,247,0.14),transparent_62%)] blur-2xl"
                 />
 
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[28px] bg-gradient-to-br from-[#EEF2FF] via-[#E0F2FE] to-[#F8FAFC] shadow-[0_30px_70px_-34px_rgba(15,23,42,0.5)] ring-1 ring-inset ring-slate-900/[0.06]">
+                <div className="relative aspect-square w-full overflow-hidden rounded-[28px] bg-gradient-to-br from-[#EEF2FF] via-[#E0F2FE] to-[#F8FAFC] shadow-[0_30px_70px_-34px_rgba(15,23,42,0.5)] ring-1 ring-inset ring-slate-900/[0.06]">
                   <Image
-                    src="/images/team%20photo.jpeg"
-                    alt="TechCadd counsellors and students at the campus"
+                    src="/images/form.png"
+                    alt="Students working at the machines in a TechCadd lab"
                     fill
                     sizes="(max-width: 991px) 88vw, 38vw"
                     className="object-cover object-center"
                   />
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 bg-gradient-to-t from-slate-950/45 via-transparent to-transparent"
-                  />
                 </div>
-
-                {METRICS.map(({ icon: Icon, value, label, place, delay }) => (
-                  <motion.div
-                    key={label}
-                    animate={reduced ? undefined : { y: [0, -9, 0] }}
-                    transition={
-                      reduced
-                        ? undefined
-                        : { duration: 6.5, repeat: Infinity, ease: "easeInOut", delay }
-                    }
-                    className={`absolute z-10 flex items-center gap-3 rounded-2xl border border-white/80 bg-white/85 px-4 py-3 shadow-[0_18px_44px_-22px_rgba(15,23,42,0.5)] backdrop-blur-xl ${place}`}
-                  >
-                    <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#2563EB] to-[#38BDF8] shadow-[0_10px_22px_-10px_rgba(37,99,235,0.9)]">
-                      <Icon aria-hidden className="size-4 text-white" />
-                    </span>
-                    <span className="leading-tight">
-                      <span className="block font-[family-name:var(--font-poppins)] text-[15px] font-extrabold tracking-[-0.01em] text-[#0F172A]">
-                        {value}
-                      </span>
-                      <span className="block text-[11px] text-[#64748B]">{label}</span>
-                    </span>
-                  </motion.div>
-                ))}
               </motion.div>
             </div>
 

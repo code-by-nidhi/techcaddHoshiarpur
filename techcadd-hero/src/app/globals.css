@@ -27,6 +27,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* belt and braces against a stray wide child forcing a sideways scroll */
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -35,6 +38,7 @@ body {
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  max-width: 100%;
 }
 
 ::selection {
