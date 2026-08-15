@@ -1,3 +1,11 @@
+/**
+ * Bootstrap's grid-only build: containers, rows, columns and the flex helpers,
+ * with no Reboot and no component styles. The full bootstrap.css would restyle
+ * every heading, button and input on the Tailwind pages; this layer only adds
+ * the grid, and the navbar's mega menu needs it on every route.
+ */
+import "bootstrap/dist/css/bootstrap-grid.min.css";
+
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import "./globals.css";

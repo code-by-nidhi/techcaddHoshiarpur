@@ -1,6 +1,5 @@
 import ContactHero from "@/components/contact/ContactHero";
-import CounsellingForm from "@/components/contact/CounsellingForm";
-import SupportHub from "@/components/contact/SupportHub";
+import StudentDesk from "@/components/contact/StudentDesk";
 import ContactInfo from "@/components/contact/ContactInfo";
 import ContactFaq from "@/components/contact/ContactFaq";
 import FinalCta from "@/components/contact/FinalCta";
@@ -25,8 +24,7 @@ export default function ContactPage() {
         className="h-28 bg-gradient-to-b from-[#020617] via-[#0B1B3F]/60 to-white lg:h-36"
       />
 
-      <CounsellingForm />
-      <SupportHub />
+      <StudentDesk />
       <ContactInfo />
       <ContactFaq />
 

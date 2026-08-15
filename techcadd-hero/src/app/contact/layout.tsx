@@ -1,11 +1,3 @@
-/**
- * Bootstrap's grid-only build: containers, rows, columns and the flex helpers,
- * with no Reboot and no component styles. That is deliberate — the full
- * bootstrap.css would restyle every heading, button and input on the Tailwind
- * pages, so only the grid layer is loaded, and only on this route.
- */
-import "bootstrap/dist/css/bootstrap-grid.min.css";
-
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Navbar from "@/components/Layout/Navbar";

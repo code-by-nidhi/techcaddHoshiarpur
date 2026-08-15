@@ -15,7 +15,7 @@ export const LIGHT_GLASS =
 export const CONTACT = {
   phone: "+91 98881 22255",
   email: "info@techcadd.com",
-  location: "TechCadd Jalandhar Campus",
+  location: "TechCadd Hoshiarpur Campus",
 };
 
 /** Digits only, for tel: and wa.me links. */

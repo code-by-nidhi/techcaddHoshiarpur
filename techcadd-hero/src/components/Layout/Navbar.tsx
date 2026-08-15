@@ -3,10 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { NAV_LINKS } from "@/lib/content";
+import MegaMenu from "./MegaMenu";
+import MegaMenuMobile from "./MegaMenuMobile";
+
+/** Nav items that open the course catalogue instead of navigating away. */
+const MEGA_TRIGGERS = new Set(["Courses"]);
 
 /**
  * Transparent over the hero (so the reference composition holds), then it
@@ -15,7 +20,24 @@ import { NAV_LINKS } from "@/lib/content";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mega, setMega] = useState(false);
   const pathname = usePathname();
+
+  /**
+   * Hover intent: a short grace period on leave, so crossing the gap between
+   * the trigger and the panel does not snap the menu shut.
+   */
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cancelClose = useCallback(() => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = null;
+  }, []);
+  const scheduleClose = useCallback(() => {
+    cancelClose();
+    closeTimer.current = setTimeout(() => setMega(false), 160);
+  }, [cancelClose]);
+
+  useEffect(() => cancelClose, [cancelClose]);
 
   /** Only route links can be current; section links land on the home page. */
   const isActive = (href: string) => !href.includes("#") && pathname === href;
@@ -34,6 +56,22 @@ export default function Navbar() {
       document.body.style.overflow = "";
     };
   }, [open]);
+
+  // Escape closes the mega panel wherever focus happens to be
+  useEffect(() => {
+    if (!mega) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMega(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mega]);
+
+  // a route change should never leave a panel hanging open
+  useEffect(() => {
+    setMega(false);
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <motion.header
@@ -87,33 +125,65 @@ export default function Navbar() {
           <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[20px] xl:flex 2xl:gap-x-[28px]">
             {NAV_LINKS.map((link) => {
               const current = isActive(link.href);
-
-              return (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    aria-current={current ? "page" : undefined}
-                    className={`group relative inline-flex items-center gap-1 whitespace-nowrap py-1 text-[14px] transition-colors duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px] ${
-                      current ? "font-medium text-white" : "text-white/90"
-                    }`}
-                  >
-                    {link.label}
-                    {link.dropdown && (
-                      <ChevronDown
-                        aria-hidden
-                        className="size-3.5 translate-y-px text-white/60 transition-transform duration-300 group-hover:translate-y-0.5 group-hover:text-white/90"
-                      />
-                    )}
-
-                    {/* blue indicator: parked under the current link, drawn in
-                        from the left on hover for the others */}
-                    <span
+              const opensMega = MEGA_TRIGGERS.has(link.label);
+              const indicator = (
+                /* blue indicator: parked under the current link, drawn in from
+                   the left on hover for the others */
+                <span
+                  aria-hidden
+                  className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa] shadow-[0_0_10px_rgba(59,130,246,0.9)] transition-[width] duration-300 ease-out ${
+                    current || (opensMega && mega) ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                />
+              );
+              const face = (
+                <>
+                  {link.label}
+                  {link.dropdown && (
+                    <ChevronDown
                       aria-hidden
-                      className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa] shadow-[0_0_10px_rgba(59,130,246,0.9)] transition-[width] duration-300 ease-out ${
-                        current ? "w-full" : "w-0 group-hover:w-full"
+                      className={`size-3.5 translate-y-px text-white/60 transition-transform duration-300 group-hover:text-white/90 ${
+                        opensMega && mega ? "translate-y-0.5 rotate-180" : "group-hover:translate-y-0.5"
                       }`}
                     />
-                  </Link>
+                  )}
+                  {indicator}
+                </>
+              );
+              const face_class = `group relative inline-flex items-center gap-1 whitespace-nowrap py-1 text-[14px] transition-colors duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px] ${
+                current || (opensMega && mega) ? "font-medium text-white" : "text-white/90"
+              }`;
+
+              return (
+                <li
+                  key={link.label}
+                  onMouseEnter={opensMega ? cancelClose : undefined}
+                  onMouseLeave={opensMega ? scheduleClose : undefined}
+                >
+                  {opensMega ? (
+                    /* a disclosure button, not a link: it opens a panel rather
+                       than navigating, so it must announce itself as such */
+                    <button
+                      type="button"
+                      aria-expanded={mega}
+                      aria-controls="mega-menu"
+                      onMouseEnter={() => setMega(true)}
+                      onFocus={() => setMega(true)}
+                      onClick={() => setMega((v) => !v)}
+                      className={face_class}
+                    >
+                      {face}
+                    </button>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      aria-current={current ? "page" : undefined}
+                      onMouseEnter={() => setMega(false)}
+                      className={face_class}
+                    >
+                      {face}
+                    </Link>
+                  )}
                 </li>
               );
             })}
@@ -172,6 +242,20 @@ export default function Navbar() {
             </motion.button>
           </div>
         </nav>
+
+        {/* desktop mega panel, floating under the bar */}
+        <AnimatePresence>
+          {mega && (
+            <div
+              id="mega-menu"
+              onMouseEnter={cancelClose}
+              onMouseLeave={scheduleClose}
+              className="absolute inset-x-0 top-full hidden justify-center px-6 pt-2 xl:flex"
+            >
+              <MegaMenu onNavigate={() => setMega(false)} />
+            </div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* mobile sheet */}
@@ -182,7 +266,9 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto", y: 0 }}
             exit={{ opacity: 0, height: 0, y: -8 }}
             transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
-            className="mx-3 mt-2 max-w-full overflow-hidden rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-xl xl:hidden"
+            /* the sheet now carries the whole catalogue, so it scrolls itself
+               rather than pushing past the bottom of the screen */
+            className="mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-xl xl:hidden"
           >
             <motion.ul
               initial="hidden"
@@ -198,19 +284,28 @@ export default function Navbar() {
                     show: { opacity: 1, x: 0 },
                   }}
                 >
-                  <Link
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`flex items-center justify-between rounded-xl px-4 py-3.5 text-[15px] transition-colors ${
-                      isActive(link.href)
-                        ? "bg-gradient-to-r from-[#2563eb]/25 to-transparent font-medium text-white"
-                        : "text-white/85 hover:bg-white/5"
-                    }`}
-                  >
-                    {link.label}
-                    {link.dropdown && <ChevronDown aria-hidden className="size-4 text-white/40" />}
-                  </Link>
+                  {MEGA_TRIGGERS.has(link.label) ? (
+                    <div className="px-1 py-2">
+                      <p className="px-3 pb-1 text-[11px] uppercase tracking-[0.16em] text-white/40">
+                        {link.label}
+                      </p>
+                      <MegaMenuMobile onNavigate={() => setOpen(false)} />
+                    </div>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      aria-current={isActive(link.href) ? "page" : undefined}
+                      className={`flex items-center justify-between rounded-xl px-4 py-3.5 text-[15px] transition-colors ${
+                        isActive(link.href)
+                          ? "bg-gradient-to-r from-[#2563eb]/25 to-transparent font-medium text-white"
+                          : "text-white/85 hover:bg-white/5"
+                      }`}
+                    >
+                      {link.label}
+                      {link.dropdown && <ChevronDown aria-hidden className="size-4 text-white/40" />}
+                    </Link>
+                  )}
                 </motion.li>
               ))}
               <motion.li
