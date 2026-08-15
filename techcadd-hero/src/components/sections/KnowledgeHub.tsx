@@ -12,7 +12,7 @@ export default function KnowledgeHub() {
   const trending = others.slice(2);
 
   return (
-    <section id="blog" className="relative bg-white py-28 lg:py-36">
+    <section id="blog" className="relative overflow-x-clip bg-white py-28 lg:py-36">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         <SectionHeading
           tone="light"

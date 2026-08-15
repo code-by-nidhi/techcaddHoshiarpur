@@ -13,7 +13,7 @@ export default function CommandCenter() {
   const [active, setActive] = useState(CAPABILITIES[0]);
 
   return (
-    <section id="capabilities" className="relative bg-white py-28 lg:py-36">
+    <section id="capabilities" className="relative overflow-x-clip bg-white py-28 lg:py-36">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         <SectionHeading
           tone="light"

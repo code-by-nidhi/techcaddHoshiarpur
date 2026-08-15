@@ -22,7 +22,7 @@ export default function HelpCenter() {
   }, [query, category]);
 
   return (
-    <section id="faq" className="relative bg-[#F8FAFC] py-28 lg:py-36">
+    <section id="faq" className="relative overflow-x-clip bg-[#F8FAFC] py-28 lg:py-36">
       <div className="mx-auto w-full max-w-[1100px] px-6">
         <SectionHeading
           tone="light"

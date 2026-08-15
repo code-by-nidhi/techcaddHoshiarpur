@@ -25,11 +25,24 @@
   border-color: rgb(255 255 255 / 0.08);
 }
 
+/*
+ * Horizontal-overflow guard.
+ *
+ * `clip`, not `hidden`: overflow-x:hidden forces overflow-y to `auto`, which
+ * turns the element into a scroll container and breaks `position: sticky` for
+ * every descendant — the sticky rail in WhyChoose among them. `clip` cuts the
+ * same overflow without creating a scroll container, so sticky keeps working.
+ */
+html,
+body,
+main {
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
+}
+
 html {
   scroll-behavior: smooth;
-  /* belt and braces against a stray wide child forcing a sideways scroll */
-  overflow-x: hidden;
-  max-width: 100%;
 }
 
 body {
@@ -37,8 +50,6 @@ body {
   color: #fff;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  max-width: 100%;
 }
 
 ::selection {

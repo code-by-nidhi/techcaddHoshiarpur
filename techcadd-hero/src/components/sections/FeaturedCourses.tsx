@@ -67,7 +67,7 @@ export default function FeaturedCourses() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="programs" className="relative bg-white py-28 lg:py-36">
+    <section id="programs" className="relative overflow-x-clip bg-white py-28 lg:py-36">
       {/* faint tint so the cards sit on something other than flat white */}
       <div
         aria-hidden
