@@ -143,49 +143,59 @@ export const ROADMAP = [
 export type Domain = {
   id: string;
   label: string;
+  /** shown inside the node, so long labels stay readable on two lines */
+  short: string;
   accent: string;
   tech: string[];
   projects: string[];
-  useCases: string[];
+  industries: string[];
   careers: string[];
+  placement: string;
 };
 
 export const UNIVERSE: Domain[] = [
-  { id: "programming", label: "Programming", accent: "#2563EB",
-    tech: ["Python", "Java", "C++", "JavaScript", "TypeScript", "SQL"],
-    projects: ["Inventory management system", "REST API with auth", "Algorithm visualiser"],
-    useCases: ["Core engineering interviews", "Automation scripting", "Systems fundamentals"],
-    careers: ["Software Engineer", "Backend Developer", "Automation Engineer"] },
-  { id: "ai", label: "Artificial Intelligence", accent: "#4F46E5",
+  { id: "fullstack", label: "Full Stack Development", short: "Full Stack", accent: "#2563EB",
+    tech: ["React", "Next.js", "Node.js", "Express", "MongoDB", "TypeScript"],
+    projects: ["E-Commerce Platform", "CRM Dashboard", "Job Portal", "Admin Panel"],
+    industries: ["SaaS Products", "Startups", "Enterprise Applications"],
+    careers: ["Frontend Developer", "Backend Developer", "MERN Developer", "Full Stack Engineer"],
+    placement: "95% Placement Assistance" },
+  { id: "ai", label: "Artificial Intelligence", short: "AI", accent: "#4F46E5",
     tech: ["PyTorch", "TensorFlow", "LLMs", "OpenCV", "Hugging Face", "MLOps"],
-    projects: ["Document Q&A with RAG", "Defect detection on a factory line", "Recommendation engine"],
-    useCases: ["Support automation", "Quality inspection", "Personalisation"],
-    careers: ["ML Engineer", "AI Developer", "Applied Researcher"] },
-  { id: "data", label: "Data Science", accent: "#06B6D4",
-    tech: ["Pandas", "NumPy", "Power BI", "Tableau", "Statistics", "A/B Testing"],
-    projects: ["Churn prediction model", "Sales analytics dashboard", "Pricing experiment analysis"],
-    useCases: ["Retention strategy", "Demand forecasting", "Executive reporting"],
-    careers: ["Data Analyst", "Data Scientist", "BI Developer"] },
-  { id: "cloud", label: "Cloud", accent: "#0EA5E9",
-    tech: ["AWS", "Azure", "S3", "Lambda", "IAM", "CloudWatch"],
-    projects: ["Serverless image pipeline", "Multi-tier VPC deployment", "Cost-optimised migration"],
-    useCases: ["Infrastructure migration", "Elastic scaling", "Disaster recovery"],
-    careers: ["Cloud Engineer", "Solutions Architect", "Cloud Support Engineer"] },
-  { id: "devops", label: "DevOps", accent: "#0D9488",
-    tech: ["Docker", "Kubernetes", "Terraform", "Jenkins", "GitHub Actions", "Prometheus"],
-    projects: ["Zero-downtime deploy pipeline", "Autoscaling K8s cluster", "Infra as code from scratch"],
-    useCases: ["Release automation", "Observability", "Platform reliability"],
-    careers: ["DevOps Engineer", "SRE", "Platform Engineer"] },
-  { id: "security", label: "Cybersecurity", accent: "#1D4ED8",
+    projects: ["Document Q&A with RAG", "Defect detection on a factory line", "Recommendation engine", "Vision inspection pipeline"],
+    industries: ["Support Automation", "Quality Inspection", "Personalisation"],
+    careers: ["ML Engineer", "AI Developer", "Computer Vision Engineer", "Applied Researcher"],
+    placement: "95% Placement Assistance" },
+  { id: "cloud", label: "Cloud & DevOps", short: "Cloud & DevOps", accent: "#0EA5E9",
+    tech: ["AWS", "Docker", "Kubernetes", "Terraform", "Jenkins", "GitHub Actions"],
+    projects: ["Zero-downtime deploy pipeline", "Serverless image pipeline", "Autoscaling K8s cluster", "Infrastructure as code"],
+    industries: ["Infrastructure Migration", "Release Automation", "Platform Reliability"],
+    careers: ["Cloud Engineer", "DevOps Engineer", "Site Reliability Engineer", "Platform Engineer"],
+    placement: "95% Placement Assistance" },
+  { id: "security", label: "Cybersecurity", short: "Cyber Security", accent: "#1D4ED8",
     tech: ["Linux", "Networking", "SIEM", "Burp Suite", "Wireshark", "Threat Modelling"],
-    projects: ["Internal network assessment", "SIEM alert tuning", "Web app security audit"],
-    useCases: ["Incident response", "Compliance readiness", "Perimeter defence"],
-    careers: ["Security Analyst", "SOC Engineer", "Penetration Tester"] },
-  { id: "marketing", label: "Digital Marketing", accent: "#7C3AED",
+    projects: ["Internal network assessment", "SIEM alert tuning", "Web app security audit", "Incident response drill"],
+    industries: ["Incident Response", "Compliance Readiness", "Perimeter Defence"],
+    careers: ["Security Analyst", "SOC Engineer", "Penetration Tester", "Security Consultant"],
+    placement: "95% Placement Assistance" },
+  { id: "data", label: "Data Analytics", short: "Data Analytics", accent: "#06B6D4",
+    tech: ["Python", "Pandas", "SQL", "Power BI", "Tableau", "Statistics"],
+    projects: ["Churn prediction model", "Sales analytics dashboard", "Pricing experiment analysis", "Customer segmentation"],
+    industries: ["Retention Strategy", "Demand Forecasting", "Executive Reporting"],
+    careers: ["Data Analyst", "Data Scientist", "BI Developer", "Analytics Consultant"],
+    placement: "95% Placement Assistance" },
+  { id: "marketing", label: "Digital Marketing", short: "Digital Marketing", accent: "#7C3AED",
     tech: ["SEO", "Meta Ads", "Google Ads", "GA4", "Content", "Marketing Automation"],
-    projects: ["Full-funnel campaign with live budget", "SEO audit and rebuild", "Lifecycle email flow"],
-    useCases: ["Lead generation", "Brand growth", "Attribution reporting"],
-    careers: ["Performance Marketer", "SEO Specialist", "Growth Analyst"] },
+    projects: ["Full-funnel campaign with live budget", "SEO audit and rebuild", "Lifecycle email flow", "Landing page CRO test"],
+    industries: ["Lead Generation", "Brand Growth", "Attribution Reporting"],
+    careers: ["Performance Marketer", "SEO Specialist", "Growth Analyst", "Campaign Manager"],
+    placement: "95% Placement Assistance" },
+  { id: "cad", label: "CAD / CAM", short: "CAD / CAM", accent: "#0D9488",
+    tech: ["AutoCAD", "SolidWorks", "CATIA", "Creo", "ANSYS", "NX CAM"],
+    projects: ["Parametric part library", "Sheet metal enclosure", "CNC toolpath programme", "Assembly and GD&T drawing set"],
+    industries: ["Manufacturing", "Automotive", "Architecture & Interiors"],
+    careers: ["Design Engineer", "CAD Draughtsman", "CAM Programmer", "Product Designer"],
+    placement: "95% Placement Assistance" },
 ];
 
 /* ----------------------- innovation command centre -------------------- */
