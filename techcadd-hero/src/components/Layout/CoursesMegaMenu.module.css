@@ -1,0 +1,366 @@
+/* ---------------------------------------------------------------------------
+   Courses mega menu. Scoped styles so the panel's glass recipe lives in one
+   place rather than being spread across utility strings.
+--------------------------------------------------------------------------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25),
+    0 0 40px rgba(59, 130, 246, 0.15);
+}
+
+/* depth: diagonal tint, top reflection, inner blue edge glow */
+.tint,
+.reflection,
+.edgeGlow,
+.shimmer {
+  position: absolute;
+  pointer-events: none;
+}
+
+.tint {
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(59, 130, 246, 0.1),
+    transparent 45%,
+    rgba(124, 58, 237, 0.1)
+  );
+}
+
+.reflection {
+  inset-inline: 0;
+  top: 0;
+  height: 7rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent);
+}
+
+.edgeGlow {
+  inset: 0;
+  border-radius: 24px;
+  box-shadow: inset 0 0 60px -20px rgba(59, 130, 246, 0.55);
+}
+
+.shimmer {
+  inset-block: 0;
+  width: 33%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+}
+
+/* the panel scrolls itself rather than running past the fold */
+.body {
+  position: relative;
+  max-height: min(76vh, 760px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .body {
+    padding: 1.75rem;
+  }
+}
+
+/* --------------------------------- banner -------------------------------- */
+
+.bannerFrame {
+  position: relative;
+  border-radius: 22px;
+  padding: 1px;
+}
+
+.bannerBorder {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(
+    120deg,
+    rgba(96, 165, 250, 0.85),
+    rgba(168, 85, 247, 0.6),
+    rgba(56, 189, 248, 0.85),
+    rgba(96, 165, 250, 0.85)
+  );
+  background-size: 220% 220%;
+}
+
+.banner {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  overflow: hidden;
+  border-radius: 21px;
+  background: rgba(7, 12, 28, 0.8);
+  backdrop-filter: blur(16px);
+  padding: 1.25rem 1.5rem;
+}
+
+.bannerTitle {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #fff;
+}
+
+.bannerSub {
+  margin-top: 0.25rem;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.mote {
+  position: absolute;
+  border-radius: 999px;
+  background: #93c5fd;
+  box-shadow: 0 0 8px 2px rgba(147, 197, 253, 0.5);
+  pointer-events: none;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+  padding: 0.75rem 1.5rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 0 30px -6px rgba(37, 99, 235, 0.95);
+}
+
+.cta svg {
+  transition: transform 0.3s ease;
+}
+
+.cta:hover svg {
+  transform: translateX(4px);
+}
+
+/* -------------------------------- columns -------------------------------- */
+
+.heading {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 0.25rem;
+  font-family: var(--font-sora), sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+.headingText {
+  background: linear-gradient(90deg, #93c5fd, #c4b5fd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.08em;
+}
+
+.list {
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+}
+
+/* ------------------------------ course cards ----------------------------- */
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-4px);
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.45);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.2);
+  outline: none;
+}
+
+.label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: #60a5fa;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.card:hover .arrow,
+.card:focus-visible .arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ------------------------------ trending pill ---------------------------- */
+
+.badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  padding: 3px 8px;
+  font-size: 8.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #fff;
+  box-shadow: 0 0 14px -2px rgba(56, 189, 248, 0.9);
+  animation: badgePulse 2.4s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%,
+  100% {
+    opacity: 0.72;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+/* -------------------------------- side card ------------------------------ */
+
+.sideFrame {
+  position: relative;
+  border-radius: 22px;
+  padding: 1px;
+  animation: sideFloat 7s ease-in-out infinite;
+}
+
+.sideBorder {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(
+    150deg,
+    rgba(96, 165, 250, 0.9),
+    rgba(124, 58, 237, 0.55),
+    rgba(56, 189, 248, 0.9)
+  );
+  box-shadow: 0 0 36px -8px rgba(59, 130, 246, 0.9);
+}
+
+.sideCard {
+  position: relative;
+  height: 100%;
+  border-radius: 21px;
+  background: rgba(6, 10, 24, 0.92);
+  backdrop-filter: blur(16px);
+  padding: 1.5rem;
+}
+
+.sideTitle {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.sideList {
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sideItem {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.tick {
+  display: grid;
+  place-content: center;
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  box-shadow: 0 0 12px -2px rgba(59, 130, 246, 0.9);
+  color: #fff;
+}
+
+@keyframes sideFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* ------------------------------ reduced motion --------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .badge,
+  .sideFrame {
+    animation: none;
+  }
+  .card:hover,
+  .card:focus-visible {
+    transform: none;
+  }
+}

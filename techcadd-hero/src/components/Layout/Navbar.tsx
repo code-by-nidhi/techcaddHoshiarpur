@@ -9,20 +9,33 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { NAV_LINKS } from "@/lib/content";
 import { demoBus } from "@/lib/demoBus";
+import megaStyles from "./CoursesMegaMenu.module.css";
 
 /*
- * Both panels are split out of the navbar chunk: their markup, their images
- * and the resources data only travel once someone actually opens one. The
- * navbar itself is on every route, so keeping it small matters.
+ * Every panel is split out of the navbar chunk: their markup and data only
+ * travel once someone actually opens one. The navbar itself ships on every
+ * route, so keeping it small matters.
  */
+
 const MegaMenu = dynamic(() => import("./MegaMenu"));
 const MegaMenuMobile = dynamic(() => import("./MegaMenuMobile"));
+const CoursesMegaMenu = dynamic(() => import("./CoursesMegaMenu"));
+const CoursesMegaMenuMobile = dynamic(() => import("./CoursesMegaMenuMobile"));
 
-/** The one nav item that opens the resources panel. */
-const MEGA_TRIGGERS = new Set(["Resources"]);
+/**
+ * Nav label -> panel. Adding a mega menu to another item is one entry here;
+ * every item not listed stays an ordinary link.
+ */
+const MEGA_PANELS = {
+  Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1400 },
+  Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
+} as const;
 
-/** Panel geometry, in px. */
-const PANEL_W = 1240;
+type MegaLabel = keyof typeof MEGA_PANELS;
+
+const isMegaLabel = (label: string): label is MegaLabel => label in MEGA_PANELS;
+
+/** Outer margin the panel keeps from the viewport edge, in px. */
 const EDGE = 16;
 
 /**
@@ -32,15 +45,15 @@ const EDGE = 16;
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [mega, setMega] = useState(false);
+  const [mega, setMega] = useState<MegaLabel | null>(null);
   const pathname = usePathname();
 
   /**
    * Hover intent: a short grace period on leave, so crossing the gap between
    * the trigger and the panel does not snap the menu shut.
    */
-  const triggerRef = useRef<HTMLLIElement>(null);
-  const [anchor, setAnchor] = useState({ left: 0, top: 0, width: PANEL_W, arrow: 0 });
+  const triggerRefs = useRef<Partial<Record<MegaLabel, HTMLLIElement | null>>>({});
+  const [anchor, setAnchor] = useState({ left: 0, top: 0, width: 0, arrow: 0 });
 
   /**
    * Centre the panel under the trigger, then pull it back inside the viewport
@@ -48,15 +61,18 @@ export default function Navbar() {
    * sit so it still lands under the item.
    */
   const measure = useCallback(() => {
-    const el = triggerRef.current;
+    // `mega` is a real dependency: with an empty array this closure would keep
+    // reading null and the panel would never be given a width to render at.
+    if (!mega) return;
+    const el = triggerRefs.current[mega];
     if (!el) return;
     const r = el.getBoundingClientRect();
     const vw = document.documentElement.clientWidth;
-    const width = Math.min(PANEL_W, vw - EDGE * 2);
+    const width = Math.min(MEGA_PANELS[mega].width, vw - EDGE * 2);
     const centre = r.left + r.width / 2;
     const left = Math.min(Math.max(EDGE, centre - width / 2), vw - width - EDGE);
     setAnchor({ left, top: r.bottom, width, arrow: centre - left });
-  }, []);
+  }, [mega]);
 
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cancelClose = useCallback(() => {
@@ -65,7 +81,7 @@ export default function Navbar() {
   }, []);
   const scheduleClose = useCallback(() => {
     cancelClose();
-    closeTimer.current = setTimeout(() => setMega(false), 160);
+    closeTimer.current = setTimeout(() => setMega(null), 160);
   }, [cancelClose]);
 
   useEffect(() => cancelClose, [cancelClose]);
@@ -111,7 +127,7 @@ export default function Navbar() {
   useEffect(() => {
     if (!mega) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMega(false);
+      if (e.key === "Escape") setMega(null);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -119,7 +135,7 @@ export default function Navbar() {
 
   // a route change should never leave a panel hanging open
   useEffect(() => {
-    setMega(false);
+    setMega(null);
     setOpen(false);
   }, [pathname]);
 
@@ -175,14 +191,16 @@ export default function Navbar() {
           <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[20px] xl:flex 2xl:gap-x-[28px]">
             {NAV_LINKS.map((link) => {
               const current = isActive(link.href);
-              const opensMega = MEGA_TRIGGERS.has(link.label);
+              const megaKey = isMegaLabel(link.label) ? link.label : null;
+              const opensMega = megaKey !== null;
+              const thisOpen = opensMega && mega === megaKey;
               const indicator = (
                 /* blue indicator: parked under the current link, drawn in from
                    the left on hover for the others */
                 <span
                   aria-hidden
                   className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa] shadow-[0_0_10px_rgba(59,130,246,0.9)] transition-[width] duration-300 ease-out ${
-                    current || (opensMega && mega) ? "w-full" : "w-0 group-hover:w-full"
+                    current || thisOpen ? "w-full" : "w-0 group-hover:w-full"
                   }`}
                 />
               );
@@ -193,7 +211,7 @@ export default function Navbar() {
                     <ChevronDown
                       aria-hidden
                       className={`size-3.5 translate-y-px text-white/60 transition-transform duration-300 group-hover:text-white/90 ${
-                        opensMega && mega ? "translate-y-0.5 rotate-180" : "group-hover:translate-y-0.5"
+                        thisOpen ? "translate-y-0.5 rotate-180" : "group-hover:translate-y-0.5"
                       }`}
                     />
                   )}
@@ -201,13 +219,15 @@ export default function Navbar() {
                 </>
               );
               const face_class = `group relative inline-flex items-center gap-1 whitespace-nowrap py-1 text-[14px] transition-colors duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px] ${
-                current || (opensMega && mega) ? "font-medium text-white" : "text-white/90"
+                current || thisOpen ? "font-medium text-white" : "text-white/90"
               }`;
 
               return (
                 <li
                   key={link.label}
-                  ref={opensMega ? triggerRef : undefined}
+                  ref={(el) => {
+                    if (megaKey) triggerRefs.current[megaKey] = el;
+                  }}
                   onMouseEnter={opensMega ? cancelClose : undefined}
                   onMouseLeave={opensMega ? scheduleClose : undefined}
                 >
@@ -219,11 +239,11 @@ export default function Navbar() {
                     href={link.href}
                     aria-current={current ? "page" : undefined}
                     aria-haspopup={opensMega ? "true" : undefined}
-                    aria-expanded={opensMega ? mega : undefined}
+                    aria-expanded={opensMega ? thisOpen : undefined}
                     aria-controls={opensMega ? "mega-menu" : undefined}
-                    onMouseEnter={() => setMega(opensMega)}
-                    onFocus={() => setMega(opensMega)}
-                    onClick={opensMega ? () => setMega(false) : undefined}
+                    onMouseEnter={() => setMega(megaKey)}
+                    onFocus={() => setMega(megaKey)}
+                    onClick={opensMega ? () => setMega(null) : undefined}
                     className={face_class}
                   >
                     {face}
@@ -282,8 +302,27 @@ export default function Navbar() {
          * gap is inside the hover area, so moving the pointer down from
          * Resources never leaves both elements at once.
          */}
+        {/*
+         * Page dimmer. It sits at -z-10 inside the header, which is itself
+         * z-[9999] — so it covers the page but stays behind the bar and the
+         * panel. Hovering it counts as leaving the menu.
+         */}
         <AnimatePresence>
           {mega && (
+            <motion.div
+              aria-hidden
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onMouseEnter={scheduleClose}
+              className={`${megaStyles.overlay} d-none d-xl-block`}
+            />
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {mega && anchor.width > 0 && (
             <div
               id="mega-menu"
               onMouseEnter={cancelClose}
@@ -291,7 +330,10 @@ export default function Navbar() {
               style={{ left: anchor.left, top: anchor.top, width: anchor.width }}
               className="fixed hidden pt-2.5 xl:block"
             >
-              <MegaMenu arrow={anchor.arrow} onNavigate={() => setMega(false)} />
+              {(() => {
+                const Panel = MEGA_PANELS[mega].desktop;
+                return <Panel arrow={anchor.arrow} onNavigate={() => setMega(null)} />;
+              })()}
             </div>
           )}
         </AnimatePresence>
@@ -323,12 +365,15 @@ export default function Navbar() {
                     show: { opacity: 1, x: 0 },
                   }}
                 >
-                  {MEGA_TRIGGERS.has(link.label) ? (
+                  {isMegaLabel(link.label) ? (
                     <div className="px-1 py-2">
                       <p className="px-3 pb-1 text-[11px] uppercase tracking-[0.16em] text-white/40">
                         {link.label}
                       </p>
-                      <MegaMenuMobile onNavigate={() => setOpen(false)} />
+                      {(() => {
+                        const Panel = MEGA_PANELS[link.label].mobile;
+                        return <Panel onNavigate={() => setOpen(false)} />;
+                      })()}
                     </div>
                   ) : (
                     <Link

@@ -121,11 +121,17 @@ export default function RobotShowcase() {
             animate={IDLE_FLOAT && !reduced ? { y: [0, -6, 0] } : undefined}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
             /*
-             * The box matches the render's own 21:16 ratio, so object-contain
-             * has nothing to letterbox, and it is inset enough to keep a clear
-             * margin to the orbiting tags.
+             * Geometry, in stage percentages:
+             *   72 wide / 62 tall holds the render's own 21:16 ratio, so
+             *   object-contain never letterboxes it;
+             *   left 14 centres it (100 - 72) / 2;
+             *   top 12 leaves headroom above the robot and ends at 74, which
+             *   keeps the whole composition clear of the badge ring.
+             *
+             * It was 88 wide, sized for the old cutout. At that width the
+             * render reached 94% across and the badges sat on top of it.
              */
-            className={`absolute left-[6%] top-[10%] h-[74%] w-[88%] drop-shadow-[0_28px_44px_rgba(2,6,23,0.65)] ${flip}`}
+            className={`absolute left-[14%] top-[12%] h-[62%] w-[72%] drop-shadow-[0_28px_44px_rgba(2,6,23,0.65)] ${flip}`}
           >
             <Image
               src={ROBOT}
