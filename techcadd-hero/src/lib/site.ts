@@ -209,6 +209,8 @@ export const CAPABILITIES = [
     highlights: ["1:1 mentor hours", "Portfolio reviews", "Referral network"] },
   { id: "career", label: "Career Studio", copy: "Resume teardowns, mock rounds and interview coaching run continuously, not once at the end.",
     highlights: ["Mock technical rounds", "HR round practice", "Offer negotiation"] },
+  { id: "cloud", label: "Cloud Infrastructure", copy: "Cloud sandboxes and deployment pipelines students run themselves, on the platforms teams actually use.",
+    highlights: ["AWS & Azure sandboxes", "CI/CD pipelines", "Container playground"] },
 ];
 
 export const COMMAND_METRICS = [

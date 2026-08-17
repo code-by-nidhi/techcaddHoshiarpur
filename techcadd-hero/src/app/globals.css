@@ -805,3 +805,32 @@ html.custom-cursor [contenteditable="true"] {
   animation: glowdrift 20s ease-in-out infinite;
   will-change: transform;
 }
+
+/* ---------- Student review carousel ---------- */
+
+/* Slides stretch so every card in a row shares the tallest height, rather
+   than each shrinking to its own quote length. */
+#stories .swiper-slide {
+  height: auto;
+  display: flex;
+}
+
+#stories .swiper-slide > * {
+  width: 100%;
+}
+
+/* Pagination lives in its own flex container next to the arrows. */
+.wall-dots .swiper-pagination-bullet {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: 0;
+  border-radius: 999px;
+  background: #cbd5e1;
+  opacity: 1;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.wall-dots .swiper-pagination-bullet-active {
+  width: 1.75rem;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+}

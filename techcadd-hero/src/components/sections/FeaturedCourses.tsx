@@ -142,9 +142,19 @@ export default function FeaturedCourses() {
                     className="pointer-events-none absolute -inset-px rounded-[30px] bg-gradient-to-br from-white/40 via-[#2563EB]/40 to-[#38BDF8]/50 opacity-0 blur-[1px] transition-opacity duration-500 group-hover:opacity-100"
                   />
 
+                  {/*
+                   * Mobile: no fixed height, a 500px floor, and the image
+                   * switches to object-contain below md so the whole artwork —
+                   * course name included — is always visible. object-cover on a
+                   * portrait-ish card was slicing up to 32% off the sides at
+                   * 320px, and the name sits on the left of every image.
+                   * From md up the original heights and cover behaviour return.
+                   */}
                   <article
-                    className={`relative isolate flex h-full flex-col justify-end overflow-hidden rounded-[28px] bg-slate-900 shadow-[0_2px_6px_rgba(15,23,42,0.10),0_14px_30px_-14px_rgba(15,23,42,0.40),0_44px_80px_-44px_rgba(15,23,42,0.60)] transition-[transform,box-shadow] duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_4px_10px_rgba(15,23,42,0.12),0_22px_44px_-16px_rgba(15,23,42,0.45),0_60px_110px_-45px_rgba(37,99,235,0.55)] motion-reduce:group-hover:translate-y-0 ${
-                      featured ? "min-h-[340px] xl:min-h-[420px]" : "min-h-[300px]"
+                    className={`relative isolate flex flex-col justify-end overflow-hidden md:h-full rounded-[28px] bg-slate-900 shadow-[0_2px_6px_rgba(15,23,42,0.10),0_14px_30px_-14px_rgba(15,23,42,0.40),0_44px_80px_-44px_rgba(15,23,42,0.60)] transition-[transform,box-shadow] duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_4px_10px_rgba(15,23,42,0.12),0_22px_44px_-16px_rgba(15,23,42,0.45),0_60px_110px_-45px_rgba(37,99,235,0.55)] motion-reduce:group-hover:translate-y-0 ${
+                      featured
+                        ? "min-h-[500px] md:min-h-[340px] xl:min-h-[420px]"
+                        : "min-h-[500px] md:min-h-[300px]"
                     }`}
                   >
                     <CourseShot {...art} title={title} featured={featured} />
@@ -163,7 +173,7 @@ export default function FeaturedCourses() {
                      * the course name, so repeating it read as duplicated text.
                      * Only the call to action remains.
                      */}
-                    <div className="relative z-10 m-4 sm:m-5">
+                    <div className="relative z-10 mt-auto m-5 sm:m-5">
                       <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.10] px-5 py-3 text-[14px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl transition-colors duration-500 group-hover:border-white/40 group-hover:bg-white/[0.18]">
                         Explore Course
                         <ArrowUpRight
@@ -225,7 +235,7 @@ function CourseShot({
           sizes={featured ? "(max-width: 767px) 92vw, (max-width: 1279px) 46vw, 62vw" : "(max-width: 767px) 92vw, (max-width: 1279px) 46vw, 31vw"}
           onLoad={() => setLoaded(true)}
           onError={() => setFailed(true)}
-          className={`object-cover object-center transition-[transform,opacity] duration-700 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100 ${
+          className={`object-contain object-center md:object-cover transition-[transform,opacity] duration-700 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100 ${
             loaded ? "opacity-100" : "opacity-0"
           }`}
         />

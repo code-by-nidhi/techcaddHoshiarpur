@@ -39,8 +39,9 @@ const isMegaLabel = (label: string): label is MegaLabel => label in MEGA_PANELS;
 const EDGE = 16;
 
 /**
- * Transparent over the hero (so the reference composition holds), then it
- * condenses into a floating glass bar once you scroll past the fold.
+ * Transparent over the hero (so the reference composition holds), then a
+ * full-bleed glass bar once you scroll past the fold. The background spans the
+ * viewport; only the content inside is capped and centred.
  */
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -146,13 +147,15 @@ export default function Navbar() {
       transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       className="fixed inset-x-0 top-0 z-[9999]"
     >
+      {/*
+       * The bar itself is full-bleed: no margin, no max-width, no radius, so
+       * the glass background reaches both screen edges. The width cap lives on
+       * the <nav> inside it, which is what actually aligns the content.
+       */}
       <div
-        className={`transition-all duration-500 ${
+        className={`w-full transition-all duration-500 ${
           scrolled
-            ? /* the condensed bar is a floating pill: it needs a margin on
-                 phones too, or its rounded corners sit flush to the screen
-                 edges and it reads as a stretched full-bleed strip */
-              "mx-3 mt-2 rounded-2xl border border-white/10 bg-[#020617]/85 px-1.5 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:mx-auto sm:mt-3 sm:max-w-[1360px] sm:px-2"
+            ? "border-b border-white/10 bg-[#020617]/85 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
             : "border-b border-transparent"
         }`}
       >
@@ -162,8 +165,8 @@ export default function Navbar() {
          * and sit over the hero copy.
          */}
         <nav
-          className={`mx-auto flex w-full max-w-full flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap px-3 transition-all duration-500 sm:max-w-[1600px] sm:gap-3 sm:px-6 lg:gap-6 lg:px-[4.5rem] xl:px-8 2xl:px-[4.5rem] ${
-            scrolled ? "h-[60px] sm:h-[68px] lg:px-6" : "h-[68px] sm:h-[86px]"
+          className={`mx-auto flex w-full max-w-[1400px] flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap px-4 transition-all duration-500 sm:gap-3 sm:px-6 lg:gap-6 lg:px-8 ${
+            scrolled ? "h-[60px] sm:h-[68px]" : "h-[68px] sm:h-[86px]"
           }`}
         >
           {/*

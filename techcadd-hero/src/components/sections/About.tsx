@@ -7,9 +7,10 @@ import {
   ArrowRight, Bot, Briefcase, GraduationCap, Handshake, Phone, School, Sparkles,
   type LucideIcon,
 } from "lucide-react";
-import { ABOUT, MEGA_FOOTER, MILESTONES, FOUNDER, VALUES } from "@/lib/site";
+import { ABOUT, MEGA_FOOTER, MILESTONES, VALUES } from "@/lib/site";
 import Reveal from "@/components/UI/Reveal";
 import Counter from "@/components/UI/Counter";
+import FounderVision from "@/components/sections/FounderVision";
 
 /**
  * Editorial about page: white throughout, generous spacing, a layered
@@ -45,11 +46,6 @@ const GALLERY = {
     },
   ],
   badge: { value: "10+", label: "Years Experience" },
-  founder: {
-    src: "/images/founder.jpeg",
-    alt: "Techcadd's founder on stage with the institute's robotics platform",
-    caption: "Founder photo",
-  },
 };
 
 /** The five training formats, shown as glass cards under the opening copy. */
@@ -110,38 +106,7 @@ export default function About() {
 
         <Milestones />
 
-        {/* founder vision */}
-        <Reveal>
-          <figure className="grid items-center gap-10 rounded-[36px] bg-[#F8FAFC] p-10 lg:grid-cols-[0.55fr_1fr] lg:gap-16 lg:p-16">
-            <div className="relative w-full max-w-[420px]">
-              <span
-                aria-hidden
-                className="absolute -inset-2 -z-10 rotate-[1.6deg] rounded-[30px] bg-gradient-to-br from-[#2563EB]/12 via-[#38BDF8]/8 to-transparent"
-              />
-              {/* 5:4 matches the source, so the frame crops nothing off the stage */}
-              <Shot
-                {...GALLERY.founder}
-                scrim={false}
-                sizes="(max-width: 1023px) 88vw, 420px"
-                className="aspect-[5/4]"
-              />
-            </div>
-
-            <div>
-              <span className="font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.22em] text-[#2563EB]">
-                Founder&apos;s vision
-              </span>
-              <blockquote className="mt-6 font-[family-name:var(--font-poppins)] text-[clamp(1.25rem,2.1vw,1.75rem)] font-semibold leading-[1.5] tracking-[-0.015em] text-[#0F172A]">
-                &ldquo;{FOUNDER.quote}&rdquo;
-              </blockquote>
-              <figcaption className="mt-7 text-[14px] text-[#475569]">
-                <span className="font-semibold text-[#0F172A]">{FOUNDER.name}</span>
-                <span className="mx-2 text-slate-300">/</span>
-                {FOUNDER.role}
-              </figcaption>
-            </div>
-          </figure>
-        </Reveal>
+        <FounderVision />
 
         {/* mission and values */}
         <div className="py-24 lg:py-32">
