@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { demoBus } from "@/lib/demoBus";
 
 export default function HeroButtons() {
   return (
@@ -20,15 +21,16 @@ export default function HeroButtons() {
         />
       </motion.a>
 
-      <motion.a
-        href="#demo"
+      <motion.button
+        type="button"
+        onClick={() => demoBus.open()}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: "spring", stiffness: 340, damping: 22 }}
         className="inline-flex items-center rounded-full border border-white/25 bg-white/[0.03] px-[34px] py-[17px] text-[15.5px] font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/60 hover:bg-white/[0.07] hover:shadow-[0_0_32px_-8px_rgba(255,255,255,0.5)]"
       >
         Book Free Demo
-      </motion.a>
+      </motion.button>
     </div>
   );
 }

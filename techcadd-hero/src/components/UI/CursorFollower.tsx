@@ -183,7 +183,10 @@ export default function CursorFollower() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[10000] overflow-hidden"
+      /* Above every overlay, the demo modal included. The native cursor is
+         hidden document-wide, so if anything ever paints over this layer the
+         pointer vanishes entirely. */
+      className="pointer-events-none fixed inset-0 z-[10050] overflow-hidden"
     >
       {/* Ring, with its own node at the centre */}
       <motion.div

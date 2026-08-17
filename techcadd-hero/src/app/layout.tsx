@@ -6,6 +6,7 @@
  */
 import "bootstrap/dist/css/bootstrap-grid.min.css";
 
+import DemoModal from "@/components/UI/DemoModal";
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import CursorFollower from "@/components/UI/CursorFollower";
@@ -111,6 +112,7 @@ export default function RootLayout({
         <CursorFollower />
 
         {children}
+        <DemoModal />
       </body>
     </html>
   );
