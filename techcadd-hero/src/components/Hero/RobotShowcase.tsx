@@ -4,13 +4,12 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import FloatingTechCards, { TechCardsGrid } from "./FloatingTechCards";
-import PlatformRings from "./PlatformRings";
 import OrbitArcs from "./OrbitArcs";
 import { robotBus, type RobotFocus } from "@/lib/robotBus";
 
 /**
- * Right-hand showcase: the ROBOT.jpeg cutout standing on the neon platform,
- * with orbiting light streaks behind it and a floor reflection below.
+ * Right-hand showcase: the robot stage render, with orbiting light streaks and
+ * drifting motes behind it. The platform and its glow are part of the render.
  *
  * The robot is static — no drag, no rotation, no cursor movement. Set
  * IDLE_FLOAT to true if you ever want the gentle up-and-down drift back.
@@ -18,13 +17,22 @@ import { robotBus, type RobotFocus } from "@/lib/robotBus";
  * The stage box is 900x800 in reference units — the robot and every course tag
  * are positioned as percentages of it, so the composition holds at any width.
  *
- * The cutout faces left. Flip it with FACE_RIGHT, but note that mirrors the
+ * The robot faces left. Flip it with FACE_RIGHT, but note that mirrors the
  * "techcadd" and "02" decals on the body.
  */
 const FACE_RIGHT = false;
 const IDLE_FLOAT = true;
 
-const ROBOT = "/images/robot-cutout.webp";
+/*
+ * The stage render: robot, platform and glow baked into one 840x640 image with
+ * feathered transparent edges, so it sits over the hero without a seam.
+ *
+ * Because the platform travels with it, the CSS PlatformRings, floor
+ * reflection and ground shadow are no longer drawn — two platforms stacked on
+ * one another read as a rendering fault. robot-cutout-clean.webp remains in
+ * the folder if you want the cutout composition back.
+ */
+const ROBOT = "/images/robot-stage.webp";
 
 /** Ambient motes drifting around the stage, purely decorative. */
 const MOTES = [
@@ -83,7 +91,6 @@ export default function RobotShowcase() {
         />
 
         <OrbitArcs />
-        <PlatformRings />
 
         {/* drifting motes */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
@@ -103,20 +110,6 @@ export default function RobotShowcase() {
           ))}
         </div>
 
-        {/* floor reflection */}
-        <div
-          aria-hidden
-          className={`absolute left-[18%] top-[76%] h-[24%] w-[64%] scale-y-[-1] opacity-[0.16] blur-[2px] [mask-image:linear-gradient(to_top,transparent_10%,black_95%)] ${flip}`}
-        >
-          <Image src={ROBOT} alt="" fill sizes="40vw" className="object-contain object-top" />
-        </div>
-
-        {/* soft ground shadow, so the robot reads as standing on the platform */}
-        <div
-          aria-hidden
-          className="absolute left-1/2 top-[73%] z-0 h-[7%] w-[40%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(2,6,23,0.8)_0%,transparent_72%)] blur-md"
-        />
-
         {/* the robot */}
         <motion.div
           initial={{ opacity: 0, scale: 0.96, y: 12 }}
@@ -128,15 +121,11 @@ export default function RobotShowcase() {
             animate={IDLE_FLOAT && !reduced ? { y: [0, -6, 0] } : undefined}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
             /*
-             * No mask here. The cutout carries ~14 rows of transparent padding
-             * above the robot, so nothing was ever chopped in the asset — an
-             * earlier top fade was cutting into the antenna and back itself.
-             *
-             * Box geometry: 12% + 64% keeps the feet at 76%, exactly where the
-             * platform rings expect them, while handing the head 4% more
-             * headroom than before.
+             * The box matches the render's own 21:16 ratio, so object-contain
+             * has nothing to letterbox, and it is inset enough to keep a clear
+             * margin to the orbiting tags.
              */
-            className={`absolute left-[18%] top-[12%] h-[64%] w-[64%] drop-shadow-[0_28px_44px_rgba(2,6,23,0.85)] ${flip}`}
+            className={`absolute left-[6%] top-[10%] h-[74%] w-[88%] drop-shadow-[0_28px_44px_rgba(2,6,23,0.65)] ${flip}`}
           >
             <Image
               src={ROBOT}
@@ -144,18 +133,10 @@ export default function RobotShowcase() {
               fill
               priority
               sizes="(max-width: 1024px) 92vw, 50vw"
-              className="object-contain object-bottom"
+              className="object-contain object-center"
             />
           </motion.div>
         </motion.div>
-
-        {/* contact glow where the feet meet the platform */}
-        <motion.div
-          aria-hidden
-          animate={reduced ? undefined : { opacity: [0.35, 0.7, 0.35] }}
-          transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-1/2 top-[76%] z-10 h-[5%] w-[46%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(96,165,250,0.75)_0%,transparent_70%)] blur-md"
-        />
 
         <FloatingTechCards />
       </div>
