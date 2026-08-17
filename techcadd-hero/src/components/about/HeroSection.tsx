@@ -107,7 +107,8 @@ export default function HeroSection({ children }: HeroSectionProps) {
                   variants={textChild}
                   className={cn(
                     "block",
-                    index === hero.accentLine && "text-brand-bright",
+                    // same blue-into-violet sweep the home headline carries
+                    index === hero.accentLine && "text-gradient-brand",
                   )}
                 >
                   {line}
@@ -163,10 +164,11 @@ export default function HeroSection({ children }: HeroSectionProps) {
               style={prefersReducedMotion ? undefined : { x: driftX, y: driftY }}
               className="absolute inset-0"
             >
-              {/* Glow behind the composition. */}
+              {/* Glow behind the composition — blue core, violet halo, as on
+                  the robot stage. */}
               <div
                 aria-hidden="true"
-                className="animate-drift absolute inset-[16%] rounded-full bg-brand/25 blur-[110px]"
+                className="animate-drift absolute inset-[16%] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.35)_0%,rgba(124,58,237,0.28)_55%,transparent_75%)] blur-[110px]"
               />
 
               {/* Primary diamond, centred on the stage. */}
@@ -213,13 +215,23 @@ export default function HeroSection({ children }: HeroSectionProps) {
 function HeroBackdrop() {
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(52rem 40rem at 74% 44%, #14306e 0%, #0c1c56 46%, #081540 82%)",
-        }}
-      />
+      {/*
+        The home hero's backdrop, layer for layer: near-black base, a warmer
+        navy pocket behind the composition, a violet glow high on the right, two
+        blues below it, and a vignette that pulls the left side back down so the
+        copy keeps its contrast.
+      */}
+      <div className="absolute inset-0 bg-[#020617]" />
+
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_78%_60%,rgba(12,26,74,0.95)_0%,rgba(6,10,26,0.6)_45%,transparent_75%)]" />
+
+      <div className="absolute top-[6%] right-[-12%] size-[52rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.30)_0%,transparent_68%)] blur-3xl" />
+
+      <div className="absolute right-[16%] bottom-[2%] size-[44rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.28)_0%,transparent_70%)] blur-3xl" />
+
+      <div className="absolute top-[18%] -left-40 size-[38rem] rounded-full bg-[radial-gradient(circle,rgba(30,64,175,0.18)_0%,transparent_70%)] blur-3xl" />
+
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(2,4,10,0.55)_0%,transparent_60%)]" />
 
       {/* Dot matrices, top-right and bottom-right. */}
       <div className="dot-grid absolute top-24 right-0 hidden h-40 w-56 opacity-40 [mask-image:linear-gradient(to_left,#000,transparent)] md:block" />

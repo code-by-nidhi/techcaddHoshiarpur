@@ -42,6 +42,8 @@ export default function TechBackground({
 
       {variant !== "subtle" ? (
         <>
+          {/* Blue low-left, violet high-right — the home hero's arrangement,
+              dialled right down on the light sections. */}
           <div
             className={cn(
               "absolute -top-24 -left-20 size-[26rem] rounded-full blur-[120px]",
@@ -51,7 +53,7 @@ export default function TechBackground({
           <div
             className={cn(
               "absolute -right-24 bottom-0 size-[28rem] rounded-full blur-[130px]",
-              light ? "bg-accent/8" : "bg-accent/15",
+              light ? "bg-violet/6" : "bg-violet/22",
             )}
           />
         </>

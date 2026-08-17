@@ -326,14 +326,26 @@ html.custom-cursor [contenteditable="true"] {
    ========================================================================== */
 
 @theme {
-  --color-royal-deep: #081540;
-  --color-royal: #0c1c56;
+  /*
+   * The dark palette is the home page's, taken from the hero backdrop so the
+   * two never drift: #020617 is the same base the body and the robot stage sit
+   * on, and #0c1a4a is the warmer navy pocket behind the composition.
+   */
+  --color-royal-deep: #020617;
+  --color-royal: #0c1a4a;
   --color-paper: #ffffff;
   --color-mist: #f2f6fd;
 
+  /*
+   * Blue into violet, as on the home page. The accent is violet rather than
+   * cyan: the hero's glows, its headline gradient and its primary button all
+   * resolve toward #a855f7, and a cyan accent read as a different brand.
+   */
   --color-brand: #2563eb;
   --color-brand-bright: #60a5fa;
-  --color-accent: #22d3ee;
+  --color-accent: #a855f7;
+  --color-violet: #7c3aed;
+  --color-indigo: #6366f1;
 
   --radius-hero: 2rem;
   --radius-card: 1rem;
@@ -495,8 +507,9 @@ html.custom-cursor [contenteditable="true"] {
   font-family: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* The home page's headline gradient, to the stop. */
 .text-gradient-brand {
-  background: linear-gradient(104deg, #60a5fa 0%, #38bdf8 48%, #22d3ee 100%);
+  background: linear-gradient(104deg, #3b82f6 0%, #6366f1 45%, #a855f7 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;

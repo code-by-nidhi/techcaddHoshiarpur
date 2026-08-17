@@ -18,7 +18,7 @@ export default function NewsletterSection({ source = "blog" }: { source?: "blog"
               className="absolute inset-0 -z-10"
               style={{
                 background:
-                  "radial-gradient(40rem 22rem at 50% 120%, rgb(34 211 238 / 20%), transparent 70%), radial-gradient(48rem 26rem at 50% -20%, rgb(37 99 235 / 28%), transparent 70%)",
+                  "radial-gradient(40rem 22rem at 50% 120%, rgb(124 58 237 / 28%), transparent 70%), radial-gradient(48rem 26rem at 50% -20%, rgb(37 99 235 / 28%), transparent 70%)",
               }}
             />
 

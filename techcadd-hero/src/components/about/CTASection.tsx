@@ -17,7 +17,7 @@ export default function CTASection() {
           {/* Blue card on a white section — the page's closing accent. The
               outer wrapper carries a slowly travelling gradient edge; the inner
               inset hides all but a 1px rim of it. */}
-          <div className="animate-sheen relative rounded-[calc(var(--radius-hero)+1px)] bg-[linear-gradient(110deg,rgb(37_99_235/0.7),rgb(34_211_238/0.7),rgb(37_99_235/0.7))] p-px">
+          <div className="animate-sheen relative rounded-[calc(var(--radius-hero)+1px)] bg-[linear-gradient(110deg,rgb(37_99_235/0.75),rgb(168_85_247/0.75),rgb(37_99_235/0.75))] p-px">
             <div className="surface-dark relative isolate overflow-hidden rounded-[var(--radius-hero)] bg-royal-deep px-6 py-14 text-center shadow-[0_40px_100px_-45px_rgb(8_21_64/0.85)] sm:px-12 sm:py-16 lg:py-20">
               {/* Blue/cyan glow behind the card. */}
               <div
@@ -25,7 +25,7 @@ export default function CTASection() {
                 className="absolute inset-0 -z-10"
                 style={{
                   background:
-                    "radial-gradient(40rem 22rem at 50% 110%, rgb(34 211 238 / 22%), transparent 70%), radial-gradient(48rem 26rem at 50% -20%, rgb(37 99 235 / 30%), transparent 70%)",
+                    "radial-gradient(40rem 22rem at 50% 110%, rgb(124 58 237 / 30%), transparent 70%), radial-gradient(48rem 26rem at 50% -20%, rgb(37 99 235 / 30%), transparent 70%)",
                 }}
               />
               <div
