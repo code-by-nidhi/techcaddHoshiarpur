@@ -81,8 +81,15 @@ export default function Navbar() {
     };
   }, [mega, measure]);
 
-  /** Only route links can be current; section links land on the home page. */
-  const isActive = (href: string) => !href.includes("#") && pathname === href;
+  /**
+   * Only route links can be current; section links land on the home page.
+   *
+   * Nested routes count as their parent: reading /blog/some-article should keep
+   * "Resources" lit, not leave the bar looking like you navigated off the site.
+   */
+  const isActive = (href: string) =>
+    !href.includes("#") &&
+    (pathname === href || (href !== "/" && pathname.startsWith(`${href}/`)));
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);

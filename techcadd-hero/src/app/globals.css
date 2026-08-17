@@ -577,6 +577,173 @@ html.custom-cursor [contenteditable="true"] {
   background-size: 22px 22px;
 }
 
+/* ---------- Article typography ---------- */
+
+/*
+ * Long-form reading styles for `/blog/:slug`.
+ *
+ * Scoped to `.article-prose` and driven by the same context tokens as the rest
+ * of the design system, so an article renders correctly on either surface. The
+ * measure is capped by the page (52rem); everything here is vertical rhythm.
+ */
+.article-prose {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--ctx-ink-muted);
+}
+
+.article-prose > * + * {
+  margin-top: 1.5rem;
+}
+
+.article-prose h2,
+.article-prose h3,
+.article-prose h4 {
+  font-family: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  color: var(--ctx-ink);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  /* headings need air above them and closeness to the text they introduce */
+  margin-top: 3rem;
+  margin-bottom: -0.5rem;
+  scroll-margin-top: 7rem;
+}
+
+.article-prose h2 {
+  font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+  font-weight: 800;
+}
+
+.article-prose h3 {
+  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+  font-weight: 700;
+}
+
+.article-prose h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.article-prose strong {
+  color: var(--ctx-ink);
+  font-weight: 650;
+}
+
+.article-prose a {
+  color: var(--color-brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s var(--ease-out-soft);
+}
+
+.article-prose a:hover {
+  color: var(--color-accent);
+}
+
+.article-prose ul,
+.article-prose ol {
+  padding-left: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.article-prose ul {
+  list-style: disc;
+}
+
+.article-prose ol {
+  list-style: decimal;
+}
+
+.article-prose li::marker {
+  color: var(--color-brand);
+}
+
+.article-prose blockquote {
+  border-left: 3px solid var(--color-brand);
+  padding: 0.25rem 0 0.25rem 1.5rem;
+  font-size: 1.15rem;
+  line-height: 1.65;
+  font-weight: 500;
+  color: var(--ctx-ink);
+}
+
+.article-prose blockquote p {
+  margin: 0;
+}
+
+.article-prose code {
+  font-family: var(--font-mono-face), ui-monospace, monospace;
+  font-size: 0.875em;
+  background: var(--ctx-chip-bg);
+  border: 1px solid var(--ctx-chip-border);
+  border-radius: 0.375rem;
+  padding: 0.1rem 0.35rem;
+}
+
+/* Code blocks stay dark on both surfaces — a light code block reads as an
+   input field, and the syntax colours a highlighter adds later assume dark. */
+.article-prose pre {
+  background: #081540;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: var(--radius-card);
+  padding: 1.25rem 1.4rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.article-prose pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #dbeafe;
+  font-size: inherit;
+}
+
+.article-prose img {
+  border-radius: var(--radius-card);
+  width: 100%;
+  height: auto;
+}
+
+.article-prose figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.8125rem;
+  color: var(--ctx-ink-dim);
+  text-align: center;
+}
+
+/* Tables scroll inside their own box rather than widening the page. */
+.article-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.article-prose th,
+.article-prose td {
+  border: 1px solid var(--ctx-hairline);
+  padding: 0.7rem 0.9rem;
+  text-align: left;
+}
+
+.article-prose th {
+  background: var(--ctx-chip-bg);
+  color: var(--ctx-ink);
+  font-weight: 650;
+}
+
+.article-prose hr {
+  border: 0;
+  border-top: 1px solid var(--ctx-hairline);
+  margin-block: 2.5rem;
+}
+
 /* ---------- Motion ---------- */
 
 /* A slow travelling highlight. Elements that set their own background-size

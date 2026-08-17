@@ -13,7 +13,7 @@ export const NAV_LINKS = [
   { label: "Courses", href: "/#programs", dropdown: true },
   { label: "About Us", href: "/about", dropdown: false },
   { label: "Placement", href: "/#outcomes", dropdown: false },
-  { label: "Resources", href: "/#blog", dropdown: true },
+  { label: "Resources", href: "/blog", dropdown: false },
   { label: "Contact Us", href: "/contact", dropdown: false },
 ] as const;
 
