@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { COURSES } from "@/lib/site";
@@ -31,37 +32,47 @@ const cardIn: Variants = {
 const IMAGERY: Record<string, { src: string; alt: string; tone: string }> = {
   "AI & Machine Learning": {
     src: "/images/ai.webp",
-    alt: "A student training a model, with accuracy and loss charts on screen",
+    alt: "AI & Machine Learning course artwork",
     tone: "from-[#1E293B] via-[#243352] to-[#0F172A]",
   },
   "Full Stack Development": {
-    // the file on disk is named for the MERN stack it shows
     src: "/images/mern.webp",
-    alt: "A developer working across React and Node source on two monitors",
+    alt: "Full Stack Development course artwork",
     tone: "from-[#241E3B] via-[#2E2750] to-[#14101F]",
   },
   "Data Science": {
-    // the file on disk carries a space in its name, hence the %20
     src: "/images/data-science.webp",
-    alt: "An analyst reading a sales dashboard beside a data science process board",
+    alt: "Data Science course artwork",
     tone: "from-[#12303A] via-[#164050] to-[#0B1F27]",
   },
   "Cyber Security": {
     src: "/images/cyber.webp",
-    alt: "A security analyst watching a live threat map and network monitor",
+    alt: "Cyber Security course artwork",
     tone: "from-[#1B2A4A] via-[#1F3560] to-[#0D1526]",
   },
   "Digital Marketing": {
     src: "/images/digital.webp",
-    alt: "A campaign dashboard surrounded by SEO, content and analytics panels",
+    alt: "Digital Marketing course artwork",
     tone: "from-[#3A2036] via-[#4A2748] to-[#1E1020]",
   },
   "Cloud & DevOps": {
     src: "/images/cloud.webp",
-    alt: "An engineer reviewing a cloud architecture and deployment pipeline",
+    alt: "Cloud & DevOps course artwork",
     tone: "from-[#15303B] via-[#1B4150] to-[#0A1D24]",
   },
 };
+
+/**
+ * Section title -> course page. Titles with a detail page in the catalogue go
+ * straight to it; the rest land on the catalogue index rather than nowhere.
+ * Add the slug here once the course exists in lib/courses/catalogue.ts.
+ */
+const COURSE_ROUTES: Record<string, string> = {
+  "Full Stack Development": "/courses/full-stack-web-development",
+  "Digital Marketing": "/courses/digital-marketing",
+};
+
+const courseHref = (title: string) => COURSE_ROUTES[title] ?? "/courses";
 
 export default function FeaturedCourses() {
   const reduced = useReducedMotion();
@@ -95,7 +106,7 @@ export default function FeaturedCourses() {
           viewport={{ once: true, margin: "-90px" }}
           className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:auto-rows-[300px]"
         >
-          {COURSES.map(({ icon: Icon, title, copy, duration }, i) => {
+          {COURSES.map(({ icon: Icon, title, duration }, i) => {
             const art = IMAGERY[title];
             const featured = i === 0;
 
@@ -147,25 +158,14 @@ export default function FeaturedCourses() {
                       {duration}
                     </span>
 
-                    {/* glass panel carrying the copy */}
-                    <div className="relative z-10 m-4 rounded-[22px] border border-white/15 bg-white/[0.07] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.10)] backdrop-blur-xl transition-colors duration-500 group-hover:bg-white/[0.11] sm:m-5 sm:p-6">
-                      <h3
-                        className={`font-[family-name:var(--font-sora)] font-bold leading-snug tracking-[-0.02em] text-white ${
-                          featured ? "text-[clamp(1.45rem,2.3vw,1.95rem)]" : "text-[19px]"
-                        }`}
-                      >
-                        {title}
-                      </h3>
-                      <p
-                        className={`mt-2.5 text-[13.5px] leading-relaxed text-white/75 ${
-                          featured ? "max-w-xl sm:text-[15px]" : ""
-                        }`}
-                      >
-                        {copy}
-                      </p>
-
-                      <span className="mt-5 inline-flex items-center gap-1.5 text-[14px] font-semibold text-white">
-                        Explore
+                    {/*
+                     * No title or copy on the card: the artwork already carries
+                     * the course name, so repeating it read as duplicated text.
+                     * Only the call to action remains.
+                     */}
+                    <div className="relative z-10 m-4 sm:m-5">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/[0.10] px-5 py-3 text-[14px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-xl transition-colors duration-500 group-hover:border-white/40 group-hover:bg-white/[0.18]">
+                        Explore Course
                         <ArrowUpRight
                           aria-hidden
                           className="size-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -174,12 +174,11 @@ export default function FeaturedCourses() {
                     </div>
 
                     {/*
-                     * The whole card is the link. It sits outside the glass
-                     * panel because the panel is positioned, so a stretched
-                     * pseudo-element inside it would only cover the panel.
+                     * The whole card is the link, and it carries the accessible
+                     * name now that no heading is rendered.
                      */}
-                    <a
-                      href="#contact"
+                    <Link
+                      href={courseHref(title)}
                       aria-label={`Explore ${title}`}
                       className="absolute inset-0 z-20 rounded-[28px] outline-none ring-offset-2 ring-offset-slate-900 focus-visible:ring-2 focus-visible:ring-[#60A5FA]"
                     />
@@ -226,7 +225,7 @@ function CourseShot({
           sizes={featured ? "(max-width: 767px) 92vw, (max-width: 1279px) 46vw, 62vw" : "(max-width: 767px) 92vw, (max-width: 1279px) 46vw, 31vw"}
           onLoad={() => setLoaded(true)}
           onError={() => setFailed(true)}
-          className={`object-cover transition-[transform,opacity] duration-700 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100 ${
+          className={`object-cover object-center transition-[transform,opacity] duration-700 ease-out group-hover:scale-105 motion-reduce:group-hover:scale-100 ${
             loaded ? "opacity-100" : "opacity-0"
           }`}
         />

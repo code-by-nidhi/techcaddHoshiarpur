@@ -16,6 +16,7 @@ import Reviews from "@/components/courses/Reviews";
 import CourseFaq from "@/components/courses/CourseFaq";
 import CourseCta from "@/components/courses/CourseCta";
 import RelatedCourses from "@/components/courses/RelatedCourses";
+import StickyEnrolBar from "@/components/courses/StickyEnrolBar";
 
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
@@ -167,6 +168,8 @@ export default async function CoursePage({ params }: Params) {
         <CourseCta course={course} />
         <RelatedCourses courses={related} />
       </main>
+
+      <StickyEnrolBar course={course} />
 
       <MegaFooter />
     </>
