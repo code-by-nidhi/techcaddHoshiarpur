@@ -34,6 +34,14 @@ function TagIcon({ icon }: { icon: CourseTag["icon"] }) {
   );
 }
 
+const CARD =
+  "flex items-center gap-2.5 rounded-[16px] border border-[#3b82f6]/45 bg-[#070c1c]/75 px-4 py-2.5 shadow-[0_0_26px_-8px_rgba(59,130,246,0.85),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-shadow duration-300 hover:border-[#60a5fa]/80 hover:shadow-[0_0_44px_-6px_rgba(59,130,246,1)]";
+
+/**
+ * The orbit. Below `sm` the absolute ring would collide with the robot, so the
+ * tags are rendered as a grid underneath the stage instead — see
+ * `TechCardsGrid`, which the showcase places below the platform.
+ */
 export default function FloatingTechCards() {
   const reduced = useReducedMotion();
 
@@ -67,7 +75,7 @@ export default function FloatingTechCards() {
               delay: tag.delay,
             }}
             whileHover={{ scale: 1.07 }}
-            className="flex items-center gap-2.5 rounded-[16px] border border-[#3b82f6]/45 bg-[#070c1c]/75 px-4 py-2.5 shadow-[0_0_26px_-8px_rgba(59,130,246,0.85),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-shadow duration-300 hover:border-[#60a5fa]/80 hover:shadow-[0_0_44px_-6px_rgba(59,130,246,1)]"
+            className={CARD}
           >
             <TagIcon icon={tag.icon} />
             <span className="whitespace-nowrap text-[13.5px] font-medium text-white">
@@ -77,5 +85,26 @@ export default function FloatingTechCards() {
         </motion.div>
       ))}
     </div>
+  );
+}
+
+/** Same cards, same styling, laid out as a grid for phones. */
+export function TechCardsGrid() {
+  return (
+    <ul className="mt-6 grid grid-cols-2 gap-2.5 sm:hidden">
+      {COURSE_TAGS.map((tag, i) => (
+        <motion.li
+          key={tag.id}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 + i * 0.06, duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className={`${CARD} justify-center px-3 py-2.5`}>
+            <TagIcon icon={tag.icon} />
+            <span className="truncate text-[12.5px] font-medium text-white">{tag.label}</span>
+          </span>
+        </motion.li>
+      ))}
+    </ul>
   );
 }

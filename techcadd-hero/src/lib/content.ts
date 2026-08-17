@@ -53,14 +53,15 @@ export type CourseTag = {
  * stage clear so nothing sits on top of the model.
  */
 export const COURSE_TAGS: CourseTag[] = [
-  // left/top are percentages of the 9:8 stage. The robot occupies 16%-84%
-  // across and 8%-76% down, so tags are held clear of that band.
-  { id: "aiml", label: "AI / ML", icon: "brain", left: "68%", top: "-2%", delay: 0, effect: "holo", color: [0.55, 0.45, 1] },
-  { id: "python", label: "Python", icon: "python", left: "1%", top: "6%", delay: 0.7, effect: "pulse", color: [1, 0.83, 0.23] },
-  { id: "mern", label: "MERN Stack", icon: "layers", left: "85%", top: "19%", delay: 1.4, effect: "pulse", color: [0.24, 0.85, 0.68] },
-  { id: "analytics", label: "Data Analytics", icon: "chart", left: "-6%", top: "28%", delay: 2.1, effect: "chart", color: [0.31, 0.72, 1] },
-  { id: "datascience", label: "Data Science", icon: "globe", left: "87%", top: "46%", delay: 2.8, effect: "chart", color: [0.45, 0.62, 1] },
-  { id: "cloud", label: "Cloud Computing", icon: "cloud", left: "-8%", top: "52%", delay: 3.5, effect: "holo", color: [0.4, 0.85, 1] },
-  { id: "fullstack", label: "Full Stack Development", icon: "code", left: "58%", top: "91%", delay: 4.2, effect: "pulse", color: [0.7, 0.45, 1] },
-  { id: "webdev", label: "Web Development", icon: "react", left: "0%", top: "83%", delay: 4.9, effect: "pulse", color: [0.38, 0.85, 0.98] },
+  // left/top are percentages of the 9:8 stage. The robot occupies 18%-82%
+  // across and 12%-76% down, so every tag is held clear of that band with a
+  // consistent margin — roughly 50px of breathing space at desktop widths.
+  { id: "aiml", label: "AI / ML", icon: "brain", left: "72%", top: "-6%", delay: 0, effect: "holo", color: [0.55, 0.45, 1] },
+  { id: "python", label: "Python", icon: "python", left: "-4%", top: "2%", delay: 0.7, effect: "pulse", color: [1, 0.83, 0.23] },
+  { id: "mern", label: "MERN Stack", icon: "layers", left: "90%", top: "17%", delay: 1.4, effect: "pulse", color: [0.24, 0.85, 0.68] },
+  { id: "analytics", label: "Data Analytics", icon: "chart", left: "-13%", top: "27%", delay: 2.1, effect: "chart", color: [0.31, 0.72, 1] },
+  { id: "datascience", label: "Data Science", icon: "globe", left: "92%", top: "47%", delay: 2.8, effect: "chart", color: [0.45, 0.62, 1] },
+  { id: "cloud", label: "Cloud Computing", icon: "cloud", left: "-15%", top: "53%", delay: 3.5, effect: "holo", color: [0.4, 0.85, 1] },
+  { id: "fullstack", label: "Full Stack Development", icon: "code", left: "62%", top: "95%", delay: 4.2, effect: "pulse", color: [0.7, 0.45, 1] },
+  { id: "webdev", label: "Web Development", icon: "react", left: "-7%", top: "88%", delay: 4.9, effect: "pulse", color: [0.38, 0.85, 0.98] },
 ];

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import FloatingTechCards from "./FloatingTechCards";
+import FloatingTechCards, { TechCardsGrid } from "./FloatingTechCards";
 import PlatformRings from "./PlatformRings";
 import OrbitArcs from "./OrbitArcs";
 import { robotBus, type RobotFocus } from "@/lib/robotBus";
@@ -106,7 +106,7 @@ export default function RobotShowcase() {
         {/* floor reflection */}
         <div
           aria-hidden
-          className={`absolute left-[16%] top-[72%] h-[28%] w-[68%] scale-y-[-1] opacity-[0.16] blur-[2px] [mask-image:linear-gradient(to_top,transparent_10%,black_95%)] ${flip}`}
+          className={`absolute left-[18%] top-[76%] h-[24%] w-[64%] scale-y-[-1] opacity-[0.16] blur-[2px] [mask-image:linear-gradient(to_top,transparent_10%,black_95%)] ${flip}`}
         >
           <Image src={ROBOT} alt="" fill sizes="40vw" className="object-contain object-top" />
         </div>
@@ -128,12 +128,15 @@ export default function RobotShowcase() {
             animate={IDLE_FLOAT && !reduced ? { y: [0, -6, 0] } : undefined}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
             /*
-             * robot-cutout.webp is chopped at its own top edge — the tail was
-             * cut off and left a pale ghost across the robot's back. The mask
-             * fades that top sliver out so it reads as atmosphere instead of a
-             * hard cut. A clean cutout would let this be removed.
+             * No mask here. The cutout carries ~14 rows of transparent padding
+             * above the robot, so nothing was ever chopped in the asset — an
+             * earlier top fade was cutting into the antenna and back itself.
+             *
+             * Box geometry: 12% + 64% keeps the feet at 76%, exactly where the
+             * platform rings expect them, while handing the head 4% more
+             * headroom than before.
              */
-            className={`absolute left-[16%] top-[8%] h-[68%] w-[68%] drop-shadow-[0_28px_44px_rgba(2,6,23,0.85)] [mask-image:linear-gradient(to_bottom,transparent_0%,rgba(0,0,0,0.35)_3.5%,black_7%)] ${flip}`}
+            className={`absolute left-[18%] top-[12%] h-[64%] w-[64%] drop-shadow-[0_28px_44px_rgba(2,6,23,0.85)] ${flip}`}
           >
             <Image
               src={ROBOT}
@@ -156,6 +159,9 @@ export default function RobotShowcase() {
 
         <FloatingTechCards />
       </div>
+
+      {/* phones get the same tags as a grid, clear of the robot */}
+      <TechCardsGrid />
     </div>
   );
 }
