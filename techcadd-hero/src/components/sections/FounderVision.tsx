@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { FiAward, FiBriefcase, FiCheckCircle, FiHome, FiUsers } from "react-icons/fi";
-import type { IconType } from "react-icons";
+import { FiAward, FiCheckCircle } from "react-icons/fi";
 import { FaQuoteLeft } from "react-icons/fa6";
 import { FOUNDER } from "@/lib/site";
 
@@ -30,33 +29,6 @@ function withHighlight(quote: string) {
     </>
   );
 }
-
-/**
- * Proof points under the portrait.
- *
- * NOTE: "500+ Hiring Partners" conflicts with the contact page, which states
- * 100+. Both cannot be right — reconcile before launch.
- */
-const STATS: { icon: IconType; value: string; label: string; tint: string }[] = [
-  {
-    icon: FiUsers,
-    value: "25,000+",
-    label: "Students Trained",
-    tint: "from-[#2563EB] to-[#3B82F6]",
-  },
-  {
-    icon: FiBriefcase,
-    value: "10,000+",
-    label: "Placements",
-    tint: "from-[#4F46E5] to-[#8B5CF6]",
-  },
-  {
-    icon: FiHome,
-    value: "500+",
-    label: "Hiring Partners",
-    tint: "from-[#7C3AED] to-[#C026D3]",
-  },
-];
 
 /** Deterministic particles — no Math.random, so SSR and the client agree. */
 const MOTES = Array.from({ length: 14 }, (_, i) => ({
@@ -143,7 +115,7 @@ export default function FounderVision() {
               ))}
             </div>
 
-            <div className="row g-4 g-lg-5 align-items-lg-start position-relative">
+            <div className="row g-4 g-lg-5 align-items-center position-relative">
               {/* founder image */}
               <div className="col-12 col-lg-5">
                 <motion.div
@@ -172,10 +144,10 @@ export default function FounderVision() {
                   <div className="relative rounded-[32px] bg-[linear-gradient(135deg,#2563EB,#6366F1_45%,#A855F7)] p-[2px] shadow-[0_0_40px_-12px_rgba(99,102,241,0.75),0_30px_70px_-34px_rgba(15,23,42,0.55)]">
                     <div className="relative overflow-hidden rounded-[30px]">
                       <Image
-                        src="/images/founder.jpeg"
-                        alt="Techcadd's founder on stage with the institute's robotics platform"
-                        width={499}
-                        height={400}
+                        src="/images/founder-gaurav.webp"
+                        alt="Gaurav, Founder & Director of TechCadd"
+                        width={608}
+                        height={580}
                         sizes="(max-width: 991px) 88vw, 34vw"
                         className="h-auto w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04] motion-reduce:group-hover:scale-100"
                       />
@@ -220,43 +192,6 @@ export default function FounderVision() {
                   </motion.div>
                 </motion.div>
 
-                {/*
-                 * Proof points. Three across once the layout stacks, then a
-                 * vertical rail beside the quote card at lg — three cards in a
-                 * 40% column would otherwise be squeezed to nothing.
-                 */}
-                <div className="row g-3 mt-3">
-                  {STATS.map(({ icon: Icon, value, label, tint }, i) => (
-                    <div key={label} className="col-12 col-sm-4 col-lg-12">
-                      <motion.div
-                        initial={{ opacity: 0, y: 18 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-70px" }}
-                        transition={{
-                          duration: 0.5,
-                          ease: [0.16, 1, 0.3, 1],
-                          delay: 0.2 + i * 0.08,
-                        }}
-                        whileHover={reduced ? undefined : { y: -5 }}
-                        className="flex h-full items-center gap-3.5 rounded-2xl border border-white/70 bg-white/70 p-4 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] backdrop-blur-xl transition-shadow duration-500 hover:shadow-[0_26px_54px_-30px_rgba(79,70,229,0.5)]"
-                      >
-                        <span
-                          className={`grid size-11 shrink-0 place-content-center rounded-full bg-gradient-to-br ${tint} shadow-[0_12px_26px_-12px_rgba(79,70,229,0.9)]`}
-                        >
-                          <Icon aria-hidden className="size-[18px] text-white" />
-                        </span>
-                        <span className="min-w-0 leading-tight">
-                          <span className="block font-[family-name:var(--font-poppins)] text-[18px] font-extrabold tracking-[-0.02em] text-[#0F172A]">
-                            {value}
-                          </span>
-                          <span className="mt-0.5 block truncate text-[12px] text-[#64748B]">
-                            {label}
-                          </span>
-                        </span>
-                      </motion.div>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               {/* testimonial card */}

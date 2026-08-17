@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
-  ArrowRight, Bot, Briefcase, GraduationCap, Handshake, Phone, School, Sparkles,
+  ArrowRight, Bot, Briefcase, Building2, GraduationCap, Handshake, Phone, School, Sparkles, Users,
   type LucideIcon,
 } from "lucide-react";
 import { ABOUT, MEGA_FOOTER, MILESTONES, VALUES } from "@/lib/site";
@@ -96,13 +96,14 @@ export default function About() {
                 </Reveal>
               ))}
 
-              <StatCards />
               <CallToAction />
             </div>
 
             <AboutCollage />
           </div>
         </div>
+
+        <TrainingFormats />
 
         <Milestones />
 
@@ -177,6 +178,78 @@ const cardItem: Variants = {
   },
 };
 
+/**
+ * Training options beside the headline numbers.
+ *
+ * The formats used to sit inside the intro column, where they were capped at
+ * roughly 47% of the container and could only ever be two across. Given the
+ * full width they breathe, and the right half carries the stats that had been
+ * crowding the founder section.
+ */
+function TrainingFormats() {
+  return (
+    <div className="row g-4 g-lg-5 pb-24 lg:pb-28">
+      <div className="col-12 col-lg-7">
+        <Reveal>
+          <span className="font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.22em] text-[#2563EB]">
+            Training options
+          </span>
+          <h3 className="mt-4 max-w-md font-[family-name:var(--font-poppins)] text-[clamp(1.5rem,2.6vw,2.1rem)] font-extrabold leading-[1.12] tracking-[-0.028em] text-[#0F172A]">
+            Formats that fit around your year
+          </h3>
+        </Reveal>
+        <StatCards />
+      </div>
+
+      <div className="col-12 col-lg-5">
+        <StatsPanel />
+      </div>
+    </div>
+  );
+}
+
+/** Headline numbers, as a vertical panel. */
+function StatsPanel() {
+  const items: { icon: LucideIcon; value: number; suffix: string; label: string; tint: string }[] = [
+    { icon: Users, value: 25000, suffix: "+", label: "Students Trained", tint: "from-[#2563EB] to-[#3B82F6]" },
+    { icon: Briefcase, value: 10000, suffix: "+", label: "Placements", tint: "from-[#4F46E5] to-[#8B5CF6]" },
+    { icon: Building2, value: 500, suffix: "+", label: "Hiring Partners", tint: "from-[#7C3AED] to-[#C026D3]" },
+  ];
+
+  return (
+    <motion.ul
+      variants={cardStack}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-80px" }}
+      className="row g-3 h-full lg:mt-[4.5rem]"
+    >
+      {items.map(({ icon: Icon, value, suffix, label, tint }) => (
+        <li key={label} className="col-12 col-sm-4 col-lg-12">
+          <motion.div
+            variants={cardItem}
+            whileHover={{ y: -5 }}
+            transition={{ type: "spring", stiffness: 300, damping: 24 }}
+            className="flex h-full items-center gap-4 rounded-[20px] border border-white/70 bg-white/70 p-5 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.55)] backdrop-blur-xl transition-shadow duration-500 hover:shadow-[0_28px_56px_-30px_rgba(79,70,229,0.5)]"
+          >
+            <span
+              className={`grid size-12 shrink-0 place-content-center rounded-full bg-gradient-to-br ${tint} shadow-[0_12px_28px_-12px_rgba(79,70,229,0.9)]`}
+            >
+              <Icon aria-hidden className="size-5 text-white" />
+            </span>
+            <span className="min-w-0 leading-tight">
+              <span className="block font-[family-name:var(--font-poppins)] text-[24px] font-extrabold tracking-[-0.02em] text-[#0F172A]">
+                <Counter to={value} suffix={suffix} duration={1.6} />
+              </span>
+              <span className="mt-0.5 block truncate text-[12.5px] text-[#64748B]">{label}</span>
+            </span>
+          </motion.div>
+        </li>
+      ))}
+    </motion.ul>
+  );
+}
+
 /** The programme durations as glass feature cards with a blue accent rail. */
 function StatCards() {
   return (
@@ -185,7 +258,7 @@ function StatCards() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-80px" }}
-      className="mt-12 grid grid-cols-2 gap-3.5 sm:gap-4"
+      className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-4 xl:grid-cols-3"
     >
       {STATS.map((s, i) => {
         const numeric = Number(s.value);
@@ -195,7 +268,7 @@ function StatCards() {
             key={s.label}
             variants={cardItem}
             className={`group relative overflow-hidden rounded-[24px] border border-white/70 bg-white/60 p-5 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.55)] ring-1 ring-inset ring-slate-900/[0.04] backdrop-blur-xl transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-1 hover:shadow-[0_30px_60px_-32px_rgba(37,99,235,0.5)] motion-reduce:hover:translate-y-0 ${
-              i === STATS.length - 1 ? "col-span-2" : ""
+              i === STATS.length - 1 ? "col-span-2 xl:col-span-1" : ""
             }`}
           >
             {/* accent rail draws itself in on hover */}
