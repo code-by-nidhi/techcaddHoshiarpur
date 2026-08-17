@@ -47,6 +47,21 @@ main {
   max-width: 100%;
 }
 
+/*
+ * Navbar height, published so the hero (and anything else sitting under a
+ * fixed bar) can reserve exactly the right space instead of hard-coding a
+ * number that drifts whenever the bar is resized.
+ */
+:root {
+  --nav-h: 68px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --nav-h: 86px;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -312,7 +327,7 @@ html.custom-cursor [contenteditable="true"] {
    clipping the robot's head. 1.125 is the 9:8 ratio. */
 @media (min-width: 1024px) {
   .robot-stage {
-    width: min(100%, calc((100svh - 10rem) * 1.125));
+    width: min(100%, calc((100svh - var(--nav-h) - 7rem) * 1.125));
   }
 }
 
