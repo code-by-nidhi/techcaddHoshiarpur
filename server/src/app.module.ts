@@ -4,6 +4,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 
 import { AuthorsModule } from './authors/authors.module';
 import { BlogModule } from './blog/blog.module';
+import { BookingsModule } from './bookings/bookings.module';
 import { CategoriesModule } from './categories/categories.module';
 import { NewsletterModule } from './newsletter/newsletter.module';
 import { PrismaModule } from './prisma/prisma.module';
@@ -28,6 +29,7 @@ import { PrismaModule } from './prisma/prisma.module';
     CategoriesModule,
     AuthorsModule,
     NewsletterModule,
+    BookingsModule,
   ],
 })
 export class AppModule {}

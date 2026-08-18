@@ -175,7 +175,15 @@ export default function Navbar() {
            * condenses on scroll exactly as it does on desktop and can never
            * push the CTA or the menu button off the row.
            */}
-          <Link href="/" aria-label="TechCadd — home" className="min-w-0 shrink">
+          {/* The extra left margin is optical: the wordmark's glyphs start
+              tight to the image edge, so matching the nav's own padding leaves
+              it looking closer to the screen edge than the links are to theirs.
+              It scales back on phones, where the row has no width to spare. */}
+          <Link
+            href="/"
+            aria-label="TechCadd — home"
+            className="ml-1 min-w-0 shrink sm:ml-3 lg:ml-5"
+          >
             <Image
               src="/images/techcadd-logo-white.png"
               alt="TechCadd — Your Skill & Technology Partner"

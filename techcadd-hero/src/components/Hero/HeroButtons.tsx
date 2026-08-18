@@ -23,7 +23,7 @@ export default function HeroButtons() {
 
       <motion.button
         type="button"
-        onClick={() => demoBus.open()}
+        onClick={() => demoBus.open("hero")}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: "spring", stiffness: 340, damping: 22 }}

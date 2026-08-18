@@ -48,15 +48,28 @@ const riseUp: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 };
 
+/** Indian mobile numbers: ten digits, and the first is 6–9. */
+const MOBILE = /^[6-9]\d{9}$/;
+
 export default function MegaFooter() {
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const subscribe = () => {
-    if (!email.trim()) return;
-    // wire this to your newsletter provider
+    if (!MOBILE.test(phone)) {
+      setError(
+        phone.length === 0
+          ? "Enter your mobile number."
+          : "That doesn't look like a 10-digit mobile number.",
+      );
+      return;
+    }
+
+    setError(null);
+    // wire this to your updates provider — the number is validated by here
     setSent(true);
-    setEmail("");
+    setPhone("");
   };
 
   return (
@@ -80,21 +93,37 @@ export default function MegaFooter() {
               Get the batch calendar and career notes
             </h3>
             <p className="mt-2 max-w-md text-[14px] leading-relaxed text-white/60">
-              One email a month: new batch dates, mentor articles, and openings from our network.
+              One message a month: new batch dates, mentor articles, and openings from our network.
             </p>
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setSent(false);
-                }}
-                placeholder="you@email.com"
-                aria-label="Email address"
-                className="w-full rounded-full border border-white/10 bg-white/[0.04] px-5 py-3.5 text-[14.5px] text-white outline-none transition-colors placeholder:text-white/35 focus:border-[#3B82F6] focus:bg-white/[0.07] sm:max-w-sm"
-              />
+              {/* The +91 sits in the field as a fixed prefix rather than in the
+                  placeholder, so the reader types ten digits and nothing else —
+                  and the value we validate is never ambiguous. */}
+              <div className="flex w-full items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-3.5 transition-colors focus-within:border-[#3B82F6] focus-within:bg-white/[0.07] sm:max-w-sm">
+                <span aria-hidden className="text-[14.5px] font-medium text-white/45">
+                  +91
+                </span>
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  autoComplete="tel-national"
+                  maxLength={10}
+                  value={phone}
+                  onChange={(e) => {
+                    // digits only, capped at ten: a pasted "+91 98765 43210"
+                    // becomes the ten digits we actually want
+                    setPhone(e.target.value.replace(/\D/g, "").slice(-10));
+                    setSent(false);
+                    setError(null);
+                  }}
+                  placeholder="98765 43210"
+                  aria-label="Mobile number"
+                  aria-invalid={error !== null}
+                  aria-describedby="footer-subscribe-status"
+                  className="w-full bg-transparent text-[14.5px] text-white outline-none placeholder:text-white/35"
+                />
+              </div>
               <motion.button
                 type="button"
                 onClick={subscribe}
@@ -113,6 +142,21 @@ export default function MegaFooter() {
                 )}
               </motion.button>
             </div>
+
+            {/* One live region for both outcomes, so either is announced */}
+            <p
+              id="footer-subscribe-status"
+              role="status"
+              aria-live="polite"
+              className="mt-3 min-h-[1.25rem] text-[13px]"
+            >
+              {error ? <span className="text-rose-300">{error}</span> : null}
+              {sent && !error ? (
+                <span className="text-emerald-300">
+                  Done — we&apos;ll message you when the next batch opens.
+                </span>
+              ) : null}
+            </p>
           </div>
 
           <motion.a

@@ -196,11 +196,11 @@ export default function HeroSection({ children }: HeroSectionProps) {
           </motion.div>
         </div>
 
-        {/* Statistics row sits inside the hero's backdrop, aligned to the copy
-            column's left edge and stopping short of the full container width. */}
-        {children ? (
-          <div className="relative z-10 lg:max-w-5xl">{children}</div>
-        ) : null}
+        {/* Statistics row sits inside the hero's backdrop. It takes the full
+            container width rather than stopping short: capped at 5xl, four
+            columns leave about 250px each, which a 2.7rem figure beside a 68px
+            badge cannot fit — the numbers ran into the dividers. */}
+        {children ? <div className="relative z-10">{children}</div> : null}
       </div>
     </section>
   );

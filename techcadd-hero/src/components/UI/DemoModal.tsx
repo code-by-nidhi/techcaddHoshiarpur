@@ -2,9 +2,19 @@
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FiArrowRight, FiCheck, FiCheckCircle, FiChevronDown, FiStar, FiX } from "react-icons/fi";
+import {
+  FiAlertCircle,
+  FiArrowRight,
+  FiCheck,
+  FiCheckCircle,
+  FiChevronDown,
+  FiLoader,
+  FiStar,
+  FiX,
+} from "react-icons/fi";
 import { GoogleMark } from "@/components/UI/BrandMarks";
 import { demoBus } from "@/lib/demoBus";
+import { PUBLIC_API_URL } from "@/lib/blog/api";
 import { MEGA_FOOTER } from "@/lib/site";
 
 const COURSES = [
@@ -39,6 +49,8 @@ export default function DemoModal() {
   const [values, setValues] = useState<Fields>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closerRef = useRef<HTMLButtonElement>(null);
 
@@ -68,6 +80,8 @@ export default function DemoModal() {
       setValues(EMPTY);
       setErrors({});
       setSent(false);
+      setSending(false);
+      setServerError(null);
     }
   }, [open]);
 
@@ -76,13 +90,56 @@ export default function DemoModal() {
     setErrors((p) => (p[key] ? { ...p, [key]: undefined } : p));
   };
 
-  const submit = (e: FormEvent) => {
+  /**
+   * Sends the enquiry to the API, which writes it to MySQL.
+   *
+   * The submission is not treated as fire-and-forget: until the row is stored
+   * the visitor is not told it was, because a "we'll call you" that never
+   * reached the counselling team is worse than an error message.
+   */
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
+
     const found = validate(values);
     setErrors(found);
     if (Object.keys(found).length) return;
-    // wire this to your CRM or mail handler
-    setSent(true);
+
+    setSending(true);
+    setServerError(null);
+
+    try {
+      const response = await fetch(`${PUBLIC_API_URL}/demo-bookings`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          phone: values.phone.replace(/\D/g, "").slice(-10),
+          course: values.course,
+          source: demoBus.getSource(),
+        }),
+      });
+
+      const payload = (await response.json().catch(() => ({}))) as {
+        message?: string | string[];
+      };
+
+      if (!response.ok) {
+        const message = Array.isArray(payload.message) ? payload.message[0] : payload.message;
+
+        setServerError(
+          response.status === 429
+            ? "Too many attempts. Please wait a minute and try again."
+            : (message ?? "We couldn't submit that. Please call us instead."),
+        );
+        return;
+      }
+
+      setSent(true);
+    } catch {
+      setServerError("Network error. Please check your connection and try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -301,17 +358,34 @@ export default function DemoModal() {
 
                       <motion.button
                         type="submit"
-                        whileHover={{ y: -2, scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        disabled={sending}
+                        whileHover={sending ? undefined : { y: -2, scale: 1.02 }}
+                        whileTap={sending ? undefined : { scale: 0.98 }}
                         transition={{ type: "spring", stiffness: 340, damping: 22 }}
-                        className="group mt-4 inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 text-[13.5px] font-semibold text-[#0F172A] shadow-[0_16px_40px_-16px_rgba(2,6,23,0.8)]"
+                        className="group mt-4 inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 text-[13.5px] font-semibold text-[#0F172A] shadow-[0_16px_40px_-16px_rgba(2,6,23,0.8)] disabled:cursor-wait disabled:opacity-75"
                       >
-                        Submit
-                        <FiArrowRight
-                          aria-hidden
-                          className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-                        />
+                        {sending ? "Submitting…" : "Submit"}
+                        {sending ? (
+                          <FiLoader aria-hidden className="size-4 animate-spin" />
+                        ) : (
+                          <FiArrowRight
+                            aria-hidden
+                            className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                          />
+                        )}
                       </motion.button>
+
+                      {/* Server-side failures — a rejected number, the rate
+                          limiter, or MySQL being unreachable. */}
+                      {serverError ? (
+                        <p
+                          role="alert"
+                          className="mt-3 flex items-start gap-2 rounded-2xl bg-[#7f1d1d]/40 px-4 py-2.5 text-[12.5px] font-medium text-[#FEE2E2] ring-1 ring-inset ring-[#FCA5A5]/30"
+                        >
+                          <FiAlertCircle aria-hidden className="mt-0.5 size-3.5 shrink-0" />
+                          {serverError}
+                        </p>
+                      ) : null}
                     </motion.form>
                   )}
                 </AnimatePresence>

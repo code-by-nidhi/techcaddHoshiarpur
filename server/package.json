@@ -11,7 +11,11 @@
     "prisma:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "ts-node prisma/seed.ts",
-    "db:reset": "prisma db push --force-reset && npm run db:seed"
+    "db:reset": "prisma db push --force-reset && npm run db:seed",
+    "mysql:generate": "prisma generate --schema prisma/mysql/schema.prisma",
+    "mysql:push": "prisma db push --schema prisma/mysql/schema.prisma",
+    "mysql:studio": "prisma studio --schema prisma/mysql/schema.prisma",
+    "postinstall": "prisma generate && prisma generate --schema prisma/mysql/schema.prisma"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

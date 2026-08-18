@@ -12,6 +12,7 @@ const config_1 = require("@nestjs/config");
 const throttler_1 = require("@nestjs/throttler");
 const authors_module_1 = require("./authors/authors.module");
 const blog_module_1 = require("./blog/blog.module");
+const bookings_module_1 = require("./bookings/bookings.module");
 const categories_module_1 = require("./categories/categories.module");
 const newsletter_module_1 = require("./newsletter/newsletter.module");
 const prisma_module_1 = require("./prisma/prisma.module");
@@ -34,6 +35,7 @@ exports.AppModule = AppModule = __decorate([
             categories_module_1.CategoriesModule,
             authors_module_1.AuthorsModule,
             newsletter_module_1.NewsletterModule,
+            bookings_module_1.BookingsModule,
         ],
     })
 ], AppModule);
