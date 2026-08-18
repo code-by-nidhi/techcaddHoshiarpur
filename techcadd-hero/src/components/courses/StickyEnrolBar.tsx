@@ -70,7 +70,7 @@ export default function StickyEnrolBar({ course }: { course: Course }) {
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 340, damping: 22 }}
-                className="group inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] px-5 py-2.5 text-[13px] font-semibold text-white shadow-[0_0_28px_-8px_rgba(37,99,235,0.95)] sm:flex-initial sm:px-6"
+                className="group inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-5 py-2.5 text-[13px] font-semibold text-white shadow-[0_0_28px_-8px_rgba(37,99,235,0.95)] sm:flex-initial sm:px-6"
               >
                 Enroll Now
                 <FiArrowRight

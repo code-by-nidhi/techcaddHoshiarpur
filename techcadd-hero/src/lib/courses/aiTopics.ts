@@ -13,7 +13,10 @@ import type { Course } from "./types";
  * TechCadd actually teaches before this goes in front of students.
  */
 
-const CATEGORY = "AI Courses";
+/** The dedicated AI category, shared with `artificial-intelligence`. */
+export const AI_CATEGORY = "AI";
+
+const CATEGORY = AI_CATEGORY;
 const HERO = "/images/ai.webp";
 
 const SPECS: Spec[] = [

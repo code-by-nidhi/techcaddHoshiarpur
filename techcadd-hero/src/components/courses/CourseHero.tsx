@@ -27,7 +27,7 @@ export default function CourseHero({ course }: { course: Course }) {
     <section className="relative overflow-hidden bg-[#020817] pb-16 pt-[104px] lg:pb-20 lg:pt-[128px]">
       {/* brand atmosphere, matching the rest of the site's dark surfaces */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-[10%] top-[-10%] size-[36rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.22)_0%,transparent_68%)] blur-3xl" />
+        <div className="absolute -left-[10%] top-[-10%] size-[36rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.22)_0%,transparent_68%)] blur-3xl" />
         <div className="absolute -right-[8%] top-[10%] size-[40rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.26)_0%,transparent_70%)] blur-3xl" />
       </div>
 
@@ -90,7 +90,7 @@ export default function CourseHero({ course }: { course: Course }) {
                   whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] px-7 py-3.5 text-[14.5px] font-semibold text-white shadow-[0_0_34px_-8px_rgba(37,99,235,0.95)]"
+                  className="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-7 py-3.5 text-[14.5px] font-semibold text-white shadow-[0_0_34px_-8px_rgba(37,99,235,0.95)]"
                 >
                   Enroll Now
                   <FiArrowRight

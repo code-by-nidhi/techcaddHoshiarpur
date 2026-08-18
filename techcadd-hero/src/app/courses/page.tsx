@@ -25,7 +25,7 @@ export default function CoursesIndex() {
       <main className="bg-white">
         <section className="relative overflow-hidden bg-[#020817] pb-16 pt-[104px] lg:pb-20 lg:pt-[128px]">
           <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute -left-[10%] top-[-10%] size-[34rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.20)_0%,transparent_68%)] blur-3xl" />
+            <div className="absolute -left-[10%] top-[-10%] size-[34rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.20)_0%,transparent_68%)] blur-3xl" />
             <div className="absolute -right-[8%] top-[10%] size-[38rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.24)_0%,transparent_70%)] blur-3xl" />
           </div>
 

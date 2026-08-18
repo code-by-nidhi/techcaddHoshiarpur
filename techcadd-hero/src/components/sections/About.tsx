@@ -67,7 +67,7 @@ export default function About() {
   return (
     <section id="about" className="relative overflow-x-clip bg-white">
       {/* eases the dark hero into the white page */}
-      <div aria-hidden className="h-16 bg-gradient-to-b from-[#020617] to-white" />
+      <div aria-hidden className="h-16 bg-gradient-to-b from-[#050B1F] to-white" />
 
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         {/* opening statement, with the photo collage opposite */}
@@ -150,8 +150,8 @@ function AtmosphereLayer() {
   return (
     <div aria-hidden className="pointer-events-none absolute -inset-x-6 -inset-y-10 -z-10 overflow-hidden lg:-inset-x-16">
       <div className="absolute -left-24 top-10 size-[26rem] rounded-full bg-[#2563EB]/[0.07] blur-[110px]" />
-      <div className="absolute -right-20 top-1/3 size-[30rem] rounded-full bg-[#38BDF8]/[0.09] blur-[120px]" />
-      <div className="absolute bottom-0 left-1/3 size-[22rem] rounded-full bg-[#7C3AED]/[0.05] blur-[110px]" />
+      <div className="absolute -right-20 top-1/3 size-[30rem] rounded-full bg-[#60A5FA]/[0.09] blur-[120px]" />
+      <div className="absolute bottom-0 left-1/3 size-[22rem] rounded-full bg-[#60A5FA]/[0.05] blur-[110px]" />
       <div className="absolute inset-0 bg-[radial-gradient(60%_45%_at_50%_0%,rgba(37,99,235,0.06),transparent_70%)]" />
       <div
         className="absolute inset-0 opacity-[0.035] mix-blend-multiply"
@@ -211,9 +211,9 @@ function TrainingFormats() {
 /** Headline numbers, as a vertical panel. */
 function StatsPanel() {
   const items: { icon: LucideIcon; value: number; suffix: string; label: string; tint: string }[] = [
-    { icon: Users, value: 25000, suffix: "+", label: "Students Trained", tint: "from-[#2563EB] to-[#3B82F6]" },
-    { icon: Briefcase, value: 10000, suffix: "+", label: "Placements", tint: "from-[#4F46E5] to-[#8B5CF6]" },
-    { icon: Building2, value: 500, suffix: "+", label: "Hiring Partners", tint: "from-[#7C3AED] to-[#C026D3]" },
+    { icon: Users, value: 25000, suffix: "+", label: "Students Trained", tint: "from-[#142C8E] to-[#2563EB]" },
+    { icon: Briefcase, value: 10000, suffix: "+", label: "Placements", tint: "from-[#142C8E] to-[#2563EB]" },
+    { icon: Building2, value: 500, suffix: "+", label: "Hiring Partners", tint: "from-[#60A5FA] to-[#C026D3]" },
   ];
 
   return (
@@ -230,10 +230,10 @@ function StatsPanel() {
             variants={cardItem}
             whileHover={{ y: -5 }}
             transition={{ type: "spring", stiffness: 300, damping: 24 }}
-            className="flex h-full items-center gap-4 rounded-[20px] border border-white/70 bg-white/70 p-5 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.55)] backdrop-blur-xl transition-shadow duration-500 hover:shadow-[0_28px_56px_-30px_rgba(79,70,229,0.5)]"
+            className="flex h-full items-center gap-4 rounded-[20px] border border-white/70 bg-white/70 p-5 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.55)] backdrop-blur-xl transition-shadow duration-500 hover:shadow-[0_28px_56px_-30px_rgba(37,99,235,0.5)]"
           >
             <span
-              className={`grid size-12 shrink-0 place-content-center rounded-full bg-gradient-to-br ${tint} shadow-[0_12px_28px_-12px_rgba(79,70,229,0.9)]`}
+              className={`grid size-12 shrink-0 place-content-center rounded-full bg-gradient-to-br ${tint} shadow-[0_12px_28px_-12px_rgba(37,99,235,0.9)]`}
             >
               <Icon aria-hidden className="size-5 text-white" />
             </span>
@@ -274,7 +274,7 @@ function StatCards() {
             {/* accent rail draws itself in on hover */}
             <span
               aria-hidden
-              className="absolute left-0 top-0 h-full w-[3px] origin-top scale-y-[0.28] bg-gradient-to-b from-[#2563EB] to-[#38BDF8] transition-transform duration-500 ease-out group-hover:scale-y-100"
+              className="absolute left-0 top-0 h-full w-[3px] origin-top scale-y-[0.28] bg-gradient-to-b from-[#142C8E] to-[#2563EB] transition-transform duration-500 ease-out group-hover:scale-y-100"
             />
             <span
               aria-hidden
@@ -322,7 +322,7 @@ function CallToAction() {
         >
           <span
             aria-hidden
-            className="grid size-10 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#2563EB]/12 to-[#38BDF8]/12 ring-1 ring-inset ring-[#2563EB]/15 transition-transform duration-500 group-hover:scale-105"
+            className="grid size-10 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-[#2563EB]/15 transition-transform duration-500 group-hover:scale-105"
           >
             <Phone className="size-4 text-[#2563EB]" />
           </span>
@@ -378,7 +378,7 @@ function AboutCollage() {
       <motion.figure variants={frame} className="relative">
         <span
           aria-hidden
-          className="absolute -inset-2 -z-10 rotate-[1.4deg] rounded-[28px] bg-gradient-to-br from-[#2563EB]/12 via-[#38BDF8]/8 to-transparent"
+          className="absolute -inset-2 -z-10 rotate-[1.4deg] rounded-[28px] bg-gradient-to-br from-[#2563EB]/12 via-[#60A5FA]/8 to-transparent"
         />
         <span
           aria-hidden
@@ -518,7 +518,7 @@ function GlassChip({
       <motion.span
         animate={drift ? { y: [0, -5, 0] } : undefined}
         transition={drift ? { duration: 5.5, repeat: Infinity, ease: "easeInOut" } : undefined}
-        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-white/35 bg-white/20 px-3 py-1.5 text-[10.5px] font-semibold tracking-[0.01em] text-white shadow-[0_10px_30px_-14px_rgba(2,6,23,0.85)] backdrop-blur-xl sm:px-3.5 sm:text-[11.5px]"
+        className="inline-flex max-w-full items-center gap-1.5 rounded-full border border-white/35 bg-white/20 px-3 py-1.5 text-[10.5px] font-semibold tracking-[0.01em] text-white shadow-[0_10px_30px_-14px_rgba(5,11,31,0.85)] backdrop-blur-xl sm:px-3.5 sm:text-[11.5px]"
       >
         <span
           aria-hidden
@@ -543,7 +543,7 @@ function YearsBadge() {
       >
         <span
           aria-hidden
-          className="grid size-9 shrink-0 place-content-center rounded-xl bg-gradient-to-br from-[#2563EB] to-[#38BDF8] font-[family-name:var(--font-poppins)] text-[11px] font-extrabold text-white shadow-[0_10px_22px_-10px_rgba(37,99,235,0.9)]"
+          className="grid size-9 shrink-0 place-content-center rounded-xl bg-gradient-to-br from-[#142C8E] to-[#2563EB] font-[family-name:var(--font-poppins)] text-[11px] font-extrabold text-white shadow-[0_10px_22px_-10px_rgba(37,99,235,0.9)]"
         >
           {GALLERY.badge.value.replace("+", "")}
         </span>

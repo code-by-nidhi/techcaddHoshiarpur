@@ -23,6 +23,12 @@ export type After12Programme = {
   summary: string;
   /** catalogue slugs this pathway is built from; may be empty */
   courseSlugs: string[];
+  /**
+   * Optional artwork for this pathway. When absent the hero falls back to the
+   * first linked course's image, then to the shared default — so a pathway
+   * always has a hero without needing its own file.
+   */
+  heroImage?: string;
 };
 
 export const AFTER12_CATEGORY_META: Record<
@@ -160,6 +166,9 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     courseSlugs: [],
   },
 ];
+
+/** Shown when a pathway has no artwork and no linked course to borrow from. */
+export const DEFAULT_AFTER12_HERO = "/images/courses/default-course.webp";
 
 export const after12Slugs = () => AFTER12_PROGRAMMES.map((p) => p.slug);
 

@@ -40,7 +40,7 @@ export default function InstructorSection({ course }: { course: Course }) {
                 className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_12px_32px_-28px_rgba(15,23,42,0.6)]"
               >
                 <h3 className="flex items-start gap-2.5 font-[family-name:var(--font-sora)] text-[14.5px] font-bold leading-snug text-[#0F172A]">
-                  <span className="mt-0.5 grid size-5 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#2563EB] to-[#38BDF8]">
+                  <span className="mt-0.5 grid size-5 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#142C8E] to-[#2563EB]">
                     <FiCheck aria-hidden className="size-3 text-white" />
                   </span>
                   {p.title}

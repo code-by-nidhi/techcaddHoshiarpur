@@ -37,7 +37,7 @@ export default function AboutPage() {
       {/* light → dark, handing off to the footer */}
       <div
         aria-hidden
-        className="h-24 bg-gradient-to-b from-white via-[#0B1B3F]/40 to-[#020617]"
+        className="h-24 bg-gradient-to-b from-white via-[#0B1B3F]/40 to-[#050B1F]"
       />
     </>
   );

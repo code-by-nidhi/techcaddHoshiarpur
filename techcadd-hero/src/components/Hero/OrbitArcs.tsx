@@ -18,11 +18,11 @@ export default function OrbitArcs() {
           <stop offset="0%" stopColor="#22d3ee" stopOpacity="0" />
           <stop offset="35%" stopColor="#3b82f6" stopOpacity="0.95" />
           <stop offset="70%" stopColor="#60a5fa" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#a855f7" stopOpacity="0" />
+          <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
         </linearGradient>
         <linearGradient id="arcViolet" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#a855f7" stopOpacity="0" />
-          <stop offset="45%" stopColor="#8b5cf6" stopOpacity="0.85" />
+          <stop offset="0%" stopColor="#60a5fa" stopOpacity="0" />
+          <stop offset="45%" stopColor="#60a5fa" stopOpacity="0.85" />
           <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
         </linearGradient>
         <filter id="arcGlow" x="-30%" y="-30%" width="160%" height="160%">

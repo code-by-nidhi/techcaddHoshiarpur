@@ -193,7 +193,7 @@ export default function Navbar() {
       <div
         className={`w-full transition-all duration-500 ${
           scrolled
-            ? "border-b border-white/10 bg-[#020617]/85 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+            ? "border-b border-white/10 bg-[#050B1F]/85 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
             : "border-b border-transparent"
         }`}
       >
@@ -248,7 +248,7 @@ export default function Navbar() {
                    the left on hover for the others */
                 <span
                   aria-hidden
-                  className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-gradient-to-r from-[#2563eb] to-[#60a5fa] shadow-[0_0_10px_rgba(59,130,246,0.9)] transition-[width] duration-300 ease-out ${
+                  className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] shadow-[0_0_10px_rgba(59,130,246,0.9)] transition-[width] duration-300 ease-out ${
                     current || thisOpen ? "w-full" : "w-0 group-hover:w-full"
                   }`}
                 />
@@ -324,7 +324,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => demoBus.open()}
-                className="inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-3.5 py-2 text-[13.5px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
+                className="inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-3.5 py-2 text-[13.5px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
               >
                 Book Demo
               </button>
@@ -418,7 +418,7 @@ export default function Navbar() {
             transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
             /* the sheet now carries the whole catalogue, so it scrolls itself
                rather than pushing past the bottom of the screen */
-            className="mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#020617]/95 backdrop-blur-xl xl:hidden"
+            className="mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#050B1F]/95 backdrop-blur-xl xl:hidden"
           >
             <motion.ul
               initial="hidden"
@@ -490,7 +490,7 @@ export default function Navbar() {
                     setOpen(false);
                     demoBus.open();
                   }}
-                  className="block w-full rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-6 py-3 text-center text-[15px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
+                  className="block w-full rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-6 py-3 text-center text-[15px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
                 >
                   Book Demo
                 </button>

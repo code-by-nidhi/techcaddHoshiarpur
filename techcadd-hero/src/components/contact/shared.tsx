@@ -76,9 +76,9 @@ export function Particles({ className = "" }: { className?: string }) {
 export function Ambience() {
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div className="absolute -left-[10%] top-[-8%] size-[42rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.22)_0%,transparent_68%)] blur-3xl" />
+      <div className="absolute -left-[10%] top-[-8%] size-[42rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.22)_0%,transparent_68%)] blur-3xl" />
       <div className="absolute -right-[8%] top-[18%] size-[44rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.26)_0%,transparent_70%)] blur-3xl" />
-      <div className="absolute bottom-[-12%] left-[28%] size-[38rem] rounded-full bg-[radial-gradient(circle,rgba(56,189,248,0.16)_0%,transparent_70%)] blur-3xl" />
+      <div className="absolute bottom-[-12%] left-[28%] size-[38rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.16)_0%,transparent_70%)] blur-3xl" />
     </div>
   );
 }

@@ -13,7 +13,7 @@ export default function CourseCta({ course }: { course: Course }) {
         <Reveal>
           <motion.div
             variants={fadeUp}
-            className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(125deg,#1E3A8A_0%,#2563EB_45%,#7C3AED_100%)] px-6 py-14 text-center sm:px-12"
+            className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(125deg,#1E3A8A_0%,#2563EB_45%,#60A5FA_100%)] px-6 py-14 text-center sm:px-12"
           >
             <motion.span
               aria-hidden
@@ -38,7 +38,7 @@ export default function CourseCta({ course }: { course: Course }) {
                   whileHover={{ y: -3, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-[14.5px] font-semibold text-[#0F172A] shadow-[0_16px_40px_-14px_rgba(2,6,23,0.6)]"
+                  className="group inline-flex items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-[14.5px] font-semibold text-[#0F172A] shadow-[0_16px_40px_-14px_rgba(5,11,31,0.6)]"
                 >
                   Enroll in {course.shortTitle ?? course.title}
                   <FiArrowRight

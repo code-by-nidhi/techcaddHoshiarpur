@@ -70,7 +70,7 @@ export default function MegaMenu({
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute -bottom-28 right-[-6%] size-96 rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.2),transparent_70%)] blur-2xl"
+          className="pointer-events-none absolute -bottom-28 right-[-6%] size-96 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.2),transparent_70%)] blur-2xl"
         />
         <span
           aria-hidden
@@ -107,7 +107,7 @@ export default function MegaMenu({
                       onClick={onNavigate}
                       className={`group/row mb-1 flex items-center gap-3 rounded-2xl px-3.5 py-3 text-[14px] transition-[background-color,color,transform] duration-300 ${
                         on
-                          ? "translate-x-0.5 bg-gradient-to-r from-[#2563EB] to-[#7C3AED] font-semibold text-white shadow-[0_14px_30px_-14px_rgba(37,99,235,0.95)]"
+                          ? "translate-x-0.5 bg-gradient-to-r from-[#142C8E] to-[#2563EB] font-semibold text-white shadow-[0_14px_30px_-14px_rgba(37,99,235,0.95)]"
                           : "text-white/80 hover:bg-white/[0.08] hover:text-white"
                       }`}
                     >
@@ -167,7 +167,7 @@ export function FeatureCard({
         {/* gradient border glow, lit on hover */}
         <span
           aria-hidden
-          className="absolute inset-0 rounded-[24px] bg-[linear-gradient(130deg,rgba(37,99,235,0.85),rgba(124,58,237,0.6),rgba(56,189,248,0.85))] opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
+          className="absolute inset-0 rounded-[24px] bg-[linear-gradient(130deg,rgba(37,99,235,0.85),rgba(96,165,250,0.6),rgba(96,165,250,0.85))] opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
         />
 
         <div className="relative flex h-full flex-col overflow-hidden rounded-[23px] border border-white/[0.08] bg-white/[0.06] shadow-[0_14px_36px_-26px_rgba(0,0,0,0.7)] backdrop-blur-[16px] transition-shadow duration-500 group-hover/card:shadow-[0_30px_64px_-30px_rgba(37,99,235,0.55)]">

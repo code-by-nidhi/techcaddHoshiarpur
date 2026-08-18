@@ -69,7 +69,7 @@ export default async function ProgrammePage({
 
       <main id="content">
         {/* ---------------------------- hero ---------------------------- */}
-        <section className="relative overflow-x-clip bg-[#020617] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
+        <section className="relative overflow-x-clip bg-[#050B1F] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
           <span
             aria-hidden
             className="pointer-events-none absolute -left-[10%] top-0 size-[32rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.22),transparent_70%)] blur-3xl"
@@ -91,7 +91,7 @@ export default async function ProgrammePage({
             <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 font-[family-name:var(--font-mono-face)] text-[10.5px] uppercase tracking-[0.2em] text-[#93C5FD] backdrop-blur-xl">
               {category.heading}
               {programme.badge && (
-                <span className="rounded-full bg-gradient-to-r from-[#2563eb] to-[#38bdf8] px-2 py-0.5 text-[9px] font-bold text-white">
+                <span className="rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2 py-0.5 text-[9px] font-bold text-white">
                   {programme.badge}
                 </span>
               )}
@@ -133,7 +133,7 @@ export default async function ProgrammePage({
                 <ul className="mt-6 grid gap-3">
                   {programme.includes.map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-[14.5px] text-[#334155]">
-                      <span className="mt-0.5 grid size-5 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#2563EB] to-[#38BDF8] text-white">
+                      <span className="mt-0.5 grid size-5 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#142C8E] to-[#2563EB] text-white">
                         <FiCheck aria-hidden size={11} />
                       </span>
                       {item}
@@ -149,7 +149,7 @@ export default async function ProgrammePage({
                 <ul className="mt-6 grid gap-3">
                   {programme.outcomes.map((item) => (
                     <li key={item} className="flex items-start gap-2.5 text-[14.5px] text-[#334155]">
-                      <span className="mt-0.5 grid size-5 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#2563EB] to-[#38BDF8] text-white">
+                      <span className="mt-0.5 grid size-5 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#142C8E] to-[#2563EB] text-white">
                         <FiCheck aria-hidden size={11} />
                       </span>
                       {item}
@@ -159,7 +159,7 @@ export default async function ProgrammePage({
 
                 <Link
                   href="/courses"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#2563EB] to-[#38BDF8] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
+                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
                 >
                   Choose a subject track
                   <FiArrowRight aria-hidden className="size-4" />

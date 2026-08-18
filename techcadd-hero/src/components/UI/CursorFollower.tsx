@@ -40,10 +40,10 @@ const RING = {
     /* The second shadow is a dark hairline sitting just outside the ring —
        an edge of its own, so the circle stays defined where its colour and the
        surface behind it are close in value. */
-    idle: "border-white shadow-[0_0_0_1.5px_rgba(2,6,23,0.5)]",
+    idle: "border-white shadow-[0_0_0_1.5px_rgba(5, 11, 31,0.5)]",
     hover:
-      "border-white bg-white/15 shadow-[0_0_0_1.5px_rgba(2,6,23,0.5),0_0_28px_-4px_rgba(255,255,255,0.6)]",
-    dot: "bg-white shadow-[0_0_0_1px_rgba(2,6,23,0.45)]",
+      "border-white bg-white/15 shadow-[0_0_0_1.5px_rgba(5, 11, 31,0.5),0_0_28px_-4px_rgba(255,255,255,0.6)]",
+    dot: "bg-white shadow-[0_0_0_1px_rgba(5, 11, 31,0.45)]",
   },
   light: {
     idle: "border-[#2563eb] shadow-[0_0_0_1.5px_rgba(8,21,64,0.3)]",
@@ -84,7 +84,7 @@ function toneUnder(target: Element | null): Tone {
     node = node.parentElement;
   }
 
-  // the body is #020617
+  // the body is #050B1F
   return "dark";
 }
 

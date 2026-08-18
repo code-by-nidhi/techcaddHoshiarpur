@@ -24,7 +24,7 @@ export default function WhyChoose() {
             <h2 className="mt-5 font-[family-name:var(--font-sora)] text-[clamp(2rem,3.8vw,3.3rem)] font-extrabold leading-[1.08] tracking-[-0.025em] text-[#0F172A]">
               Why Choose
               <br />
-              <span className="bg-gradient-to-r from-[#2563EB] via-[#4F46E5] to-[#7C3AED] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#2563EB] via-[#2563EB] to-[#60A5FA] bg-clip-text text-transparent">
                 Techcadd?
               </span>
             </h2>
@@ -61,7 +61,7 @@ export default function WhyChoose() {
                   className="pointer-events-none absolute -right-12 -top-14 size-40 rounded-full bg-[#2563EB]/8 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
                 />
 
-                <span className="relative grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#7C3AED]/12 ring-1 ring-inset ring-slate-200 transition-transform duration-500 group-hover:scale-105">
+                <span className="relative grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-slate-200 transition-transform duration-500 group-hover:scale-105">
                   <Icon aria-hidden className="size-5 text-[#2563EB]" />
                 </span>
 

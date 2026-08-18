@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FiArrowRight, FiArrowUpRight, FiClock } from "react-icons/fi";
@@ -8,6 +9,7 @@ import CourseEnquiryForm from "@/components/forms/CourseEnquiryForm";
 import { getCourse } from "@/lib/courses";
 import {
   AFTER12_CATEGORY_META,
+  DEFAULT_AFTER12_HERO,
   after12Slugs,
   getAfter12,
 } from "@/lib/after12/programmes";
@@ -37,11 +39,13 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${programme.title} After 12th`,
+    /* Hoshiarpur, not Jalandhar: the site was moved off the Jalandhar name and
+       the string appears nowhere else in the codebase. */
+    title: `${programme.title} Course in Hoshiarpur`,
     description: programme.summary,
     alternates: { canonical: `/after-12th/${programme.slug}` },
     openGraph: {
-      title: `${programme.title} After 12th`,
+      title: `${programme.title} Course in Hoshiarpur`,
       description: programme.summary,
       url: `/after-12th/${programme.slug}`,
     },
@@ -62,18 +66,23 @@ export default async function After12ProgrammePage({
   const courses = programme.courseSlugs.map(getCourse).filter((c) => c !== undefined);
   const enquirySubject = courses[0] ?? getCourse("artificial-intelligence");
 
+  /* explicit artwork, else the first linked course's, else the default */
+  const heroImage = programme.heroImage ?? courses[0]?.heroImage ?? DEFAULT_AFTER12_HERO;
+
   return (
     <>
       <Navbar />
 
       <main id="content">
-        <section className="relative overflow-x-clip bg-[#020617] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
+        <section className="relative overflow-x-clip bg-[#050B1F] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
           <span
             aria-hidden
             className="pointer-events-none absolute -left-[10%] top-0 size-[32rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.22),transparent_70%)] blur-3xl"
           />
 
           <div className="relative mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+              <div>
             <nav aria-label="Breadcrumb" className="text-[12.5px] text-white/50">
               <Link href="/" className="hover:text-white">
                 Home
@@ -89,7 +98,7 @@ export default async function After12ProgrammePage({
             <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 font-[family-name:var(--font-mono-face)] text-[10.5px] uppercase tracking-[0.2em] text-[#93C5FD] backdrop-blur-xl">
               {meta.heading}
               {programme.badge && (
-                <span className="rounded-full bg-gradient-to-r from-[#2563eb] to-[#38bdf8] px-2 py-0.5 text-[9px] font-bold text-white">
+                <span className="rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2 py-0.5 text-[9px] font-bold text-white">
                   {programme.badge}
                 </span>
               )}
@@ -107,6 +116,24 @@ export default async function After12ProgrammePage({
               <FiClock aria-hidden className="size-4 text-[#60A5FA]" />
               {programme.duration}
             </p>
+              </div>
+
+              {/* image: right on desktop, below the copy once stacked */}
+              <div className="relative order-last aspect-[16/10] w-full overflow-hidden rounded-[26px] ring-1 ring-inset ring-white/10">
+                <Image
+                  src={heroImage}
+                  alt={programme.title}
+                  fill
+                  priority
+                  sizes="(max-width: 1023px) 92vw, 45vw"
+                  className="object-cover"
+                />
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(5,11,31,0.55))]"
+                />
+              </div>
+            </div>
           </div>
         </section>
 
@@ -160,7 +187,7 @@ export default async function After12ProgrammePage({
 
             <Link
               href="/courses"
-              className="mt-9 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#2563EB] to-[#38BDF8] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
+              className="mt-9 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
             >
               Browse all courses
               <FiArrowRight aria-hidden className="size-4" />

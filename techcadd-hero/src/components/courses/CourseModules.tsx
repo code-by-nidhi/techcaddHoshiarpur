@@ -39,7 +39,7 @@ export default function CourseModules({ course }: { course: Course }) {
                   aria-hidden
                   className={`absolute left-0 top-4 grid size-8 place-content-center rounded-full border-2 border-white font-[family-name:var(--font-mono-face)] text-[11px] font-bold transition-colors duration-300 ${
                     isOpen
-                      ? "bg-gradient-to-br from-[#2563EB] to-[#38BDF8] text-white"
+                      ? "bg-gradient-to-br from-[#142C8E] to-[#2563EB] text-white"
                       : "bg-slate-100 text-[#64748B]"
                   }`}
                 >

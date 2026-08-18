@@ -68,7 +68,7 @@ export default function HelpCenter() {
                   {on && (
                     <motion.span
                       layoutId="help-tab"
-                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-[#2563EB] to-[#4F46E5]"
+                      className="absolute inset-0 -z-10 rounded-full bg-gradient-to-r from-[#2563EB] to-[#2563EB]"
                       transition={{ type: "spring", stiffness: 320, damping: 30 }}
                     />
                   )}

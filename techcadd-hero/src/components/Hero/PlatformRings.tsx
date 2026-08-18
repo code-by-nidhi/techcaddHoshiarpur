@@ -20,7 +20,7 @@ export default function PlatformRings() {
         {/* concentric neon rings */}
         <div className="ring-a absolute left-1/2 top-[40%] h-[46%] w-[68%] -translate-x-1/2 rounded-[50%] border-2 border-[#3b82f6]/80 shadow-[0_0_40px_-6px_rgba(59,130,246,0.95),inset_0_0_24px_-6px_rgba(59,130,246,0.8)]" />
         <div className="ring-b absolute left-1/2 top-[33%] h-[56%] w-[80%] -translate-x-1/2 rounded-[50%] border border-[#22d3ee]/55 shadow-[0_0_34px_-8px_rgba(34,211,238,0.75)]" />
-        <div className="ring-c absolute left-1/2 top-[26%] h-[66%] w-[94%] -translate-x-1/2 rounded-[50%] border border-[#a855f7]/50 shadow-[0_0_44px_-10px_rgba(168,85,247,0.75)]" />
+        <div className="ring-c absolute left-1/2 top-[26%] h-[66%] w-[94%] -translate-x-1/2 rounded-[50%] border border-[#60a5fa]/50 shadow-[0_0_44px_-10px_rgba(96,165,250,0.75)]" />
 
         {/* bright sweep along the front edge */}
         <div className="absolute left-1/2 top-[63%] h-[3%] w-[40%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse,rgba(147,197,253,0.95)_0%,transparent_70%)] blur-[2px]" />

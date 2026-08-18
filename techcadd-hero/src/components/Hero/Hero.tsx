@@ -18,7 +18,7 @@ export default function Hero() {
        */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[calc(var(--nav-h)+2rem)] bg-[linear-gradient(180deg,rgba(2,6,23,0.55),transparent)]"
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[calc(var(--nav-h)+2rem)] bg-[linear-gradient(180deg,rgba(5,11,31,0.55),transparent)]"
       />
 
       <div /*

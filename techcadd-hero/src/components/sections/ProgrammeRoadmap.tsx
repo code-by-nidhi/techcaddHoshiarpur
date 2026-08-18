@@ -41,7 +41,7 @@ function Step({
         <motion.span
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: index * 0.4 }}
-          className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#06B6D4]/12 ring-1 ring-inset ring-slate-200"
+          className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-slate-200"
         >
           <Icon aria-hidden className="size-5 text-[#2563EB]" />
         </motion.span>
@@ -88,7 +88,7 @@ export default function ProgrammeRoadmap() {
           <motion.div
             aria-hidden
             style={{ scaleX: progress }}
-            className="absolute left-0 top-[86px] h-[2px] w-full origin-left bg-gradient-to-r from-[#2563EB] via-[#4F46E5] to-[#06B6D4]"
+            className="absolute left-0 top-[86px] h-[2px] w-full origin-left bg-gradient-to-r from-[#2563EB] via-[#2563EB] to-[#60A5FA]"
           />
 
           <motion.ol style={{ x }} className="flex gap-6 pl-6 lg:pl-[4.5rem]">

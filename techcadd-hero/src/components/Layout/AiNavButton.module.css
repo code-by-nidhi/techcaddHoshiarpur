@@ -13,13 +13,13 @@
   padding: 0 18px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  background: linear-gradient(135deg, #2563eb, #3b82f6, #06b6d4, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #142c8e, #1e40af, #2563eb, #1e40af, #142c8e);
   /* oversized so the sweep has somewhere to travel */
   background-size: 280% 280%;
   animation: aiDrift 9s ease infinite;
   box-shadow:
     0 0 20px rgba(59, 130, 246, 0.35),
-    0 0 40px rgba(6, 182, 212, 0.15);
+    0 0 40px rgba(96, 165, 250, 0.15);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   font-size: 13.5px;
@@ -46,7 +46,7 @@
 .pill:focus-visible {
   box-shadow:
     0 0 30px rgba(59, 130, 246, 0.65),
-    0 0 56px rgba(6, 182, 212, 0.32);
+    0 0 56px rgba(96, 165, 250, 0.32);
   border-color: rgba(255, 255, 255, 0.3);
   outline: none;
 }
@@ -57,7 +57,7 @@
   filter: saturate(1.15) brightness(1.07);
   box-shadow:
     0 0 30px rgba(59, 130, 246, 0.7),
-    0 0 56px rgba(6, 182, 212, 0.35);
+    0 0 56px rgba(96, 165, 250, 0.35);
 }
 
 /* shimmer, left to right */

@@ -59,7 +59,7 @@ export default function MagneticButton({
         "group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[15px] font-semibold transition-shadow duration-300",
         // the home page's primary pill: blue into violet, glowing on hover
         variant === "primary"
-          ? "bg-[linear-gradient(100deg,#2563eb_0%,#6366f1_50%,#7c3aed_100%)] text-white shadow-[0_18px_44px_-16px_rgb(99_102_241/0.85)] hover:shadow-[0_22px_56px_-14px_rgb(124_58_237/0.95)]"
+          ? "bg-[linear-gradient(100deg,#2563eb_0%,#3b82f6_50%,#60a5fa_100%)] text-white shadow-[0_18px_44px_-16px_rgb(59_130_246/0.85)] hover:shadow-[0_22px_56px_-14px_rgb(96_165_250/0.95)]"
           : "chip-border bg-white/10 text-ink backdrop-blur-md hover:bg-white/15",
         className,
       )}

@@ -12,7 +12,7 @@ export default function HeroButtons() {
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
         transition={{ type: "spring", stiffness: 340, damping: 22 }}
-        className="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#3b82f6] via-[#6366f1] to-[#8b5cf6] px-[34px] py-[17px] text-[15.5px] font-semibold text-white shadow-[0_0_38px_-6px_rgba(99,102,241,0.9)] transition-shadow duration-300 hover:shadow-[0_0_60px_-4px_rgba(139,92,246,1)]"
+        className="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#142C8E] via-[#1E40AF] to-[#2563EB] px-[34px] py-[17px] text-[15.5px] font-semibold text-white shadow-[0_0_38px_-6px_rgba(59,130,246,0.9)] transition-shadow duration-300 hover:from-[#1E40AF] hover:via-[#2563EB] hover:to-[#60A5FA] hover:shadow-[0_0_60px_-4px_rgba(37,99,235,1)]"
       >
         Explore Courses
         <ArrowRight

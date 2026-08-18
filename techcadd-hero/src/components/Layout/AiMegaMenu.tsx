@@ -119,7 +119,7 @@ export default function AiMegaMenu({
                       sizes="360px"
                       className="object-cover"
                     />
-                    <span className="absolute left-3 top-3 rounded-full bg-gradient-to-r from-[#2563eb] to-[#38bdf8] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_0_18px_-4px_rgba(56,189,248,1)]">
+                    <span className="absolute left-3 top-3 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_0_18px_-4px_rgba(96,165,250,1)]">
                       {featured.badge}
                     </span>
                   </span>

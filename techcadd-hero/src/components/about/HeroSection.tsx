@@ -168,7 +168,7 @@ export default function HeroSection({ children }: HeroSectionProps) {
                   the robot stage. */}
               <div
                 aria-hidden="true"
-                className="animate-drift absolute inset-[16%] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.35)_0%,rgba(124,58,237,0.28)_55%,transparent_75%)] blur-[110px]"
+                className="animate-drift absolute inset-[16%] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.35)_0%,rgba(96,165,250,0.28)_55%,transparent_75%)] blur-[110px]"
               />
 
               {/* Primary diamond, centred on the stage. */}
@@ -221,11 +221,11 @@ function HeroBackdrop() {
         blues below it, and a vignette that pulls the left side back down so the
         copy keeps its contrast.
       */}
-      <div className="absolute inset-0 bg-[#020617]" />
+      <div className="absolute inset-0 bg-[#050B1F]" />
 
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_78%_60%,rgba(12,26,74,0.95)_0%,rgba(6,10,26,0.6)_45%,transparent_75%)]" />
 
-      <div className="absolute top-[6%] right-[-12%] size-[52rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.30)_0%,transparent_68%)] blur-3xl" />
+      <div className="absolute top-[6%] right-[-12%] size-[52rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.30)_0%,transparent_68%)] blur-3xl" />
 
       <div className="absolute right-[16%] bottom-[2%] size-[44rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.28)_0%,transparent_70%)] blur-3xl" />
 

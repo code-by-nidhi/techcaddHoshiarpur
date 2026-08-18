@@ -20,30 +20,30 @@ export const ABOUT = {
   ],
   tiles: [
     { title: "AI & Robotics Lab", tone: "from-blue-600/40 to-cyan-500/20" },
-    { title: "Live Project Floor", tone: "from-violet-600/40 to-blue-600/20" },
-    { title: "Placement Drives", tone: "from-cyan-500/35 to-violet-600/25" },
-    { title: "Mentor Sessions", tone: "from-blue-500/35 to-indigo-600/25" },
+    { title: "Live Project Floor", tone: "from-cyan-500/40 to-blue-600/20" },
+    { title: "Placement Drives", tone: "from-cyan-500/35 to-blue-600/25" },
+    { title: "Mentor Sessions", tone: "from-blue-500/35 to-sky-500/25" },
   ],
 };
 
 /* ------------------------------ courses -------------------------------- */
 
 export const CATEGORIES = [
-  { icon: Brain, title: "Artificial Intelligence", copy: "Neural networks, LLMs and computer vision, taught with the maths that makes them work.", gradient: "from-[#2563EB] to-[#4F46E5]" },
-  { icon: Code2, title: "Full Stack Development", copy: "Front to back, database to deploy — MERN, Java and Next.js.", gradient: "from-[#7C3AED] to-[#C026D3]" },
-  { icon: BarChart3, title: "Data Science", copy: "Python, statistics and modelling, plus the storytelling that sells the result.", gradient: "from-[#0891B2] to-[#06B6D4]" },
-  { icon: ShieldCheck, title: "Cyber Security", copy: "Offensive and defensive practice on isolated lab networks.", gradient: "from-[#1D4ED8] to-[#0EA5E9]" },
-  { icon: Megaphone, title: "Digital Marketing", copy: "Performance marketing, SEO and analytics that tie spend to revenue.", gradient: "from-[#DB2777] to-[#7C3AED]" },
-  { icon: Cloud, title: "Cloud & DevOps", copy: "AWS, Docker, Kubernetes and pipelines that deploy themselves.", gradient: "from-[#0D9488] to-[#06B6D4]" },
+  { icon: Brain, title: "Artificial Intelligence", copy: "Neural networks, LLMs and computer vision, taught with the maths that makes them work.", gradient: "from-[#2563EB] to-[#2563EB]" },
+  { icon: Code2, title: "Full Stack Development", copy: "Front to back, database to deploy — MERN, Java and Next.js.", gradient: "from-[#60A5FA] to-[#C026D3]" },
+  { icon: BarChart3, title: "Data Science", copy: "Python, statistics and modelling, plus the storytelling that sells the result.", gradient: "from-[#0891B2] to-[#60A5FA]" },
+  { icon: ShieldCheck, title: "Cyber Security", copy: "Offensive and defensive practice on isolated lab networks.", gradient: "from-[#1D4ED8] to-[#3B82F6]" },
+  { icon: Megaphone, title: "Digital Marketing", copy: "Performance marketing, SEO and analytics that tie spend to revenue.", gradient: "from-[#DB2777] to-[#60A5FA]" },
+  { icon: Cloud, title: "Cloud & DevOps", copy: "AWS, Docker, Kubernetes and pipelines that deploy themselves.", gradient: "from-[#0D9488] to-[#60A5FA]" },
 ];
 
 export const COURSES = [
   { icon: Brain, title: "AI & Machine Learning", copy: "Build, train and deploy models — from the maths underneath to a system running in production.", duration: "6 months", accent: "#2563EB" },
-  { icon: Code2, title: "Full Stack Development", copy: "MERN and Next.js end to end, with real code review and three deployed applications to show for it.", duration: "6 months", accent: "#7C3AED" },
-  { icon: BarChart3, title: "Data Science", copy: "Statistics you actually use, SQL you can be tested on, and dashboards a business will act on.", duration: "5 months", accent: "#06B6D4" },
+  { icon: Code2, title: "Full Stack Development", copy: "MERN and Next.js end to end, with real code review and three deployed applications to show for it.", duration: "6 months", accent: "#60A5FA" },
+  { icon: BarChart3, title: "Data Science", copy: "Statistics you actually use, SQL you can be tested on, and dashboards a business will act on.", duration: "5 months", accent: "#60A5FA" },
   { icon: ShieldCheck, title: "Cyber Security", copy: "Network defence, threat modelling and hands-on assessment inside a sandboxed lab range.", duration: "6 months", accent: "#2563EB" },
-  { icon: Megaphone, title: "Digital Marketing", copy: "Run live campaigns with a real budget, then report on them the way an agency lead expects.", duration: "4 months", accent: "#7C3AED" },
-  { icon: Cloud, title: "Cloud & DevOps", copy: "Ship a service, containerise it, automate the pipeline and keep it running under load.", duration: "5 months", accent: "#06B6D4" },
+  { icon: Megaphone, title: "Digital Marketing", copy: "Run live campaigns with a real budget, then report on them the way an agency lead expects.", duration: "4 months", accent: "#60A5FA" },
+  { icon: Cloud, title: "Cloud & DevOps", copy: "Ship a service, containerise it, automate the pipeline and keep it running under load.", duration: "5 months", accent: "#60A5FA" },
 ];
 
 /* ------------------------------- why us -------------------------------- */
@@ -106,22 +106,22 @@ export type Review = {
 export const WALL: Review[] = [
   {
     name: "Harmanpreet Singh", course: "Full Stack Development", badge: "Placed as MERN Developer",
-    rating: 5, tone: "from-[#2563EB] to-[#4F46E5]", featured: true,
+    rating: 5, tone: "from-[#2563EB] to-[#2563EB]", featured: true,
     quote: "I walked in with a commerce degree and no idea what an API was. Eighteen weeks later I was reviewing pull requests. Three deployed projects and a clean commit history did more for me in interviews than any certificate — the code reviews here were brutal in the best possible way, and that is exactly what made the difference when someone finally asked me to explain my architecture.",
   },
-  { name: "Simranjeet Kaur", course: "Data Science", badge: "Data Analyst", rating: 5, tone: "from-[#0891B2] to-[#06B6D4]",
+  { name: "Simranjeet Kaur", course: "Data Science", badge: "Data Analyst", rating: 5, tone: "from-[#0891B2] to-[#60A5FA]",
     quote: "The SQL and statistics modules were relentless, and that is exactly why the interview felt easy." },
-  { name: "Aditya Malhotra", course: "AI & Machine Learning", badge: "Placed as Python Developer", rating: 5, tone: "from-[#4F46E5] to-[#7C3AED]",
+  { name: "Aditya Malhotra", course: "AI & Machine Learning", badge: "Placed as Python Developer", rating: 5, tone: "from-[#142C8E] to-[#2563EB]",
     quote: "The internship put me on a real model in production. I stopped learning about ML and started doing it." },
-  { name: "Navjot Kaur", course: "Cloud & DevOps", badge: "Internship Completed", rating: 5, tone: "from-[#0D9488] to-[#06B6D4]",
+  { name: "Navjot Kaur", course: "Cloud & DevOps", badge: "Internship Completed", rating: 5, tone: "from-[#0D9488] to-[#60A5FA]",
     quote: "Mock interviews were the turning point. By the fourth one I could defend my design decisions without freezing." },
-  { name: "Rahul Verma", course: "Cyber Security", badge: "Portfolio Ready", rating: 4, tone: "from-[#2563EB] to-[#0EA5E9]",
+  { name: "Rahul Verma", course: "Cyber Security", badge: "Portfolio Ready", rating: 4, tone: "from-[#142C8E] to-[#2563EB]",
     quote: "The lab range is the difference. Reading about threat hunting and doing it on a live network are not the same skill." },
-  { name: "Ishita Sharma", course: "Full Stack Development", badge: "Frontend Engineer", rating: 5, tone: "from-[#7C3AED] to-[#C026D3]",
+  { name: "Ishita Sharma", course: "Full Stack Development", badge: "Frontend Engineer", rating: 5, tone: "from-[#60A5FA] to-[#C026D3]",
     quote: "Weekend batches meant I never had to choose between my degree and this. Same syllabus, same trainers." },
-  { name: "Karan Chadha", course: "Digital Marketing", badge: "Portfolio Ready", rating: 5, tone: "from-[#DB2777] to-[#7C3AED]",
+  { name: "Karan Chadha", course: "Digital Marketing", badge: "Portfolio Ready", rating: 5, tone: "from-[#DB2777] to-[#60A5FA]",
     quote: "Running live campaigns with a real budget taught me more in a month than a year of theory." },
-  { name: "Manpreet Gill", course: "Data Science", badge: "Internship Completed", rating: 5, tone: "from-[#1D4ED8] to-[#06B6D4]",
+  { name: "Manpreet Gill", course: "Data Science", badge: "Internship Completed", rating: 5, tone: "from-[#1D4ED8] to-[#60A5FA]",
     quote: "My mentor still reviews my work a year after the course ended. That part nobody advertises." },
 ];
 
@@ -160,13 +160,13 @@ export const UNIVERSE: Domain[] = [
     industries: ["SaaS Products", "Startups", "Enterprise Applications"],
     careers: ["Frontend Developer", "Backend Developer", "MERN Developer", "Full Stack Engineer"],
     placement: "95% Placement Assistance" },
-  { id: "ai", label: "Artificial Intelligence", short: "AI", accent: "#4F46E5",
+  { id: "ai", label: "Artificial Intelligence", short: "AI", accent: "#2563EB",
     tech: ["PyTorch", "TensorFlow", "LLMs", "OpenCV", "Hugging Face", "MLOps"],
     projects: ["Document Q&A with RAG", "Defect detection on a factory line", "Recommendation engine", "Vision inspection pipeline"],
     industries: ["Support Automation", "Quality Inspection", "Personalisation"],
     careers: ["ML Engineer", "AI Developer", "Computer Vision Engineer", "Applied Researcher"],
     placement: "95% Placement Assistance" },
-  { id: "cloud", label: "Cloud & DevOps", short: "Cloud & DevOps", accent: "#0EA5E9",
+  { id: "cloud", label: "Cloud & DevOps", short: "Cloud & DevOps", accent: "#3B82F6",
     tech: ["AWS", "Docker", "Kubernetes", "Terraform", "Jenkins", "GitHub Actions"],
     projects: ["Zero-downtime deploy pipeline", "Serverless image pipeline", "Autoscaling K8s cluster", "Infrastructure as code"],
     industries: ["Infrastructure Migration", "Release Automation", "Platform Reliability"],
@@ -178,13 +178,13 @@ export const UNIVERSE: Domain[] = [
     industries: ["Incident Response", "Compliance Readiness", "Perimeter Defence"],
     careers: ["Security Analyst", "SOC Engineer", "Penetration Tester", "Security Consultant"],
     placement: "95% Placement Assistance" },
-  { id: "data", label: "Data Analytics", short: "Data Analytics", accent: "#06B6D4",
+  { id: "data", label: "Data Analytics", short: "Data Analytics", accent: "#60A5FA",
     tech: ["Python", "Pandas", "SQL", "Power BI", "Tableau", "Statistics"],
     projects: ["Churn prediction model", "Sales analytics dashboard", "Pricing experiment analysis", "Customer segmentation"],
     industries: ["Retention Strategy", "Demand Forecasting", "Executive Reporting"],
     careers: ["Data Analyst", "Data Scientist", "BI Developer", "Analytics Consultant"],
     placement: "95% Placement Assistance" },
-  { id: "marketing", label: "Digital Marketing", short: "Digital Marketing", accent: "#7C3AED",
+  { id: "marketing", label: "Digital Marketing", short: "Digital Marketing", accent: "#60A5FA",
     tech: ["SEO", "Meta Ads", "Google Ads", "GA4", "Content", "Marketing Automation"],
     projects: ["Full-funnel campaign with live budget", "SEO audit and rebuild", "Lifecycle email flow", "Landing page CRO test"],
     industries: ["Lead Generation", "Brand Growth", "Attribution Reporting"],
@@ -256,12 +256,12 @@ export type Post = {
 };
 
 export const POSTS: Post[] = [
-  { title: "What a hiring manager actually looks for in a fresher's GitHub", excerpt: "Commit history, README quality and one finished project beat ten abandoned tutorials. Here's what gets read first, and what gets skipped entirely.", category: "Career", author: "Ravi Sethi", role: "Placement Lead", minutes: 8, date: "Aug 2026", trending: true, tone: "from-[#2563EB] to-[#4F46E5]" },
-  { title: "Building your first RAG pipeline without drowning in frameworks", excerpt: "Chunking, embeddings, retrieval and the three mistakes that make answers worse than no retrieval at all.", category: "AI", author: "Dr. Neha Arora", role: "AI Track Mentor", minutes: 11, date: "Aug 2026", trending: true, tone: "from-[#4F46E5] to-[#7C3AED]" },
-  { title: "The MERN stack in 2026: what changed and what didn't", excerpt: "Server components shifted the front end, but the fundamentals interviewers test have barely moved.", category: "MERN", author: "Amit Khanna", role: "Full Stack Mentor", minutes: 9, date: "Jul 2026", trending: true, tone: "from-[#0891B2] to-[#06B6D4]" },
-  { title: "SQL questions that decide data analyst interviews", excerpt: "Window functions, self joins and the query patterns that come up in almost every round.", category: "Data Science", author: "Priya Bansal", role: "Data Science Mentor", minutes: 7, date: "Jul 2026", tone: "from-[#0D9488] to-[#06B6D4]" },
-  { title: "From lab to production: your first deployment on AWS", excerpt: "IAM, networking and the cost traps that catch every first-time deployer.", category: "Cloud", author: "Sahil Bedi", role: "Cloud & DevOps Mentor", minutes: 10, date: "Jul 2026", tone: "from-[#1D4ED8] to-[#0EA5E9]" },
-  { title: "Six months of internship, honestly reviewed", excerpt: "What students actually do in a working team, and how to make the experience count on a CV.", category: "Career", author: "Ravi Sethi", role: "Placement Lead", minutes: 6, date: "Jun 2026", tone: "from-[#7C3AED] to-[#C026D3]" },
+  { title: "What a hiring manager actually looks for in a fresher's GitHub", excerpt: "Commit history, README quality and one finished project beat ten abandoned tutorials. Here's what gets read first, and what gets skipped entirely.", category: "Career", author: "Ravi Sethi", role: "Placement Lead", minutes: 8, date: "Aug 2026", trending: true, tone: "from-[#2563EB] to-[#2563EB]" },
+  { title: "Building your first RAG pipeline without drowning in frameworks", excerpt: "Chunking, embeddings, retrieval and the three mistakes that make answers worse than no retrieval at all.", category: "AI", author: "Dr. Neha Arora", role: "AI Track Mentor", minutes: 11, date: "Aug 2026", trending: true, tone: "from-[#142C8E] to-[#2563EB]" },
+  { title: "The MERN stack in 2026: what changed and what didn't", excerpt: "Server components shifted the front end, but the fundamentals interviewers test have barely moved.", category: "MERN", author: "Amit Khanna", role: "Full Stack Mentor", minutes: 9, date: "Jul 2026", trending: true, tone: "from-[#0891B2] to-[#60A5FA]" },
+  { title: "SQL questions that decide data analyst interviews", excerpt: "Window functions, self joins and the query patterns that come up in almost every round.", category: "Data Science", author: "Priya Bansal", role: "Data Science Mentor", minutes: 7, date: "Jul 2026", tone: "from-[#0D9488] to-[#60A5FA]" },
+  { title: "From lab to production: your first deployment on AWS", excerpt: "IAM, networking and the cost traps that catch every first-time deployer.", category: "Cloud", author: "Sahil Bedi", role: "Cloud & DevOps Mentor", minutes: 10, date: "Jul 2026", tone: "from-[#1D4ED8] to-[#3B82F6]" },
+  { title: "Six months of internship, honestly reviewed", excerpt: "What students actually do in a working team, and how to make the experience count on a CV.", category: "Career", author: "Ravi Sethi", role: "Placement Lead", minutes: 6, date: "Jun 2026", tone: "from-[#60A5FA] to-[#C026D3]" },
 ];
 
 export const TOPICS = ["MERN", "AI", "Data Science", "Career", "Cloud", "Interviews", "Internships", "Portfolio"];

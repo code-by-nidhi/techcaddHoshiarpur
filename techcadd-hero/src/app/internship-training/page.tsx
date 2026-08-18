@@ -26,7 +26,7 @@ export default function InternshipTrainingPage() {
       <Navbar />
 
       <main id="content">
-        <section className="relative overflow-x-clip bg-[#020617] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
+        <section className="relative overflow-x-clip bg-[#050B1F] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
           <span
             aria-hidden
             className="pointer-events-none absolute -left-[10%] top-0 size-[32rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.22),transparent_70%)] blur-3xl"
@@ -70,7 +70,7 @@ export default function InternshipTrainingPage() {
                               {p.title}
                             </span>
                             {p.badge && (
-                              <span className="shrink-0 rounded-full bg-gradient-to-r from-[#2563eb] to-[#38bdf8] px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.08em] text-white">
+                              <span className="shrink-0 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.08em] text-white">
                                 {p.badge}
                               </span>
                             )}

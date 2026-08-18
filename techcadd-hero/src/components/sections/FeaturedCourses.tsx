@@ -162,7 +162,7 @@ export default function FeaturedCourses() {
                   {/* gradient border glow, revealed on hover */}
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute -inset-px rounded-[30px] bg-gradient-to-br from-white/40 via-[#2563EB]/40 to-[#38BDF8]/50 opacity-0 blur-[1px] transition-opacity duration-500 group-hover:opacity-100"
+                    className="pointer-events-none absolute -inset-px rounded-[30px] bg-gradient-to-br from-white/40 via-[#2563EB]/40 to-[#60A5FA]/50 opacity-0 blur-[1px] transition-opacity duration-500 group-hover:opacity-100"
                   />
 
                   {/*
@@ -186,7 +186,7 @@ export default function FeaturedCourses() {
                     <span className="absolute left-5 top-5 z-10 grid size-10 place-items-center rounded-xl border border-white/20 bg-white/10 backdrop-blur-md">
                       <Icon aria-hidden className="size-[18px] text-white" />
                     </span>
-                    <span className="absolute right-5 top-5 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5 text-[12px] font-medium text-white shadow-[0_10px_26px_-12px_rgba(2,6,23,0.9)] backdrop-blur-xl">
+                    <span className="absolute right-5 top-5 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/15 px-3.5 py-1.5 text-[12px] font-medium text-white shadow-[0_10px_26px_-12px_rgba(5,11,31,0.9)] backdrop-blur-xl">
                       <Clock aria-hidden className="size-3.5" />
                       {duration}
                     </span>

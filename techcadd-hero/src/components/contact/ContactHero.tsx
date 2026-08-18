@@ -39,7 +39,7 @@ export default function ContactHero() {
               className="mt-7 font-[family-name:var(--font-sora)] text-[clamp(2.2rem,4.2vw,3.6rem)] font-extrabold leading-[1.08] tracking-[-0.028em] text-white"
             >
               Let&apos;s Build Your{" "}
-              <span className="bg-gradient-to-r from-[#3B82F6] via-[#6366F1] to-[#A855F7] bg-clip-text pr-[0.08em] text-transparent">
+              <span className="bg-gradient-to-r from-[#3B82F6] via-[#3B82F6] to-[#60A5FA] bg-clip-text pr-[0.08em] text-transparent">
                 Career Path
               </span>{" "}
               Together
@@ -59,7 +59,7 @@ export default function ContactHero() {
                 whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 340, damping: 22 }}
-                className="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] px-8 py-4 text-[15px] font-semibold text-white shadow-[0_0_36px_-8px_rgba(37,99,235,0.95)] transition-shadow duration-300 hover:shadow-[0_0_54px_-6px_rgba(59,130,246,1)]"
+                className="group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-8 py-4 text-[15px] font-semibold text-white shadow-[0_0_36px_-8px_rgba(37,99,235,0.95)] transition-shadow duration-300 hover:shadow-[0_0_54px_-6px_rgba(59,130,246,1)]"
               >
                 Book Free Counselling
                 <FiArrowRight
@@ -87,7 +87,7 @@ export default function ContactHero() {
               {/* glow pools behind the card */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute -inset-10 -z-10 rounded-[48px] bg-[radial-gradient(circle_at_30%_20%,rgba(37,99,235,0.35),transparent_60%),radial-gradient(circle_at_75%_80%,rgba(168,85,247,0.28),transparent_62%)] blur-2xl"
+                className="pointer-events-none absolute -inset-10 -z-10 rounded-[48px] bg-[radial-gradient(circle_at_30%_20%,rgba(37,99,235,0.35),transparent_60%),radial-gradient(circle_at_75%_80%,rgba(96,165,250,0.28),transparent_62%)] blur-2xl"
               />
 
               <motion.div
@@ -101,7 +101,7 @@ export default function ContactHero() {
                   animate={reduced ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
                   transition={reduced ? undefined : { duration: 9, repeat: Infinity, ease: "linear" }}
                   style={{ backgroundSize: "220% 220%" }}
-                  className="absolute -inset-px rounded-[30px] bg-[linear-gradient(120deg,rgba(96,165,250,0.9),rgba(168,85,247,0.7),rgba(56,189,248,0.9),rgba(96,165,250,0.9))] opacity-70"
+                  className="absolute -inset-px rounded-[30px] bg-[linear-gradient(120deg,rgba(96,165,250,0.9),rgba(96,165,250,0.7),rgba(96,165,250,0.9),rgba(96,165,250,0.9))] opacity-70"
                 />
 
                 <div className={`relative rounded-[29px] p-8 sm:p-10 ${GLASS}`}>
@@ -118,7 +118,7 @@ export default function ContactHero() {
                         transition={{ delay: 0.4 + i * 0.12, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                         className="flex items-center gap-3.5"
                       >
-                        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#2563EB] to-[#38BDF8] shadow-[0_8px_20px_-8px_rgba(37,99,235,0.9)]">
+                        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#142C8E] to-[#2563EB] shadow-[0_8px_20px_-8px_rgba(37,99,235,0.9)]">
                           <FiCheck aria-hidden className="size-4 text-white" />
                         </span>
                         <span className="text-[15px] font-medium text-white/90">{item}</span>

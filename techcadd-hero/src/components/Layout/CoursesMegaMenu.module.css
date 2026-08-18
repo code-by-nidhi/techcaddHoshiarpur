@@ -46,7 +46,7 @@
     160deg,
     rgba(59, 130, 246, 0.1),
     transparent 45%,
-    rgba(124, 58, 237, 0.1)
+    rgba(96, 165, 250, 0.1)
   );
 }
 
@@ -154,7 +154,7 @@
 }
 
 .headingText {
-  background: linear-gradient(90deg, #93c5fd, #c4b5fd);
+  background: linear-gradient(90deg, #93c5fd, #93c5fd);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -236,14 +236,14 @@
   align-items: center;
   gap: 0.25rem;
   border-radius: 999px;
-  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  background: linear-gradient(135deg, #142C8E, #2563EB);
   padding: 3px 8px;
   font-size: 8.5px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: #fff;
-  box-shadow: 0 0 14px -2px rgba(56, 189, 248, 0.9);
+  box-shadow: 0 0 14px -2px rgba(96, 165, 250, 0.9);
   animation: badgePulse 2.4s ease-in-out infinite;
 }
 

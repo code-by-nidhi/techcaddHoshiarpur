@@ -26,11 +26,11 @@ const FEATURE_ICONS: IconType[] = [FiMonitor, FiCpu, FiUnlock, FiRadio];
 const METRIC_ICONS: IconType[] = [FiFolder, FiUsers, FiStar, FiClock, FiTrendingUp];
 
 const METRIC_TINTS = [
-  "from-[#2563EB] to-[#3B82F6]",
-  "from-[#4F46E5] to-[#8B5CF6]",
+  "from-[#142C8E] to-[#2563EB]",
+  "from-[#142C8E] to-[#2563EB]",
   "from-[#F59E0B] to-[#F97316]",
-  "from-[#0EA5E9] to-[#38BDF8]",
-  "from-[#7C3AED] to-[#C026D3]",
+  "from-[#3B82F6] to-[#60A5FA]",
+  "from-[#60A5FA] to-[#C026D3]",
 ];
 
 /** Deterministic particles for the banner — no Math.random, so SSR matches. */
@@ -50,7 +50,7 @@ export default function CommandCenter() {
     <section id="capabilities" className="relative overflow-x-clip bg-white section-pad">
       {/* depth layers: radial wash, grid pattern, drifting blobs */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(79,70,229,0.08),transparent_70%)]" />
+        <div className="absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(37,99,235,0.08),transparent_70%)]" />
         <div
           className="absolute inset-0 opacity-[0.35]"
           style={{
@@ -69,7 +69,7 @@ export default function CommandCenter() {
         <motion.div
           animate={{ y: [0, 18, 0], opacity: [0.45, 0.75, 0.45] }}
           transition={{ duration: 14, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute -right-20 bottom-16 size-[26rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.13)_0%,transparent_70%)] blur-3xl"
+          className="absolute -right-20 bottom-16 size-[26rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.13)_0%,transparent_70%)] blur-3xl"
         />
       </div>
 
@@ -87,7 +87,7 @@ export default function CommandCenter() {
           </span>
           <h2 className="mt-2.5 font-[family-name:var(--font-sora)] text-[clamp(1.6rem,3.2vw,2.4rem)] font-extrabold leading-[1.12] tracking-[-0.028em] text-[#0F172A]">
             Innovation{" "}
-            <span className="bg-gradient-to-r from-[#2563EB] via-[#4F46E5] to-[#7C3AED] bg-clip-text pr-[0.06em] text-transparent">
+            <span className="bg-gradient-to-r from-[#2563EB] via-[#2563EB] to-[#60A5FA] bg-clip-text pr-[0.06em] text-transparent">
               Command Center
             </span>
           </h2>
@@ -118,21 +118,21 @@ export default function CommandCenter() {
                         aria-pressed={on}
                         className={`relative flex w-full items-center gap-2.5 overflow-hidden whitespace-nowrap rounded-[16px] px-3.5 py-3 text-left text-[13px] font-medium transition-[background-color,color,box-shadow] duration-300 ${
                           on
-                            ? "bg-[linear-gradient(120deg,rgba(37,99,235,0.14),rgba(124,58,237,0.14))] text-[#0F172A] shadow-[0_10px_26px_-18px_rgba(79,70,229,0.9)] backdrop-blur-xl"
+                            ? "bg-[linear-gradient(120deg,rgba(37,99,235,0.14),rgba(96,165,250,0.14))] text-[#0F172A] shadow-[0_10px_26px_-18px_rgba(37,99,235,0.9)] backdrop-blur-xl"
                             : "text-[#475569] hover:bg-slate-50"
                         }`}
                       >
                         {/* left accent rail on the active tab */}
                         <span
                           aria-hidden
-                          className={`absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-gradient-to-b from-[#2563EB] to-[#7C3AED] transition-opacity duration-300 ${
+                          className={`absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-gradient-to-b from-[#142C8E] to-[#2563EB] transition-opacity duration-300 ${
                             on ? "opacity-100" : "opacity-0"
                           }`}
                         />
                         <span
                           className={`grid size-8 shrink-0 place-content-center rounded-xl transition-colors duration-300 ${
                             on
-                              ? "bg-gradient-to-br from-[#2563EB] to-[#7C3AED] text-white shadow-[0_8px_20px_-10px_rgba(79,70,229,0.95)]"
+                              ? "bg-gradient-to-br from-[#142C8E] to-[#2563EB] text-white shadow-[0_8px_20px_-10px_rgba(37,99,235,0.95)]"
                               : "bg-slate-100 text-[#64748B]"
                           }`}
                         >
@@ -159,7 +159,7 @@ export default function CommandCenter() {
                   transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="grid size-11 shrink-0 place-content-center rounded-2xl bg-gradient-to-br from-[#2563EB] to-[#7C3AED] shadow-[0_12px_28px_-12px_rgba(79,70,229,0.95)]">
+                    <span className="grid size-11 shrink-0 place-content-center rounded-2xl bg-gradient-to-br from-[#142C8E] to-[#2563EB] shadow-[0_12px_28px_-12px_rgba(37,99,235,0.95)]">
                       <ActiveIcon aria-hidden className="size-5 text-white" />
                     </span>
                     <div className="min-w-0">
@@ -184,9 +184,9 @@ export default function CommandCenter() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.4, delay: 0.06 * i, ease: [0.16, 1, 0.3, 1] }}
                             whileHover={{ y: -5 }}
-                            className="group relative flex h-full flex-col overflow-hidden rounded-[18px] border border-white/70 bg-white/70 p-3.5 shadow-[0_12px_30px_-26px_rgba(15,23,42,0.7)] backdrop-blur-xl transition-shadow duration-500 hover:shadow-[0_22px_46px_-28px_rgba(79,70,229,0.55)]"
+                            className="group relative flex h-full flex-col overflow-hidden rounded-[18px] border border-white/70 bg-white/70 p-3.5 shadow-[0_12px_30px_-26px_rgba(15,23,42,0.7)] backdrop-blur-xl transition-shadow duration-500 hover:shadow-[0_22px_46px_-28px_rgba(37,99,235,0.55)]"
                           >
-                            <span className="grid size-9 place-content-center rounded-full bg-gradient-to-br from-[#2563EB]/12 to-[#7C3AED]/12 ring-1 ring-inset ring-[#2563EB]/15">
+                            <span className="grid size-9 place-content-center rounded-full bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-[#2563EB]/15">
                               <Icon aria-hidden className="size-4 text-[#2563EB]" />
                             </span>
                             <p className="mt-2.5 text-[12.5px] font-semibold leading-snug text-[#0F172A]">
@@ -195,7 +195,7 @@ export default function CommandCenter() {
                             {/* accent line */}
                             <span
                               aria-hidden
-                              className="mt-3 block h-[2px] w-8 rounded-full bg-gradient-to-r from-[#2563EB] to-[#7C3AED] transition-all duration-500 group-hover:w-full"
+                              className="mt-3 block h-[2px] w-8 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] transition-all duration-500 group-hover:w-full"
                             />
                           </motion.div>
                         </div>
@@ -223,13 +223,13 @@ export default function CommandCenter() {
                       viewport={{ once: true, margin: "-70px" }}
                       transition={{ duration: 0.45, delay: 0.05 * i, ease: [0.16, 1, 0.3, 1] }}
                       whileHover={{ scale: 1.02, y: -3 }}
-                      className="group relative flex h-full flex-col justify-center overflow-hidden rounded-[18px] border border-white/70 bg-white/70 p-3.5 shadow-[0_12px_30px_-26px_rgba(15,23,42,0.7)] backdrop-blur-xl transition-shadow duration-500 hover:shadow-[0_22px_46px_-28px_rgba(79,70,229,0.55)]"
+                      className="group relative flex h-full flex-col justify-center overflow-hidden rounded-[18px] border border-white/70 bg-white/70 p-3.5 shadow-[0_12px_30px_-26px_rgba(15,23,42,0.7)] backdrop-blur-xl transition-shadow duration-500 hover:shadow-[0_22px_46px_-28px_rgba(37,99,235,0.55)]"
                     >
                       <div className="flex items-center gap-2.5">
                         <span
                           className={`grid size-8 shrink-0 place-content-center rounded-full bg-gradient-to-br ${
                             METRIC_TINTS[i % METRIC_TINTS.length]
-                          } shadow-[0_8px_18px_-10px_rgba(79,70,229,0.9)]`}
+                          } shadow-[0_8px_18px_-10px_rgba(37,99,235,0.9)]`}
                         >
                           <Icon aria-hidden className="size-3.5 text-white" />
                         </span>
