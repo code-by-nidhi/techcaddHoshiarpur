@@ -17,6 +17,15 @@ export const panelIn: Variants = {
   exit: { opacity: 0, y: -8, transition: { duration: 0.18, ease: "easeIn" } },
 };
 
+/** Deterministic particles — index arithmetic, never Math.random. */
+const MOTES = Array.from({ length: 9 }, (_, i) => ({
+  left: `${(i * 43) % 90 + 5}%`,
+  top: `${(i * 59) % 72 + 12}%`,
+  size: i % 3 === 0 ? 3 : 2,
+  duration: 5 + (i % 4),
+  delay: (i % 5) * 0.6,
+}));
+
 const itemIn: Variants = {
   hidden: { opacity: 0, y: 14 },
   show: { opacity: 1, y: 0, transition: { duration: 0.42, ease: [0.16, 1, 0.3, 1] } },
@@ -45,22 +54,45 @@ export default function MegaMenu({
       <span
         aria-hidden
         style={{ left: arrow }}
-        className="absolute -top-[7px] size-3.5 -translate-x-1/2 rotate-45 rounded-[3px] border-l border-t border-white/80 bg-white/95 backdrop-blur-2xl"
+        className="absolute -top-[7px] size-3.5 -translate-x-1/2 rotate-45 rounded-[3px] border-l border-t border-white/10 bg-[#0a1b52]"
       />
 
-      <div className="relative overflow-hidden rounded-[32px] border border-white/80 bg-white/95 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35),0_50px_100px_-45px_rgba(37,99,235,0.65)] backdrop-blur-2xl">
+      <div className="relative overflow-hidden rounded-[32px] border border-white/[0.08] bg-[linear-gradient(135deg,#08122f_0%,#0a1b52_35%,#0b1450_65%,#131f68_100%)] shadow-[0_25px_60px_rgba(0,0,0,0.45),0_0_40px_rgba(59,130,246,0.12)] backdrop-blur-[20px]">
         {/* blue gradient accent along the top edge */}
         <span
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(37,99,235,0.75),transparent)]"
         />
+        {/* soft radial highlights + a top reflection, matching the other panels */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -left-24 -top-24 size-80 rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.22),transparent_70%)] blur-2xl"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -bottom-28 right-[-6%] size-96 rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.2),transparent_70%)] blur-2xl"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,rgba(255,255,255,0.1),transparent)]"
+        />
+        {MOTES.map((m, i) => (
+          <motion.span
+            key={i}
+            aria-hidden
+            style={{ left: m.left, top: m.top, width: m.size, height: m.size }}
+            className="pointer-events-none absolute rounded-full bg-[#93c5fd] shadow-[0_0_8px_2px_rgba(147,197,253,0.5)]"
+            animate={{ y: [0, -12, 0], opacity: [0.15, 0.7, 0.15] }}
+            transition={{ duration: m.duration, repeat: Infinity, ease: "easeInOut", delay: m.delay }}
+          />
+        ))}
 
         <div className="row g-0">
           {/* rail */}
           <div className="col-12 col-lg-3">
             <motion.ul
               variants={itemIn}
-              className="h-full border-b border-slate-200/70 bg-[linear-gradient(180deg,rgba(37,99,235,0.05),transparent)] p-4 lg:border-b-0 lg:border-r"
+              className="relative h-full border-b border-white/[0.07] bg-[linear-gradient(180deg,rgba(37,99,235,0.16),transparent)] p-4 lg:border-b-0 lg:border-r"
             >
               {RESOURCES.map((item) => {
                 const on = item.id === active;
@@ -76,12 +108,12 @@ export default function MegaMenu({
                       className={`group/row mb-1 flex items-center gap-3 rounded-2xl px-3.5 py-3 text-[14px] transition-[background-color,color,transform] duration-300 ${
                         on
                           ? "translate-x-0.5 bg-gradient-to-r from-[#2563EB] to-[#7C3AED] font-semibold text-white shadow-[0_14px_30px_-14px_rgba(37,99,235,0.95)]"
-                          : "text-[#475569] hover:bg-white hover:text-[#0F172A]"
+                          : "text-white/80 hover:bg-white/[0.08] hover:text-white"
                       }`}
                     >
                       <span
                         className={`grid size-8 shrink-0 place-content-center rounded-xl transition-colors duration-300 ${
-                          on ? "bg-white/20 text-white" : "bg-slate-100 text-[#64748B]"
+                          on ? "bg-white/20 text-white" : "bg-white/[0.08] text-white/70"
                         }`}
                       >
                         <Icon aria-hidden className="size-[15px]" />
@@ -138,7 +170,7 @@ export function FeatureCard({
           className="absolute inset-0 rounded-[24px] bg-[linear-gradient(130deg,rgba(37,99,235,0.85),rgba(124,58,237,0.6),rgba(56,189,248,0.85))] opacity-0 transition-opacity duration-500 group-hover/card:opacity-100"
         />
 
-        <div className="relative flex h-full flex-col overflow-hidden rounded-[23px] border border-slate-200/80 bg-white/90 shadow-[0_14px_36px_-26px_rgba(15,23,42,0.6)] backdrop-blur-xl transition-shadow duration-500 group-hover/card:shadow-[0_30px_64px_-30px_rgba(37,99,235,0.55)]">
+        <div className="relative flex h-full flex-col overflow-hidden rounded-[23px] border border-white/[0.08] bg-white/[0.06] shadow-[0_14px_36px_-26px_rgba(0,0,0,0.7)] backdrop-blur-[16px] transition-shadow duration-500 group-hover/card:shadow-[0_30px_64px_-30px_rgba(37,99,235,0.55)]">
           <div className="relative aspect-[16/10] w-full overflow-hidden">
             <Image
               src={card.image.src}
@@ -151,17 +183,17 @@ export function FeatureCard({
 
           <div className="flex flex-1 flex-col p-4">
             <div className="flex items-center gap-2">
-              <h3 className="font-[family-name:var(--font-sora)] text-[15.5px] font-bold tracking-[-0.015em] text-[#0F172A]">
+              <h3 className="font-[family-name:var(--font-sora)] text-[15.5px] font-bold tracking-[-0.015em] text-white">
                 {card.title}
               </h3>
-              <span className="rounded-full bg-[#2563EB]/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[#2563EB]">
+              <span className="rounded-full bg-[#2563EB]/25 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.12em] text-[#93C5FD]">
                 {card.badge}
               </span>
             </div>
 
-            <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-[#475569]">{card.copy}</p>
+            <p className="mt-2 flex-1 text-[12.5px] leading-relaxed text-white/75">{card.copy}</p>
 
-            <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[#2563EB]">
+            <span className="mt-4 inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[#60A5FA]">
               {card.cta}
               <FiArrowRight
                 aria-hidden

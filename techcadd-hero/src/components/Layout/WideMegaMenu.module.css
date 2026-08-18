@@ -1,0 +1,436 @@
+/* ---------------------------------------------------------------------------
+   Shared shell for the two wide mega menus (AI, Internship & Training).
+
+   The glass values match CoursesMegaMenu.module.css deliberately — three
+   panels open from the same bar, and they have to read as one system.
+--------------------------------------------------------------------------- */
+
+.panel {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  background: rgba(8, 15, 40, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.45),
+    0 0 40px rgba(59, 130, 246, 0.12);
+}
+
+.tint,
+.reflection,
+.edgeGlow {
+  position: absolute;
+  pointer-events: none;
+}
+
+.tint {
+  inset: 0;
+  background: linear-gradient(160deg, rgba(59, 130, 246, 0.1), transparent 45%, rgba(124, 58, 237, 0.1));
+}
+
+.reflection {
+  inset-inline: 0;
+  top: 0;
+  height: 7rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent);
+}
+
+.edgeGlow {
+  inset: 0;
+  border-radius: 28px;
+  box-shadow: inset 0 0 60px -20px rgba(59, 130, 246, 0.55);
+}
+
+/* deterministic motes, positioned inline by the component */
+.mote {
+  position: absolute;
+  border-radius: 999px;
+  background: #93c5fd;
+  box-shadow: 0 0 8px 2px rgba(147, 197, 253, 0.5);
+  pointer-events: none;
+}
+
+.body {
+  position: relative;
+  max-height: 85vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: 1.35rem;
+}
+
+@media (min-width: 1024px) {
+  .body {
+    padding: 1.6rem;
+  }
+}
+
+/* --------------------------------- grid ---------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+@media (max-width: 767.98px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+.col {
+  min-width: 0;
+  width: 100%;
+}
+
+/* separators between columns, drawn only where a gap actually exists */
+@media (min-width: 768px) {
+  .col + .col {
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+    padding-left: 20px;
+  }
+}
+
+.heading {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.headingSub {
+  margin-top: 0.25rem;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.eyebrow {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--font-sora), sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  background: linear-gradient(90deg, #93c5fd, #c4b5fd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.08em;
+}
+
+.list {
+  margin: 0.55rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.listTight {
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.listTight .link {
+  min-height: 32px;
+  padding: 5px 9px;
+  font-size: 12px;
+}
+
+/* ------------------------------ AI panel only ---------------------------- */
+
+/*
+ * 50 / 25 / 25 rather than three equal columns: the link list needs twice the
+ * width to run two-up, and the two cards only need to fit their own content.
+ */
+.aiGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  width: 100%;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .aiGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .aiGrid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+}
+
+/* the two link groups, side by side inside the left half */
+.aiSections {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 0.85rem;
+}
+
+@media (max-width: 479.98px) {
+  .aiSections {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* the stacked layout needed a top margin to separate groups; side by side
+   they are already separated, so it would only add height */
+.eyebrowFlush {
+  margin-top: 0;
+}
+
+/* both cards share one height and sit centred against the link list */
+.aiCard {
+  display: flex;
+  min-height: 250px;
+  flex-direction: column;
+}
+
+/* --------------------------------- links --------------------------------- */
+
+.link {
+  display: flex;
+  width: 100%;
+  min-height: 40px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 8px 11px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.link:hover,
+.link:focus-visible {
+  /* slide right, not up: these are list rows, not cards */
+  transform: translateX(5px);
+  background: rgba(59, 130, 246, 0.12);
+  color: #fff;
+  outline: none;
+}
+
+.linkLabel {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chev {
+  flex-shrink: 0;
+  color: #60a5fa;
+  opacity: 0;
+  transform: translateX(-5px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+.link:hover .chev,
+.link:focus-visible .chev {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.badge {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.2rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  padding: 2px 7px;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #fff;
+  box-shadow: 0 0 14px -2px rgba(56, 189, 248, 0.9);
+  animation: badgeGlow 2.4s ease-in-out infinite;
+}
+
+@keyframes badgeGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 10px -3px rgba(56, 189, 248, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 18px 0 rgba(56, 189, 248, 1);
+  }
+}
+
+/* ------------------------------ featured card ---------------------------- */
+
+.featured {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(6, 10, 24, 0.75);
+  text-decoration: none;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.featured:hover,
+.featured:focus-visible {
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: 0 18px 40px -22px rgba(37, 99, 235, 0.9);
+  outline: none;
+}
+
+.featuredShot {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+
+.featuredBody {
+  padding: 0.9rem 1rem 1.05rem;
+}
+
+.featuredTitle {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #fff;
+}
+
+.featuredCopy {
+  margin-top: 0.4rem;
+  font-size: 11.5px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* --------------------------------- panels -------------------------------- */
+
+.cta {
+  position: relative;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(150deg, rgba(37, 99, 235, 0.5), rgba(124, 58, 237, 0.32), rgba(6, 182, 212, 0.4));
+  padding: 1.25rem;
+}
+
+.ctaCopy {
+  font-family: var(--font-sora), sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: #fff;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  margin-top: auto;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+  padding: 0.6rem 1.15rem;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 0 26px -6px rgba(37, 99, 235, 0.95);
+  transition: box-shadow 0.3s ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  box-shadow: 0 0 40px -2px rgba(56, 189, 248, 1);
+  outline: none;
+}
+
+.button svg {
+  transition: transform 0.3s ease;
+}
+
+.button:hover svg {
+  transform: translateX(4px);
+}
+
+/* ----------------------------- feature strip ----------------------------- */
+
+.strip {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  overflow: hidden;
+  margin-top: 1.1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(6, 10, 24, 0.6);
+  padding: 1rem 1.25rem;
+}
+
+/* oversized outlined type behind the quote */
+.watermark {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  translate: 0 -50%;
+  font-family: var(--font-sora), sans-serif;
+  font-size: clamp(1.75rem, 4.5vw, 3.25rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  pointer-events: none;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
+}
+
+.quote {
+  position: relative;
+  max-width: 34rem;
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    animation: none;
+  }
+  .link:hover,
+  .link:focus-visible {
+    transform: none;
+  }
+}

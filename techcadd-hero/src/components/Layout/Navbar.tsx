@@ -22,6 +22,16 @@ const MegaMenu = dynamic(() => import("./MegaMenu"));
 const MegaMenuMobile = dynamic(() => import("./MegaMenuMobile"));
 const CoursesMegaMenu = dynamic(() => import("./CoursesMegaMenu"));
 const CoursesMegaMenuMobile = dynamic(() => import("./CoursesMegaMenuMobile"));
+const AiMegaMenu = dynamic(() => import("./AiMegaMenu"));
+const AiMegaMenuMobile = dynamic(() => import("./AiMegaMenu").then((m) => m.AiMegaMenuMobile));
+const InternshipMegaMenu = dynamic(() => import("./InternshipMegaMenu"));
+const InternshipMegaMenuMobile = dynamic(() =>
+  import("./InternshipMegaMenu").then((m) => m.InternshipMegaMenuMobile),
+);
+const After12MegaMenu = dynamic(() => import("./After12MegaMenu"));
+const After12MegaMenuMobile = dynamic(() =>
+  import("./After12MegaMenu").then((m) => m.After12MegaMenuMobile),
+);
 const NavDropdown = dynamic(() => import("./NavDropdown"));
 /* not dynamic: it is above the fold on every route, and deferring it would
    pop the pill in after hydration */
@@ -37,6 +47,13 @@ const NavDropdownMobile = dynamic(() =>
 const MEGA_PANELS = {
   Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1400 },
   Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
+  AI: { desktop: AiMegaMenu, mobile: AiMegaMenuMobile, width: 1150 },
+  "Internship & Training": {
+    desktop: InternshipMegaMenu,
+    mobile: InternshipMegaMenuMobile,
+    width: 1150,
+  },
+  "After 12th": { desktop: After12MegaMenu, mobile: After12MegaMenuMobile, width: 1150 },
 } as const;
 
 type MegaLabel = keyof typeof MEGA_PANELS;
