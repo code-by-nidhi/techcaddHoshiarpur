@@ -27,7 +27,7 @@ const CoursesMegaMenuMobile = dynamic(() => import("./CoursesMegaMenuMobile"));
  * every item not listed stays an ordinary link.
  */
 const MEGA_PANELS = {
-  Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1700 },
+  Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1400 },
   Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
 } as const;
 

@@ -70,12 +70,12 @@ export const images = {
     alt: "Trainees at work on the TechCADD lab floor",
   },
   trainingPrimary: {
-    src: "/images/lab.webp",
-    alt: "The TechCADD project floor during a working session",
+    src: "/images/about-us.webp",
+    alt: "A TechCADD trainer addressing students on stage at the Hoshiarpur campus",
   },
   trainingSecondary: {
-    src: "/images/classroom.webp",
-    alt: "A TechCADD trainer taking a classroom session",
+    src: "/images/about-us1.webp",
+    alt: "A seminar session in the TechCADD auditorium, with students seated through the hall",
   },
 } satisfies Record<string, AboutImage>;
 
