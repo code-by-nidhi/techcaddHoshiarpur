@@ -29,6 +29,7 @@ export const COURSE_MENU: MenuCategory[] = [
     courses: [
       { label: "Python Course", href: "/courses/python-programming", trending: true },
       { label: "Java Course", href: "/courses/java-programming" },
+      { label: "C Course", href: "/courses/c-programming" },
       { label: "C++ Course", href: "/courses/cpp-programming" },
       { label: "Kotlin Course", href: "/courses/kotlin-programming" },
       { label: "Web Designing", href: "/courses/web-designing" },

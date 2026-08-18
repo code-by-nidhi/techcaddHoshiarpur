@@ -79,6 +79,34 @@ function makeCourse(s: Spec): Course {
 const SPECS: Spec[] = [
   /* ------------------------------ programming ----------------------------- */
   {
+    slug: "c-programming",
+    title: "C Programming",
+    short: "Learn C programming from fundamentals to practical application development.",
+    overview:
+      "C from the ground up: types, control flow and functions, then pointers, memory and file handling — the foundation every later language builds on.",
+    category: "Programming",
+    duration: "3 Months",
+    level: "Beginner",
+    hero: "/images/mern.webp",
+    modules: [
+      { title: "C fundamentals", summary: "Types, operators and control flow.", topics: ["Data types", "Operators", "Conditionals", "Loops"], duration: "3 weeks", lessons: 12 },
+      { title: "Functions & arrays", summary: "Structuring a program beyond main().", topics: ["Functions", "Scope", "Arrays", "Strings"], duration: "3 weeks", lessons: 12 },
+      { title: "Pointers & memory", summary: "The part that makes C worth learning.", topics: ["Pointers", "Pointer arithmetic", "malloc & free", "Common leaks"], duration: "3 weeks", lessons: 12 },
+      { title: "Structures & file handling", summary: "Modelling data and persisting it.", topics: ["Structs", "Unions", "File I/O", "Header files"], duration: "3 weeks", lessons: 12 },
+    ],
+    outcomes: ["Write and debug idiomatic C", "Reason about pointers and memory", "Model data with structs", "Read and write files", "Break a problem into functions"],
+    tools: ["C", "GCC", "VS Code", "GDB", "Make"],
+    roles: ["Software Engineer", "Embedded Developer", "Systems Programmer", "Firmware Trainee"],
+    industries: ["Embedded systems", "Product engineering", "Automotive", "Consumer electronics"],
+    nextSteps: ["C++ Programming", "Data structures & algorithms", "Embedded systems", "Operating systems"],
+    projects: [
+      { name: "Student record system", summary: "A console application over structs and file storage.", tech: ["C"], level: "Beginner", skills: ["Structs", "File I/O", "Functions"], image: "/images/lab.webp" },
+      { name: "Text-based utility tool", summary: "Command-line parsing, dynamic memory and clean teardown.", tech: ["C"], level: "Intermediate", skills: ["Pointers", "Dynamic memory", "Strings"], image: "/images/classroom.webp" },
+    ],
+    related: ["cpp-programming", "java-programming", "python-programming", "kotlin-programming"],
+    keywords: ["c course Hoshiarpur", "c programming training", "c language classes", "learn c programming"],
+  },
+  {
     slug: "cpp-programming",
     title: "C++ Programming",
     short: "The language behind systems, engines and anything that has to be fast.",
