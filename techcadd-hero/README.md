@@ -213,3 +213,121 @@ referrals. No percentages placed, no packages, no salary bands anywhere.
 
 Tailwind v4 (`@import "tailwindcss"` + `@theme` in `globals.css`). On v3, swap
 that import for the three `@tailwind` directives.
+
+## Book Demo enquiries → MySQL
+
+The Book Demo modal (`src/components/UI/DemoModal.tsx`, opened from anywhere
+via `demoBus.open()`) posts to a Next.js route handler in this app, which
+validates the enquiry and stores it in MySQL through Prisma.
+
+```
+DemoModal  ──POST /api/demo-request──▶  route handler
+                                          │  zod validation + rate limit
+                                          ▼
+                                       Prisma  ──▶  MySQL `demo_bookings`
+```
+
+The browser never talks to MySQL. `DATABASE_URL` is read only inside the route
+handler, which runs on the server — it is never prefixed `NEXT_PUBLIC_` and so
+never reaches the client bundle.
+
+### It writes the same table as the `server/` API
+
+This app's `DemoRequest` model is mapped onto the existing `demo_bookings`
+table — the one the NestJS API in `../server` writes. That is deliberate: two
+tables would split the counselling team's leads in two. `prisma/schema.prisma`
+here and `server/prisma/mysql/schema.prisma` describe the same table and must
+be kept in step, or the Nest service's `npm run mysql:push` will alter columns
+out from under this one.
+
+Once every Book Demo trigger goes through `/api/demo-request`, the Nest
+`bookings` module can be deleted and this schema owns the table outright.
+
+### Local setup
+
+```bash
+npm install                 # postinstall runs `prisma generate`
+
+cp .env.example .env        # then edit DATABASE_URL
+```
+
+`DATABASE_URL` goes in `.env`, not `.env.local`. Next.js reads both, but the
+Prisma CLI only reads `.env`, so migrations cannot find a connection string
+that lives in `.env.local`.
+
+Start MySQL before migrating. On this machine that is **XAMPP's** MySQL (the
+`MYSQL80` Windows service is stopped, and XAMPP's `root` has no password) —
+start it from the XAMPP control panel. Don't run both: they both want 3306.
+
+```bash
+npm run db:migrate          # prisma migrate dev
+npm run dev                 # http://localhost:3000
+```
+
+Env files are read once at startup. After editing `.env`, restart the dev
+server or it will still see the old values.
+
+Then click **Book Demo**, submit the form, and confirm the row:
+
+```bash
+npm run db:studio           # or: SELECT * FROM demo_bookings ORDER BY id DESC;
+```
+
+#### If the table already exists
+
+`demo_bookings` may already have been created by the Nest service
+(`npm run mysql:push` there). `migrate dev` would then try to create a table
+that exists. Baseline the migration as already-applied instead:
+
+```bash
+npx prisma migrate resolve --applied 20260818000000_create_demo_requests
+```
+
+### Production
+
+Never run `migrate dev` against production — it can reset the database. Apply
+the checked-in migrations instead, which is additive and non-interactive:
+
+```bash
+npx prisma generate
+npx prisma migrate deploy   # npm run db:deploy
+npm run build
+npm run start
+```
+
+`DATABASE_URL` comes from the host's environment (systemd unit, Docker env,
+Vercel project settings) — not from a file in the repo. The MySQL user needs
+only `SELECT, INSERT, UPDATE` on this table; it does not need `DROP`.
+
+### Rate limiting caveat
+
+`src/lib/rate-limit.ts` holds its counters in process memory: five submissions
+a minute per IP, per instance. On a single Node process that is the whole
+application. Behind an autoscaler each instance keeps its own count and the
+effective limit multiplies by the instance count — if the limit must be exact
+there, swap that module for a shared store. The call site does not change.
+
+### The API
+
+`POST /api/demo-request` — the only public method; everything else returns 405.
+Stored enquiries are personal data and are never served from a public route.
+
+Request:
+
+```json
+{ "name": "Mamta", "phone": "9876567876",
+  "course": "Full Stack Development", "source": "navbar" }
+```
+
+| Status | When |
+| ------ | ---- |
+| 201 | stored (or matched a submission from the same number in the last minute) |
+| 400 | validation failed — `errors` maps field → message |
+| 413 | body over 4 KB |
+| 415 | not `application/json` |
+| 429 | more than 5 submissions a minute from one address |
+| 503 | MySQL unreachable |
+| 500 | anything else |
+
+Database and Prisma errors are logged server-side and never returned to the
+browser.

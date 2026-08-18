@@ -14,19 +14,12 @@ import {
 } from "react-icons/fi";
 import { GoogleMark } from "@/components/UI/BrandMarks";
 import { demoBus } from "@/lib/demoBus";
-import { PUBLIC_API_URL } from "@/lib/blog/api";
 import { MEGA_FOOTER } from "@/lib/site";
-
-const COURSES = [
-  "MERN Stack Development",
-  "Full Stack Development",
-  "AI & Machine Learning",
-  "Data Science",
-  "Cyber Security",
-  "Cloud & DevOps",
-  "Digital Marketing",
-  "AutoCAD / Civil CAD",
-];
+import {
+  COURSES,
+  normalisePhone,
+  type DemoRequestResponse,
+} from "@/lib/validations/demo-request";
 
 type Fields = { course: string; name: string; phone: string };
 const EMPTY: Fields = { course: "", name: "", phone: "" };
@@ -35,8 +28,9 @@ function validate(v: Fields) {
   const e: Partial<Record<keyof Fields, string>> = {};
   if (!v.course) e.course = "Pick the course you're interested in.";
   if (v.name.trim().length < 2) e.name = "Please enter your full name.";
-  // Indian mobile numbers: 10 digits, leading digit never below 6
-  if (!/^[6-9]\d{9}$/.test(v.phone.replace(/\D/g, ""))) e.phone = "Enter a 10-digit number.";
+  // Indian mobile numbers: 10 digits, leading digit never below 6. Normalised
+  // the same way the server does, so the two never disagree about a number.
+  if (!/^[6-9]\d{9}$/.test(normalisePhone(v.phone))) e.phone = "Enter a 10-digit number.";
   return e;
 }
 
@@ -51,6 +45,8 @@ export default function DemoModal() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  /** Mirrors `sending` synchronously — state updates are not immediate. */
+  const sendingRef = useRef(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const closerRef = useRef<HTMLButtonElement>(null);
 
@@ -81,6 +77,7 @@ export default function DemoModal() {
       setErrors({});
       setSent(false);
       setSending(false);
+      sendingRef.current = false;
       setServerError(null);
     }
   }, [open]);
@@ -104,33 +101,42 @@ export default function DemoModal() {
     setErrors(found);
     if (Object.keys(found).length) return;
 
+    // Guards the window between the click and `sending` being painted, so a
+    // fast double-click cannot put two requests in flight.
+    if (sendingRef.current) return;
+    sendingRef.current = true;
+
     setSending(true);
     setServerError(null);
 
     try {
-      const response = await fetch(`${PUBLIC_API_URL}/demo-bookings`, {
+      const response = await fetch("/api/demo-request", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           name: values.name.trim(),
-          phone: values.phone.replace(/\D/g, "").slice(-10),
+          phone: normalisePhone(values.phone),
           course: values.course,
           source: demoBus.getSource(),
         }),
       });
 
-      const payload = (await response.json().catch(() => ({}))) as {
-        message?: string | string[];
-      };
+      const payload = (await response.json().catch(() => ({}))) as Partial<DemoRequestResponse>;
 
       if (!response.ok) {
-        const message = Array.isArray(payload.message) ? payload.message[0] : payload.message;
+        // Field-specific messages go back to the inputs they belong to; the
+        // rest is shown once above the button. Only fields this form actually
+        // renders are copied across.
+        if (payload.errors) {
+          const { course, name, phone } = payload.errors;
+          const mapped: Partial<Record<keyof Fields, string>> = {};
+          if (course) mapped.course = course;
+          if (name) mapped.name = name;
+          if (phone) mapped.phone = phone;
+          if (Object.keys(mapped).length) setErrors(mapped);
+        }
 
-        setServerError(
-          response.status === 429
-            ? "Too many attempts. Please wait a minute and try again."
-            : (message ?? "We couldn't submit that. Please call us instead."),
-        );
+        setServerError(payload.message ?? "We couldn't submit that. Please call us instead.");
         return;
       }
 
@@ -138,6 +144,7 @@ export default function DemoModal() {
     } catch {
       setServerError("Network error. Please check your connection and try again.");
     } finally {
+      sendingRef.current = false;
       setSending(false);
     }
   };
