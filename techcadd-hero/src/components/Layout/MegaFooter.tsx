@@ -73,7 +73,7 @@ export default function MegaFooter() {
   };
 
   return (
-    <footer className="relative overflow-hidden bg-[#020617] pt-24 text-white">
+    <footer className="relative overflow-hidden bg-[#050B1F] pt-24 text-white">
       <Atmosphere />
 
       <motion.div
@@ -100,7 +100,7 @@ export default function MegaFooter() {
               {/* The +91 sits in the field as a fixed prefix rather than in the
                   placeholder, so the reader types ten digits and nothing else —
                   and the value we validate is never ambiguous. */}
-              <div className="flex w-full items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-5 py-3.5 transition-colors focus-within:border-[#3B82F6] focus-within:bg-white/[0.07] sm:max-w-sm">
+              <div className="flex w-full items-center gap-2 rounded-full border border-[#142C8E]/45 bg-white/[0.04] px-5 py-3.5 transition-colors focus-within:border-[#3B82F6] focus-within:bg-white/[0.07] sm:max-w-sm">
                 <span aria-hidden className="text-[14.5px] font-medium text-white/45">
                   +91
                 </span>
@@ -129,7 +129,7 @@ export default function MegaFooter() {
                 onClick={subscribe}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2563EB] to-[#3B82F6] px-7 py-3.5 text-[14.5px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)] transition-shadow duration-300 hover:shadow-[0_0_44px_-4px_rgba(59,130,246,1)]"
+                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-7 py-3.5 text-[14.5px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)] transition-shadow duration-300 hover:shadow-[0_0_44px_-4px_rgba(59,130,246,1)]"
               >
                 {sent ? "Subscribed" : "Subscribe"}
                 {sent ? (
@@ -291,7 +291,7 @@ function Atmosphere() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_22%_40%,rgba(12,26,74,0.95)_0%,rgba(6,10,26,0.6)_45%,transparent_75%)]" />
 
       {/* violet bloom, left edge */}
-      <div className="absolute -left-[12%] top-[-10%] size-[46rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.26)_0%,transparent_68%)] blur-3xl" />
+      <div className="absolute -left-[12%] top-[-10%] size-[46rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.26)_0%,transparent_68%)] blur-3xl" />
 
       {/* electric blue pool, bottom right */}
       <div className="absolute -bottom-[18%] right-[10%] size-[42rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.26)_0%,transparent_70%)] blur-3xl" />
@@ -311,7 +311,7 @@ function Atmosphere() {
       ))}
 
       {/* the seam with the section above */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#020617] to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#050B1F] to-transparent" />
     </div>
   );
 }
@@ -366,7 +366,7 @@ function ContactCard({
 }) {
   const body = (
     <>
-      <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/25 to-[#38BDF8]/20 ring-1 ring-inset ring-white/10">
+      <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/25 to-[#60A5FA]/20 ring-1 ring-inset ring-white/10">
         <Icon aria-hidden className="size-[18px] text-[#93C5FD]" />
       </span>
       <span className="min-w-0">

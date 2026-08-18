@@ -27,7 +27,7 @@ export default function KnowledgeHub() {
             <motion.article
               whileHover={{ y: -6 }}
               transition={{ type: "spring", stiffness: 220, damping: 22 }}
-              className="group relative flex h-full flex-col justify-end overflow-hidden rounded-[30px] bg-gradient-to-br from-[#2563EB] to-[#4F46E5] p-9 text-white shadow-[0_30px_70px_-38px_rgba(37,99,235,0.95)]"
+              className="group relative flex h-full flex-col justify-end overflow-hidden rounded-[30px] bg-gradient-to-br from-[#2563EB] to-[#2563EB] p-9 text-white shadow-[0_30px_70px_-38px_rgba(37,99,235,0.95)]"
             >
               <span
                 aria-hidden

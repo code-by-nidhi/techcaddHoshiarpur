@@ -35,7 +35,7 @@ export default function CareerOutcomes({ course }: { course: Course }) {
               className="rounded-[22px] border border-slate-200/80 bg-white p-6 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)]"
             >
               <h3 className="flex items-center gap-2.5 font-[family-name:var(--font-sora)] text-[15px] font-bold text-[#0F172A]">
-                <span className="grid size-9 place-content-center rounded-xl bg-gradient-to-br from-[#2563EB]/12 to-[#7C3AED]/12 ring-1 ring-inset ring-[#2563EB]/15">
+                <span className="grid size-9 place-content-center rounded-xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-[#2563EB]/15">
                   <Icon aria-hidden className="size-4 text-[#2563EB]" />
                 </span>
                 {title}

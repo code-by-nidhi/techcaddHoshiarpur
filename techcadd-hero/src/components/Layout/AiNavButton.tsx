@@ -6,12 +6,12 @@ import { BsStars } from "react-icons/bs";
 import styles from "./AiNavButton.module.css";
 
 /*
- * The AI entry, as a pill rather than a text link.
+ * The AI entry as a compact micro-CTA.
  *
  * It keeps every handler the other panel triggers use, so hovering still opens
- * the AI dropdown and clicking still follows the href — only the presentation
- * changes. The chevron is dropped: the sparkle carries the affordance, and a
- * chevron inside a gradient capsule reads as a form control.
+ * the AI mega menu and clicking still follows the href — only the presentation
+ * differs. No chevron: the sparkle carries the affordance, and a chevron
+ * inside a gradient capsule reads as a form control.
  */
 export default function AiNavButton({
   href,
@@ -35,11 +35,11 @@ export default function AiNavButton({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={reduce ? undefined : { scale: 1.05, y: -2 }}
+      /* the lift sits on this wrapper so it never competes with the pill's own
+         scale on open, or with the gradient animation underneath */
+      whileHover={reduce ? undefined : { y: -2 }}
       whileTap={reduce ? undefined : { scale: 0.97 }}
       className={variant === "mobile" ? "block w-full" : "inline-block"}
-      /* the lift is a transform on this wrapper, so it never fights the
-         gradient animation running on the pill itself */
     >
       <Link
         href={href}
@@ -52,12 +52,8 @@ export default function AiNavButton({
         }`}
       >
         <span aria-hidden className={styles.shimmer} />
-        <span aria-hidden className={styles.pulse} />
-        <span aria-hidden className={`${styles.spark} ${styles.spark1}`} />
-        <span aria-hidden className={`${styles.spark} ${styles.spark2}`} />
-
         <span className={styles.icon}>
-          <BsStars aria-hidden size={15} />
+          <BsStars aria-hidden size={16} />
         </span>
         <span className={styles.label}>AI</span>
       </Link>

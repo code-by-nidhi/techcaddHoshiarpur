@@ -84,7 +84,7 @@ export default function Reviews({ course }: { course: Course }) {
                   </blockquote>
 
                   <figcaption className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4">
-                    <span className="grid size-10 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#2563EB] to-[#7C3AED] text-[12.5px] font-bold text-white">
+                    <span className="grid size-10 shrink-0 place-content-center rounded-full bg-gradient-to-br from-[#142C8E] to-[#2563EB] text-[12.5px] font-bold text-white">
                       {r.initials}
                     </span>
                     <span className="min-w-0 leading-tight">

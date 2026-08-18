@@ -10,25 +10,25 @@ const REASONS: { icon: IconType; title: string; copy: string; tint: string }[] =
     icon: FiCompass,
     title: "Career Planning",
     copy: "Get the right roadmap based on your goals.",
-    tint: "from-[#2563EB] to-[#3B82F6]",
+    tint: "from-[#142C8E] to-[#2563EB]",
   },
   {
     icon: FiBookOpen,
     title: "Course Selection",
     copy: "Choose the best program for your future.",
-    tint: "from-[#6366F1] to-[#8B5CF6]",
+    tint: "from-[#3B82F6] to-[#60A5FA]",
   },
   {
     icon: FiBriefcase,
     title: "Placement Guidance",
     copy: "Understand hiring trends and opportunities.",
-    tint: "from-[#0EA5E9] to-[#38BDF8]",
+    tint: "from-[#3B82F6] to-[#60A5FA]",
   },
   {
     icon: FiTarget,
     title: "Skill Assessment",
     copy: "Know what skills employers expect.",
-    tint: "from-[#7C3AED] to-[#C026D3]",
+    tint: "from-[#60A5FA] to-[#C026D3]",
   },
 ];
 

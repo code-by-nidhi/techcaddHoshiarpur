@@ -12,20 +12,20 @@ const CARDS: { icon: IconType; label: string; value: string; href?: string; tint
     label: "Phone",
     value: CONTACT.phone,
     href: `tel:${phoneDigits}`,
-    tint: "from-[#2563EB] to-[#3B82F6]",
+    tint: "from-[#142C8E] to-[#2563EB]",
   },
   {
     icon: FiMail,
     label: "Email",
     value: CONTACT.email,
     href: `mailto:${CONTACT.email}`,
-    tint: "from-[#6366F1] to-[#8B5CF6]",
+    tint: "from-[#3B82F6] to-[#60A5FA]",
   },
   {
     icon: FiMapPin,
     label: "Location",
     value: CONTACT.location,
-    tint: "from-[#0EA5E9] to-[#38BDF8]",
+    tint: "from-[#3B82F6] to-[#60A5FA]",
   },
 ];
 
@@ -34,7 +34,7 @@ const ACTIONS: { icon: IconType; label: string; href: string; tint: string }[] =
     icon: FiPhone,
     label: "Call Now",
     href: `tel:${phoneDigits}`,
-    tint: "from-[#2563EB] to-[#3B82F6]",
+    tint: "from-[#142C8E] to-[#2563EB]",
   },
   {
     icon: FaWhatsapp,
@@ -46,7 +46,7 @@ const ACTIONS: { icon: IconType; label: string; href: string; tint: string }[] =
     icon: FiMail,
     label: "Email Us",
     href: `mailto:${CONTACT.email}`,
-    tint: "from-[#7C3AED] to-[#C026D3]",
+    tint: "from-[#60A5FA] to-[#C026D3]",
   },
 ];
 

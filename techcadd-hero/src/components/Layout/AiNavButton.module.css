@@ -1,7 +1,7 @@
 /* ---------------------------------------------------------------------------
-   The AI pill. The animated gradient, shimmer and pulse live here rather than
-   in utility strings: all three need keyframes, and keeping them together
-   makes the "premium" treatment one thing to tune.
+   The AI micro-CTA. Deliberately smaller than the Book Demo button (38px
+   against its 46px) so it reads as a highlighted nav item, not a second
+   primary action competing with it.
 --------------------------------------------------------------------------- */
 
 .pill {
@@ -9,18 +9,20 @@
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  height: 42px;
-  padding: 0 1.05rem;
+  height: 38px;
+  padding: 0 18px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  /* oversized so the 135deg sweep has somewhere to travel */
-  background: linear-gradient(135deg, #2563eb, #3b82f6, #06b6d4, #3b82f6, #2563eb);
-  background-size: 300% 300%;
-  animation: gradientDrift 8s ease infinite;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(135deg, #142c8e, #1e40af, #2563eb, #1e40af, #142c8e);
+  /* oversized so the sweep has somewhere to travel */
+  background-size: 280% 280%;
+  animation: aiDrift 9s ease infinite;
+  box-shadow:
+    0 0 20px rgba(59, 130, 246, 0.35),
+    0 0 40px rgba(96, 165, 250, 0.15);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   letter-spacing: -0.005em;
   color: #fff;
@@ -30,45 +32,43 @@
   transition:
     box-shadow 0.3s ease,
     border-color 0.3s ease,
-    filter 0.3s ease;
+    filter 0.3s ease,
+    scale 0.3s ease;
+}
+
+@media (min-width: 1536px) {
+  .pill {
+    font-size: 14px;
+  }
 }
 
 .pill:hover,
 .pill:focus-visible {
   box-shadow:
-    0 0 34px rgba(59, 130, 246, 0.75),
-    0 10px 24px -12px rgba(6, 182, 212, 0.7);
-  border-color: rgba(255, 255, 255, 0.32);
+    0 0 30px rgba(59, 130, 246, 0.65),
+    0 0 56px rgba(96, 165, 250, 0.32);
+  border-color: rgba(255, 255, 255, 0.3);
   outline: none;
 }
 
-/* active: brighter fill, stronger glow, and an outer ring */
+/* mega menu open: a touch larger and brighter, no extra chrome */
 .active {
-  filter: saturate(1.18) brightness(1.08);
+  scale: 1.03;
+  filter: saturate(1.15) brightness(1.07);
   box-shadow:
-    0 0 34px rgba(59, 130, 246, 0.8),
-    0 0 0 3px rgba(59, 130, 246, 0.28);
+    0 0 30px rgba(59, 130, 246, 0.7),
+    0 0 56px rgba(96, 165, 250, 0.35);
 }
 
 /* shimmer, left to right */
 .shimmer {
   position: absolute;
   inset-block: 0;
-  width: 38%;
+  width: 40%;
   pointer-events: none;
-  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  animation: shimmerSweep 4.5s ease-in-out infinite;
-  animation-delay: 1.2s;
-}
-
-/* the whole pill breathes every few seconds */
-.pulse {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  pointer-events: none;
-  box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.55);
-  animation: pulseRing 5s ease-out infinite;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+  animation: aiShimmer 5s ease-in-out infinite;
+  animation-delay: 1.5s;
 }
 
 .label,
@@ -81,32 +81,7 @@
   place-content: center;
 }
 
-/* two motes drifting over the fill */
-.spark {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  border-radius: 999px;
-  background: #fff;
-  pointer-events: none;
-  opacity: 0.75;
-  box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.85);
-}
-
-.spark1 {
-  left: 22%;
-  top: 62%;
-  animation: sparkFloat 3.6s ease-in-out infinite;
-}
-
-.spark2 {
-  left: 68%;
-  top: 30%;
-  animation: sparkFloat 4.4s ease-in-out infinite;
-  animation-delay: 1.4s;
-}
-
-@keyframes gradientDrift {
+@keyframes aiDrift {
   0%,
   100% {
     background-position: 0% 50%;
@@ -116,58 +91,27 @@
   }
 }
 
-@keyframes shimmerSweep {
+@keyframes aiShimmer {
   0% {
-    transform: translateX(-160%);
+    transform: translateX(-150%);
   }
   55%,
   100% {
-    transform: translateX(420%);
+    transform: translateX(400%);
   }
 }
 
-/* a ring that expands and fades once, then rests until the next cycle */
-@keyframes pulseRing {
-  0% {
-    box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.5);
-  }
-  35% {
-    box-shadow: 0 0 0 7px rgba(96, 165, 250, 0);
-  }
-  36%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(96, 165, 250, 0);
-  }
-}
-
-@keyframes sparkFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.25;
-  }
-  50% {
-    transform: translateY(-7px);
-    opacity: 0.9;
-  }
-}
-
-/* full width in the drawer, where it sits in a stacked list */
+/* in the drawer it heads a stacked list, so it spans the row */
 .mobile {
   display: flex;
   width: 100%;
-  height: 46px;
+  height: 40px;
   justify-content: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pill,
-  .shimmer,
-  .pulse,
-  .spark {
+  .shimmer {
     animation: none;
-  }
-  .spark {
-    opacity: 0.5;
   }
 }

@@ -3,10 +3,10 @@
 @import "tailwindcss";
 
 @theme {
-  --color-void: #020617;
+  --color-void: #050B1F;
   --color-electric: #2563EB;
-  --color-violetglow: #7C3AED;
-  --color-cyanglow: #06B6D4;
+  --color-violetglow: #60A5FA;
+  --color-cyanglow: #60A5FA;
 
   --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -14,9 +14,9 @@
 }
 
 :root {
-  --void: #020617;
+  --void: #050B1F;
   --electric: #3b82f6;
-  --violetglow: #8b5cf6;
+  --violetglow: #60a5fa;
   --cyanglow: #22d3ee;
 }
 
@@ -136,7 +136,7 @@ html.custom-cursor [contenteditable="true"] {
 }
 
 .text-gradient {
-  background: linear-gradient(100deg, #60a5fa 0%, #818cf8 45%, #c084fc 100%);
+  background: linear-gradient(100deg, #60a5fa 0%, #60a5fa 45%, #c084fc 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -343,10 +343,10 @@ html.custom-cursor [contenteditable="true"] {
 @theme {
   /*
    * The dark palette is the home page's, taken from the hero backdrop so the
-   * two never drift: #020617 is the same base the body and the robot stage sit
+   * two never drift: #050B1F is the same base the body and the robot stage sit
    * on, and #0c1a4a is the warmer navy pocket behind the composition.
    */
-  --color-royal-deep: #020617;
+  --color-royal-deep: #050B1F;
   --color-royal: #0c1a4a;
   --color-paper: #ffffff;
   --color-mist: #f2f6fd;
@@ -354,13 +354,13 @@ html.custom-cursor [contenteditable="true"] {
   /*
    * Blue into violet, as on the home page. The accent is violet rather than
    * cyan: the hero's glows, its headline gradient and its primary button all
-   * resolve toward #a855f7, and a cyan accent read as a different brand.
+   * resolve toward #60a5fa, and a cyan accent read as a different brand.
    */
   --color-brand: #2563eb;
   --color-brand-bright: #60a5fa;
-  --color-accent: #a855f7;
-  --color-violet: #7c3aed;
-  --color-indigo: #6366f1;
+  --color-accent: #60a5fa;
+  --color-violet: #60a5fa;
+  --color-indigo: #3b82f6;
 
   --radius-hero: 2rem;
   --radius-card: 1rem;
@@ -384,7 +384,7 @@ html.custom-cursor [contenteditable="true"] {
 /* Root defaults mirror the dark shell the rest of the site runs on, so the
    global border rule resolves to exactly the value it carried before. */
 :root {
-  --ctx-bg: #020617;
+  --ctx-bg: #050B1F;
   --ctx-ink: #ffffff;
   --ctx-ink-muted: #cbd5e1;
   --ctx-ink-dim: #94a3b8;
@@ -544,7 +544,7 @@ html.custom-cursor [contenteditable="true"] {
 
 /* The home page's headline gradient, to the stop. */
 .text-gradient-brand {
-  background: linear-gradient(104deg, #3b82f6 0%, #6366f1 45%, #a855f7 100%);
+  background: linear-gradient(104deg, #3b82f6 0%, #3b82f6 45%, #60a5fa 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -867,5 +867,5 @@ html.custom-cursor [contenteditable="true"] {
 
 .wall-dots .swiper-pagination-bullet-active {
   width: 1.75rem;
-  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  background: linear-gradient(90deg, #142C8E, #2563EB);
 }

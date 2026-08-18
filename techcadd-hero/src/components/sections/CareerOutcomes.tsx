@@ -51,7 +51,7 @@ export default function CareerOutcomes() {
                     aria-hidden
                     className="pointer-events-none absolute -right-14 -top-16 size-44 rounded-full bg-[#2563EB]/8 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
                   />
-                  <span className="grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#06B6D4]/12 ring-1 ring-inset ring-slate-200">
+                  <span className="grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-slate-200">
                     <Icon aria-hidden className="size-5 text-[#2563EB]" />
                   </span>
                   <p className="mt-6 font-[family-name:var(--font-poppins)] text-[clamp(2rem,3vw,2.7rem)] font-extrabold leading-none tracking-tight text-[#0F172A]">
@@ -76,7 +76,7 @@ export default function CareerOutcomes() {
                     What the support actually consists of, counted.
                   </p>
                 </div>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#06B6D4]/10 px-3 py-1 text-[12px] font-medium text-[#0891B2]">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#60A5FA]/10 px-3 py-1 text-[12px] font-medium text-[#0891B2]">
                   <TrendingUp aria-hidden className="size-3.5" />
                   Rolling 12 months
                 </span>
@@ -95,7 +95,7 @@ export default function CareerOutcomes() {
                         whileInView={{ width: `${[100, 92, 46, 62][i]}%` }}
                         viewport={{ once: true }}
                         transition={{ duration: 1.1, delay: 0.15 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                        className="h-full rounded-full bg-gradient-to-r from-[#2563EB] to-[#06B6D4]"
+                        className="h-full rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB]"
                       />
                     </div>
                   </li>
@@ -128,7 +128,7 @@ export default function CareerOutcomes() {
                     <defs>
                       <linearGradient id="ratingGrad" x1="0" y1="0" x2="1" y2="1">
                         <stop offset="0%" stopColor="#2563EB" />
-                        <stop offset="100%" stopColor="#06B6D4" />
+                        <stop offset="100%" stopColor="#60A5FA" />
                       </linearGradient>
                     </defs>
                   </svg>
@@ -198,7 +198,7 @@ export default function CareerOutcomes() {
                         whileInView={{ width: `${c.pct * 3.6}%` }}
                         viewport={{ once: true }}
                         transition={{ duration: 1, delay: 0.1 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
-                        className="block h-full rounded-full bg-gradient-to-r from-[#4F46E5] to-[#06B6D4]"
+                        className="block h-full rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB]"
                       />
                     </span>
                     <span className="w-10 shrink-0 text-right text-[13px] font-semibold text-[#0F172A]">
@@ -212,7 +212,7 @@ export default function CareerOutcomes() {
 
           {/* enrolment growth */}
           <Reveal delay={0.16} className="lg:col-span-5">
-            <div className="flex h-full flex-col justify-between rounded-[28px] bg-gradient-to-br from-[#2563EB] to-[#4F46E5] p-7 text-white shadow-[0_24px_60px_-34px_rgba(37,99,235,0.9)]">
+            <div className="flex h-full flex-col justify-between rounded-[28px] bg-gradient-to-br from-[#2563EB] to-[#2563EB] p-7 text-white shadow-[0_24px_60px_-34px_rgba(37,99,235,0.9)]">
               <div>
                 <h3 className="font-[family-name:var(--font-poppins)] text-[18px] font-bold">
                   Enrolment growth

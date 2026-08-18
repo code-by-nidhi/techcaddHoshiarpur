@@ -35,7 +35,7 @@ export default function StudentWall() {
     <section id="stories" className="relative overflow-hidden bg-white section-pad">
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-[380px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(79,70,229,0.07),transparent_70%)]"
+        className="absolute inset-x-0 top-0 h-[380px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(37,99,235,0.07),transparent_70%)]"
       />
 
       {/* floating blur blobs */}
@@ -48,7 +48,7 @@ export default function StudentWall() {
         <motion.div
           animate={{ y: [0, 20, 0], opacity: [0.45, 0.75, 0.45] }}
           transition={{ duration: 13, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-          className="absolute -right-20 bottom-24 size-[28rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.14)_0%,transparent_70%)] blur-3xl"
+          className="absolute -right-20 bottom-24 size-[28rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.14)_0%,transparent_70%)] blur-3xl"
         />
       </div>
 
@@ -113,9 +113,9 @@ export default function StudentWall() {
               <SwiperSlide key={r.name + r.quote.slice(0, 12)} className="!h-auto">
                 {({ isActive }) => (
                   <article
-                    className={`group relative flex h-[272px] w-full flex-col overflow-hidden rounded-[24px] border bg-white/75 p-5 backdrop-blur-xl transition-[transform,box-shadow,border-color,opacity] duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_34px_70px_-32px_rgba(79,70,229,0.5)] motion-reduce:hover:translate-y-0 sm:h-[288px] ${
+                    className={`group relative flex h-[272px] w-full flex-col overflow-hidden rounded-[24px] border bg-white/75 p-5 backdrop-blur-xl transition-[transform,box-shadow,border-color,opacity] duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_34px_70px_-32px_rgba(37,99,235,0.5)] motion-reduce:hover:translate-y-0 sm:h-[288px] ${
                       isActive
-                        ? "border-[#4F46E5]/30 opacity-100 shadow-[0_26px_60px_-30px_rgba(79,70,229,0.5)] lg:scale-[1.05]"
+                        ? "border-[#2563EB]/30 opacity-100 shadow-[0_26px_60px_-30px_rgba(37,99,235,0.5)] lg:scale-[1.05]"
                         : "border-white/70 opacity-90 shadow-[0_12px_32px_-28px_rgba(15,23,42,0.6)] lg:scale-[0.95]"
                     }`}
                   >
@@ -126,7 +126,7 @@ export default function StudentWall() {
                     />
                     <span
                       aria-hidden
-                      className="pointer-events-none absolute -right-10 -top-12 size-32 rounded-full bg-[#4F46E5]/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+                      className="pointer-events-none absolute -right-10 -top-12 size-32 rounded-full bg-[#2563EB]/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
                     />
 
                     <div className="relative flex items-center justify-between gap-3">
@@ -139,7 +139,7 @@ export default function StudentWall() {
                           />
                         ))}
                       </span>
-                      <FaQuoteLeft aria-hidden className="size-4 shrink-0 text-[#4F46E5]/25" />
+                      <FaQuoteLeft aria-hidden className="size-4 shrink-0 text-[#2563EB]/25" />
                     </div>
 
                     {/*
@@ -153,7 +153,7 @@ export default function StudentWall() {
 
                     <figcaption className="relative mt-3 flex items-center gap-3 border-t border-slate-100 pt-3.5">
                       <span
-                        className={`grid size-10 shrink-0 place-content-center rounded-full bg-gradient-to-br ${r.tone} text-[12px] font-bold text-white shadow-[0_10px_22px_-12px_rgba(79,70,229,0.9)]`}
+                        className={`grid size-10 shrink-0 place-content-center rounded-full bg-gradient-to-br ${r.tone} text-[12px] font-bold text-white shadow-[0_10px_22px_-12px_rgba(37,99,235,0.9)]`}
                       >
                         {initials(r.name)}
                       </span>
@@ -165,7 +165,7 @@ export default function StudentWall() {
                         <span className="mt-0.5 block truncate text-[11px] text-[#64748B]">
                           {r.course}
                         </span>
-                        <span className="mt-1.5 inline-flex max-w-full items-center truncate rounded-full bg-gradient-to-r from-[#2563EB] to-[#7C3AED] px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.07em] text-white">
+                        <span className="mt-1.5 inline-flex max-w-full items-center truncate rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.07em] text-white">
                           {r.badge}
                         </span>
                       </span>
@@ -182,7 +182,7 @@ export default function StudentWall() {
               type="button"
               onClick={() => swiperRef.current?.slidePrev()}
               aria-label="Previous review"
-              className="grid size-11 shrink-0 place-content-center rounded-full border border-slate-200 bg-white text-[#475569] shadow-[0_10px_26px_-20px_rgba(15,23,42,0.8)] transition-colors duration-300 hover:border-[#4F46E5] hover:text-[#4F46E5]"
+              className="grid size-11 shrink-0 place-content-center rounded-full border border-slate-200 bg-white text-[#475569] shadow-[0_10px_26px_-20px_rgba(15,23,42,0.8)] transition-colors duration-300 hover:border-[#2563EB] hover:text-[#2563EB]"
             >
               <FiChevronLeft className="size-4" />
             </button>
@@ -193,7 +193,7 @@ export default function StudentWall() {
               type="button"
               onClick={() => swiperRef.current?.slideNext()}
               aria-label="Next review"
-              className="grid size-11 shrink-0 place-content-center rounded-full border border-slate-200 bg-white text-[#475569] shadow-[0_10px_26px_-20px_rgba(15,23,42,0.8)] transition-colors duration-300 hover:border-[#4F46E5] hover:text-[#4F46E5]"
+              className="grid size-11 shrink-0 place-content-center rounded-full border border-slate-200 bg-white text-[#475569] shadow-[0_10px_26px_-20px_rgba(15,23,42,0.8)] transition-colors duration-300 hover:border-[#2563EB] hover:text-[#2563EB]"
             >
               <FiChevronRight className="size-4" />
             </button>

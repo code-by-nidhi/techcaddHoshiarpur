@@ -19,7 +19,7 @@ export default function FinalCta() {
         >
           <motion.div
             variants={fadeUp}
-            className="relative overflow-hidden rounded-[34px] bg-[linear-gradient(120deg,#1E3A8A_0%,#2563EB_38%,#4F46E5_70%,#7C3AED_100%)] px-7 py-16 text-center sm:px-12 lg:px-16 lg:py-20"
+            className="relative overflow-hidden rounded-[34px] bg-[linear-gradient(120deg,#1E3A8A_0%,#2563EB_38%,#2563EB_70%,#60A5FA_100%)] px-7 py-16 text-center sm:px-12 lg:px-16 lg:py-20"
           >
             <Particles />
 
@@ -61,7 +61,7 @@ export default function FinalCta() {
                   whileHover={{ y: -3, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 text-[15px] font-semibold text-[#0F172A] shadow-[0_16px_40px_-14px_rgba(2,6,23,0.6)]"
+                  className="group inline-flex items-center gap-2.5 rounded-full bg-white px-8 py-4 text-[15px] font-semibold text-[#0F172A] shadow-[0_16px_40px_-14px_rgba(5,11,31,0.6)]"
                 >
                   Book Free Session
                   <FiArrowRight

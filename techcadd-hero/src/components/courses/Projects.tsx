@@ -10,7 +10,7 @@ import { Chip, Reveal, Section, SectionHead, fadeUp } from "./shared";
 const LEVEL_TINT: Record<Project["level"], string> = {
   Beginner: "bg-[#DCFCE7] text-[#166534]",
   Intermediate: "bg-[#DBEAFE] text-[#1E40AF]",
-  Advanced: "bg-[#EDE9FE] text-[#5B21B6]",
+  Advanced: "bg-[#EDE9FE] text-[#1E40AF]",
 };
 
 export default function Projects({ course }: { course: Course }) {

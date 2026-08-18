@@ -69,14 +69,14 @@ export default function RobotShowcase() {
           aria-hidden
           className="absolute left-1/2 top-[54%] size-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl transition-[background] duration-500"
           style={{
-            background: `radial-gradient(circle, ${tint} 0%, rgba(139,92,246,0.14) 45%, transparent 70%)`,
+            background: `radial-gradient(circle, ${tint} 0%, rgba(96, 165, 250,0.14) 45%, transparent 70%)`,
           }}
         />
 
         {/* second pool, revealed on hover so the glow lifts without any scaling */}
         <div
           aria-hidden
-          className="absolute left-1/2 top-[54%] size-[86%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.26)_0%,rgba(168,85,247,0.16)_48%,transparent_72%)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+          className="absolute left-1/2 top-[54%] size-[86%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.26)_0%,rgba(96,165,250,0.16)_48%,transparent_72%)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
         />
 
         {/* light beam falling from behind the robot */}
@@ -86,7 +86,7 @@ export default function RobotShowcase() {
           style={{
             clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
             background:
-              "linear-gradient(to bottom, rgba(147,197,253,0) 0%, rgba(96,165,250,0.20) 46%, rgba(168,85,247,0.24) 100%)",
+              "linear-gradient(to bottom, rgba(147,197,253,0) 0%, rgba(96,165,250,0.20) 46%, rgba(96, 165, 250,0.24) 100%)",
           }}
         />
 
@@ -131,7 +131,7 @@ export default function RobotShowcase() {
              * It was 88 wide, sized for the old cutout. At that width the
              * render reached 94% across and the badges sat on top of it.
              */
-            className={`absolute left-[14%] top-[12%] h-[62%] w-[72%] drop-shadow-[0_28px_44px_rgba(2,6,23,0.65)] ${flip}`}
+            className={`absolute left-[14%] top-[12%] h-[62%] w-[72%] drop-shadow-[0_28px_44px_rgba(5,11,31,0.65)] ${flip}`}
           >
             <Image
               src={ROBOT}

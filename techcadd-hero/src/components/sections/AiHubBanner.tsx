@@ -53,14 +53,14 @@ export default function AiHubBanner() {
         animate={reduced ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
         transition={reduced ? undefined : { duration: 10, repeat: Infinity, ease: "linear" }}
         style={{ backgroundSize: "240% 240%" }}
-        className="absolute inset-0 rounded-[32px] bg-[linear-gradient(120deg,#2563EB,#6366F1,#A855F7,#2563EB)] shadow-[0_0_40px_-10px_rgba(99,102,241,0.85)]"
+        className="absolute inset-0 rounded-[32px] bg-[linear-gradient(120deg,#2563EB,#3B82F6,#60A5FA,#2563EB)] shadow-[0_0_40px_-10px_rgba(59,130,246,0.85)]"
       />
 
       <div className="relative overflow-hidden rounded-[31px] bg-[linear-gradient(125deg,#0b1030_0%,#141b4d_48%,#241a52_100%)] backdrop-blur-xl">
         {/* gradient mesh */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(37,99,235,0.40),transparent_55%),radial-gradient(circle_at_82%_75%,rgba(168,85,247,0.34),transparent_55%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(37,99,235,0.40),transparent_55%),radial-gradient(circle_at_82%_75%,rgba(96,165,250,0.34),transparent_55%)]"
         />
         {/* grid overlay */}
         <div
@@ -86,14 +86,14 @@ export default function AiHubBanner() {
             <linearGradient id="hub-circuit" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0%" stopColor="#60A5FA" stopOpacity="0" />
               <stop offset="45%" stopColor="#93C5FD" stopOpacity="0.85" />
-              <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
+              <stop offset="100%" stopColor="#60A5FA" stopOpacity="0" />
             </linearGradient>
           </defs>
           <path d="M0 60 H120 L150 32 H300" fill="none" stroke="url(#hub-circuit)" strokeWidth="1.2" />
           <path d="M0 210 H90 L128 176 H260" fill="none" stroke="url(#hub-circuit)" strokeWidth="1.2" />
           <path d="M600 96 H470 L436 130 H320" fill="none" stroke="url(#hub-circuit)" strokeWidth="1.2" />
           <circle cx="150" cy="32" r="2.5" fill="#93C5FD" />
-          <circle cx="128" cy="176" r="2.5" fill="#A855F7" />
+          <circle cx="128" cy="176" r="2.5" fill="#60A5FA" />
           <circle cx="436" cy="130" r="2.5" fill="#60A5FA" />
         </svg>
 
@@ -144,7 +144,7 @@ export default function AiHubBanner() {
                   width={840}
                   height={640}
                   sizes="(max-width: 575px) 230px, 240px"
-                  className="h-auto w-full object-contain drop-shadow-[0_18px_30px_rgba(2,6,23,0.75)]"
+                  className="h-auto w-full object-contain drop-shadow-[0_18px_30px_rgba(5,11,31,0.75)]"
                 />
               </motion.div>
 
@@ -174,7 +174,7 @@ export default function AiHubBanner() {
 
             <h3 className="mt-3 font-[family-name:var(--font-sora)] text-[clamp(1.15rem,2.4vw,1.6rem)] font-extrabold leading-[1.15] tracking-[-0.022em] text-white">
               Learn. Build. Innovate.{" "}
-              <span className="bg-gradient-to-r from-[#93c5fd] to-[#c4b5fd] bg-clip-text pr-[0.06em] text-transparent">
+              <span className="bg-gradient-to-r from-[#93c5fd] to-[#93c5fd] bg-clip-text pr-[0.06em] text-transparent">
                 Get Hired.
               </span>
             </h3>
@@ -202,7 +202,7 @@ export default function AiHubBanner() {
                 whileHover={{ y: -2, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 340, damping: 22 }}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-[12.5px] font-semibold text-[#0F172A] shadow-[0_14px_32px_-14px_rgba(2,6,23,0.85)]"
+                className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-[12.5px] font-semibold text-[#0F172A] shadow-[0_14px_32px_-14px_rgba(5,11,31,0.85)]"
               >
                 Explore Labs
                 <FiArrowRight

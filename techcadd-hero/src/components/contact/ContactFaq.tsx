@@ -73,7 +73,7 @@ export default function ContactFaq() {
                             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                             className={`grid size-9 shrink-0 place-items-center rounded-full transition-colors duration-300 ${
                               isOpen
-                                ? "bg-gradient-to-br from-[#2563EB] to-[#38BDF8] text-white"
+                                ? "bg-gradient-to-br from-[#142C8E] to-[#2563EB] text-white"
                                 : "bg-[#2563EB]/10 text-[#2563EB]"
                             }`}
                           >

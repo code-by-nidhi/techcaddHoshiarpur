@@ -22,7 +22,7 @@ function withHighlight(quote: string) {
   return (
     <>
       {quote.slice(0, at)}
-      <span className="bg-gradient-to-r from-[#2563EB] via-[#4F46E5] to-[#7C3AED] bg-clip-text pr-[0.06em] font-semibold text-transparent">
+      <span className="bg-gradient-to-r from-[#2563EB] via-[#2563EB] to-[#60A5FA] bg-clip-text pr-[0.06em] font-semibold text-transparent">
         {HIGHLIGHT}
       </span>
       {quote.slice(at + HIGHLIGHT.length)}
@@ -59,14 +59,14 @@ export default function FounderVision() {
             animate={reduced ? undefined : { backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
             transition={reduced ? undefined : { duration: 12, repeat: Infinity, ease: "linear" }}
             style={{ backgroundSize: "240% 240%" }}
-            className="absolute inset-0 rounded-[32px] bg-[linear-gradient(120deg,rgba(37,99,235,0.45),rgba(79,70,229,0.30),rgba(124,58,237,0.45),rgba(37,99,235,0.45))] sm:rounded-[40px]"
+            className="absolute inset-0 rounded-[32px] bg-[linear-gradient(120deg,rgba(37,99,235,0.45),rgba(37,99,235,0.30),rgba(96,165,250,0.45),rgba(37,99,235,0.45))] sm:rounded-[40px]"
           />
 
           <div className="relative overflow-hidden rounded-[31px] bg-[linear-gradient(140deg,#F5F8FF_0%,#F6F4FF_45%,#EFF6FF_100%)] px-5 py-7 sm:rounded-[39px] sm:px-8 sm:py-9 lg:px-12 lg:py-11">
             {/* soft glows */}
             <div aria-hidden className="pointer-events-none absolute inset-0">
               <div className="absolute -left-24 -top-24 size-[26rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.16)_0%,transparent_70%)] blur-3xl" />
-              <div className="absolute -bottom-28 -right-20 size-[28rem] rounded-full bg-[radial-gradient(circle,rgba(124,58,237,0.16)_0%,transparent_70%)] blur-3xl" />
+              <div className="absolute -bottom-28 -right-20 size-[28rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.16)_0%,transparent_70%)] blur-3xl" />
             </div>
 
             {/* decorative curved lines */}
@@ -91,7 +91,7 @@ export default function FounderVision() {
               <defs>
                 <linearGradient id="fv-line" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="#2563EB" stopOpacity="0" />
-                  <stop offset="50%" stopColor="#7C3AED" stopOpacity="0.7" />
+                  <stop offset="50%" stopColor="#60A5FA" stopOpacity="0.7" />
                   <stop offset="100%" stopColor="#2563EB" stopOpacity="0" />
                 </linearGradient>
               </defs>
@@ -110,7 +110,7 @@ export default function FounderVision() {
                     ease: "easeInOut",
                     delay: m.delay,
                   }}
-                  className="absolute rounded-full bg-[#6366F1]/50"
+                  className="absolute rounded-full bg-[#3B82F6]/50"
                 />
               ))}
             </div>
@@ -130,7 +130,7 @@ export default function FounderVision() {
                     aria-hidden
                     animate={reduced ? undefined : { opacity: [0.55, 0.9, 0.55], scale: [1, 1.05, 1] }}
                     transition={reduced ? undefined : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                    className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[radial-gradient(circle_at_35%_30%,rgba(37,99,235,0.30),transparent_62%),radial-gradient(circle_at_75%_80%,rgba(124,58,237,0.28),transparent_62%)] blur-2xl"
+                    className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[radial-gradient(circle_at_35%_30%,rgba(37,99,235,0.30),transparent_62%),radial-gradient(circle_at_75%_80%,rgba(96,165,250,0.28),transparent_62%)] blur-2xl"
                   />
 
                   {/*
@@ -141,7 +141,7 @@ export default function FounderVision() {
                    * clip-path replaces border-radius outright, so a polygon
                    * notch would have cost the 32px corners entirely.
                    */}
-                  <div className="relative rounded-[32px] bg-[linear-gradient(135deg,#2563EB,#6366F1_45%,#A855F7)] p-[2px] shadow-[0_0_40px_-12px_rgba(99,102,241,0.75),0_30px_70px_-34px_rgba(15,23,42,0.55)]">
+                  <div className="relative rounded-[32px] bg-[linear-gradient(135deg,#2563EB,#3B82F6_45%,#60A5FA)] p-[2px] shadow-[0_0_40px_-12px_rgba(59,130,246,0.75),0_30px_70px_-34px_rgba(15,23,42,0.55)]">
                     <div className="relative overflow-hidden rounded-[30px]">
                       <Image
                         src="/images/founder-gaurav.webp"
@@ -155,7 +155,7 @@ export default function FounderVision() {
                       {/* diagonal accent across the lower-right corner */}
                       <span
                         aria-hidden
-                        className="pointer-events-none absolute -bottom-10 -right-16 h-24 w-56 rotate-[-38deg] bg-[linear-gradient(90deg,transparent,rgba(124,58,237,0.55),rgba(37,99,235,0.55))] blur-[2px]"
+                        className="pointer-events-none absolute -bottom-10 -right-16 h-24 w-56 rotate-[-38deg] bg-[linear-gradient(90deg,transparent,rgba(96,165,250,0.55),rgba(37,99,235,0.55))] blur-[2px]"
                       />
 
                       {/* corner brackets */}
@@ -177,7 +177,7 @@ export default function FounderVision() {
                     className="absolute -bottom-4 left-1/2 z-10 w-max -translate-x-1/2 rounded-2xl border border-white/80 bg-white/85 px-5 py-3 shadow-[0_22px_50px_-24px_rgba(15,23,42,0.55)] backdrop-blur-xl lg:left-6 lg:translate-x-0"
                   >
                     <span className="flex items-center gap-2.5">
-                      <span className="grid size-8 shrink-0 place-content-center rounded-xl bg-gradient-to-br from-[#2563EB] to-[#7C3AED] shadow-[0_10px_22px_-10px_rgba(79,70,229,0.95)]">
+                      <span className="grid size-8 shrink-0 place-content-center rounded-xl bg-gradient-to-br from-[#142C8E] to-[#2563EB] shadow-[0_10px_22px_-10px_rgba(37,99,235,0.95)]">
                         <FiAward aria-hidden className="size-4 text-white" />
                       </span>
                       <span className="leading-tight">
@@ -202,14 +202,14 @@ export default function FounderVision() {
                   viewport={{ once: true, margin: "-80px" }}
                   transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
                   whileHover={reduced ? undefined : { y: -6 }}
-                  className="relative m-0 rounded-[26px] border border-white/70 bg-white/70 p-6 shadow-[0_24px_70px_-40px_rgba(15,23,42,0.55)] backdrop-blur-[20px] transition-shadow duration-500 hover:shadow-[0_40px_90px_-40px_rgba(79,70,229,0.45)] sm:p-8 lg:p-10"
+                  className="relative m-0 rounded-[26px] border border-white/70 bg-white/70 p-6 shadow-[0_24px_70px_-40px_rgba(15,23,42,0.55)] backdrop-blur-[20px] transition-shadow duration-500 hover:shadow-[0_40px_90px_-40px_rgba(37,99,235,0.45)] sm:p-8 lg:p-10"
                 >
                   {/* floating quote mark */}
                   <motion.span
                     aria-hidden
                     animate={reduced ? undefined : { y: [0, -6, 0] }}
                     transition={reduced ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-5 right-6 grid size-12 place-content-center rounded-2xl bg-gradient-to-br from-[#2563EB] to-[#7C3AED] shadow-[0_16px_36px_-14px_rgba(79,70,229,0.9)] sm:size-14"
+                    className="absolute -top-5 right-6 grid size-12 place-content-center rounded-2xl bg-gradient-to-br from-[#142C8E] to-[#2563EB] shadow-[0_16px_36px_-14px_rgba(37,99,235,0.9)] sm:size-14"
                   >
                     <FaQuoteLeft className="size-5 text-white sm:size-6" />
                   </motion.span>
@@ -223,10 +223,10 @@ export default function FounderVision() {
                     &ldquo;{withHighlight(FOUNDER.quote)}&rdquo;
                   </blockquote>
 
-                  <div aria-hidden className="mt-7 h-px w-full bg-[linear-gradient(90deg,rgba(37,99,235,0.35),rgba(124,58,237,0.25),transparent)]" />
+                  <div aria-hidden className="mt-7 h-px w-full bg-[linear-gradient(90deg,rgba(37,99,235,0.35),rgba(96,165,250,0.25),transparent)]" />
 
                   <figcaption className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">
-                    <span className="grid size-11 shrink-0 place-content-center rounded-2xl bg-gradient-to-br from-[#2563EB] to-[#7C3AED] font-[family-name:var(--font-poppins)] text-[13px] font-extrabold text-white shadow-[0_14px_30px_-14px_rgba(79,70,229,0.95)]">
+                    <span className="grid size-11 shrink-0 place-content-center rounded-2xl bg-gradient-to-br from-[#142C8E] to-[#2563EB] font-[family-name:var(--font-poppins)] text-[13px] font-extrabold text-white shadow-[0_14px_30px_-14px_rgba(37,99,235,0.95)]">
                       TC
                     </span>
 

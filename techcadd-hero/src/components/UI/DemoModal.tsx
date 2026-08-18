@@ -160,7 +160,7 @@ export default function DemoModal() {
           onMouseDown={(e) => {
             if (!panelRef.current?.contains(e.target as Node)) close();
           }}
-          className="fixed inset-0 z-[10000] grid place-items-center overflow-y-auto bg-[#020617]/80 p-4 backdrop-blur-md sm:p-6"
+          className="fixed inset-0 z-[10000] grid place-items-center overflow-y-auto bg-[#050B1F]/80 p-4 backdrop-blur-md sm:p-6"
         >
           <motion.div
             ref={panelRef}
@@ -171,7 +171,7 @@ export default function DemoModal() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
             transition={{ duration: 0.36, ease: [0.16, 1, 0.3, 1] }}
-            className="relative my-auto w-full max-w-[780px] overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(2,6,23,0.95)]"
+            className="relative my-auto w-full max-w-[780px] overflow-hidden rounded-[28px] shadow-[0_50px_120px_-40px_rgba(5,11,31,0.95)]"
           >
             <button
               ref={closerRef}
@@ -208,7 +208,7 @@ export default function DemoModal() {
                     &ldquo;AI is the new electricity for modern computing.&rdquo;
                   </blockquote>
                   <figcaption className="mt-3.5 flex items-center gap-2.5">
-                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#2563EB]/40 to-[#7C3AED]/40 ring-1 ring-inset ring-white/15">
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#2563EB]/40 to-[#60A5FA]/40 ring-1 ring-inset ring-white/15">
                       <NvidiaGlyph />
                     </span>
                     <span className="leading-tight">
@@ -220,7 +220,7 @@ export default function DemoModal() {
                   </figcaption>
                 </figure>
 
-                <div className="relative mt-4 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 py-3 shadow-[0_18px_40px_-24px_rgba(2,6,23,0.9)]">
+                <div className="relative mt-4 flex items-center justify-between gap-4 rounded-2xl bg-white px-4 py-3 shadow-[0_18px_40px_-24px_rgba(5,11,31,0.9)]">
                   <span className="flex items-center gap-2.5">
                     <GoogleMark className="size-5" />
                     <span className="text-[13.5px] font-semibold text-[#0F172A]">
@@ -248,7 +248,7 @@ export default function DemoModal() {
               </div>
 
               {/* right: the form */}
-              <div className="relative overflow-hidden bg-[linear-gradient(150deg,#1d4ed8_0%,#3b82f6_45%,#7c3aed_100%)] p-6 sm:p-7">
+              <div className="relative overflow-hidden bg-[linear-gradient(150deg,#1d4ed8_0%,#3b82f6_45%,#60a5fa_100%)] p-6 sm:p-7">
                 <motion.span
                   aria-hidden
                   animate={{ opacity: [0.35, 0.65, 0.35] }}
@@ -369,7 +369,7 @@ export default function DemoModal() {
                         whileHover={sending ? undefined : { y: -2, scale: 1.02 }}
                         whileTap={sending ? undefined : { scale: 0.98 }}
                         transition={{ type: "spring", stiffness: 340, damping: 22 }}
-                        className="group mt-4 inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 text-[13.5px] font-semibold text-[#0F172A] shadow-[0_16px_40px_-16px_rgba(2,6,23,0.8)] disabled:cursor-wait disabled:opacity-75"
+                        className="group mt-4 inline-flex items-center gap-2.5 rounded-full bg-white px-6 py-3 text-[13.5px] font-semibold text-[#0F172A] shadow-[0_16px_40px_-16px_rgba(5,11,31,0.8)] disabled:cursor-wait disabled:opacity-75"
                       >
                         {sending ? "Submitting…" : "Submit"}
                         {sending ? (

@@ -32,7 +32,7 @@ export default function WhyProgram({ course }: { course: Course }) {
                 className="pointer-events-none absolute -right-10 -top-12 size-32 rounded-full bg-[#2563EB]/10 opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
               />
               <span className="relative flex items-center gap-2.5">
-                <span className="grid size-7 place-content-center rounded-lg bg-gradient-to-br from-[#2563EB] to-[#38BDF8]">
+                <span className="grid size-7 place-content-center rounded-lg bg-gradient-to-br from-[#142C8E] to-[#2563EB]">
                   <FiCheck aria-hidden className="size-3.5 text-white" />
                 </span>
                 <span className="font-[family-name:var(--font-mono-face)] text-[11px] text-[#94A3B8]">

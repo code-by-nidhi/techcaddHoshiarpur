@@ -33,7 +33,7 @@ export default function HeroContent() {
           inside the element's background box, so any letter overflowing a
           fixed-width box renders transparent — that is the missing "r".
         */}
-        <span className="block bg-gradient-to-r from-[#3b82f6] via-[#6366f1] to-[#a855f7] bg-clip-text pr-[0.08em] text-transparent lg:w-max">
+        <span className="block bg-gradient-to-r from-[#3b82f6] via-[#3b82f6] to-[#60a5fa] bg-clip-text pr-[0.08em] text-transparent lg:w-max">
           {HEADING.gradient}
         </span>
         <span className="block">{HEADING.line4}</span>

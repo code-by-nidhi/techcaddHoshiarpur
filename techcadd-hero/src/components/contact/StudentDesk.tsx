@@ -17,7 +17,7 @@ const ACTIONS: { icon: IconType; label: string; href: string; tint: string; glow
     icon: FiPhone,
     label: "Call Now",
     href: `tel:${phoneDigits}`,
-    tint: "from-[#2563EB] to-[#3B82F6]",
+    tint: "from-[#142C8E] to-[#2563EB]",
     glow: "hover:shadow-[0_22px_50px_-16px_rgba(37,99,235,0.95)]",
   },
   {
@@ -69,7 +69,7 @@ export default function StudentDesk() {
               {/* blue-purple bloom behind the frame */}
               <span
                 aria-hidden
-                className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[radial-gradient(circle_at_30%_20%,rgba(37,99,235,0.22),transparent_62%),radial-gradient(circle_at_75%_85%,rgba(124,58,237,0.20),transparent_62%)] blur-2xl"
+                className="pointer-events-none absolute -inset-6 -z-10 rounded-[40px] bg-[radial-gradient(circle_at_30%_20%,rgba(37,99,235,0.22),transparent_62%),radial-gradient(circle_at_75%_85%,rgba(96,165,250,0.20),transparent_62%)] blur-2xl"
               />
 
               <div className="relative aspect-square w-full overflow-hidden rounded-[24px] shadow-[0_30px_70px_-34px_rgba(15,23,42,0.55)] ring-1 ring-inset ring-slate-900/[0.06]">
@@ -104,7 +104,7 @@ export default function StudentDesk() {
                 aria-hidden
                 animate={reduced ? undefined : { y: [0, -18, 0], opacity: [0.55, 0.85, 0.55] }}
                 transition={reduced ? undefined : { duration: 9, repeat: Infinity, ease: "easeInOut" }}
-                className="pointer-events-none absolute -right-8 -top-10 -z-10 size-56 rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.35)_0%,rgba(124,58,237,0.22)_45%,transparent_70%)] blur-3xl"
+                className="pointer-events-none absolute -right-8 -top-10 -z-10 size-56 rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.35)_0%,rgba(96,165,250,0.22)_45%,transparent_70%)] blur-3xl"
               />
 
               <motion.div
@@ -115,7 +115,7 @@ export default function StudentDesk() {
                 {/* gradient border glow */}
                 <span
                   aria-hidden
-                  className="absolute inset-0 rounded-[32px] bg-[linear-gradient(130deg,rgba(37,99,235,0.55),rgba(124,58,237,0.35),rgba(56,189,248,0.55))] opacity-60 transition-opacity duration-500 group-hover:opacity-100"
+                  className="absolute inset-0 rounded-[32px] bg-[linear-gradient(130deg,rgba(37,99,235,0.55),rgba(96,165,250,0.35),rgba(96,165,250,0.55))] opacity-60 transition-opacity duration-500 group-hover:opacity-100"
                 />
 
                 <div className="relative overflow-hidden rounded-[31px] border border-white/70 bg-white/80 p-7 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35),0_34px_80px_-42px_rgba(37,99,235,0.55)] backdrop-blur-[20px] sm:p-9">
@@ -180,7 +180,7 @@ export default function StudentDesk() {
                     {ROWS.map(({ icon: Icon, value, href }) => {
                       const body = (
                         <>
-                          <span className="grid size-11 shrink-0 place-content-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#7C3AED]/12 ring-1 ring-inset ring-[#2563EB]/15 transition-transform duration-300 group-hover/row:scale-105">
+                          <span className="grid size-11 shrink-0 place-content-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-[#2563EB]/15 transition-transform duration-300 group-hover/row:scale-105">
                             <Icon aria-hidden className="size-[18px] text-[#2563EB]" />
                           </span>
                           <span className="min-w-0 break-words text-[14.5px] font-medium text-[#0F172A] transition-colors duration-300 group-hover/row:text-[#2563EB]">

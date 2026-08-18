@@ -58,7 +58,7 @@ export default function ValuesSection() {
               {/* Travelling highlight along the top edge. */}
               <span
                 aria-hidden="true"
-                className="animate-sheen absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgb(37_99_235/0.8),rgb(168_85_247/0.8),transparent)]"
+                className="animate-sheen absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgb(37_99_235/0.8),rgb(96_165_250/0.8),transparent)]"
               />
 
               <ul className="grid sm:grid-cols-2 lg:grid-cols-4">

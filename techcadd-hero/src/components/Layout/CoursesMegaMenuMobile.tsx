@@ -65,7 +65,7 @@ export default function CoursesMegaMenuMobile({ onNavigate }: { onNavigate: () =
                         >
                           <span className="min-w-0 truncate">{c.label}</span>
                           {c.trending && (
-                            <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gradient-to-r from-[#2563eb] to-[#7c3aed] px-2 py-[3px] text-[9px] font-semibold uppercase tracking-[0.08em] text-white">
+                            <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2 py-[3px] text-[9px] font-semibold uppercase tracking-[0.08em] text-white">
                               <FiZap aria-hidden className="size-2.5" />
                               Trending
                             </span>
@@ -84,7 +84,7 @@ export default function CoursesMegaMenuMobile({ onNavigate }: { onNavigate: () =
       <Link
         href={MENU_FEATURED.cta.href}
         onClick={onNavigate}
-        className="group/cta flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#2563eb] to-[#3b82f6] px-5 py-3 text-[13.5px] font-semibold text-white shadow-[0_0_28px_-8px_rgba(37,99,235,0.9)]"
+        className="group/cta flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-5 py-3 text-[13.5px] font-semibold text-white shadow-[0_0_28px_-8px_rgba(37,99,235,0.9)]"
       >
         {MENU_FEATURED.cta.label}
         <FiArrowRight

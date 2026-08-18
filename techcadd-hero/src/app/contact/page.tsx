@@ -21,7 +21,7 @@ export default function ContactPage() {
       {/* dark -> white, so the hero dissolves rather than stopping at a line */}
       <div
         aria-hidden
-        className="h-28 bg-gradient-to-b from-[#020617] via-[#0B1B3F]/60 to-white lg:h-36"
+        className="h-28 bg-gradient-to-b from-[#050B1F] via-[#0B1B3F]/60 to-white lg:h-36"
       />
 
       <StudentDesk />
@@ -31,7 +31,7 @@ export default function ContactPage() {
       <FinalCta />
 
       {/* light -> dark, handing off to the footer */}
-      <div aria-hidden className="h-24 bg-gradient-to-b from-[#EEF4FF] via-[#0B1B3F]/40 to-[#020617]" />
+      <div aria-hidden className="h-24 bg-gradient-to-b from-[#EEF4FF] via-[#0B1B3F]/40 to-[#050B1F]" />
     </div>
   );
 }

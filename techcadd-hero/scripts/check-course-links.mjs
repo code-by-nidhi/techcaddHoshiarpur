@@ -70,3 +70,23 @@ if (broken.length) {
 }
 
 console.log("\nAll course links resolve to a real slug.");
+
+/* --------------------------- duplicate slug guard ------------------------- */
+
+const all = [];
+for (const file of readdirSync(COURSE_DATA_DIR)) {
+  if (extname(file) !== ".ts") continue;
+  const text = readFileSync(join(COURSE_DATA_DIR, file), "utf8");
+  for (const m of text.matchAll(/slug:\s*"([a-z0-9-]+)"/g)) all.push([m[1], file]);
+}
+
+const first = new Map();
+const duplicates = [];
+for (const [slug, file] of all) {
+  if (first.has(slug)) duplicates.push(`${slug}  (${first.get(slug)} + ${file})`);
+  else first.set(slug, file);
+}
+
+console.log(`\nduplicate slugs      : ${duplicates.length}`);
+for (const d of duplicates) console.log(`  ${d}`);
+if (duplicates.length) process.exit(1);
