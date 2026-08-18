@@ -12,17 +12,23 @@
   -webkit-backdrop-filter: blur(5px);
 }
 
+/*
+ * Near-solid, not translucent white. At rgba(255,255,255,0.08) the page behind
+ * showed straight through the panel and collided with the text; the glass now
+ * comes from the blur and the sheen layers, not from letting the page through.
+ */
 .panel {
   position: relative;
+  z-index: 10;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(8, 15, 40, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 24px;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.25),
-    0 0 40px rgba(59, 130, 246, 0.15);
+    0 25px 60px rgba(0, 0, 0, 0.45),
+    0 0 40px rgba(59, 130, 246, 0.12);
 }
 
 /* depth: diagonal tint, top reflection, inner blue edge glow */
@@ -66,8 +72,9 @@
 /* the panel scrolls itself rather than running past the fold */
 .body {
   position: relative;
-  max-height: min(76vh, 760px);
+  max-height: 85vh;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   padding: 1.5rem;
 }
@@ -158,6 +165,49 @@
   transform: translateX(4px);
 }
 
+/* --------------------------------- layout -------------------------------- */
+
+/*
+ * auto-fit + minmax is the base: columns size themselves and wrap rather than
+ * overlapping, so adding a sixth category cannot break the row.
+ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+/* the four categories on one row once there is room for it */
+@media (min-width: 1280px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* min-width:0 is what actually stops a long label from widening its column
+   past its share and shunting the neighbours */
+.category {
+  min-width: 0;
+  width: 100%;
+  position: relative;
+  z-index: 10;
+}
+
 /* -------------------------------- columns -------------------------------- */
 
 .heading {
@@ -192,7 +242,10 @@
 
 .card {
   display: flex;
+  width: 100%;
+  min-height: 56px;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
   padding: 12px 16px;
   border-radius: 16px;
@@ -275,88 +328,19 @@
   }
 }
 
-/* -------------------------------- side card ------------------------------ */
 
-.sideFrame {
-  position: relative;
-  border-radius: 22px;
-  padding: 1px;
-  animation: sideFloat 7s ease-in-out infinite;
-}
 
-.sideBorder {
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  background: linear-gradient(
-    150deg,
-    rgba(96, 165, 250, 0.9),
-    rgba(124, 58, 237, 0.55),
-    rgba(56, 189, 248, 0.9)
-  );
-  box-shadow: 0 0 36px -8px rgba(59, 130, 246, 0.9);
-}
 
-.sideCard {
-  position: relative;
-  height: 100%;
-  border-radius: 21px;
-  background: rgba(6, 10, 24, 0.92);
-  backdrop-filter: blur(16px);
-  padding: 1.5rem;
-}
 
-.sideTitle {
-  font-family: var(--font-sora), sans-serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: #fff;
-}
 
-.sideList {
-  margin: 1.25rem 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 0.75rem;
-}
 
-.sideItem {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  font-size: 12.5px;
-  color: rgba(255, 255, 255, 0.75);
-}
 
-.tick {
-  display: grid;
-  place-content: center;
-  flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #2563eb, #38bdf8);
-  box-shadow: 0 0 12px -2px rgba(59, 130, 246, 0.9);
-  color: #fff;
-}
 
-@keyframes sideFloat {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
-  }
-}
 
 /* ------------------------------ reduced motion --------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .badge,
-  .sideFrame {
+  .badge {
     animation: none;
   }
   .card:hover,
@@ -364,3 +348,10 @@
     transform: none;
   }
 }
+
+/*
+ * No <768px block here: this panel is xl:block, so phones and tablets get the
+ * drawer accordion instead. Touch sizing lives in CoursesMegaMenuMobile, which
+ * is the component that actually renders there. The 2-col and 1-col grid rules
+ * above are kept as structural fallbacks if that breakpoint ever moves.
+ */

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { FiArrowRight, FiCheck, FiChevronRight, FiZap } from "react-icons/fi";
-import { COURSE_MENU, MENU_FEATURED, MENU_HIGHLIGHT, type MenuCourse } from "@/lib/coursesMenu";
+import { FiArrowRight, FiChevronRight, FiZap } from "react-icons/fi";
+import { COURSE_MENU, MENU_FEATURED, type MenuCourse } from "@/lib/coursesMenu";
 import styles from "./CoursesMegaMenu.module.css";
 
 const panelIn: Variants = {
@@ -43,7 +43,7 @@ export default function CoursesMegaMenu({
       <span
         aria-hidden
         style={{ left: arrow }}
-        className="absolute -top-[7px] size-3.5 -translate-x-1/2 rotate-45 rounded-[3px] border-l border-t border-white/20 bg-white/[0.08] backdrop-blur-[25px]"
+        className="absolute -top-[7px] size-3.5 -translate-x-1/2 rotate-45 rounded-[3px] border-l border-t border-white/10 bg-[rgba(8,15,40,0.97)]"
       />
 
       <div className={styles.panel}>
@@ -97,49 +97,31 @@ export default function CoursesMegaMenu({
             </div>
           </motion.div>
 
-          {/* columns + side card, on the Bootstrap grid */}
-          <div className="row g-4 mt-1">
-            <div className="col-12 col-xl-9">
-              <div className="row g-4">
-                {COURSE_MENU.map((cat) => (
-                  <motion.div key={cat.id} variants={itemIn} className="col-12 col-sm-6 col-lg-3">
-                    <h3 className={styles.heading}>
-                      <span aria-hidden style={{ fontSize: 14 }}>
-                        {cat.emoji}
-                      </span>
-                      <span className={styles.headingText}>{cat.heading}</span>
-                    </h3>
+          {/*
+           * One flat grid of four category columns. The previous nesting
+           * (col-xl-9 wrapping four col-lg-3) squeezed them into 75% of the
+           * panel below 1400px, which made Civil & Mechanical collide with
+           * its neighbour.
+           */}
+          <div className={styles.grid}>
+            {COURSE_MENU.map((cat) => (
+              <motion.div key={cat.id} variants={itemIn} className={styles.category}>
+                <h3 className={styles.heading}>
+                  <span aria-hidden style={{ fontSize: 14 }}>
+                    {cat.emoji}
+                  </span>
+                  <span className={styles.headingText}>{cat.heading}</span>
+                </h3>
 
-                    <ul className={styles.list}>
-                      {cat.courses.map((c) => (
-                        <li key={c.label}>
-                          <CourseCard course={c} onNavigate={onNavigate} />
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            <motion.aside variants={itemIn} className="col-12 col-xl-3">
-              <div className={styles.sideFrame}>
-                <span aria-hidden className={styles.sideBorder} />
-                <div className={styles.sideCard}>
-                  <p className={styles.sideTitle}>{MENU_HIGHLIGHT.title}</p>
-                  <ul className={styles.sideList}>
-                    {MENU_HIGHLIGHT.points.map((p) => (
-                      <li key={p} className={styles.sideItem}>
-                        <span className={styles.tick}>
-                          <FiCheck aria-hidden size={12} />
-                        </span>
-                        {p}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.aside>
+                <ul className={styles.list}>
+                  {cat.courses.map((c) => (
+                    <li key={c.label}>
+                      <CourseCard course={c} onNavigate={onNavigate} />
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

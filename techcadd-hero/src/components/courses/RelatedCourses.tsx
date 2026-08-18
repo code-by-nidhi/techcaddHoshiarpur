@@ -4,14 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiArrowUpRight, FiClock } from "react-icons/fi";
-import type { Course } from "@/lib/courses/types";
+import type { CourseSummary } from "@/lib/courses";
 import { Reveal, Section, SectionHead, fadeUp } from "./shared";
 
 /**
  * The current course is filtered out upstream by `getRelated`, so anything
  * reaching this component is safe to render.
  */
-export default function RelatedCourses({ courses }: { courses: Course[] }) {
+export default function RelatedCourses({ courses }: { courses: CourseSummary[] }) {
   if (!courses.length) return null;
 
   return (

@@ -40,7 +40,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     return { title: "Course not found", robots: { index: false, follow: true } };
   }
 
-  const title = `${course.title} Course | Learn & Build Projects`;
+  /* The root layout appends "| TechCadd Hoshiarpur" via its title template,
+     so adding the brand here would stamp it twice. */
+  const title = `${course.title} Course`;
   const description = course.overview.slice(0, 155);
   const url = `${SITE}/courses/${course.slug}`;
 

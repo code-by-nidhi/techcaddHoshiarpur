@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { COURSES } from "@/lib/site";
+import { COURSES as COURSES_CATALOGUE } from "@/lib/courses";
 import SectionHeading from "@/components/UI/SectionHeading";
 
 const grid: Variants = {
@@ -63,16 +64,38 @@ const IMAGERY: Record<string, { src: string; alt: string; tone: string }> = {
 };
 
 /**
- * Section title -> course page. Titles with a detail page in the catalogue go
- * straight to it; the rest land on the catalogue index rather than nowhere.
- * Add the slug here once the course exists in lib/courses/catalogue.ts.
+ * Section title -> catalogue slug.
+ *
+ * The home list and the catalogue name some programmes differently ("Full
+ * Stack Development" vs "Full Stack Web Development"), so an exact title match
+ * would silently drop those cards back to the index. Aliases bridge the two,
+ * and every alias is checked against the catalogue below — a typo fails the
+ * build in dev rather than shipping a dead card.
  */
-const COURSE_ROUTES: Record<string, string> = {
-  "Full Stack Development": "/courses/full-stack-web-development",
-  "Digital Marketing": "/courses/digital-marketing",
+const TITLE_ALIASES: Record<string, string> = {
+  "AI & Machine Learning": "artificial-intelligence",
+  "Full Stack Development": "full-stack-web-development",
+  "Digital Marketing": "digital-marketing",
 };
 
-const courseHref = (title: string) => COURSE_ROUTES[title] ?? "/courses";
+if (process.env.NODE_ENV !== "production") {
+  for (const [title, slug] of Object.entries(TITLE_ALIASES)) {
+    if (!COURSES_CATALOGUE.some((c) => c.slug === slug)) {
+      throw new Error(`FeaturedCourses alias "${title}" points at unknown slug "${slug}"`);
+    }
+  }
+}
+
+const courseHref = (title: string) => {
+  const aliased = TITLE_ALIASES[title];
+  if (aliased) return `/courses/${aliased}`;
+
+  const match = COURSES_CATALOGUE.find(
+    (c) => c.title.toLowerCase() === title.toLowerCase(),
+  );
+  /* No detail page yet: the catalogue index is a real destination, not a 404. */
+  return match ? `/courses/${match.slug}` : "/courses";
+};
 
 export default function FeaturedCourses() {
   const reduced = useReducedMotion();

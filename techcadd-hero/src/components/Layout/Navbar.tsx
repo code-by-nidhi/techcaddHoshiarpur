@@ -27,7 +27,7 @@ const CoursesMegaMenuMobile = dynamic(() => import("./CoursesMegaMenuMobile"));
  * every item not listed stays an ordinary link.
  */
 const MEGA_PANELS = {
-  Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1400 },
+  Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1700 },
   Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
 } as const;
 
@@ -69,7 +69,8 @@ export default function Navbar() {
     if (!el) return;
     const r = el.getBoundingClientRect();
     const vw = document.documentElement.clientWidth;
-    const width = Math.min(MEGA_PANELS[mega].width, vw - EDGE * 2);
+    // never wider than 95vw, so the panel always reads as a floating card
+    const width = Math.min(MEGA_PANELS[mega].width, vw - EDGE * 2, vw * 0.95);
     const centre = r.left + r.width / 2;
     const left = Math.min(Math.max(EDGE, centre - width / 2), vw - width - EDGE);
     setAnchor({ left, top: r.bottom, width, arrow: centre - left });
@@ -339,7 +340,7 @@ export default function Navbar() {
               onMouseEnter={cancelClose}
               onMouseLeave={scheduleClose}
               style={{ left: anchor.left, top: anchor.top, width: anchor.width }}
-              className="fixed hidden pt-2.5 xl:block"
+              className="fixed z-[9999] hidden pt-2.5 xl:block"
             >
               {(() => {
                 const Panel = MEGA_PANELS[mega].desktop;

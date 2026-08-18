@@ -61,7 +61,7 @@ export default function CoursesMegaMenuMobile({ onNavigate }: { onNavigate: () =
                         <Link
                           href={c.href}
                           onClick={onNavigate}
-                          className="flex items-center gap-2 rounded-[14px] px-3 py-3 text-[13px] text-white/70 transition-colors duration-300 hover:bg-[#3b82f6]/[0.12] hover:text-white"
+                          className="flex min-h-[52px] w-full items-center gap-2 rounded-[14px] px-3.5 py-3 text-[15px] text-white/75 transition-colors duration-300 hover:bg-[#3b82f6]/[0.12] hover:text-white"
                         >
                           <span className="min-w-0 truncate">{c.label}</span>
                           {c.trending && (
