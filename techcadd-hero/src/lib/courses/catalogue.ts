@@ -193,7 +193,7 @@ export const COURSES: Course[] = [
     duration: "5 Months",
     mode: "Online / Offline",
     certification: true,
-    heroImage: "/images/form.webp",
+    heroImage: "/images/courses/mern-stack-development.webp",
     video: {
       url: "",
       thumbnail: "/images/lab.webp",
@@ -336,7 +336,7 @@ export const COURSES: Course[] = [
     duration: "3 Months",
     mode: "Online / Offline",
     certification: true,
-    heroImage: "/images/ai.webp",
+    heroImage: "/images/courses/python-programming.webp",
     video: {
       url: "",
       thumbnail: "/images/classroom.webp",
@@ -479,7 +479,7 @@ export const COURSES: Course[] = [
     duration: "4 Months",
     mode: "Online / Offline",
     certification: true,
-    heroImage: "/images/cloud.webp",
+    heroImage: "/images/courses/java-programming.webp",
     video: {
       url: "",
       thumbnail: "/images/lab.webp",
@@ -765,7 +765,7 @@ export const COURSES: Course[] = [
     duration: "4 Months",
     mode: "Online / Offline",
     certification: true,
-    heroImage: "/images/digital.webp",
+    heroImage: "/images/courses/digital-marketing.webp",
     video: {
       url: "",
       thumbnail: "/images/classroom.webp",

@@ -87,7 +87,7 @@ const SPECS: Spec[] = [
     category: "Programming",
     duration: "3 Months",
     level: "Beginner",
-    hero: "/images/mern.webp",
+    hero: "/images/courses/c-programming.webp",
     modules: [
       { title: "C fundamentals", summary: "Types, operators and control flow.", topics: ["Data types", "Operators", "Conditionals", "Loops"], duration: "3 weeks", lessons: 12 },
       { title: "Functions & arrays", summary: "Structuring a program beyond main().", topics: ["Functions", "Scope", "Arrays", "Strings"], duration: "3 weeks", lessons: 12 },
@@ -115,7 +115,7 @@ const SPECS: Spec[] = [
     category: "Programming",
     duration: "3 Months",
     level: "Beginner to Advanced",
-    hero: "/images/mern.webp",
+    hero: "/images/courses/cpp-programming.webp",
     modules: [
       { title: "C fundamentals", summary: "Types, control flow and functions.", topics: ["Types", "Control flow", "Functions", "Arrays"], duration: "3 weeks", lessons: 12 },
       { title: "Pointers & memory", summary: "The part that makes or breaks a C++ developer.", topics: ["Pointers", "Dynamic memory", "References", "Leaks"], duration: "3 weeks", lessons: 12 },
@@ -143,7 +143,7 @@ const SPECS: Spec[] = [
     category: "Programming",
     duration: "3 Months",
     level: "Beginner to Intermediate",
-    hero: "/images/mern.webp",
+    hero: "/images/courses/kotlin-programming.webp",
     modules: [
       { title: "Kotlin basics", summary: "Syntax, types and null safety.", topics: ["Variables", "Null safety", "Functions", "Collections"], duration: "3 weeks", lessons: 12 },
       { title: "OOP & functional Kotlin", summary: "Classes, data classes and higher-order functions.", topics: ["Classes", "Data classes", "Lambdas", "Extensions"], duration: "3 weeks", lessons: 12 },
@@ -171,7 +171,7 @@ const SPECS: Spec[] = [
     category: "Web Development",
     duration: "2 Months",
     level: "Beginner",
-    hero: "/images/digital.webp",
+    hero: "/images/courses/web-designing.webp",
     modules: [
       { title: "Design fundamentals", summary: "Layout, hierarchy, type and colour.", topics: ["Grids", "Typography", "Colour", "Hierarchy"], duration: "2 weeks", lessons: 8 },
       { title: "HTML & CSS", summary: "Turning a design into a page.", topics: ["Semantic HTML", "Flexbox", "Grid", "Transitions"], duration: "3 weeks", lessons: 12 },
@@ -199,7 +199,7 @@ const SPECS: Spec[] = [
     category: "Web Development",
     duration: "3 Months",
     level: "Beginner to Intermediate",
-    hero: "/images/mern.webp",
+    hero: "/images/courses/web-development.webp",
     modules: [
       { title: "HTML & CSS refresher", summary: "The structure and styling you build on.", topics: ["Semantics", "Flexbox", "Grid", "Responsive"], duration: "2 weeks", lessons: 8 },
       { title: "JavaScript", summary: "The language and the browser APIs.", topics: ["Types & scope", "DOM", "Events", "Async & fetch"], duration: "4 weeks", lessons: 16 },
@@ -227,7 +227,7 @@ const SPECS: Spec[] = [
     category: "Web Development",
     duration: "5 Months",
     level: "Intermediate",
-    hero: "/images/mern.webp",
+    hero: "/images/courses/mean-stack-development.webp",
     modules: [
       { title: "TypeScript & ES6+", summary: "The language Angular expects.", topics: ["Types", "Interfaces", "Decorators", "Modules"], duration: "3 weeks", lessons: 12 },
       { title: "Angular", summary: "Components, services and reactive patterns.", topics: ["Components", "Services & DI", "RxJS", "Routing"], duration: "5 weeks", lessons: 20 },
@@ -255,7 +255,7 @@ const SPECS: Spec[] = [
     category: "Web Development",
     duration: "4 Months",
     level: "Beginner to Advanced",
-    hero: "/images/cloud.webp",
+    hero: "/images/courses/php-full-stack.webp",
     modules: [
       { title: "PHP fundamentals", summary: "Syntax, forms and sessions.", topics: ["Syntax", "Forms", "Sessions", "File handling"], duration: "3 weeks", lessons: 12 },
       { title: "MySQL", summary: "Schema design and queries that scale.", topics: ["Schema design", "Joins", "Indexes", "Transactions"], duration: "3 weeks", lessons: 12 },
@@ -285,7 +285,7 @@ const SPECS: Spec[] = [
     category: "Marketing",
     duration: "6 Weeks",
     level: "Beginner to Intermediate",
-    hero: "/images/digital.webp",
+    hero: "/images/courses/seo.webp",
     modules: [
       { title: "How search works", summary: "Crawling, indexing and ranking.", topics: ["Crawling", "Indexing", "Ranking signals", "Intent"], duration: "1 week", lessons: 5 },
       { title: "Keyword & content", summary: "Finding demand and writing for it.", topics: ["Keyword research", "Clustering", "Content briefs", "On-page"], duration: "2 weeks", lessons: 8 },
@@ -313,7 +313,7 @@ const SPECS: Spec[] = [
     category: "Marketing",
     duration: "6 Weeks",
     level: "Beginner to Intermediate",
-    hero: "/images/digital.webp",
+    hero: "/images/courses/google-ads.webp",
     modules: [
       { title: "Account structure", summary: "Campaigns, ad groups and why structure decides cost.", topics: ["Campaign types", "Ad groups", "Budgets", "Settings"], duration: "1 week", lessons: 5 },
       { title: "Keywords & copy", summary: "Match types, negatives and ads that earn the click.", topics: ["Match types", "Negatives", "Ad copy", "Extensions"], duration: "2 weeks", lessons: 8 },
@@ -341,7 +341,7 @@ const SPECS: Spec[] = [
     category: "Marketing",
     duration: "6 Weeks",
     level: "Beginner",
-    hero: "/images/digital.webp",
+    hero: "/images/courses/social-media-marketing.webp",
     modules: [
       { title: "Strategy & audience", summary: "Who you are talking to, and where.", topics: ["Audience research", "Positioning", "Platform choice", "Calendars"], duration: "1 week", lessons: 5 },
       { title: "Organic content", summary: "Content people choose to watch.", topics: ["Formats", "Hooks", "Community", "Scheduling"], duration: "2 weeks", lessons: 8 },
@@ -369,7 +369,7 @@ const SPECS: Spec[] = [
     category: "Web Development",
     duration: "4 Weeks",
     level: "Beginner",
-    hero: "/images/cloud.webp",
+    hero: "/images/courses/wordpress.webp",
     modules: [
       { title: "Setup & themes", summary: "Hosting, install and choosing a theme.", topics: ["Hosting", "Install", "Themes", "Customiser"], duration: "1 week", lessons: 5 },
       { title: "Pages & builders", summary: "Building pages without writing code.", topics: ["Gutenberg", "Elementor", "Templates", "Menus"], duration: "1 week", lessons: 5 },
@@ -397,7 +397,7 @@ const SPECS: Spec[] = [
     category: "Marketing",
     duration: "4 Weeks",
     level: "Beginner",
-    hero: "/images/digital.webp",
+    hero: "/images/courses/shopify.webp",
     modules: [
       { title: "Store setup", summary: "Account, domain and settings.", topics: ["Setup", "Domains", "Payments", "Shipping"], duration: "1 week", lessons: 5 },
       { title: "Themes & products", summary: "Making it look and read right.", topics: ["Theme editor", "Collections", "Product pages", "Navigation"], duration: "1 week", lessons: 5 },

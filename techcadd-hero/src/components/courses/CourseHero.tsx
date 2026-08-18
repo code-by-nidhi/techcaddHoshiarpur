@@ -8,6 +8,7 @@ import {
 import type { IconType } from "react-icons";
 import { demoBus } from "@/lib/demoBus";
 import type { Course } from "@/lib/courses/types";
+import { DEFAULT_HERO } from "@/lib/courses/shared";
 import Breadcrumbs from "./Breadcrumbs";
 
 /**
@@ -120,7 +121,7 @@ export default function CourseHero({ course }: { course: Course }) {
           >
             <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[26px] ring-1 ring-inset ring-white/10">
               <Image
-                src={course.heroImage}
+                src={course.heroImage || DEFAULT_HERO}
                 alt={`${course.title} training at TechCadd`}
                 fill
                 priority

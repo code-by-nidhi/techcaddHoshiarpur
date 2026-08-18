@@ -387,7 +387,8 @@ function AboutCollage() {
 
         <Shot
           {...GALLERY.featured}
-          priority
+          /* not `priority`: this sits below the hero, and preloading it
+             competes with the hero image, which is the real LCP element */
           sizes="(max-width: 1023px) 92vw, 46vw"
           /* 4:3 matches the group photo, so no one gets cropped out of frame */
           className="aspect-[4/3]"

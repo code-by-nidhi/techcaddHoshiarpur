@@ -1,3 +1,6 @@
+/** Used when a course has no artwork of its own, so a page never renders a broken frame. */
+export const DEFAULT_HERO = "/images/courses/default-course.webp";
+
 import type { Comparison, Faq, Instructor } from "./types";
 
 /**
