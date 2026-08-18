@@ -207,7 +207,7 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
             whileHover={{ scale: 1.01 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="relative overflow-hidden rounded-[28px] border border-white/40 bg-white/75 p-5 shadow-[0_20px_60px_rgba(37,99,235,0.12)] backdrop-blur-[20px] sm:p-7 lg:p-9">
+            <div className="relative overflow-hidden rounded-[32px] border border-white/60 bg-white/85 p-5 shadow-[0_20px_60px_rgba(15,23,42,0.08)] backdrop-blur-[20px] sm:p-7 lg:p-9">
               <span
                 aria-hidden
                 className="pointer-events-none absolute -right-16 -top-16 size-52 rounded-full bg-[#2563EB]/10 blur-3xl"
@@ -235,7 +235,7 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
                     <Field
                       id="enq-name"
                       label="Full name"
-                      icon={<FiUser aria-hidden className="size-4" />}
+                      icon={<FiUser aria-hidden size={18} />}
                       value={values.name}
                       onChange={set("name")}
                       error={errors.name}
@@ -247,7 +247,7 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
                     <Field
                       id="enq-phone"
                       label="Phone number"
-                      icon={<FiPhone aria-hidden className="size-4" />}
+                      icon={<FiPhone aria-hidden size={18} />}
                       value={values.phone}
                       onChange={set("phone")}
                       error={errors.phone}
@@ -263,7 +263,7 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
                     id="enq-email"
                     label="Email"
                     hint="optional"
-                    icon={<FiMail aria-hidden className="size-4" />}
+                    icon={<FiMail aria-hidden size={18} />}
                     value={values.email}
                     onChange={set("email")}
                     error={errors.email}
@@ -279,9 +279,9 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
                     <label htmlFor="enq-course" className={LABEL}>
                       Course or service
                     </label>
-                    <div className="mt-2 rounded-[16px] bg-gradient-to-r from-[#142C8E] via-[#1E40AF] to-[#2563EB] p-px shadow-[0_10px_30px_-18px_rgba(37,99,235,0.9)]">
-                      <div className="flex h-[58px] items-center gap-2.5 rounded-[15px] bg-white px-4">
-                        <span aria-hidden className="text-[17px] leading-none">
+                    <div className="group/course rounded-[18px] border border-[#2563EB]/20 bg-[linear-gradient(90deg,rgba(37,99,235,0.12),rgba(59,130,246,0.08))] transition-shadow duration-300 hover:shadow-[0_0_0_4px_rgba(37,99,235,0.10)]">
+                      <div className="flex h-[60px] items-center gap-3 px-[18px]">
+                        <span aria-hidden className="text-[18px] leading-none">
                           📘
                         </span>
                         <input
@@ -301,17 +301,17 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
                       Message <span className="font-normal text-[#94A3B8]">optional</span>
                     </label>
                     <div className="relative mt-2">
-                      <span className="pointer-events-none absolute left-4 top-4 text-[#94A3B8]">
-                        <FiMessageSquare aria-hidden className="size-4" />
+                      <span className="pointer-events-none absolute left-[18px] top-[19px] text-[#2563EB]">
+                        <FiMessageSquare aria-hidden size={18} />
                       </span>
                       <textarea
                         id="enq-message"
                         name="message"
-                        rows={3}
+                        rows={4}
                         value={values.message}
                         onChange={set("message")}
                         placeholder={MESSAGE_PLACEHOLDER}
-                        className={`${INPUT} py-4 pl-11`}
+                        className={`${INPUT} min-h-[140px] resize-y py-4 pl-[48px]`}
                       />
                     </div>
                   </div>
@@ -331,7 +331,7 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
                     disabled={sending}
                     whileHover={sending ? undefined : { y: -3 }}
                     whileTap={sending ? undefined : { scale: 0.98 }}
-                    className="inline-flex h-[58px] w-full items-center justify-center gap-2 rounded-full bg-gradient-to-br from-[#142C8E] via-[#1E40AF] to-[#2563EB] px-8 text-[15px] font-bold text-white shadow-[0_15px_40px_rgba(37,99,235,0.35)] transition-shadow duration-300 hover:shadow-[0_20px_50px_rgba(37,99,235,0.5)] disabled:opacity-60"
+                    className="inline-flex h-[58px] w-full items-center justify-center gap-2 rounded-[16px] bg-[linear-gradient(135deg,#0F3CC9,#2563EB,#3B82F6)] px-8 text-[15px] font-bold text-white shadow-[0_12px_30px_rgba(37,99,235,0.35)] transition-shadow duration-300 hover:shadow-[0_18px_44px_rgba(37,99,235,0.5)] disabled:opacity-60"
                   >
                     {sending ? "Sending…" : `Ask about ${courseName}`}
                     {!sending && <FiArrowRight aria-hidden className="size-4" />}
@@ -364,10 +364,14 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
 
 /* ------------------------------- field bits ------------------------------- */
 
-const LABEL = "text-[12.5px] font-semibold text-[#334155]";
+const LABEL = "mb-2 block text-[14px] font-semibold text-[#0F172A]";
 
+/*
+ * Glass field. `transform` is in the transition list because focus lifts the
+ * field 2px — without it the lift would snap rather than ease.
+ */
 const INPUT =
-  "w-full rounded-[14px] border border-slate-200/90 bg-white/80 px-4 text-[15px] text-[#0F172A] outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-[#94A3B8] focus:border-[#3B82F6] focus:shadow-[0_0_0_4px_rgba(59,130,246,0.15)]";
+  "w-full rounded-[18px] border border-[#2563EB]/15 bg-white/75 px-[18px] text-[15px] font-medium text-[#0F172A] outline-none backdrop-blur-[12px] transition-[border-color,box-shadow,background-color,transform] duration-300 ease-out placeholder:font-medium placeholder:text-[#64748B] focus:-translate-y-[2px] focus:border-[#2563EB] focus:bg-white focus:shadow-[0_0_0_4px_rgba(37,99,235,0.12)]";
 
 function Field({
   id,
@@ -389,7 +393,7 @@ function Field({
         {label} {hint && <span className="font-normal text-[#94A3B8]">{hint}</span>}
       </label>
       <div className="relative mt-2">
-        <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]">
+        <span className="pointer-events-none absolute left-[18px] top-1/2 flex -translate-y-1/2 items-center text-[#2563EB]">
           {icon}
         </span>
         <input
@@ -397,7 +401,7 @@ function Field({
           name={id}
           aria-invalid={error ? "true" : undefined}
           aria-describedby={error ? `${id}-error` : undefined}
-          className={`${INPUT} h-[58px] pl-11 ${error ? "border-red-300 focus:border-red-400" : ""}`}
+          className={`${INPUT} h-[60px] pl-[48px] ${error ? "border-red-300 focus:border-red-400" : ""}`}
           {...input}
         />
       </div>

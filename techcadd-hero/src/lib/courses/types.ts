@@ -67,6 +67,11 @@ export type Course = {
   /** longer paragraph for the hero and meta description */
   overview: string;
   category: string;
+  /**
+   * Optional marketing badge for the catalogue grid. Only set this where it is
+   * actually true — an empty badge is better than one every card carries.
+   */
+  badge?: "Most Popular" | "Trending" | "New" | "High Demand";
   level: string;
   duration: string;
   mode: CourseMode;

@@ -12,6 +12,8 @@ import type { Course, Module, Project } from "./types";
  */
 
 type Spec = {
+  /** optional catalogue badge, e.g. "Trending" */
+  badge?: Course["badge"];
   slug: string;
   title: string;
   short: string;
@@ -35,6 +37,7 @@ function makeCourse(spec: Spec): Course {
     shortDescription: spec.short,
     overview: spec.overview,
     category: CATEGORY,
+    badge: spec.badge,
     level: spec.level,
     duration: spec.duration,
     mode: "Online / Offline",
@@ -85,6 +88,7 @@ function makeCourse(spec: Spec): Course {
 const SPECS: Spec[] = [
   {
     slug: "autocad",
+    badge: "Trending",
     title: "AutoCAD",
     short: "2D drafting and 3D modelling, to the drawing standards industry actually checks.",
     overview:

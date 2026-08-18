@@ -27,11 +27,16 @@ export default function Home() {
         <Hero />
         <About />
         <FeaturedCourses />
+
+        {/* 60 / 80 / 100px lead-in, on a wrapper so TechUniverse itself is
+            unchanged — its own section-pad still provides the rest */}
+        <div className="pt-[60px] sm:pt-20 lg:pt-[100px]">
+          <TechUniverse />
+        </div>
         <WhyChoose />
         <CareerOutcomes />
         <StudentWall />
         <ProgrammeRoadmap />
-        <TechUniverse />
         <CommandCenter />
         <HelpCenter />
         <KnowledgeHub />

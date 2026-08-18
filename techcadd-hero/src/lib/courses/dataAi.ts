@@ -12,6 +12,7 @@ export const DATA_AI_COURSES: Course[] = [
     overview:
       "Six months across the AI stack: the statistics that make models behave, the libraries that build them, and the deployment work that turns a notebook into something a business can use.",
     category: "AI",
+    badge: "Trending",
     level: "Intermediate to Advanced",
     duration: "6 Months",
     mode: "Online / Offline",

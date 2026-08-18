@@ -189,6 +189,7 @@ export const COURSES: Course[] = [
     overview:
       "Five months on the JavaScript stack most Indian product teams hire for. You build in React, serve with Express, store in MongoDB, and ship the result with authentication, tests and a deployment pipeline.",
     category: "Web Development",
+    badge: "Trending",
     level: "Intermediate",
     duration: "5 Months",
     mode: "Online / Offline",
@@ -332,6 +333,7 @@ export const COURSES: Course[] = [
     overview:
       "Three months building genuine fluency in Python: the language itself, then the libraries that make it useful for automation, data work and backend services.",
     category: "Programming",
+    badge: "Trending",
     level: "Beginner to Intermediate",
     duration: "3 Months",
     mode: "Online / Offline",
@@ -761,6 +763,7 @@ export const COURSES: Course[] = [
     overview:
       "Four months of performance marketing: SEO, paid social, Google Ads and analytics, taught by running live campaigns and reporting on them the way an agency lead expects.",
     category: "Marketing",
+    badge: "Trending",
     level: "Beginner to Advanced",
     duration: "4 Months",
     mode: "Online / Offline",

@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import Breadcrumbs from "@/components/courses/Breadcrumbs";
-import { COURSES, coursesByCategory } from "@/lib/courses";
+import CourseExplorer, { type ExplorerCourse } from "@/components/courses/CourseExplorer";
+import { COURSES } from "@/lib/courses";
 
 export const metadata: Metadata = {
   title: "Courses | Industry-focused training programmes",
@@ -14,83 +13,68 @@ export const metadata: Metadata = {
   alternates: { canonical: "/courses" },
 };
 
-/** The catalogue index. It reads the same data the detail pages do. */
+/**
+ * The catalogue index. It stays a server component and hands the grid a slim
+ * projection: the filter pills need client state, but the course data does not
+ * need to travel as whole `Course` objects to render a card.
+ */
 export default function CoursesIndex() {
-  const groups = coursesByCategory();
+  const courses: ExplorerCourse[] = COURSES.map((c) => ({
+    slug: c.slug,
+    title: c.shortTitle ?? c.title,
+    shortDescription: c.shortDescription,
+    category: c.category,
+    duration: c.duration,
+    level: c.level,
+    heroImage: c.heroImage,
+    badge: c.badge,
+    tools: c.tools.slice(0, 3),
+  }));
 
   return (
     <>
       <Navbar />
 
-      <main className="bg-white">
-        <section className="relative overflow-hidden bg-[#020817] pb-16 pt-[104px] lg:pb-20 lg:pt-[128px]">
-          <div aria-hidden className="pointer-events-none absolute inset-0">
-            <div className="absolute -left-[10%] top-[-10%] size-[34rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.20)_0%,transparent_68%)] blur-3xl" />
-            <div className="absolute -right-[8%] top-[10%] size-[38rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.24)_0%,transparent_70%)] blur-3xl" />
-          </div>
+      <main className="relative overflow-x-clip bg-[#020B2D]">
+        {/* ---- ambience: radial glows over a faint grid ---- */}
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.05)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_at_top,black,transparent_72%)]" />
+          <div className="absolute -left-[10%] top-[-6%] size-[36rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.28)_0%,transparent_68%)] blur-3xl" />
+          <div className="absolute -right-[8%] top-[18%] size-[40rem] rounded-full bg-[radial-gradient(circle,rgba(20,44,142,0.42)_0%,transparent_70%)] blur-3xl" />
+          <div className="absolute bottom-[6%] left-[24%] size-[32rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.14)_0%,transparent_70%)] blur-3xl" />
+        </div>
 
-          <div className="relative mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
+        <section className="relative pb-20 pt-[104px] lg:pt-[128px]">
+          <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
             <Breadcrumbs trail={[{ label: "Home", href: "/" }, { label: "Courses" }]} />
 
-            <h1 className="mt-8 max-w-3xl font-[family-name:var(--font-sora)] text-[clamp(2rem,4vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.03em] text-white">
-              Courses built backwards from the job
-            </h1>
-            <p className="mt-4 max-w-xl text-[15.5px] leading-[1.8] text-white/65">
-              {COURSES.length} programmes across development, data and marketing — each one taught
-              by practitioners and ending in work you can show.
-            </p>
+            <div className="mt-10 text-center">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-4 py-2 font-[family-name:var(--font-mono-face)] text-[10.5px] uppercase tracking-[0.22em] text-[#93C5FD] backdrop-blur-xl">
+                <span aria-hidden className="size-1.5 rounded-full bg-[#60A5FA]" />
+                Explore Our Courses
+              </span>
+
+              <h1 className="mx-auto mt-6 max-w-3xl font-[family-name:var(--font-sora)] text-[clamp(2rem,4.4vw,3.2rem)] font-extrabold leading-[1.08] tracking-[-0.035em] text-white">
+                Build Skills.{" "}
+                <span className="bg-gradient-to-r from-[#60A5FA] via-[#3B82F6] to-[#142C8E] bg-clip-text pr-[0.08em] text-transparent">
+                  Build Future.
+                </span>
+              </h1>
+
+              <p className="mx-auto mt-4 max-w-xl text-[15.5px] leading-[1.8] text-white/60">
+                Industry-focused courses designed to make you job-ready and future-ready.
+              </p>
+
+              <p className="mt-3 text-[13px] text-white/40">
+                {COURSES.length} programmes across development, data, design and marketing.
+              </p>
+            </div>
+
+            <div className="mt-12">
+              <CourseExplorer courses={courses} />
+            </div>
           </div>
         </section>
-
-        {groups.map(({ category, courses }, gi) => (
-          <section
-            key={category}
-            className={`relative overflow-x-clip py-14 lg:py-16 ${
-              gi % 2 ? "bg-[#F6F9FF]" : "bg-white"
-            }`}
-          >
-            <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
-              <h2 className="font-[family-name:var(--font-sora)] text-[clamp(1.3rem,2.2vw,1.7rem)] font-extrabold tracking-[-0.02em] text-[#0F172A]">
-                {category}
-              </h2>
-
-              <ul className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {courses.map((c) => (
-                  <li key={c.slug} className="h-full">
-                    <Link
-                      href={`/courses/${c.slug}`}
-                      className="group flex h-full flex-col overflow-hidden rounded-[22px] border border-slate-200/80 bg-white shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(37,99,235,0.45)] motion-reduce:hover:translate-y-0"
-                    >
-                      <div className="relative aspect-[16/10] w-full overflow-hidden">
-                        <Image
-                          src={c.heroImage}
-                          alt={c.title}
-                          fill
-                          sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 30vw"
-                          className="object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:group-hover:scale-100"
-                        />
-                      </div>
-
-                      <div className="flex flex-1 flex-col p-5">
-                        <h3 className="font-[family-name:var(--font-sora)] text-[16px] font-bold leading-snug text-[#0F172A]">
-                          {c.title}
-                        </h3>
-                        <p className="mt-2 flex-1 text-[13px] leading-relaxed text-[#475569]">
-                          {c.shortDescription}
-                        </p>
-                        <p className="mt-4 flex items-center gap-3 border-t border-slate-100 pt-3.5 text-[12px] text-[#64748B]">
-                          <span>{c.duration}</span>
-                          <span aria-hidden>·</span>
-                          <span>{c.level}</span>
-                        </p>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        ))}
       </main>
 
       <MegaFooter />
