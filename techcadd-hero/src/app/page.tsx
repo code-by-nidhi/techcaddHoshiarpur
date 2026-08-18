@@ -27,12 +27,12 @@ export default function Home() {
         <Hero />
         <About />
         <FeaturedCourses />
-
-        {/* 60 / 80 / 100px lead-in, on a wrapper so TechUniverse itself is
-            unchanged — its own section-pad still provides the rest */}
-        <div className="pt-[60px] sm:pt-20 lg:pt-[100px]">
-          <TechUniverse />
-        </div>
+        {/*
+         * No spacing wrapper here: a transparent div between the dark courses
+         * section and the light TechUniverse showed the dark page background
+         * through as an empty band. Each section's own section-pad is the gap.
+         */}
+        <TechUniverse />
         <WhyChoose />
         <CareerOutcomes />
         <StudentWall />
