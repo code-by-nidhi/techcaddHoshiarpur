@@ -10,9 +10,11 @@ import type { RobotEffect } from "./robotBus";
  */
 export const NAV_LINKS = [
   { label: "Home", href: "/", dropdown: false },
-  { label: "Courses", href: "/courses", dropdown: true },
   { label: "About Us", href: "/about", dropdown: false },
-  { label: "Placement", href: "/#outcomes", dropdown: false },
+  { label: "AI", href: "/courses", dropdown: true },
+  { label: "Courses", href: "/courses", dropdown: true },
+  { label: "Internship & Training", href: "/#included", dropdown: true },
+  { label: "After 12th", href: "/courses", dropdown: true },
   { label: "Resources", href: "/blog", dropdown: false },
   { label: "Contact Us", href: "/contact", dropdown: false },
 ] as const;

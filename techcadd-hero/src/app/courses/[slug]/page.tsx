@@ -14,6 +14,7 @@ import InstructorSection from "@/components/courses/InstructorSection";
 import ComparisonChart from "@/components/courses/ComparisonChart";
 import Reviews from "@/components/courses/Reviews";
 import CourseFaq from "@/components/courses/CourseFaq";
+import CourseEnquiryForm from "@/components/forms/CourseEnquiryForm";
 import CourseCta from "@/components/courses/CourseCta";
 import RelatedCourses from "@/components/courses/RelatedCourses";
 import StickyEnrolBar from "@/components/courses/StickyEnrolBar";
@@ -167,6 +168,7 @@ export default async function CoursePage({ params }: Params) {
         <ComparisonChart course={course} />
         <Reviews course={course} />
         <CourseFaq course={course} />
+        <CourseEnquiryForm course={course} />
         <CourseCta course={course} />
         <RelatedCourses courses={related} />
       </main>

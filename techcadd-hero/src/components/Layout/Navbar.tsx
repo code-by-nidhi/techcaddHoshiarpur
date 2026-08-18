@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { NAV_LINKS } from "@/lib/content";
+import { SIMPLE_MENUS, isSimpleLabel, type SimpleLabel } from "@/lib/navMenus";
 import { demoBus } from "@/lib/demoBus";
 import megaStyles from "./CoursesMegaMenu.module.css";
 
@@ -21,6 +22,13 @@ const MegaMenu = dynamic(() => import("./MegaMenu"));
 const MegaMenuMobile = dynamic(() => import("./MegaMenuMobile"));
 const CoursesMegaMenu = dynamic(() => import("./CoursesMegaMenu"));
 const CoursesMegaMenuMobile = dynamic(() => import("./CoursesMegaMenuMobile"));
+const NavDropdown = dynamic(() => import("./NavDropdown"));
+/* not dynamic: it is above the fold on every route, and deferring it would
+   pop the pill in after hydration */
+const AiNavButton = dynamic(() => import("./AiNavButton"), { ssr: true });
+const NavDropdownMobile = dynamic(() =>
+  import("./NavDropdown").then((m) => m.NavDropdownMobile),
+);
 
 /**
  * Nav label -> panel. Adding a mega menu to another item is one entry here;
@@ -35,6 +43,18 @@ type MegaLabel = keyof typeof MEGA_PANELS;
 
 const isMegaLabel = (label: string): label is MegaLabel => label in MEGA_PANELS;
 
+/** Anything that opens a panel — a mega menu or a short-list dropdown. */
+type PanelLabel = MegaLabel | SimpleLabel;
+
+const opensPanel = (label: string): label is PanelLabel =>
+  isMegaLabel(label) || isSimpleLabel(label);
+
+/** Short lists get a narrow panel; the mega menus keep their own widths. */
+const SIMPLE_WIDTH = 340;
+
+const panelWidth = (label: PanelLabel) =>
+  isMegaLabel(label) ? MEGA_PANELS[label].width : SIMPLE_WIDTH;
+
 /** Outer margin the panel keeps from the viewport edge, in px. */
 const EDGE = 16;
 
@@ -46,14 +66,14 @@ const EDGE = 16;
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [mega, setMega] = useState<MegaLabel | null>(null);
+  const [mega, setMega] = useState<PanelLabel | null>(null);
   const pathname = usePathname();
 
   /**
    * Hover intent: a short grace period on leave, so crossing the gap between
    * the trigger and the panel does not snap the menu shut.
    */
-  const triggerRefs = useRef<Partial<Record<MegaLabel, HTMLLIElement | null>>>({});
+  const triggerRefs = useRef<Partial<Record<PanelLabel, HTMLLIElement | null>>>({});
   const [anchor, setAnchor] = useState({ left: 0, top: 0, width: 0, arrow: 0 });
 
   /**
@@ -70,7 +90,7 @@ export default function Navbar() {
     const r = el.getBoundingClientRect();
     const vw = document.documentElement.clientWidth;
     // never wider than 95vw, so the panel always reads as a floating card
-    const width = Math.min(MEGA_PANELS[mega].width, vw - EDGE * 2, vw * 0.95);
+    const width = Math.min(panelWidth(mega), vw - EDGE * 2, vw * 0.95);
     const centre = r.left + r.width / 2;
     const left = Math.min(Math.max(EDGE, centre - width / 2), vw - width - EDGE);
     setAnchor({ left, top: r.bottom, width, arrow: centre - left });
@@ -203,7 +223,7 @@ export default function Navbar() {
           <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[20px] xl:flex 2xl:gap-x-[28px]">
             {NAV_LINKS.map((link) => {
               const current = isActive(link.href);
-              const megaKey = isMegaLabel(link.label) ? link.label : null;
+              const megaKey = opensPanel(link.label) ? link.label : null;
               const opensMega = megaKey !== null;
               const thisOpen = opensMega && mega === megaKey;
               const indicator = (
@@ -247,19 +267,29 @@ export default function Navbar() {
                    * Hover and focus open the panel; the click still follows the
                    * href, so the item never becomes a dead end.
                    */}
-                  <Link
-                    href={link.href}
-                    aria-current={current ? "page" : undefined}
-                    aria-haspopup={opensMega ? "true" : undefined}
-                    aria-expanded={opensMega ? thisOpen : undefined}
-                    aria-controls={opensMega ? "mega-menu" : undefined}
-                    onMouseEnter={() => setMega(megaKey)}
-                    onFocus={() => setMega(megaKey)}
-                    onClick={opensMega ? () => setMega(null) : undefined}
-                    className={face_class}
-                  >
-                    {face}
-                  </Link>
+                  {link.label === "AI" ? (
+                    <AiNavButton
+                      href={link.href}
+                      active={current || thisOpen}
+                      onMouseEnter={() => setMega(megaKey)}
+                      onFocus={() => setMega(megaKey)}
+                      onClick={() => setMega(null)}
+                    />
+                  ) : (
+                    <Link
+                      href={link.href}
+                      aria-current={current ? "page" : undefined}
+                      aria-haspopup={opensMega ? "true" : undefined}
+                      aria-expanded={opensMega ? thisOpen : undefined}
+                      aria-controls={opensMega ? "mega-menu" : undefined}
+                      onMouseEnter={() => setMega(megaKey)}
+                      onFocus={() => setMega(megaKey)}
+                      onClick={opensMega ? () => setMega(null) : undefined}
+                      className={face_class}
+                    >
+                      {face}
+                    </Link>
+                  )}
                 </li>
               );
             })}
@@ -343,6 +373,15 @@ export default function Navbar() {
               className="fixed z-[9999] hidden pt-2.5 xl:block"
             >
               {(() => {
+                if (isSimpleLabel(mega)) {
+                  return (
+                    <NavDropdown
+                      items={SIMPLE_MENUS[mega]}
+                      arrow={anchor.arrow}
+                      onNavigate={() => setMega(null)}
+                    />
+                  );
+                }
                 const Panel = MEGA_PANELS[mega].desktop;
                 return <Panel arrow={anchor.arrow} onNavigate={() => setMega(null)} />;
               })()}
@@ -377,12 +416,31 @@ export default function Navbar() {
                     show: { opacity: 1, x: 0 },
                   }}
                 >
-                  {isMegaLabel(link.label) ? (
+                  {opensPanel(link.label) ? (
                     <div className="px-1 py-2">
-                      <p className="px-3 pb-1 text-[11px] uppercase tracking-[0.16em] text-white/40">
-                        {link.label}
-                      </p>
+                      {link.label === "AI" ? (
+                        <div className="px-2 pb-2">
+                          <AiNavButton
+                            href={link.href}
+                            active={isActive(link.href)}
+                            variant="mobile"
+                            onClick={() => setOpen(false)}
+                          />
+                        </div>
+                      ) : (
+                        <p className="px-3 pb-1 text-[11px] uppercase tracking-[0.16em] text-white/40">
+                          {link.label}
+                        </p>
+                      )}
                       {(() => {
+                        if (isSimpleLabel(link.label)) {
+                          return (
+                            <NavDropdownMobile
+                              items={SIMPLE_MENUS[link.label]}
+                              onNavigate={() => setOpen(false)}
+                            />
+                          );
+                        }
                         const Panel = MEGA_PANELS[link.label].mobile;
                         return <Panel onNavigate={() => setOpen(false)} />;
                       })()}
