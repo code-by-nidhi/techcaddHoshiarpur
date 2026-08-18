@@ -32,10 +32,10 @@ const After12MegaMenu = dynamic(() => import("./After12MegaMenu"));
 const After12MegaMenuMobile = dynamic(() =>
   import("./After12MegaMenu").then((m) => m.After12MegaMenuMobile),
 );
-const NavDropdown = dynamic(() => import("./NavDropdown"));
-/* not dynamic: it is above the fold on every route, and deferring it would
-   pop the pill in after hydration */
+/* server-rendered, not deferred: it sits above the fold on every route and
+   popping in after hydration would shift the nav row */
 const AiNavButton = dynamic(() => import("./AiNavButton"), { ssr: true });
+const NavDropdown = dynamic(() => import("./NavDropdown"));
 const NavDropdownMobile = dynamic(() =>
   import("./NavDropdown").then((m) => m.NavDropdownMobile),
 );
@@ -253,6 +253,7 @@ export default function Navbar() {
                   }`}
                 />
               );
+              const isAi = link.label === "AI";
               const face = (
                 <>
                   {link.label}
@@ -284,7 +285,7 @@ export default function Navbar() {
                    * Hover and focus open the panel; the click still follows the
                    * href, so the item never becomes a dead end.
                    */}
-                  {link.label === "AI" ? (
+                  {isAi ? (
                     <AiNavButton
                       href={link.href}
                       active={current || thisOpen}

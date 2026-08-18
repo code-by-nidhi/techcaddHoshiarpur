@@ -1,6 +1,7 @@
 import { COURSES as CORE_COURSES } from "./catalogue";
 import { DATA_AI_COURSES } from "./dataAi";
 import { ENGINEERING_COURSES } from "./engineering";
+import { AI_TOPIC_COURSES } from "./aiTopics";
 import { MORE_COURSES } from "./more";
 import type { Course } from "./types";
 
@@ -14,6 +15,7 @@ export const COURSES: Course[] = [
   ...DATA_AI_COURSES,
   ...ENGINEERING_COURSES,
   ...MORE_COURSES,
+  ...AI_TOPIC_COURSES,
 ];
 
 /** Duplicate slugs would make one course unreachable, so fail loudly in dev. */

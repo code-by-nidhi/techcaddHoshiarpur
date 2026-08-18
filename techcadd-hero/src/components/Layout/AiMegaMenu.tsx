@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, type Variants } from "framer-motion";
 import { FiArrowRight, FiChevronRight } from "react-icons/fi";
 import { AI_MENU } from "@/lib/aiMenu";
@@ -47,6 +48,7 @@ export default function AiMegaMenu({
   onNavigate: () => void;
 }) {
   const { heading, subheading, sections, featured, panel } = AI_MENU;
+  const pathname = usePathname();
 
   return (
     <motion.div variants={panelIn} initial="hidden" animate="show" exit="exit" className="relative">
@@ -87,7 +89,12 @@ export default function AiMegaMenu({
                     <ul className={styles.listTight}>
                       {section.links.map((link) => (
                         <li key={link.label}>
-                          <Link href={link.href} onClick={onNavigate} className={styles.link}>
+                          <Link
+                            href={link.href}
+                            onClick={onNavigate}
+                            aria-current={pathname === link.href ? "page" : undefined}
+                            className={`${styles.link} ${pathname === link.href ? styles.linkActive : ""}`}
+                          >
                             <span className={styles.linkLabel}>{link.label}</span>
                             <FiChevronRight aria-hidden size={13} className={styles.chev} />
                           </Link>
@@ -151,6 +158,7 @@ export default function AiMegaMenu({
 /** Accordion body for the hamburger sheet — the three columns, stacked. */
 export function AiMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) {
   const { sections, featured, panel } = AI_MENU;
+  const pathname = usePathname();
 
   return (
     <div className="grid gap-3 px-1">
@@ -160,7 +168,12 @@ export function AiMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) {
           <ul className={styles.list}>
             {section.links.map((link) => (
               <li key={link.label}>
-                <Link href={link.href} onClick={onNavigate} className={styles.link}>
+                <Link
+                  href={link.href}
+                  onClick={onNavigate}
+                  aria-current={pathname === link.href ? "page" : undefined}
+                  className={`${styles.link} ${pathname === link.href ? styles.linkActive : ""}`}
+                >
                   <span className={styles.linkLabel}>{link.label}</span>
                   <FiChevronRight aria-hidden size={13} className={styles.chev} />
                 </Link>

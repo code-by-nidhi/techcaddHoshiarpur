@@ -11,7 +11,7 @@ import type { Course, Module, Project } from "./types";
  * what genuinely differs.
  */
 
-type Spec = {
+export type Spec = {
   slug: string;
   title: string;
   short: string;
@@ -31,7 +31,7 @@ type Spec = {
   keywords: string[];
 };
 
-function makeCourse(s: Spec): Course {
+export function makeCourse(s: Spec): Course {
   return {
     slug: s.slug,
     title: s.title,

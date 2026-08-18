@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, type Variants } from "framer-motion";
 import { FiArrowRight, FiChevronRight, FiZap } from "react-icons/fi";
 import type { ColumnsMenu } from "@/lib/internshipMenu";
@@ -41,6 +42,7 @@ export default function ColumnsMegaMenu({
   onNavigate: () => void;
 }) {
   const { columns, strip } = menu;
+  const pathname = usePathname();
 
   return (
     <motion.div variants={panelIn} initial="hidden" animate="show" exit="exit" className="relative">
@@ -65,7 +67,12 @@ export default function ColumnsMegaMenu({
                 <ul className={`${styles.list} mt-3`}>
                   {col.links.map((link) => (
                     <li key={link.label}>
-                      <Link href={link.href} onClick={onNavigate} className={styles.link}>
+                      <Link
+                        href={link.href}
+                        onClick={onNavigate}
+                        aria-current={pathname === link.href ? "page" : undefined}
+                        className={`${styles.link} ${pathname === link.href ? styles.linkActive : ""}`}
+                      >
                         <span className={styles.linkLabel}>{link.label}</span>
                         {link.trending && (
                           <span className={styles.badge}>
@@ -112,6 +119,7 @@ export function ColumnsMegaMenuMobile({
   onNavigate: () => void;
 }) {
   const { columns, strip } = menu;
+  const pathname = usePathname();
 
   return (
     <div className="grid gap-3 px-1">
@@ -121,7 +129,12 @@ export function ColumnsMegaMenuMobile({
           <ul className={styles.list}>
             {col.links.map((link) => (
               <li key={link.label}>
-                <Link href={link.href} onClick={onNavigate} className={styles.link}>
+                <Link
+                  href={link.href}
+                  onClick={onNavigate}
+                  aria-current={pathname === link.href ? "page" : undefined}
+                  className={`${styles.link} ${pathname === link.href ? styles.linkActive : ""}`}
+                >
                   <span className={styles.linkLabel}>{link.label}</span>
                   {link.trending && (
                     <span className={styles.badge}>
