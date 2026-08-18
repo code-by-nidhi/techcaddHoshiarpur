@@ -83,7 +83,7 @@ export default function ProgrammeRoadmap() {
         </div>
 
         {/* track */}
-        <div className="relative mt-14">
+        <div className="relative mt-9">
           <div aria-hidden className="absolute left-0 top-[86px] h-px w-full bg-slate-200" />
           <motion.div
             aria-hidden

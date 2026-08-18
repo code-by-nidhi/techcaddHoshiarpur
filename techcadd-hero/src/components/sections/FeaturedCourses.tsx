@@ -101,7 +101,7 @@ export default function FeaturedCourses() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="programs" className="relative overflow-x-clip bg-white py-28 lg:py-36">
+    <section id="programs" className="relative overflow-x-clip bg-white section-pad">
       {/* faint tint so the cards sit on something other than flat white */}
       <div
         aria-hidden
@@ -127,7 +127,7 @@ export default function FeaturedCourses() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-90px" }}
-          className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:auto-rows-[300px]"
+          className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3 xl:auto-rows-[300px]"
         >
           {COURSES.map(({ icon: Icon, title, duration }, i) => {
             const art = IMAGERY[title];

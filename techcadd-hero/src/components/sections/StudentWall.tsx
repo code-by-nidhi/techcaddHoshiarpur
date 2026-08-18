@@ -32,7 +32,7 @@ export default function StudentWall() {
   const swiperRef = useRef<SwiperClass | null>(null);
 
   return (
-    <section id="stories" className="relative overflow-hidden bg-white py-20 lg:py-24">
+    <section id="stories" className="relative overflow-hidden bg-white section-pad">
       <div
         aria-hidden
         className="absolute inset-x-0 top-0 h-[380px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(79,70,229,0.07),transparent_70%)]"

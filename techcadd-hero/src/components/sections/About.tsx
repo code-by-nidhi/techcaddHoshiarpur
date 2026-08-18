@@ -67,11 +67,11 @@ export default function About() {
   return (
     <section id="about" className="relative overflow-x-clip bg-white">
       {/* eases the dark hero into the white page */}
-      <div aria-hidden className="h-28 bg-gradient-to-b from-[#020617] to-white" />
+      <div aria-hidden className="h-16 bg-gradient-to-b from-[#020617] to-white" />
 
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         {/* opening statement, with the photo collage opposite */}
-        <div className="relative pb-28 pt-10 lg:pb-36">
+        <div className="relative section-pad">
           <AtmosphereLayer />
 
           <div className="grid gap-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16 xl:gap-24">
@@ -110,7 +110,7 @@ export default function About() {
         <FounderVision />
 
         {/* mission and values */}
-        <div className="py-24 lg:py-32">
+        <div className="section-pad">
           <Reveal>
             <span className="font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.22em] text-[#2563EB]">
               Mission &amp; values
@@ -122,7 +122,7 @@ export default function About() {
             </h3>
           </Reveal>
 
-          <ol className="mt-14 divide-y divide-slate-200 border-t border-slate-200">
+          <ol className="mt-9 divide-y divide-slate-200 border-t border-slate-200">
             {VALUES.map((v, i) => (
               <Reveal key={v.title} delay={i * 0.05}>
                 <li className="group grid gap-4 py-9 transition-colors duration-500 lg:grid-cols-[80px_0.9fr_1.1fr] lg:gap-10">
@@ -222,7 +222,7 @@ function StatsPanel() {
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-80px" }}
-      className="row g-3 h-full lg:mt-[4.5rem]"
+      className="row g-3 h-full lg:mt-12"
     >
       {items.map(({ icon: Icon, value, suffix, label, tint }) => (
         <li key={label} className="col-12 col-sm-4 col-lg-12">

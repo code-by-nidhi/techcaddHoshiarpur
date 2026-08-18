@@ -15,7 +15,7 @@ export default function LaunchCenter() {
   return (
     <section
       id="launch"
-      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#020617] py-24"
+      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#020617] section-pad"
     >
       {/* animated field */}
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -69,7 +69,7 @@ export default function LaunchCenter() {
 
         {/* actions */}
         <Reveal delay={0.2}>
-          <div className="mt-11 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             {LAUNCH.actions.map((a, i) => {
               const Icon = ACTION_ICONS[i];
               return (
@@ -95,7 +95,7 @@ export default function LaunchCenter() {
 
         {/* live metrics */}
         <Reveal delay={0.26}>
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-3 gap-4 rounded-[28px] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-xl">
+          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-4 rounded-[28px] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-xl">
             <div className="text-center">
               <p className="font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
                 <Counter to={15} suffix="K+" />

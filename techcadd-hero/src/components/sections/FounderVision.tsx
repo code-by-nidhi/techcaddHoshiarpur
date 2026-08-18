@@ -45,7 +45,7 @@ export default function FounderVision() {
   return (
     /* no container here: About supplies the max-width and gutters, and
        nesting a second one doubled the padding on every breakpoint */
-    <div className="relative py-20 lg:py-24">
+    <div className="relative section-pad">
       <motion.div
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -62,7 +62,7 @@ export default function FounderVision() {
             className="absolute inset-0 rounded-[32px] bg-[linear-gradient(120deg,rgba(37,99,235,0.45),rgba(79,70,229,0.30),rgba(124,58,237,0.45),rgba(37,99,235,0.45))] sm:rounded-[40px]"
           />
 
-          <div className="relative overflow-hidden rounded-[31px] bg-[linear-gradient(140deg,#F5F8FF_0%,#F6F4FF_45%,#EFF6FF_100%)] px-5 py-10 sm:rounded-[39px] sm:px-8 sm:py-12 lg:px-14 lg:py-16">
+          <div className="relative overflow-hidden rounded-[31px] bg-[linear-gradient(140deg,#F5F8FF_0%,#F6F4FF_45%,#EFF6FF_100%)] px-5 py-7 sm:rounded-[39px] sm:px-8 sm:py-9 lg:px-12 lg:py-11">
             {/* soft glows */}
             <div aria-hidden className="pointer-events-none absolute inset-0">
               <div className="absolute -left-24 -top-24 size-[26rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.16)_0%,transparent_70%)] blur-3xl" />

@@ -445,6 +445,22 @@ html.custom-cursor [contenteditable="true"] {
   padding-block: 5rem;
 }
 
+/*
+ * Homepage section rhythm. These sections flow on one continuous white
+ * background, so the visible gap between two of them is this value doubled:
+ * 36px mobile, 48px tablet, 64px desktop. Previously each side carried
+ * py-28/py-36 (112/144px), which put ~288px of blank page between sections.
+ */
+.section-pad {
+  padding-block: 1.125rem;
+}
+
+@media (min-width: 640px) {
+  .section-pad {
+    padding-block: 1.5rem;
+  }
+}
+
 @media (min-width: 1024px) {
   .shell {
     padding-inline: 4.5rem;
@@ -452,6 +468,10 @@ html.custom-cursor [contenteditable="true"] {
 
   .section-y {
     padding-block: 7rem;
+  }
+
+  .section-pad {
+    padding-block: 2rem;
   }
 }
 

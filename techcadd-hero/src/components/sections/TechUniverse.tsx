@@ -36,7 +36,7 @@ export default function TechUniverse() {
   return (
     <section
       id="technologies"
-      className="relative overflow-hidden bg-[linear-gradient(180deg,#f8faff_0%,#eef4ff_100%)] py-28 lg:py-36"
+      className="relative overflow-hidden bg-[linear-gradient(180deg,#f8faff_0%,#eef4ff_100%)] section-pad"
     >
       {/* particle field */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -70,7 +70,7 @@ export default function TechUniverse() {
           </p>
         </Reveal>
 
-        <div className="mt-16 grid items-center gap-14 lg:mt-20 lg:grid-cols-2 lg:gap-16 xl:gap-20">
+        <div className="mt-10 grid items-center gap-14 lg:mt-8 lg:grid-cols-2 lg:gap-16 xl:gap-20">
           <Ecosystem active={active} onSelect={setActive} reduced={!!reduced} />
           <DetailPanel domain={active} />
         </div>

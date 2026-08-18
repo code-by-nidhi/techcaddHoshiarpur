@@ -12,7 +12,7 @@ export default function KnowledgeHub() {
   const trending = others.slice(2);
 
   return (
-    <section id="blog" className="relative overflow-x-clip bg-white py-28 lg:py-36">
+    <section id="blog" className="relative overflow-x-clip bg-white section-pad">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         <SectionHeading
           tone="light"
@@ -21,7 +21,7 @@ export default function KnowledgeHub() {
           sub="Written by the mentors who teach here — interview prep, stack decisions and career notes."
         />
 
-        <div className="mt-16 grid gap-6 lg:grid-cols-12">
+        <div className="mt-10 grid gap-6 lg:grid-cols-12">
           {/* featured hero article */}
           <Reveal className="lg:col-span-7">
             <motion.article

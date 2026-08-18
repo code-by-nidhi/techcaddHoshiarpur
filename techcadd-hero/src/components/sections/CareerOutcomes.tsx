@@ -30,7 +30,7 @@ export default function CareerOutcomes() {
   const ring = 2 * Math.PI * 52;
 
   return (
-    <section id="outcomes" className="relative overflow-x-clip bg-[#F8FAFC] py-28 lg:py-36">
+    <section id="outcomes" className="relative overflow-x-clip bg-[#F8FAFC] section-pad">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         <SectionHeading
           tone="light"
@@ -40,7 +40,7 @@ export default function CareerOutcomes() {
         />
 
         {/* bento grid */}
-        <div className="mt-16 grid gap-4 lg:grid-cols-12">
+        <div className="mt-10 grid gap-4 lg:grid-cols-12">
           {/* three headline metrics */}
           {headline.map((m, i) => {
             const Icon = ICONS[i];

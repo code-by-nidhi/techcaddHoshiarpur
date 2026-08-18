@@ -47,7 +47,7 @@ export default function CommandCenter() {
   const ActiveIcon = TAB_ICONS[active.id] ?? FiCpu;
 
   return (
-    <section id="capabilities" className="relative overflow-x-clip bg-white py-16 lg:py-20">
+    <section id="capabilities" className="relative overflow-x-clip bg-white section-pad">
       {/* depth layers: radial wash, grid pattern, drifting blobs */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(79,70,229,0.08),transparent_70%)]" />

@@ -22,7 +22,7 @@ export default function HelpCenter() {
   }, [query, category]);
 
   return (
-    <section id="faq" className="relative overflow-x-clip bg-[#F8FAFC] py-28 lg:py-36">
+    <section id="faq" className="relative overflow-x-clip bg-[#F8FAFC] section-pad">
       <div className="mx-auto w-full max-w-[1100px] px-6">
         <SectionHeading
           tone="light"
@@ -33,7 +33,7 @@ export default function HelpCenter() {
 
         {/* search */}
         <Reveal delay={0.1}>
-          <div className="relative mx-auto mt-12 max-w-2xl">
+          <div className="relative mx-auto mt-8 max-w-2xl">
             <Search
               aria-hidden
               className="pointer-events-none absolute left-5 top-1/2 size-[18px] -translate-y-1/2 text-[#94A3B8]"
