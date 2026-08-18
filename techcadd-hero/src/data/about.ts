@@ -50,12 +50,12 @@ export interface AboutImage {
  */
 export const images = {
   heroPrimary: {
-    src: "/images/team-photo.webp",
-    alt: "The TechCADD team and students outside the Hoshiarpur campus",
+    src: "/images/about-us.webp",
+    alt: "A TechCADD trainer addressing students on stage at the Hoshiarpur campus",
   },
   heroSecondary: {
-    src: "/images/lab.webp",
-    alt: "Students working at machines in the TechCADD computer lab",
+    src: "/images/about-us1.webp",
+    alt: "A seminar session in the TechCADD auditorium, with students seated through the hall",
   },
   team: {
     src: "/images/team-photo.webp",
@@ -69,13 +69,18 @@ export const images = {
     src: "/images/lab.webp",
     alt: "Trainees at work on the TechCADD lab floor",
   },
+  /*
+   * Paired to the frames they sit in: campus2 is square, so it loses the least
+   * to the 4:5 primary crop; campus1 is already 4:3, an exact fit for the
+   * secondary card.
+   */
   trainingPrimary: {
-    src: "/images/about-us.webp",
-    alt: "A TechCADD trainer addressing students on stage at the Hoshiarpur campus",
+    src: "/images/campus2.webp",
+    alt: "TechCADD students working at the lab benches, laptops and monitors along the wall",
   },
   trainingSecondary: {
-    src: "/images/about-us1.webp",
-    alt: "A seminar session in the TechCADD auditorium, with students seated through the hall",
+    src: "/images/campus1.webp",
+    alt: "The TechCADD workstation floor in Hoshiarpur, full of students at work",
   },
 } satisfies Record<string, AboutImage>;
 
