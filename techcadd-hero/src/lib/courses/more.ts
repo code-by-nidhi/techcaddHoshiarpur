@@ -1,5 +1,5 @@
 import {
-  COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_COMPARISON, DEFAULT_INSTRUCTOR,
+  COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_INSTRUCTOR,
 } from "./shared";
 import type { Course, Module, Project } from "./types";
 
@@ -57,7 +57,6 @@ export function makeCourse(s: Spec): Course {
     },
     projects: s.projects,
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     /* Real testimonials only — an empty array renders no reviews section. */
     reviews: [],
     faqs: [

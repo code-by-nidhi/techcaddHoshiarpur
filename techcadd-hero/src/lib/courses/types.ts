@@ -41,17 +41,6 @@ export type Review = {
 
 export type Faq = { q: string; a: string };
 
-export type ComparisonRow = {
-  feature: string;
-  /** one entry per column, in the same order as `comparison.columns` */
-  values: (boolean | "partial")[];
-};
-
-export type Comparison = {
-  columns: string[];
-  rows: ComparisonRow[];
-};
-
 export type Instructor = {
   heading: string;
   intro: string;
@@ -93,7 +82,6 @@ export type Course = {
   };
   projects: Project[];
   instructor: Instructor;
-  comparison: Comparison;
   reviews: Review[];
   faqs: Faq[];
   /** slugs; the current course is filtered out at render time */

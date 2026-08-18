@@ -11,7 +11,6 @@ import ToolsTechnologies from "@/components/courses/ToolsTechnologies";
 import CareerOutcomes from "@/components/courses/CareerOutcomes";
 import Projects from "@/components/courses/Projects";
 import InstructorSection from "@/components/courses/InstructorSection";
-import ComparisonChart from "@/components/courses/ComparisonChart";
 import Reviews from "@/components/courses/Reviews";
 import CourseFaq from "@/components/courses/CourseFaq";
 import CourseEnquiryForm from "@/components/forms/CourseEnquiryForm";
@@ -165,7 +164,6 @@ export default async function CoursePage({ params }: Params) {
         <CareerOutcomes course={course} />
         <Projects course={course} />
         <InstructorSection course={course} />
-        <ComparisonChart course={course} />
         <Reviews course={course} />
         <CourseFaq course={course} />
         <CourseEnquiryForm course={course} />

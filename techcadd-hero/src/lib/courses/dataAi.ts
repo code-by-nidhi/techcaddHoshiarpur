@@ -1,5 +1,5 @@
 import {
-  COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_COMPARISON, DEFAULT_INSTRUCTOR,
+  COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_INSTRUCTOR,
 } from "./shared";
 import type { Course } from "./types";
 
@@ -49,7 +49,6 @@ export const DATA_AI_COURSES: Course[] = [
       { name: "Defect detection model", summary: "A vision model trained on a production line dataset.", tech: ["PyTorch", "OpenCV"], level: "Advanced", skills: ["CNNs", "Augmentation", "Metrics"], image: "/images/lab.webp" },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [],
     faqs: [
       { q: "Is this course suitable for beginners?", a: "It assumes some programming. If you have never written Python, start with Python Programming and move across after." },
@@ -101,7 +100,6 @@ export const DATA_AI_COURSES: Course[] = [
       { name: "Recommendation engine", summary: "A collaborative filtering recommender, evaluated offline.", tech: ["Python", "NumPy"], level: "Advanced", skills: ["Similarity", "Evaluation", "Cold start"], image: "/images/ai.webp" },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [],
     faqs: [
       { q: "Is this course suitable for beginners?", a: "It assumes basic Python. Absolute beginners should take Python Programming first." },
@@ -152,7 +150,6 @@ export const DATA_AI_COURSES: Course[] = [
       { name: "Operations KPI board", summary: "A live-refreshing board built for a daily stand-up.", tech: ["Tableau Prep", "Tableau"], level: "Beginner", skills: ["Data prep", "Chart choice", "Publishing"], image: "/images/digital.webp" },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [],
     faqs: [
       { q: "Is this course suitable for beginners?", a: "Yes. It starts from connecting a spreadsheet and assumes no prior BI experience." },

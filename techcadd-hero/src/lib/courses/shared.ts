@@ -1,25 +1,13 @@
 /** Used when a course has no artwork of its own, so a page never renders a broken frame. */
 export const DEFAULT_HERO = "/images/courses/default-course.webp";
 
-import type { Comparison, Faq, Instructor } from "./types";
+import type { Faq, Instructor } from "./types";
 
 /**
  * Defaults every course inherits unless it overrides them. This is what keeps
  * a new course to a handful of lines: only the parts that genuinely differ
  * between programmes need to be written out.
  */
-
-export const DEFAULT_COMPARISON: Comparison = {
-  columns: ["TechCadd", "Free videos", "Self study", "Generic courses"],
-  rows: [
-    { feature: "Structured curriculum", values: [true, false, false, true] },
-    { feature: "Mentor support", values: [true, false, false, "partial"] },
-    { feature: "Guided projects", values: [true, "partial", "partial", true] },
-    { feature: "Doubt sessions", values: [true, false, false, "partial"] },
-    { feature: "Code review on your work", values: [true, false, false, "partial"] },
-    { feature: "Career guidance", values: [true, false, false, "partial"] },
-  ],
-};
 
 export const DEFAULT_INSTRUCTOR: Instructor = {
   heading: "Why learn with us?",

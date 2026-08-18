@@ -1,5 +1,5 @@
 import {
-  COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_COMPARISON, DEFAULT_INSTRUCTOR,
+  COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_INSTRUCTOR,
 } from "./shared";
 import type { Course, Module, Project } from "./types";
 
@@ -7,7 +7,7 @@ import type { Course, Module, Project } from "./types";
  * Civil & Mechanical Engineering catalogue.
  *
  * These eight share almost everything — category, mode, audience, teaching
- * approach, comparison chart, base FAQs — so only what genuinely differs is
+ * approach, base FAQs — so only what genuinely differs is
  * written per course. Adding a ninth is a dozen lines, not two hundred.
  */
 
@@ -66,7 +66,6 @@ function makeCourse(spec: Spec): Course {
     },
     projects: spec.projects,
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     /* Real testimonials only — an empty array renders no reviews section. */
     reviews: [],
     faqs: [

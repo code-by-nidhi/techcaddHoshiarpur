@@ -1,5 +1,5 @@
 import {
-  COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_COMPARISON, DEFAULT_INSTRUCTOR,
+  COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_INSTRUCTOR,
 } from "./shared";
 import type { Course } from "./types";
 
@@ -132,7 +132,6 @@ export const COURSES: Course[] = [
       },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [
       {
         name: "Harmanpreet Singh",
@@ -289,7 +288,6 @@ export const COURSES: Course[] = [
       },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [
       {
         name: "Navjot Kaur",
@@ -433,7 +431,6 @@ export const COURSES: Course[] = [
       },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [
       {
         name: "Manpreet Singh",
@@ -576,7 +573,6 @@ export const COURSES: Course[] = [
       },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [
       {
         name: "Gurpreet Sandhu",
@@ -719,7 +715,6 @@ export const COURSES: Course[] = [
       },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [
       {
         name: "Simranjeet Kaur",
@@ -863,7 +858,6 @@ export const COURSES: Course[] = [
       },
     ],
     instructor: DEFAULT_INSTRUCTOR,
-    comparison: DEFAULT_COMPARISON,
     reviews: [
       {
         name: "Priya Bansal",
