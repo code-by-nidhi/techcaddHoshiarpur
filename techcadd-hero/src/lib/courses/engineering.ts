@@ -20,6 +20,8 @@ type Spec = {
   overview: string;
   duration: string;
   level: string;
+  /** overrides the slug-derived artwork; rarely needed */
+  image?: string;
   modules: Module[];
   outcomes: string[];
   tools: string[];
@@ -29,6 +31,13 @@ type Spec = {
 };
 
 const CATEGORY = "Civil & Mechanical Engineering";
+
+/**
+ * Per-course artwork, resolved from the slug rather than listed per course, so
+ * a new CAD course picks up its image by dropping a file in with the matching
+ * name. `image` on a spec overrides it if a course ever needs something else.
+ */
+const CIVIL_MECH_IMAGE = (slug: string) => `/images/courses/civil-mechanical/${slug}.webp`;
 
 function makeCourse(spec: Spec): Course {
   return {
@@ -42,7 +51,7 @@ function makeCourse(spec: Spec): Course {
     duration: spec.duration,
     mode: "Online / Offline",
     certification: true,
-    heroImage: "/images/lab.webp",
+    heroImage: spec.image ?? CIVIL_MECH_IMAGE(spec.slug),
     video: {
       url: "",
       thumbnail: "/images/classroom.webp",
