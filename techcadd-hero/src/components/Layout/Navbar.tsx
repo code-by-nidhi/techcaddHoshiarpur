@@ -53,9 +53,10 @@ const MEGA_PANELS = {
   "Internship & Training": {
     desktop: InternshipMegaMenu,
     mobile: InternshipMegaMenuMobile,
-    width: 1150,
+    width: 1050,
+    centred: true,
   },
-  "After 12th": { desktop: After12MegaMenu, mobile: After12MegaMenuMobile, width: 1150 },
+  "After 12th": { desktop: After12MegaMenu, mobile: After12MegaMenuMobile, width: 1050, centred: true },
 } as const;
 
 type MegaLabel = keyof typeof MEGA_PANELS;
@@ -199,9 +200,12 @@ export default function Navbar() {
        * the <nav> inside it, which is what actually aligns the content.
        */}
       <div
-        className={`w-full transition-all duration-500 ${
+        /* Solid brand navy at every scroll position. It used to be transparent
+           over the hero; the bar now carries its own ground so the logo and
+           links keep their contrast wherever the page is scrolled to. */
+        className={`w-full bg-[#101C4D] transition-all duration-500 ${
           scrolled
-            ? "border-b border-white/10 bg-[#050B1F]/85 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+            ? "border-b border-white/10 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
             : "border-b border-transparent"
         }`}
       >
