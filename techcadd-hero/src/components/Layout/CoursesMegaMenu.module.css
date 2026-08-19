@@ -76,12 +76,12 @@
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
-  padding: 1.15rem;
+  padding: 18px;
 }
 
 @media (min-width: 1024px) {
   .body {
-    padding: 1.3rem;
+    padding: 32px;
   }
 }
 
@@ -101,23 +101,27 @@
  * auto-fit + minmax is the base: columns size themselves and wrap rather than
  * overlapping, so adding a sixth category cannot break the row.
  */
+/*
+ * Four equal tracks that consume the full panel width. The preview panel used
+ * to sit here as a fifth 260px column, which read as dead space on the right
+ * whenever nothing was hovered — it is now a strip under the grid instead.
+ */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+  grid-template-columns: 1fr;
+  gap: 24px;
   width: 100%;
-  /* nothing above it any more — the panel's own padding is the top gap */
+  max-width: 100%;
   margin-top: 0;
 }
 
-/* four categories plus the preview panel, once there is room for it */
 @media (min-width: 1280px) {
   .grid {
-    grid-template-columns: repeat(4, 1fr) 260px;
+    grid-template-columns: repeat(4, minmax(250px, 1fr));
   }
 }
 
-@media (max-width: 1199.98px) {
+@media (min-width: 768px) and (max-width: 1279.98px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -125,8 +129,7 @@
 
 @media (max-width: 767.98px) {
   .grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 14px;
   }
 }
 
@@ -286,3 +289,57 @@
  * is the component that actually renders there. The 2-col and 1-col grid rules
  * above are kept as structural fallbacks if that breakpoint ever moves.
  */
+
+/* -------------------------- hover preview strip -------------------------- */
+
+.previewStrip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin-top: 20px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(7, 15, 40, 0.95);
+  padding: 10px;
+}
+
+.previewShot {
+  position: relative;
+  flex-shrink: 0;
+  width: 176px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.previewShot img {
+  transition: transform 0.3s ease;
+}
+
+.previewStrip:hover .previewShot img {
+  transform: scale(1.05);
+}
+
+.previewLabel {
+  display: block;
+  min-width: 0;
+  font-family: var(--font-sora), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.previewHint {
+  display: block;
+  margin-top: 2px;
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+@media (max-width: 479.98px) {
+  .previewStrip {
+    display: none; /* the drawer accordion has no room for it */
+  }
+}

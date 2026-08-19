@@ -76,6 +76,8 @@ export type Course = {
   tools: string[];
   careerOutcomes: {
     roles: string[];
+    /** roles with a line of copy each; falls back to `roles` when absent */
+    roleDetails?: { role: string; copy: string }[];
     opportunities: string[];
     nextSteps: string[];
     industries: string[];
