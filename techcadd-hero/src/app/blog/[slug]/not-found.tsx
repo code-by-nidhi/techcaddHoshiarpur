@@ -22,7 +22,7 @@ export default function ArticleNotFound() {
 
         <Link
           href="/blog"
-          className="mt-9 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-royal-deep transition-shadow duration-300 hover:shadow-[0_18px_40px_-16px_rgb(255_255_255/0.6)]"
+          className="mt-9 inline-flex rounded-full bg-[#050B1F] px-7 py-3.5 text-sm font-semibold text-white transition-shadow duration-300 hover:shadow-[0_18px_40px_-16px_rgb(255_255_255/0.6)]"
         >
           Browse all articles
         </Link>

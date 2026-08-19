@@ -41,7 +41,7 @@ export default function FeaturedArticle({ article }: { article: Article }) {
               aria-hidden="true"
               className="absolute inset-0 bg-linear-to-t from-royal-deep/60 via-transparent to-transparent"
             />
-            <span className="absolute top-4 left-4 rounded-full bg-white/95 px-3.5 py-1.5 text-[0.6875rem] font-bold tracking-[0.14em] text-royal-deep uppercase">
+            <span className="absolute top-4 left-4 rounded-full bg-[rgba(10,15,35,0.9)] px-3.5 py-1.5 text-[0.6875rem] font-bold tracking-[0.14em] text-white uppercase">
               {article.category.name}
             </span>
           </span>

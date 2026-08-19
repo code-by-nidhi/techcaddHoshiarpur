@@ -46,7 +46,7 @@ export default function CareerOutcomes() {
             const Icon = ICONS[i];
             return (
               <Reveal key={m.key} delay={i * 0.06} className="lg:col-span-4">
-                <div className="group relative h-full overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_64px_-34px_rgba(37,99,235,0.6)]">
+                <div className="group relative h-full overflow-hidden rounded-[28px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[0_34px_64px_-34px_rgba(37,99,235,0.6)]">
                   <span
                     aria-hidden
                     className="pointer-events-none absolute -right-14 -top-16 size-44 rounded-full bg-[#2563EB]/8 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
@@ -54,11 +54,11 @@ export default function CareerOutcomes() {
                   <span className="grid size-11 place-items-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-slate-200">
                     <Icon aria-hidden className="size-5 text-[#2563EB]" />
                   </span>
-                  <p className="mt-6 font-[family-name:var(--font-poppins)] text-[clamp(2rem,3vw,2.7rem)] font-extrabold leading-none tracking-tight text-[#0F172A]">
+                  <p className="mt-6 font-[family-name:var(--font-poppins)] text-[clamp(2rem,3vw,2.7rem)] font-extrabold leading-none tracking-tight text-white">
                     <Counter to={m.value} suffix={m.suffix} />
                   </p>
-                  <p className="mt-2.5 text-[15px] font-semibold text-[#0F172A]">{m.label}</p>
-                  <p className="mt-1 text-[13px] leading-relaxed text-[#64748B]">{m.note}</p>
+                  <p className="mt-2.5 text-[15px] font-semibold text-white">{m.label}</p>
+                  <p className="mt-1 text-[13px] leading-relaxed text-white/50">{m.note}</p>
                 </div>
               </Reveal>
             );
@@ -66,13 +66,13 @@ export default function CareerOutcomes() {
 
           {/* placement assistance activity */}
           <Reveal delay={0.08} className="lg:col-span-7">
-            <div className="h-full rounded-[28px] border border-slate-200/80 bg-white p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)]">
+            <div className="h-full rounded-[28px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)]">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="font-[family-name:var(--font-poppins)] text-[18px] font-bold text-[#0F172A]">
+                  <h3 className="font-[family-name:var(--font-poppins)] text-[18px] font-bold text-white">
                     Placement assistance
                   </h3>
-                  <p className="mt-1 text-[13px] text-[#64748B]">
+                  <p className="mt-1 text-[13px] text-white/50">
                     What the support actually consists of, counted.
                   </p>
                 </div>
@@ -88,8 +88,8 @@ export default function CareerOutcomes() {
                     <p className="font-[family-name:var(--font-poppins)] text-[26px] font-extrabold leading-none text-[#2563EB]">
                       <Counter to={a.value} suffix={a.suffix} />
                     </p>
-                    <p className="mt-1.5 text-[13px] text-[#475569]">{a.label}</p>
-                    <div className="mt-3 h-1 overflow-hidden rounded-full bg-slate-100">
+                    <p className="mt-1.5 text-[13px] text-white/65">{a.label}</p>
+                    <div className="mt-3 h-1 overflow-hidden rounded-full bg-white/[0.06]">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${[100, 92, 46, 62][i]}%` }}
@@ -106,8 +106,8 @@ export default function CareerOutcomes() {
 
           {/* google reviews */}
           <Reveal delay={0.14} className="lg:col-span-5">
-            <div className="flex h-full flex-col rounded-[28px] border border-slate-200/80 bg-white p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)]">
-              <h3 className="font-[family-name:var(--font-poppins)] text-[18px] font-bold text-[#0F172A]">
+            <div className="flex h-full flex-col rounded-[28px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)]">
+              <h3 className="font-[family-name:var(--font-poppins)] text-[18px] font-bold text-white">
                 Google reviews
               </h3>
 
@@ -133,10 +133,10 @@ export default function CareerOutcomes() {
                     </defs>
                   </svg>
                   <div className="absolute inset-0 grid place-content-center text-center">
-                    <span className="font-[family-name:var(--font-poppins)] text-[26px] font-extrabold leading-none text-[#0F172A]">
+                    <span className="font-[family-name:var(--font-poppins)] text-[26px] font-extrabold leading-none text-white">
                       {reviews.rating}
                     </span>
-                    <span className="mt-1 text-[11px] uppercase tracking-[0.14em] text-[#64748B]">
+                    <span className="mt-1 text-[11px] uppercase tracking-[0.14em] text-white/50">
                       out of 5
                     </span>
                   </div>
@@ -148,16 +148,16 @@ export default function CareerOutcomes() {
                       <Star key={i} aria-hidden className="size-4 fill-[#F59E0B] text-[#F59E0B]" />
                     ))}
                   </div>
-                  <p className="mt-2 text-[13.5px] text-[#475569]">
-                    From <Counter to={reviews.count} suffix="+" className="font-semibold text-[#0F172A]" />{" "}
+                  <p className="mt-2 text-[13.5px] text-white/65">
+                    From <Counter to={reviews.count} suffix="+" className="font-semibold text-white" />{" "}
                     verified reviews
                   </p>
 
                   <ul className="mt-4 space-y-1.5">
                     {reviews.breakdown.map((pct, i) => (
                       <li key={i} className="flex items-center gap-2">
-                        <span className="w-3 text-[11px] text-[#94A3B8]">{5 - i}</span>
-                        <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-100">
+                        <span className="w-3 text-[11px] text-white/40">{5 - i}</span>
+                        <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
                           <motion.span
                             initial={{ width: 0 }}
                             whileInView={{ width: `${pct}%` }}
@@ -176,23 +176,23 @@ export default function CareerOutcomes() {
 
           {/* alumni network */}
           <Reveal delay={0.1} className="lg:col-span-7">
-            <div className="h-full rounded-[28px] border border-slate-200/80 bg-white p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)]">
+            <div className="h-full rounded-[28px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)]">
               <div className="flex items-center gap-2">
                 <MapPin aria-hidden className="size-4 text-[#2563EB]" />
-                <h3 className="font-[family-name:var(--font-poppins)] text-[18px] font-bold text-[#0F172A]">
+                <h3 className="font-[family-name:var(--font-poppins)] text-[18px] font-bold text-white">
                   Alumni network
                 </h3>
               </div>
-              <p className="mt-1 text-[13px] text-[#64748B]">
-                Where <Counter to={alumni.total} suffix="+" className="font-semibold text-[#0F172A]" />{" "}
+              <p className="mt-1 text-[13px] text-white/50">
+                Where <Counter to={alumni.total} suffix="+" className="font-semibold text-white" />{" "}
                 alumni are working today.
               </p>
 
               <ul className="mt-6 space-y-3.5">
                 {alumni.cities.map((c, i) => (
                   <li key={c.city} className="flex items-center gap-4">
-                    <span className="w-40 shrink-0 text-[13.5px] text-[#334155]">{c.city}</span>
-                    <span className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
+                    <span className="w-40 shrink-0 text-[13.5px] text-white/75">{c.city}</span>
+                    <span className="h-2 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
                       <motion.span
                         initial={{ width: 0 }}
                         whileInView={{ width: `${c.pct * 3.6}%` }}
@@ -201,7 +201,7 @@ export default function CareerOutcomes() {
                         className="block h-full rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB]"
                       />
                     </span>
-                    <span className="w-10 shrink-0 text-right text-[13px] font-semibold text-[#0F172A]">
+                    <span className="w-10 shrink-0 text-right text-[13px] font-semibold text-white">
                       {c.pct}%
                     </span>
                   </li>
