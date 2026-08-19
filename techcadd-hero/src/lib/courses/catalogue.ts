@@ -460,6 +460,18 @@ export const COURSES: Course[] = [
       },
     ],
 
+    /* progress tracker stages for the roadmap */
+    journey: [
+      "Beginner",
+      "Fundamentals",
+      "Programming Logic",
+      "OOP",
+      "Database",
+      "Advanced Python",
+      "Projects",
+      "Certification",
+    ],
+
     learningOutcomes: [
       "Write clear, idiomatic Python",
       "Choose the right data structure for a problem",
