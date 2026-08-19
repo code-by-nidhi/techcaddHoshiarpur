@@ -11,6 +11,8 @@ export type MenuCourse = {
   label: string;
   href: string;
   trending?: boolean;
+  /** preview artwork shown in the panel when this row is hovered */
+  image?: string;
 };
 
 export type MenuCategory = {
@@ -71,14 +73,14 @@ export const COURSE_MENU: MenuCategory[] = [
     emoji: "⚙️",
     heading: "Civil & Mechanical",
     courses: [
-      { label: "AutoCAD", href: "/courses/autocad", trending: true },
-      { label: "SolidWorks", href: "/courses/solidworks" },
-      { label: "CATIA", href: "/courses/catia" },
-      { label: "NC CAD", href: "/courses/nc-cad" },
-      { label: "NX CAM", href: "/courses/nx-cam" },
-      { label: "SolidCAM", href: "/courses/solidcam" },
-      { label: "MasterCAM", href: "/courses/mastercam" },
-      { label: "CNC Manual Programming", href: "/courses/cnc-manual-programming" },
+      { label: "AutoCAD", href: "/courses/autocad", trending: true, image: "/images/courses/civil-mechanical/autocad.webp" },
+      { label: "SolidWorks", href: "/courses/solidworks", image: "/images/courses/civil-mechanical/solidworks.webp" },
+      { label: "CATIA", href: "/courses/catia", image: "/images/courses/civil-mechanical/catia.webp" },
+      { label: "NC CAD", href: "/courses/nc-cad", image: "/images/courses/civil-mechanical/nc-cad.webp" },
+      { label: "NX CAM", href: "/courses/nx-cam", image: "/images/courses/civil-mechanical/nx-cam.webp" },
+      { label: "SolidCAM", href: "/courses/solidcam", image: "/images/courses/civil-mechanical/solidcam.webp" },
+      { label: "MasterCAM", href: "/courses/mastercam", image: "/images/courses/civil-mechanical/mastercam.webp" },
+      { label: "CNC Manual Programming", href: "/courses/cnc-manual-programming", image: "/images/courses/civil-mechanical/cnc-manual-programming.webp" },
     ],
   },
 ];

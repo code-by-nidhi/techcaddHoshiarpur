@@ -110,10 +110,10 @@
   margin-top: 0;
 }
 
-/* the four categories on one row once there is room for it */
+/* four categories plus the preview panel, once there is room for it */
 @media (min-width: 1280px) {
   .grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr) 260px;
   }
 }
 

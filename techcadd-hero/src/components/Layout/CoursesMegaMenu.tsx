@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { FiChevronRight, FiZap } from "react-icons/fi";
 import { COURSE_MENU, type MenuCourse } from "@/lib/coursesMenu";
 import styles from "./CoursesMegaMenu.module.css";
@@ -21,6 +23,9 @@ const itemIn: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } },
 };
 
+/** Shown until a row with artwork is hovered, and if a file ever goes missing. */
+const FALLBACK_PREVIEW = "/images/courses/default-course.webp";
+
 export default function CoursesMegaMenu({
   arrow,
   onNavigate,
@@ -28,6 +33,12 @@ export default function CoursesMegaMenu({
   arrow: number;
   onNavigate: () => void;
 }) {
+  /* Only rows that carry an `image` set this, so hovering a Programming row
+     leaves the last preview in place rather than flashing the fallback. */
+  const [preview, setPreview] = useState({
+    src: FALLBACK_PREVIEW,
+    label: "Hover a course to preview",
+  });
   return (
     <motion.div variants={panelIn} initial="hidden" animate="show" exit="exit" className="relative">
       {/* pointer back to the nav item */}
@@ -62,22 +73,67 @@ export default function CoursesMegaMenu({
                 <ul className={styles.list}>
                   {cat.courses.map((c) => (
                     <li key={c.label}>
-                      <CourseCard course={c} onNavigate={onNavigate} />
+                      <CourseCard course={c} onNavigate={onNavigate} onPreview={setPreview} />
                     </li>
                   ))}
                 </ul>
               </motion.div>
             ))}
           </div>
+
+          {/* preview: right of the list on desktop, above it once stacked */}
+          <AnimatePresence mode="wait">
+            <motion.figure
+                key={preview.src}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="order-first mt-4 overflow-hidden rounded-[18px] border border-white/10 lg:order-none"
+              >
+                <span className="relative block aspect-[16/9] w-full">
+                  <Image
+                    src={preview.src}
+                    alt=""
+                    aria-hidden
+                    fill
+                    loading="lazy"
+                    sizes="(max-width: 1023px) 90vw, 320px"
+                    className="scale-100 object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </span>
+                <figcaption className="bg-[rgba(7,15,40,0.95)] px-3 py-2 text-[11.5px] font-medium text-white/70">
+                  {preview.label}
+                </figcaption>
+            </motion.figure>
+          </AnimatePresence>
         </div>
       </div>
     </motion.div>
   );
 }
 
-function CourseCard({ course, onNavigate }: { course: MenuCourse; onNavigate: () => void }) {
+function CourseCard({
+  course,
+  onNavigate,
+  onPreview,
+}: {
+  course: MenuCourse;
+  onNavigate: () => void;
+  onPreview: (p: { src: string; label: string }) => void;
+}) {
+  const show = () => {
+    if (course.image) onPreview({ src: course.image, label: course.label });
+  };
+
   return (
-    <Link href={course.href} onClick={onNavigate} className={styles.card}>
+    <Link
+      href={course.href}
+      onClick={onNavigate}
+      onMouseEnter={show}
+      onFocus={show}
+      className={styles.card}
+    >
       <span className={styles.label}>{course.label}</span>
       {course.trending && (
         <span className={styles.badge}>
