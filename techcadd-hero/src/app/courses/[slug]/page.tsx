@@ -41,8 +41,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   }
 
   /* The root layout appends "| TechCadd Hoshiarpur" via its title template,
-     so adding the brand here would stamp it twice. */
-  const title = `${course.title} Course`;
+     so adding the brand here would stamp it twice. "Course" is only appended
+     when the title does not already contain it, so a title written for SEO
+     ("Best Python Course in Hoshiarpur") does not end up saying it twice. */
+  const needsSuffix = !course.title.toLowerCase().includes("course");
+  const title = needsSuffix ? `${course.title} Course` : course.title;
   const description = course.overview.slice(0, 155);
   const url = `${SITE}/courses/${course.slug}`;
 

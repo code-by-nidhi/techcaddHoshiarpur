@@ -326,7 +326,7 @@ export const COURSES: Course[] = [
   /* ------------------------------------------------------------------ */
   {
     slug: "python-programming",
-    title: "Python Programming",
+    title: "Best Python Course in Hoshiarpur",
     shortTitle: "Python",
     shortDescription:
       "Kick start your programming career with the Best Python Training in Hoshiarpur.",
