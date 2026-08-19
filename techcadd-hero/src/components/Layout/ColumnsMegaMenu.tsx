@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, type Variants } from "framer-motion";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { FiArrowRight, FiChevronRight, FiZap } from "react-icons/fi";
 import type { ColumnsMenu } from "@/lib/internshipMenu";
 import styles from "./WideMegaMenu.module.css";
@@ -44,6 +46,18 @@ export default function ColumnsMegaMenu({
   const { columns, strip } = menu;
   const pathname = usePathname();
 
+  /* First link with artwork seeds the panel, so it is never blank and hovering
+     never causes a layout shift. Menus whose links carry no image (After 12th)
+     skip the preview entirely. */
+  const firstWithImage = columns.flatMap((c) => c.links).find((l) => l.image);
+  const toPreview = (l: { image?: string; label: string; description?: string; href: string }) => ({
+    src: l.image as string,
+    label: l.label,
+    description: l.description,
+    href: l.href,
+  });
+  const [preview, setPreview] = useState(firstWithImage ? toPreview(firstWithImage) : null);
+
   return (
     <motion.div variants={panelIn} initial="hidden" animate="show" exit="exit" className="relative">
       <span
@@ -58,6 +72,7 @@ export default function ColumnsMegaMenu({
         <span aria-hidden className={styles.edgeGlow} />
 
         <div className={styles.body}>
+          <div className={preview ? styles.withPreview : ""}>
           <div className={styles.grid}>
             {columns.map((col) => (
               <motion.div key={col.id} variants={itemIn} className={styles.col}>
@@ -70,6 +85,8 @@ export default function ColumnsMegaMenu({
                       <Link
                         href={link.href}
                         onClick={onNavigate}
+                        onMouseEnter={link.image ? () => setPreview(toPreview(link)) : undefined}
+                        onFocus={link.image ? () => setPreview(toPreview(link)) : undefined}
                         aria-current={pathname === link.href ? "page" : undefined}
                         className={`${styles.link} ${pathname === link.href ? styles.linkActive : ""}`}
                       >
@@ -87,6 +104,46 @@ export default function ColumnsMegaMenu({
                 </ul>
               </motion.div>
             ))}
+          </div>
+
+          {preview && (
+            <AnimatePresence mode="wait">
+              <motion.figure
+                key={preview.src}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className={styles.preview}
+              >
+                <Image
+                  src={preview.src}
+                  alt=""
+                  aria-hidden
+                  fill
+                  loading="lazy"
+                  sizes="(max-width: 1279px) 90vw, 380px"
+                  className="object-cover"
+                />
+                <figcaption className={styles.previewCap}>
+                  <span className={styles.previewTitle}>{preview.label}</span>
+                  {preview.description && (
+                    <span className={styles.previewCopy}>{preview.description}</span>
+                  )}
+                  {menu.previewCta && (
+                    <Link
+                      href={preview.href}
+                      onClick={onNavigate}
+                      className={styles.previewBtn}
+                    >
+                      {menu.previewCta}
+                      <FiArrowRight aria-hidden size={13} />
+                    </Link>
+                  )}
+                </figcaption>
+              </motion.figure>
+            </AnimatePresence>
+          )}
           </div>
 
           {/* ---------------------------- feature strip ---------------------- */}

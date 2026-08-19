@@ -55,7 +55,7 @@
 
 .body {
   position: relative;
-  max-height: 85vh;
+  max-height: 650px;
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
@@ -79,9 +79,13 @@
   width: 100%;
 }
 
+/* auto-fit so a three-column menu stays three and a four-column menu is four,
+   without either needing its own rule */
 @media (min-width: 1200px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-auto-flow: column;
+    gap: 32px;
   }
 }
 
@@ -242,12 +246,12 @@
 .link {
   display: flex;
   width: 100%;
-  min-height: 40px;
+  min-height: 36px;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 8px 11px;
-  border-radius: 12px;
+  padding: 7px 10px;
+  border-radius: 10px;
   font-size: 12.5px;
   font-weight: 500;
   color: rgba(255, 255, 255, 0.72);
@@ -263,6 +267,7 @@
   /* slide right, not up: these are list rows, not cards */
   transform: translateX(5px);
   background: rgba(59, 130, 246, 0.12);
+  box-shadow: inset 2px 0 0 0 #60a5fa;
   color: #fff;
   outline: none;
 }
@@ -482,4 +487,107 @@
   .link:focus-visible {
     transform: none;
   }
+}
+
+/* ------------------------- training preview panel ------------------------ */
+
+/*
+ * List left, preview right. Not a literal 1fr 1fr: three link columns squeezed
+ * into half of an 1150px panel leaves ~180px per column, so the list keeps the
+ * larger share and the preview takes what it needs.
+ */
+.withPreview {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+@media (min-width: 1280px) {
+  .withPreview {
+    grid-template-columns: 1.7fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+}
+
+.preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 22px 48px -26px rgba(0, 0, 0, 0.9);
+}
+
+.preview img {
+  transition: transform 0.4s ease;
+}
+
+.preview:hover img {
+  transform: scale(1.05);
+}
+
+/* glass caption over a gradient scrim, so the title stays readable */
+.previewCap {
+  position: absolute;
+  inset-inline: 10px;
+  bottom: 10px;
+  z-index: 1;
+  display: block;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(7, 15, 40, 0.78);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 11px 13px;
+}
+
+.previewTitle {
+  display: block;
+  font-family: var(--font-sora), sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.previewCopy {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 3px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.previewBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #142c8e, #2563eb);
+  padding: 6px 13px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 0 22px -8px rgba(37, 99, 235, 0.95);
+  transition: box-shadow 0.3s ease;
+}
+
+.previewBtn:hover {
+  box-shadow: 0 0 34px -4px rgba(37, 99, 235, 1);
+}
+
+.preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 45%, rgba(2, 11, 45, 0.75));
 }

@@ -12,11 +12,17 @@ export type TrainingLink = {
   trending?: boolean;
   /** marks a topic with no page of its own — still used by the After 12th menu */
   pending?: boolean;
+  /** preview artwork shown beside the list on hover */
+  image?: string;
+  /** one line under the preview title, when the menu has copy for it */
+  description?: string;
 };
 
 /** Shared by every three-column menu (Internship & Training, After 12th). */
 export type ColumnsMenu = {
   columns: { id: string; heading: string; description: string; links: TrainingLink[] }[];
+  /** the preview card's button; omitted menus show the image and title only */
+  previewCta?: string;
   strip: { watermark: string; quote: string; cta: string; href: string };
 };
 
@@ -33,6 +39,7 @@ export const INTERNSHIP_MENU: ColumnsMenu = {
         label: p.title,
         href: `/internship-training/${p.slug}`,
         trending: p.badge === "Trending",
+        image: p.image,
       })),
     };
   }),

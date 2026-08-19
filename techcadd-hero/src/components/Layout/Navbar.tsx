@@ -20,7 +20,7 @@ import megaStyles from "./CoursesMegaMenu.module.css";
 
 const MegaMenu = dynamic(() => import("./MegaMenu"));
 const MegaMenuMobile = dynamic(() => import("./MegaMenuMobile"));
-const CoursesMegaMenu = dynamic(() => import("./CoursesMegaMenu"));
+const CoursesMegaMenu = dynamic(() => import("./CoursesColumnsMenu"));
 const CoursesMegaMenuMobile = dynamic(() => import("./CoursesMegaMenuMobile"));
 const AiMegaMenu = dynamic(() => import("./AiMegaMenu"));
 const AiMegaMenuMobile = dynamic(() => import("./AiMegaMenu").then((m) => m.AiMegaMenuMobile));
@@ -47,7 +47,9 @@ const NavDropdownMobile = dynamic(() =>
 const MEGA_PANELS = {
   Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1400 },
   Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
-  AI: { desktop: AiMegaMenu, mobile: AiMegaMenuMobile, width: 1150 },
+  /* centred on the viewport rather than on its trigger, which sits left of
+     centre in the bar and pulled the panel to the edge */
+  AI: { desktop: AiMegaMenu, mobile: AiMegaMenuMobile, width: 1150, centred: true },
   "Internship & Training": {
     desktop: InternshipMegaMenu,
     mobile: InternshipMegaMenuMobile,
@@ -71,6 +73,10 @@ const SIMPLE_WIDTH = 340;
 
 const panelWidth = (label: PanelLabel) =>
   isMegaLabel(label) ? MEGA_PANELS[label].width : SIMPLE_WIDTH;
+
+/** Panels that centre on the viewport instead of on their nav item. */
+const isCentred = (label: PanelLabel) =>
+  isMegaLabel(label) && "centred" in MEGA_PANELS[label] && MEGA_PANELS[label].centred === true;
 
 /** Outer margin the panel keeps from the viewport edge, in px. */
 const EDGE = 16;
@@ -109,7 +115,9 @@ export default function Navbar() {
     // never wider than 95vw, so the panel always reads as a floating card
     const width = Math.min(panelWidth(mega), vw - EDGE * 2, vw * 0.95);
     const centre = r.left + r.width / 2;
-    const left = Math.min(Math.max(EDGE, centre - width / 2), vw - width - EDGE);
+    const left = isCentred(mega)
+      ? Math.max(EDGE, (vw - width) / 2)
+      : Math.min(Math.max(EDGE, centre - width / 2), vw - width - EDGE);
     setAnchor({ left, top: r.bottom, width, arrow: centre - left });
   }, [mega]);
 

@@ -27,6 +27,8 @@ export type Programme = {
   /** what a student actually gets */
   includes: string[];
   outcomes: string[];
+  /** menu preview + listing artwork */
+  image: string;
 };
 
 export const CATEGORY_META: Record<
@@ -60,6 +62,7 @@ export const PROGRAMMES: Programme[] = [
   /* ------------------------------ short term ------------------------------ */
   {
     slug: "45-days-training",
+    image: "/images/classroom.webp",
     title: "45 Days Training",
     category: "short-term",
     badge: "Trending",
@@ -71,6 +74,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "6-weeks-training",
+    image: "/images/campus2.webp",
     title: "6 Weeks Training",
     category: "short-term",
     badge: "Trending",
@@ -82,6 +86,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "2-months-training",
+    image: "/images/lab.webp",
     title: "2 Months Training",
     category: "short-term",
     summary: "Enough time to cover fundamentals properly and still build something real.",
@@ -92,6 +97,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "summer-internship",
+    image: "/images/campus1.webp",
     title: "Summer Internship",
     category: "short-term",
     summary: "Summer months spent on the project floor rather than in a classroom.",
@@ -102,6 +108,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "winter-internship",
+    image: "/images/about-us1.webp",
     title: "Winter Internship",
     category: "short-term",
     summary: "The same project-floor experience, run over the winter break.",
@@ -114,6 +121,7 @@ export const PROGRAMMES: Programme[] = [
   /* ------------------------------- long term ------------------------------ */
   {
     slug: "4-months-training",
+    image: "/images/campus2.webp",
     title: "4 Months Training",
     category: "long-term",
     summary: "A full track with time for depth, revision and a substantial project.",
@@ -124,6 +132,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "6-months-training",
+    image: "/images/campus1.webp",
     title: "6 Months Training",
     category: "long-term",
     summary: "The full programme: fundamentals, specialisation, live projects and placement support.",
@@ -134,6 +143,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "industrial-project-training",
+    image: "/images/lab.webp",
     title: "Industrial Project Training",
     category: "long-term",
     summary: "Project-first: you join a brief already in progress and ship against it.",
@@ -144,6 +154,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "full-stack-internship",
+    image: "/images/mern.webp",
     title: "Full Stack Internship",
     category: "long-term",
     summary: "Front end, back end and deployment, on a team building something real.",
@@ -154,6 +165,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "job-ready-program",
+    image: "/images/about-us.webp",
     title: "Job Ready Program",
     category: "long-term",
     summary: "Built backwards from the interview: skills, portfolio, practice, referrals.",
@@ -166,6 +178,7 @@ export const PROGRAMMES: Programme[] = [
   /* ------------------------------ programmes ------------------------------ */
   {
     slug: "industrial-training",
+    image: "/images/campus1.webp",
     title: "Industrial Training",
     category: "programmes",
     badge: "Trending",
@@ -177,6 +190,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "internship-program",
+    image: "/images/campus2.webp",
     title: "Internship Program",
     category: "programmes",
     summary: "A place on a working team, with the letter at the end of it.",
@@ -187,6 +201,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "live-project-program",
+    image: "/images/lab.webp",
     title: "Live Project Program",
     category: "programmes",
     summary: "Real client briefs taken through sprint planning, review and release.",
@@ -197,6 +212,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "placement-assistance-program",
+    image: "/images/team-photo.webp",
     title: "Placement Assistance Program",
     category: "programmes",
     summary: "Portfolio, interview practice and introductions, until you land a role.",
@@ -207,6 +223,7 @@ export const PROGRAMMES: Programme[] = [
   },
   {
     slug: "corporate-training",
+    image: "/images/about-us.webp",
     title: "Corporate Training",
     category: "programmes",
     summary: "Team training built around your stack and delivered on your schedule.",
