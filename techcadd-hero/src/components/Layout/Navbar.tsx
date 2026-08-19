@@ -35,6 +35,10 @@ const After12MegaMenuMobile = dynamic(() =>
 /* server-rendered, not deferred: it sits above the fold on every route and
    popping in after hydration would shift the nav row */
 const AiNavButton = dynamic(() => import("./AiNavButton"), { ssr: true });
+const AboutMegaMenu = dynamic(() => import("./AboutMegaMenu"));
+const AboutMegaMenuMobile = dynamic(() =>
+  import("./AboutMegaMenu").then((m) => m.AboutMegaMenuMobile),
+);
 const NavDropdown = dynamic(() => import("./NavDropdown"));
 const NavDropdownMobile = dynamic(() =>
   import("./NavDropdown").then((m) => m.NavDropdownMobile),
@@ -45,6 +49,7 @@ const NavDropdownMobile = dynamic(() =>
  * every item not listed stays an ordinary link.
  */
 const MEGA_PANELS = {
+  "About Us": { desktop: AboutMegaMenu, mobile: AboutMegaMenuMobile, width: 1000, centred: true },
   Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1200, centred: true },
   Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
   /* centred on the viewport rather than on its trigger, which sits left of
