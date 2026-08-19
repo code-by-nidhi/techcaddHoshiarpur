@@ -30,6 +30,20 @@ export function readingLabel(article: Pick<Article, "readingTime">): string {
   return `${article.readingTime} min read`;
 }
 
+/**
+ * Stand-in artwork for an article with no cover image.
+ *
+ * next/image treats an empty src as a bug and throws, so a card would take the
+ * whole page down over a missing photograph. A house image is the right answer
+ * anyway: an article is worth reading whether or not anyone found a picture
+ * for it.
+ */
+const PLACEHOLDER_COVER = "/images/courses/default-course.webp";
+
+export function coverOf(article: Pick<Article, "featuredImage">): string {
+  return article.featuredImage || PLACEHOLDER_COVER;
+}
+
 export interface TocItem {
   id: string;
   text: string;

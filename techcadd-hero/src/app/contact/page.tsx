@@ -3,6 +3,8 @@ import StudentDesk from "@/components/contact/StudentDesk";
 import ContactInfo from "@/components/contact/ContactInfo";
 import ContactFaq from "@/components/contact/ContactFaq";
 import FinalCta from "@/components/contact/FinalCta";
+import { safely } from "@/lib/cms/client";
+import { getFaqs, type CmsFaq } from "@/lib/cms/content";
 
 /**
  * Career counselling page, in three tonal movements:
@@ -12,8 +14,14 @@ import FinalCta from "@/components/contact/FinalCta";
  * The hero stays dark because the fixed navbar draws its logo and links in
  * white, and the closing CTA returns to a saturated gradient so the page hands
  * off cleanly to the dark footer.
+ *
+ * The FAQ band reads from the CMS — the questions an editor marked for this
+ * page. Wrapped in `safely`, so a CMS outage costs the page that band and not
+ * the counselling form above it.
  */
-export default function ContactPage() {
+export default async function ContactPage() {
+  const faqs = await safely(getFaqs({ featured: true, limit: 8 }), [] as CmsFaq[]);
+
   return (
     <div className="relative">
       <ContactHero />
@@ -26,7 +34,7 @@ export default function ContactPage() {
 
       <StudentDesk />
       <ContactInfo />
-      <ContactFaq />
+      <ContactFaq faqs={faqs} />
 
       <FinalCta />
 

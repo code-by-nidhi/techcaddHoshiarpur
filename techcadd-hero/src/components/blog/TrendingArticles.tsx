@@ -3,6 +3,7 @@ import Link from "next/link";
 import { TrendingUp } from "lucide-react";
 
 import ScrollReveal from "@/components/about/ui/ScrollReveal";
+import { coverOf } from "@/lib/blog/format";
 import type { Article } from "@/lib/blog/types";
 
 /**
@@ -51,7 +52,7 @@ export default function TrendingArticles({ articles }: { articles: Article[] }) 
 
               <span className="relative size-14 shrink-0 overflow-hidden rounded-xl bg-linear-to-br from-brand/20 to-accent/10">
                 <Image
-                  src={article.featuredImage}
+                  src={coverOf(article)}
                   alt=""
                   fill
                   sizes="56px"
