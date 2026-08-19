@@ -12,14 +12,34 @@ import CommandCenter from "@/components/sections/CommandCenter";
 import HelpCenter from "@/components/sections/HelpCenter";
 import KnowledgeHub from "@/components/sections/KnowledgeHub";
 import LaunchCenter from "@/components/sections/LaunchCenter";
-
+import { getArticles, getCategories } from "@/lib/blog/api";
+import { safely } from "@/lib/cms/client";
+import { getFaqs, getReviews, type CmsFaq, type CmsReview } from "@/lib/cms/content";
+import type { Article, CategorySummary } from "@/lib/blog/types";
 
 /**
  * The dark hero opens, then the page runs white/#F8FAFC the whole way down
  * until the Launch Center closes it back on dark. Each section alternates
  * white ↔ surface so no two neighbours share a background.
+ *
+ * Three sections read from the CMS — the student wall, the help centre and the
+ * knowledge hub. All four requests are made together rather than section by
+ * section, so the page waits once instead of four times, and each is wrapped
+ * in `safely`: a CMS that is down or empty costs the page those sections, not
+ * the whole route.
  */
-export default function Home() {
+export default async function Home() {
+  const [reviews, faqs, articles, topics] = await Promise.all([
+    safely(getReviews(), [] as CmsReview[]),
+    safely(getFaqs(), [] as CmsFaq[]),
+    // Six: one lead panel, two cards and a trending list of three.
+    safely(getArticles({ limit: 6, sort: "latest" }), {
+      data: [] as Article[],
+      meta: { page: 1, limit: 6, total: 0, totalPages: 1, hasMore: false },
+    }),
+    safely(getCategories(), [] as CategorySummary[]),
+  ]);
+
   return (
     <>
       <Navbar />
@@ -35,11 +55,11 @@ export default function Home() {
         <TechUniverse />
         <WhyChoose />
         <CareerOutcomes />
-        <StudentWall />
+        <StudentWall reviews={reviews} />
         <ProgrammeRoadmap />
         <CommandCenter />
-        <HelpCenter />
-        <KnowledgeHub />
+        <HelpCenter faqs={faqs} />
+        <KnowledgeHub articles={articles.data} topics={topics} />
         <LaunchCenter />
       </main>
       <MegaFooter />

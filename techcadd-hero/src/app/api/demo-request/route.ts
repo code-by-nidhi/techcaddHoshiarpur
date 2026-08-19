@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
 
-import { prisma } from "@/lib/prisma";
+import { CMS_API_URL } from "@/lib/cms/client";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
 import {
   demoRequestSchema,
@@ -12,9 +11,11 @@ import {
 /**
  * POST /api/demo-request — the Book Demo enquiry endpoint.
  *
- * Same-origin by design. The modal used to call the standalone Nest API across
- * origins; talking to a route in this app instead means no CORS surface and no
- * public API host to protect, and the MySQL credentials stay in this process.
+ * Same-origin by design, and a relay rather than a store: the lead is recorded
+ * by the CMS, which is where the counselling team works. Keeping the route in
+ * front of it is what earns its keep — the browser never learns the CMS
+ * address, there is no CORS surface, and the visitor's real IP reaches the
+ * CMS's duplicate guard, which a browser request could not supply honestly.
  *
  * Nothing here trusts the browser. The modal validates so the visitor gets
  * fast feedback; this route validates again because the modal is not the only
@@ -31,9 +32,6 @@ const RATE_WINDOW_MS = 60_000;
 
 /** A valid enquiry is a few hundred bytes. Anything past this is not one. */
 const MAX_BODY_BYTES = 4_096;
-
-/** How long an identical number is treated as a repeat rather than a new lead. */
-const DUPLICATE_WINDOW_MS = 60_000;
 
 const SUCCESS_MESSAGE = "Demo request submitted successfully.";
 const GENERIC_ERROR = "Something went wrong. Please try again.";
@@ -122,53 +120,40 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   try {
     /*
-     * A double-click, a retried request or an impatient second submit should
-     * produce one lead, not three. The client disables the button, but that is
-     * a courtesy the server cannot rely on, so an identical number inside the
-     * window is answered as though it had just been stored — which, a moment
-     * ago, it was. Uses the `phone` index.
+     * The CMS field names, not this form's. Its schema refuses anything it
+     * does not recognise, which is what stops a public submission from
+     * arriving already assigned or marked converted.
      */
-    const recent = await prisma.demoRequest.findFirst({
-      where: {
+    const response = await fetch(`${CMS_API_URL}/enquiries`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        studentName: data.name,
         phone: data.phone,
-        createdAt: { gte: new Date(Date.now() - DUPLICATE_WINDOW_MS) },
-      },
-      select: { id: true },
+        email: data.email,
+        courseName: data.course,
+        source: "website",
+        // Which trigger opened the modal — navbar, hero, blog CTA.
+        formType: `Book Demo (${data.source})`,
+        ip: clientIp(request.headers),
+        userAgent: request.headers.get("user-agent") ?? undefined,
+      }),
+      // A lead is never worth serving from a cache.
+      cache: "no-store",
     });
 
-    if (recent) {
+    /*
+     * A double-click, a retried request or an impatient second submit should
+     * produce one lead, not three. The CMS answers a repeat with 429 and a
+     * message saying it already has the enquiry — which is true, so the
+     * visitor is told it worked rather than being scolded for submitting.
+     */
+    if (response.status === 429) {
       return json({ success: true, message: SUCCESS_MESSAGE }, 201);
     }
 
-    const created = await prisma.demoRequest.create({
-      data: {
-        name: data.name,
-        phone: data.phone,
-        email: data.email ?? null,
-        course: data.course,
-        source: data.source,
-      },
-      select: { id: true, source: true },
-    });
-
-    // The number is personal data and is deliberately not logged; the id is
-    // enough to find the row.
-    console.info(`[demo-request] #${created.id} received from ${created.source}`);
-
-    return json({ success: true, message: SUCCESS_MESSAGE }, 201);
-  } catch (error) {
-    /*
-     * Everything below this line is reported to the visitor as one generic
-     * sentence. Prisma error text can name the table, the column and the host,
-     * and none of that belongs in a browser.
-     */
-    const unreachable =
-      error instanceof Prisma.PrismaClientInitializationError ||
-      (error instanceof Prisma.PrismaClientKnownRequestError &&
-        ["P1000", "P1001", "P1002", "P1003", "P1017"].includes(error.code));
-
-    if (unreachable) {
-      console.error("[demo-request] MySQL unreachable — check DATABASE_URL and that the server is running.");
+    if (!response.ok) {
+      console.error(`[demo-request] CMS responded ${response.status}`);
 
       return json(
         {
@@ -179,8 +164,27 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
-    console.error("[demo-request] failed to store enquiry:", error);
-    return json({ success: false, message: GENERIC_ERROR }, 500);
+    // The number is personal data and is deliberately not logged; the trigger
+    // is enough to see where leads are coming from.
+    console.info(`[demo-request] received from ${data.source}`);
+
+    return json({ success: true, message: SUCCESS_MESSAGE }, 201);
+  } catch (error) {
+    /*
+     * `fetch` only rejects when the request never completed — the CMS is down,
+     * or DNS failed. Reported to the visitor as one generic sentence either
+     * way: the address and the failure mode of an internal service do not
+     * belong in a browser.
+     */
+    console.error("[demo-request] could not reach the CMS:", error);
+
+    return json(
+      {
+        success: false,
+        message: "We couldn't submit that right now. Please try again in a moment, or call us.",
+      },
+      503,
+    );
   }
 }
 

@@ -1,12 +1,18 @@
-# TechCadd Jalandhar — Navbar + Hero
+# TechCADD Hoshiarpur — website
 
 Next.js 15 (App Router) · TypeScript · Tailwind v4 · Framer Motion ·
 React Three Fiber / drei / Three.js · Lucide.
 
 ```bash
 npm install
-npm run dev     # http://localhost:3000
+cp .env.example .env    # then point CMS_API_URL at the CMS API
+npm run dev             # http://localhost:3000
 ```
+
+The blog, the student wall, the help centre and both enquiry forms read from
+the CMS in `../cms-techcadd`. Start its API first — see
+[Content from the CMS](#content-from-the-cms) below — or those sections render
+empty and everything else still works.
 
 The layout, navbar, typography, and colour work are unchanged from the
 reference. What changed in this pass: the robot is now a live 3D scene.
@@ -214,103 +220,90 @@ referrals. No percentages placed, no packages, no salary bands anywhere.
 Tailwind v4 (`@import "tailwindcss"` + `@theme` in `globals.css`). On v3, swap
 that import for the three `@tailwind` directives.
 
-## Book Demo enquiries → MySQL
+## Content from the CMS
 
-The Book Demo modal (`src/components/UI/DemoModal.tsx`, opened from anywhere
-via `demoBus.open()`) posts to a Next.js route handler in this app, which
-validates the enquiry and stores it in MySQL through Prisma.
+Four parts of this site are editorial content rather than code:
 
-```
-DemoModal  ──POST /api/demo-request──▶  route handler
-                                          │  zod validation + rate limit
-                                          ▼
-                                       Prisma  ──▶  MySQL `demo_bookings`
-```
+| On the site | Comes from |
+| --- | --- |
+| `/blog` — index, articles, authors, categories, trending, picks | CMS blogs |
+| Student success wall on the homepage | CMS reviews |
+| Help Center on the homepage, and the contact page FAQ | CMS FAQs |
+| Knowledge Hub band on the homepage | the newest CMS blog posts |
 
-The browser never talks to MySQL. `DATABASE_URL` is read only inside the route
-handler, which runs on the server — it is never prefixed `NEXT_PUBLIC_` and so
-never reaches the client bundle.
+All of it is read through `src/lib/cms/client.ts`, which is the only place that
+knows the API address, the caching policy and what to do when a request fails.
+`src/lib/blog/api.ts` and `src/lib/cms/content.ts` are the two read modules
+built on it; nothing else constructs a CMS URL.
 
-### It writes the same table as the `server/` API
-
-This app's `DemoRequest` model is mapped onto the existing `demo_bookings`
-table — the one the NestJS API in `../server` writes. That is deliberate: two
-tables would split the counselling team's leads in two. `prisma/schema.prisma`
-here and `server/prisma/mysql/schema.prisma` describe the same table and must
-be kept in step, or the Nest service's `npm run mysql:push` will alter columns
-out from under this one.
-
-Once every Book Demo trigger goes through `/api/demo-request`, the Nest
-`bookings` module can be deleted and this schema owns the table outright.
-
-### Local setup
+### Running the pair
 
 ```bash
-npm install                 # postinstall runs `prisma generate`
+# terminal 1 — the CMS API
+cd ../cms-techcadd/backend && npm run dev      # http://localhost:4000
 
-cp .env.example .env        # then edit DATABASE_URL
+# terminal 2 — this site
+npm run dev                                    # http://localhost:3000
 ```
 
-`DATABASE_URL` goes in `.env`, not `.env.local`. Next.js reads both, but the
-Prisma CLI only reads `.env`, so migrations cannot find a connection string
-that lives in `.env.local`.
+`.env` needs two values, both in `.env.example`:
 
-Start MySQL before migrating. On this machine that is **XAMPP's** MySQL (the
-`MYSQL80` Windows service is stopped, and XAMPP's `root` has no password) —
-start it from the XAMPP control panel. Don't run both: they both want 3306.
-
-```bash
-npm run db:migrate          # prisma migrate dev
-npm run dev                 # http://localhost:3000
+```
+CMS_API_URL="http://localhost:4000/api/public"
+NEXT_PUBLIC_CMS_API_URL="http://localhost:4000/api/public"
 ```
 
-Env files are read once at startup. After editing `.env`, restart the dev
-server or it will still see the old values.
+The `/api/public` suffix matters. Everything under the CMS's `/api` needs an
+admin session; `/api/public` is the read surface, and drafts never appear in it.
 
-Then click **Book Demo**, submit the form, and confirm the row:
+### Failure is not fatal
 
-```bash
-npm run db:studio           # or: SELECT * FROM demo_bookings ORDER BY id DESC;
+Every read is wrapped in `safely()`. A CMS that is down, or has nothing
+published yet, costs the page that one section — each returns `null` rather
+than rendering an empty rail — and the rest of the page is unaffected. A blog
+article without a cover photograph falls back to a house image rather than
+breaking the card (`coverOf()` in `src/lib/blog/format.ts`).
+
+### Publishing shows up immediately
+
+Pages cache CMS reads for an hour. Left at that, a change an editor just saved
+would not appear for up to an hour, which reads as the save having failed — so
+the CMS calls `POST /api/revalidate` here after every successful write, and the
+affected caches are dropped at once.
+
+That endpoint requires `REVALIDATE_SECRET` to match the CMS's own value, and
+refuses every request when it is unset. Without it nothing breaks; content just
+refreshes on the hourly schedule instead.
+
+### Images
+
+Article covers and author photographs are served by the CMS, on a different
+origin. `next.config.ts` derives the allowed image host from the API URL, so
+one variable configures both — but `next/image` will refuse an image from any
+other host, which is the usual cause of a broken cover after a deployment moves
+the CMS.
+
+## Enquiries → the CMS
+
+Both forms record their lead in the CMS, where the counselling team works:
+
+```
+DemoModal ──POST /api/demo-request──▶ route handler ──▶ CMS /api/public/enquiries
+CourseEnquiryForm ─────────────────────────────────────▶ CMS /api/public/enquiries
 ```
 
-#### If the table already exists
+The Book Demo modal goes through a route handler in this app rather than
+posting directly. That is worth the extra hop: the browser never learns the CMS
+address, there is no CORS surface, and the visitor's real IP reaches the CMS's
+duplicate guard — which a browser request could not supply honestly.
 
-`demo_bookings` may already have been created by the Nest service
-(`npm run mysql:push` there). `migrate dev` would then try to create a table
-that exists. Baseline the migration as already-applied instead:
+The course enquiry form posts directly, because it has nothing to add that the
+browser cannot send. The CMS rate-limits and duplicate-checks that endpoint on
+its own, since it is reachable directly either way.
 
-```bash
-npx prisma migrate resolve --applied 20260818000000_create_demo_requests
-```
+### `POST /api/demo-request`
 
-### Production
-
-Never run `migrate dev` against production — it can reset the database. Apply
-the checked-in migrations instead, which is additive and non-interactive:
-
-```bash
-npx prisma generate
-npx prisma migrate deploy   # npm run db:deploy
-npm run build
-npm run start
-```
-
-`DATABASE_URL` comes from the host's environment (systemd unit, Docker env,
-Vercel project settings) — not from a file in the repo. The MySQL user needs
-only `SELECT, INSERT, UPDATE` on this table; it does not need `DROP`.
-
-### Rate limiting caveat
-
-`src/lib/rate-limit.ts` holds its counters in process memory: five submissions
-a minute per IP, per instance. On a single Node process that is the whole
-application. Behind an autoscaler each instance keeps its own count and the
-effective limit multiplies by the instance count — if the limit must be exact
-there, swap that module for a shared store. The call site does not change.
-
-### The API
-
-`POST /api/demo-request` — the only public method; everything else returns 405.
-Stored enquiries are personal data and are never served from a public route.
+The only public method; everything else returns 405.
 
 Request:
 
@@ -321,13 +314,35 @@ Request:
 
 | Status | When |
 | ------ | ---- |
-| 201 | stored (or matched a submission from the same number in the last minute) |
+| 201 | recorded (or matched a recent submission from the same number) |
 | 400 | validation failed — `errors` maps field → message |
 | 413 | body over 4 KB |
 | 415 | not `application/json` |
 | 429 | more than 5 submissions a minute from one address |
-| 503 | MySQL unreachable |
+| 503 | the CMS could not be reached |
 | 500 | anything else |
 
-Database and Prisma errors are logged server-side and never returned to the
-browser.
+Failures are logged server-side; the browser gets one generic sentence.
+
+### Rate limiting caveat
+
+`src/lib/rate-limit.ts` holds its counters in process memory: five submissions
+a minute per IP, per instance. On a single Node process that is the whole
+application. Behind an autoscaler each instance keeps its own count and the
+effective limit multiplies by the instance count — if the limit must be exact
+there, swap that module for a shared store. The call site does not change. The
+CMS applies its own limit regardless, which is the one that actually protects
+the database.
+
+## The `prisma/` directory is historical
+
+Demo requests used to be written straight to the MySQL `demo_bookings` table by
+this app. They are recorded in the CMS now, and nothing in the running site
+imports `src/lib/prisma.ts` any more.
+
+The schema and the client are kept because that table still holds every lead
+submitted before the change, and this is the only description of it left in the
+repository. Set `DATABASE_URL` and run `npm run db:studio` to read them. Once
+those rows have been exported or imported into the CMS, `prisma/`,
+`src/lib/prisma.ts`, the `prisma` scripts and the `@prisma/client` dependency
+can all go.

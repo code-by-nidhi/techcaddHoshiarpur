@@ -91,39 +91,14 @@ export const OUTCOMES = {
   growth: [42, 51, 49, 63, 71, 68, 84, 96],
 };
 
-/* -------------------------- student wall ------------------------------ */
-
-export type Review = {
-  name: string;
-  course: string;
-  badge: string;
-  rating: number;
-  tone: string;
-  quote: string;
-  featured?: boolean;
-};
-
-export const WALL: Review[] = [
-  {
-    name: "Harmanpreet Singh", course: "Full Stack Development", badge: "Placed as MERN Developer",
-    rating: 5, tone: "from-[#2563EB] to-[#2563EB]", featured: true,
-    quote: "I walked in with a commerce degree and no idea what an API was. Eighteen weeks later I was reviewing pull requests. Three deployed projects and a clean commit history did more for me in interviews than any certificate — the code reviews here were brutal in the best possible way, and that is exactly what made the difference when someone finally asked me to explain my architecture.",
-  },
-  { name: "Simranjeet Kaur", course: "Data Science", badge: "Data Analyst", rating: 5, tone: "from-[#0891B2] to-[#60A5FA]",
-    quote: "The SQL and statistics modules were relentless, and that is exactly why the interview felt easy." },
-  { name: "Aditya Malhotra", course: "AI & Machine Learning", badge: "Placed as Python Developer", rating: 5, tone: "from-[#142C8E] to-[#2563EB]",
-    quote: "The internship put me on a real model in production. I stopped learning about ML and started doing it." },
-  { name: "Navjot Kaur", course: "Cloud & DevOps", badge: "Internship Completed", rating: 5, tone: "from-[#0D9488] to-[#60A5FA]",
-    quote: "Mock interviews were the turning point. By the fourth one I could defend my design decisions without freezing." },
-  { name: "Rahul Verma", course: "Cyber Security", badge: "Portfolio Ready", rating: 4, tone: "from-[#142C8E] to-[#2563EB]",
-    quote: "The lab range is the difference. Reading about threat hunting and doing it on a live network are not the same skill." },
-  { name: "Ishita Sharma", course: "Full Stack Development", badge: "Frontend Engineer", rating: 5, tone: "from-[#60A5FA] to-[#C026D3]",
-    quote: "Weekend batches meant I never had to choose between my degree and this. Same syllabus, same trainers." },
-  { name: "Karan Chadha", course: "Digital Marketing", badge: "Portfolio Ready", rating: 5, tone: "from-[#DB2777] to-[#60A5FA]",
-    quote: "Running live campaigns with a real budget taught me more in a month than a year of theory." },
-  { name: "Manpreet Gill", course: "Data Science", badge: "Internship Completed", rating: 5, tone: "from-[#1D4ED8] to-[#60A5FA]",
-    quote: "My mentor still reviews my work a year after the course ended. That part nobody advertises." },
-];
+/*
+ * The student wall used to live here as a `WALL` constant.
+ *
+ * It is CMS content now — the API serves published reviews, and the section
+ * renders whatever an editor has approved. The eight reviews that were here
+ * were carried across verbatim by `cms-techcadd/backend/src/db/seed-hsp.ts`,
+ * so nothing was lost in the move.
+ */
 
 /* ------------------------ programme roadmap --------------------------- */
 
@@ -223,48 +198,21 @@ export const COMMAND_METRICS = [
 
 /* --------------------------- help center ------------------------------ */
 
-export const HELP_CATEGORIES = ["Admissions", "Fees", "Placements", "Internships", "Training", "Support"] as const;
+/*
+ * The help centre used to live here as `HELP` and `HELP_CATEGORIES`.
+ *
+ * Both are CMS content now. The categories are no longer a fixed list either:
+ * the section derives its tabs from the questions themselves, so filing one
+ * under a new heading is enough to make a tab for it appear.
+ */
 
-export const HELP: { category: (typeof HELP_CATEGORIES)[number]; q: string; a: string }[] = [
-  { category: "Admissions", q: "Do I need a technical background to start?", a: "No. Around a third of each batch comes from non-technical degrees. Counselling exists to place you in a track that matches where you're starting from, and the foundation modules assume nothing." },
-  { category: "Admissions", q: "When do new batches begin?", a: "New batches open every month across weekday, evening and weekend slots. Your counsellor will tell you the next start date for the track you're considering." },
-  { category: "Admissions", q: "Can I switch tracks after enrolling?", a: "Yes, within the first two weeks. If the fit isn't right, we move you across and adjust the schedule rather than leaving you to struggle through." },
-  { category: "Fees", q: "Are there instalment options?", a: "Yes. Most programmes can be paid in two or three instalments across the duration of the course. Details are confirmed at counselling, in writing." },
-  { category: "Fees", q: "Is there a fee for repeating a module?", a: "No. If you fall behind, you can repeat the module with a later batch at no extra cost." },
-  { category: "Placements", q: "How does placement assistance actually work?", a: "Resume reviews, mock technical and HR rounds, on-campus drives with recruiting companies, and direct referrals from mentors. Support continues after your course ends until you're placed." },
-  { category: "Placements", q: "How long does placement support last?", a: "It doesn't expire on a fixed date. Students stay in the drive and referral pipeline until they land a role." },
-  { category: "Internships", q: "Are the internships paid?", a: "Most six-month internships carry a stipend, which varies by company and role. Your counsellor will tell you exactly what applies to your track." },
-  { category: "Internships", q: "Is the internship guaranteed?", a: "Internship placement is part of the six-month tracks, subject to completing the training modules and project work that come before it." },
-  { category: "Training", q: "Can I attend while working or studying full time?", a: "Yes. Weekend batches run Saturday and Sunday, evening batches run on weekdays. Both cover identical material — only the schedule differs." },
-  { category: "Training", q: "What happens if I miss classes?", a: "Sessions are recorded and lab access continues outside class hours. Doubt sessions exist precisely for catching up." },
-  { category: "Support", q: "Can I get help after the course ends?", a: "Yes. Alumni keep access to doubt sessions, mentor hours and the referral network." },
-  { category: "Support", q: "Is there a certificate at the end?", a: "Yes, an industry-recognised completion certificate, plus certification prep for vendor exams like AWS and Microsoft where the track calls for it." },
-];
-
-/* -------------------------- knowledge hub ----------------------------- */
-
-export type Post = {
-  title: string;
-  excerpt: string;
-  category: "MERN" | "AI" | "Data Science" | "Career" | "Cloud";
-  author: string;
-  role: string;
-  minutes: number;
-  date: string;
-  trending?: boolean;
-  tone: string;
-};
-
-export const POSTS: Post[] = [
-  { title: "What a hiring manager actually looks for in a fresher's GitHub", excerpt: "Commit history, README quality and one finished project beat ten abandoned tutorials. Here's what gets read first, and what gets skipped entirely.", category: "Career", author: "Ravi Sethi", role: "Placement Lead", minutes: 8, date: "Aug 2026", trending: true, tone: "from-[#2563EB] to-[#2563EB]" },
-  { title: "Building your first RAG pipeline without drowning in frameworks", excerpt: "Chunking, embeddings, retrieval and the three mistakes that make answers worse than no retrieval at all.", category: "AI", author: "Dr. Neha Arora", role: "AI Track Mentor", minutes: 11, date: "Aug 2026", trending: true, tone: "from-[#142C8E] to-[#2563EB]" },
-  { title: "The MERN stack in 2026: what changed and what didn't", excerpt: "Server components shifted the front end, but the fundamentals interviewers test have barely moved.", category: "MERN", author: "Amit Khanna", role: "Full Stack Mentor", minutes: 9, date: "Jul 2026", trending: true, tone: "from-[#0891B2] to-[#60A5FA]" },
-  { title: "SQL questions that decide data analyst interviews", excerpt: "Window functions, self joins and the query patterns that come up in almost every round.", category: "Data Science", author: "Priya Bansal", role: "Data Science Mentor", minutes: 7, date: "Jul 2026", tone: "from-[#0D9488] to-[#60A5FA]" },
-  { title: "From lab to production: your first deployment on AWS", excerpt: "IAM, networking and the cost traps that catch every first-time deployer.", category: "Cloud", author: "Sahil Bedi", role: "Cloud & DevOps Mentor", minutes: 10, date: "Jul 2026", tone: "from-[#1D4ED8] to-[#3B82F6]" },
-  { title: "Six months of internship, honestly reviewed", excerpt: "What students actually do in a working team, and how to make the experience count on a CV.", category: "Career", author: "Ravi Sethi", role: "Placement Lead", minutes: 6, date: "Jun 2026", tone: "from-[#60A5FA] to-[#C026D3]" },
-];
-
-export const TOPICS = ["MERN", "AI", "Data Science", "Career", "Cloud", "Interviews", "Internships", "Portfolio"];
+/*
+ * The knowledge hub used to live here as `POSTS` and `TOPICS`.
+ *
+ * The homepage band now shows real articles from the blog, and its topic pills
+ * are the blog categories that actually have something published in them — so
+ * a card on the homepage always leads to an article that exists.
+ */
 
 /* ------------------------- launch centre ------------------------------ */
 

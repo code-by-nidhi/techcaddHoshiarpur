@@ -7,7 +7,7 @@ import { Autoplay, A11y, Navigation, Pagination } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaQuoteLeft, FaStar } from "react-icons/fa6";
-import { WALL } from "@/lib/site";
+import type { CmsReview } from "@/lib/cms/content";
 import Reveal from "@/components/UI/Reveal";
 import SectionHeading from "@/components/UI/SectionHeading";
 import Counter from "@/components/UI/Counter";
@@ -22,14 +22,39 @@ const initials = (name: string) =>
     .join("");
 
 /**
+ * The avatar gradients, cycled by position.
+ *
+ * Deliberately not a CMS field: asking an editor to pick a Tailwind gradient
+ * for each review would be asking them to make a decision they have no way to
+ * judge, and one wrong value would break the card. Cycling keeps neighbouring
+ * cards distinct, which is the whole point of varying them.
+ */
+const TONES = [
+  "from-[#2563EB] to-[#2563EB]",
+  "from-[#0891B2] to-[#60A5FA]",
+  "from-[#142C8E] to-[#2563EB]",
+  "from-[#0D9488] to-[#60A5FA]",
+  "from-[#60A5FA] to-[#C026D3]",
+  "from-[#DB2777] to-[#60A5FA]",
+  "from-[#1D4ED8] to-[#60A5FA]",
+];
+
+/**
  * Student reviews as a carousel.
  *
  * Every review is an equal card — the old layout promoted one story into a
  * large block on the left, which fixed the hierarchy and left the rest to a
  * masonry column. This gives the whole width to the reviews themselves.
+ *
+ * The reviews are fetched on the server and passed in, so the carousel stays a
+ * presentation component and the page does not wait on the CMS in the browser.
+ * An empty list means the CMS had nothing published or could not be reached;
+ * either way the section removes itself rather than rendering an empty rail.
  */
-export default function StudentWall() {
+export default function StudentWall({ reviews }: { reviews: CmsReview[] }) {
   const swiperRef = useRef<SwiperClass | null>(null);
+
+  if (reviews.length === 0) return null;
 
   return (
     <section id="stories" className="relative overflow-hidden bg-white section-pad">
@@ -109,8 +134,8 @@ export default function StudentWall() {
             }}
             className="!px-1 !py-5"
           >
-            {WALL.map((r) => (
-              <SwiperSlide key={r.name + r.quote.slice(0, 12)} className="!h-auto">
+            {reviews.map((r, index) => (
+              <SwiperSlide key={r.id} className="!h-auto">
                 {({ isActive }) => (
                   <article
                     className={`group relative flex h-[272px] w-full flex-col overflow-hidden rounded-[24px] border bg-white/75 p-5 backdrop-blur-xl transition-[transform,box-shadow,border-color,opacity] duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_34px_70px_-32px_rgba(37,99,235,0.5)] motion-reduce:hover:translate-y-0 sm:h-[288px] ${
@@ -153,21 +178,29 @@ export default function StudentWall() {
 
                     <figcaption className="relative mt-3 flex items-center gap-3 border-t border-slate-100 pt-3.5">
                       <span
-                        className={`grid size-10 shrink-0 place-content-center rounded-full bg-gradient-to-br ${r.tone} text-[12px] font-bold text-white shadow-[0_10px_22px_-12px_rgba(37,99,235,0.9)]`}
+                        className={`grid size-10 shrink-0 place-content-center rounded-full bg-gradient-to-br ${
+                          TONES[index % TONES.length]
+                        } text-[12px] font-bold text-white shadow-[0_10px_22px_-12px_rgba(37,99,235,0.9)]`}
                       >
-                        {initials(r.name)}
+                        {initials(r.authorName)}
                       </span>
 
                       <span className="min-w-0 flex-1 leading-tight">
                         <span className="block truncate text-[13.5px] font-bold tracking-[-0.01em] text-[#0F172A]">
-                          {r.name}
+                          {r.authorName}
                         </span>
-                        <span className="mt-0.5 block truncate text-[11px] text-[#64748B]">
-                          {r.course}
-                        </span>
-                        <span className="mt-1.5 inline-flex max-w-full items-center truncate rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.07em] text-white">
-                          {r.badge}
-                        </span>
+                        {r.courseName && (
+                          <span className="mt-0.5 block truncate text-[11px] text-[#64748B]">
+                            {r.courseName}
+                          </span>
+                        )}
+                        {/* Only where there is an outcome to claim — an empty
+                            pill reads as a missing value, not as "no badge". */}
+                        {r.badge && (
+                          <span className="mt-1.5 inline-flex max-w-full items-center truncate rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.07em] text-white">
+                            {r.badge}
+                          </span>
+                        )}
                       </span>
                     </figcaption>
                   </article>

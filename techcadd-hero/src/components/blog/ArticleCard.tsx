@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { formatDate, readingLabel } from "@/lib/blog/format";
+import { coverOf, formatDate, readingLabel } from "@/lib/blog/format";
 import type { Article } from "@/lib/blog/types";
 import { cn } from "@/lib/utils";
 
@@ -29,7 +29,7 @@ export default function ArticleCard({ article, priority = false, className }: Ar
         {/* 16:9 everywhere, so a row of cards never staggers */}
         <span className="relative block aspect-video w-full overflow-hidden bg-linear-to-br from-brand/20 to-accent/10">
           <Image
-            src={article.featuredImage}
+            src={coverOf(article)}
             alt=""
             fill
             sizes="(max-width: 640px) 92vw, (max-width: 1024px) 46vw, 30vw"
