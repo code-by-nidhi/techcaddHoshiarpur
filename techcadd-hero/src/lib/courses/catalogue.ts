@@ -374,33 +374,7 @@ export const COURSES: Course[] = [
       },
     ],
 
-    /* "Why learn Python Programming with us?" */
-    whyChooseUs: [
-      {
-        title: "Learning by Practicing",
-        copy: "Shift your learning experience from theoretical to practical exercises, assignments, and project based training.",
-      },
-      {
-        title: "Beginner Oriented Program",
-        copy: "Start learning from scratch and step by step to make the understanding of Python easy.",
-      },
-      {
-        title: "Training with Industry Relevant Tools",
-        copy: "Work with Python, VS Code, Git, GitHub, NumPy, Pandas, Databases, APIs, and other useful tools.",
-      },
-      {
-        title: "Real World Projects",
-        copy: "Make real world projects to enhance your problem solving ability and build your portfolio.",
-      },
-      {
-        title: "Learning through Sessions with Guidance",
-        copy: "Structured sessions to learn through practice, examples, doubt solving, and practicing continuously.",
-      },
-      {
-        title: "Technology Career Skills",
-        copy: "Programming and project based skills to prepare you for interviews, internships, freelancing, and tech careers.",
-      },
-    ],
+    whyChooseUs: COMMON_WHY,
 
     /* Python Course Modules \u2014 twelve, in the supplied order */
     modules: [
@@ -588,7 +562,39 @@ export const COURSES: Course[] = [
         image: "/images/lab.webp",
       },
     ],
-    instructor: DEFAULT_INSTRUCTOR,
+    /* "Why learn Python Programming with us?" — replaces the shared default
+       so this section carries the course's own copy. */
+    instructor: {
+      heading: "Why learn Python Programming with us?",
+      intro:
+        "Shift your learning experience from theoretical to practical exercises, assignments, and project based training.",
+      points: [
+        {
+          title: "Learning by Practicing",
+          copy: "Shift your learning experience from theoretical to practical exercises, assignments, and project based training.",
+        },
+        {
+          title: "Beginner Oriented Program",
+          copy: "Start learning from scratch and step by step to make the understanding of Python easy.",
+        },
+        {
+          title: "Training with Industry Relevant Tools",
+          copy: "Work with Python, VS Code, Git, GitHub, NumPy, Pandas, Databases, APIs, and other useful tools.",
+        },
+        {
+          title: "Real World Projects",
+          copy: "Make real world projects to enhance your problem solving ability and build your portfolio.",
+        },
+        {
+          title: "Learning through Sessions with Guidance",
+          copy: "Structured sessions to learn through practice, examples, doubt solving, and practicing continuously.",
+        },
+        {
+          title: "Technology Career Skills",
+          copy: "Programming and project based skills to prepare you for interviews, internships, freelancing, and tech careers.",
+        },
+      ],
+    },
     /* Real testimonials only \u2014 an empty array renders no reviews section. */
     reviews: [],
     faqs: [
