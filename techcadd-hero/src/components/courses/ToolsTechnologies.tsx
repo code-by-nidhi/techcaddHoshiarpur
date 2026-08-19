@@ -23,7 +23,7 @@ export default function ToolsTechnologies({ course }: { course: Course }) {
               key={t}
               whileHover={{ y: -3, scale: 1.04 }}
               transition={{ type: "spring", stiffness: 340, damping: 22 }}
-              className="rounded-2xl border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] px-5 py-3 text-[13.5px] font-semibold text-white/75 shadow-[0_10px_30px_-26px_rgba(15,23,42,0.6)]"
+              className="rounded-2xl border border-slate-200/80 bg-white px-5 py-3 text-[13.5px] font-semibold text-[#334155] shadow-[0_10px_30px_-26px_rgba(15,23,42,0.6)]"
             >
               {t}
             </motion.li>

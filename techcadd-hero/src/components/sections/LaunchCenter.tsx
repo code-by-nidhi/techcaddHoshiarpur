@@ -62,7 +62,7 @@ export default function LaunchCenter() {
         </Reveal>
 
         <Reveal delay={0.14}>
-          <p className="mx-auto mt-6 max-w-xl text-[15.5px] leading-relaxed text-white/40">
+          <p className="mx-auto mt-6 max-w-xl text-[15.5px] leading-relaxed text-[#94A3B8]">
             {LAUNCH.sub}
           </p>
         </Reveal>
@@ -100,20 +100,20 @@ export default function LaunchCenter() {
               <p className="font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
                 <Counter to={15} suffix="K+" />
               </p>
-              <p className="mt-2 text-[13px] text-white/40">Students</p>
+              <p className="mt-2 text-[13px] text-[#94A3B8]">Students</p>
             </div>
             <div className="border-x border-white/10 text-center">
               <p className="font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
                 <Counter to={750} suffix="+" />
               </p>
-              <p className="mt-2 text-[13px] text-white/40">Reviews</p>
+              <p className="mt-2 text-[13px] text-[#94A3B8]">Reviews</p>
             </div>
             <div className="text-center">
               <p className="flex items-center justify-center gap-1.5 font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
                 4.9
                 <Star aria-hidden className="size-5 fill-[#F59E0B] text-[#F59E0B]" />
               </p>
-              <p className="mt-2 text-[13px] text-white/40">Rating</p>
+              <p className="mt-2 text-[13px] text-[#94A3B8]">Rating</p>
             </div>
           </div>
         </Reveal>

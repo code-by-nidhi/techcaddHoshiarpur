@@ -30,10 +30,10 @@ export default function WhoCanJoin({ course }: { course: Course }) {
               <span className="grid size-10 place-content-center rounded-xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-[#2563EB]/15">
                 <FiUserCheck aria-hidden className="size-[18px] text-[#2563EB]" />
               </span>
-              <h3 className="mt-4 font-[family-name:var(--font-sora)] text-[15.5px] font-bold text-white">
+              <h3 className="mt-4 font-[family-name:var(--font-sora)] text-[15.5px] font-bold text-[#0F172A]">
                 {a.label}
               </h3>
-              <p className="mt-1.5 text-[13.5px] leading-relaxed text-white/65">{a.copy}</p>
+              <p className="mt-1.5 text-[13.5px] leading-relaxed text-[#475569]">{a.copy}</p>
             </motion.li>
           ))}
         </ul>

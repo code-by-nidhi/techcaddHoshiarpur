@@ -41,7 +41,7 @@ export default function SectionHeading({
       <Reveal delay={0.06}>
         <h2
           className={`mt-5 font-[family-name:var(--font-sora)] text-[clamp(1.9rem,3.4vw,3.1rem)] font-extrabold leading-[1.1] tracking-[-0.02em] ${
-            light ? "text-white" : "text-white"
+            light ? "text-[#0F172A]" : "text-white"
           }`}
         >
           {title}
@@ -51,7 +51,7 @@ export default function SectionHeading({
       {sub && (
         <Reveal delay={0.12}>
           <p
-            className={`mt-4 text-[15px] leading-relaxed ${light ? "text-white/65" : "text-white/40"} ${
+            className={`mt-4 text-[15px] leading-relaxed ${light ? "text-[#475569]" : "text-[#94A3B8]"} ${
               centered ? "mx-auto max-w-2xl" : ""
             }`}
           >

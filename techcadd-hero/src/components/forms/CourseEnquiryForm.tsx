@@ -7,6 +7,7 @@ import {
   FiArrowRight,
   FiAward,
   FiBriefcase,
+  FiCheck,
   FiCheckCircle,
   FiClock,
   FiLayers,

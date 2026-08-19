@@ -10,6 +10,7 @@ import DemoModal from "@/components/UI/DemoModal";
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import CursorFollower from "@/components/UI/CursorFollower";
+import Preloader from "@/components/UI/Preloader";
 import "./globals.css";
 
 const sora = Sora({
@@ -101,7 +102,7 @@ export default function RootLayout({
       <body className="bg-[#050B1F] text-white antialiased">
         <a
           href="#hero-heading"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-[#050B1F] focus:px-4 focus:py-2 focus:text-black"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black"
         >
           Skip to content
         </a>
@@ -110,6 +111,7 @@ export default function RootLayout({
             of existence on a route change. It renders nothing at all unless the
             device has a fine pointer and allows motion. */}
         <CursorFollower />
+        <Preloader />
 
         {children}
         <DemoModal />

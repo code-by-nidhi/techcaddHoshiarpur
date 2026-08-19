@@ -200,10 +200,10 @@ export default function Navbar() {
        * the <nav> inside it, which is what actually aligns the content.
        */}
       <div
-        /* Solid brand navy at every scroll position. It used to be transparent
-           over the hero; the bar now carries its own ground so the logo and
-           links keep their contrast wherever the page is scrolled to. */
-        className={`w-full bg-[#101C4D] transition-all duration-500 ${
+        /* Exactly the hero's ground colour, so the bar and the hero read as one
+           surface at the top of the page rather than two navy bands. Kept solid
+           at every scroll position so contrast holds on the light routes too. */
+        className={`w-full bg-[#1E3078] transition-all duration-500 ${
           scrolled
             ? "border-b border-white/10 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
             : "border-b border-transparent"

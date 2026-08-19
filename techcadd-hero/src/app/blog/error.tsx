@@ -42,7 +42,7 @@ export default function BlogError({
           <button
             type="button"
             onClick={reset}
-            className="inline-flex items-center gap-2 rounded-full bg-[#050B1F] px-7 py-3.5 text-sm font-semibold text-white transition-shadow duration-300 hover:shadow-[0_18px_40px_-16px_rgb(255_255_255/0.6)]"
+            className="inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-royal-deep transition-shadow duration-300 hover:shadow-[0_18px_40px_-16px_rgb(255_255_255/0.6)]"
           >
             <RefreshCw aria-hidden="true" className="size-4" />
             Try again

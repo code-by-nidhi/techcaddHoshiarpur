@@ -43,7 +43,7 @@ const RING = {
     idle: "border-white shadow-[0_0_0_1.5px_rgba(5, 11, 31,0.5)]",
     hover:
       "border-white bg-white/15 shadow-[0_0_0_1.5px_rgba(5, 11, 31,0.5),0_0_28px_-4px_rgba(255,255,255,0.6)]",
-    dot: "bg-[#050B1F] shadow-[0_0_0_1px_rgba(5, 11, 31,0.45)]",
+    dot: "bg-white shadow-[0_0_0_1px_rgba(5, 11, 31,0.45)]",
   },
   light: {
     idle: "border-[#2563eb] shadow-[0_0_0_1.5px_rgba(8,21,64,0.3)]",

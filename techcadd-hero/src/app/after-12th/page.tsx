@@ -45,7 +45,7 @@ export default function After12Page() {
           </div>
         </section>
 
-        <section className="bg-[#050B1F] py-16 lg:py-20">
+        <section className="bg-white py-16 lg:py-20">
           <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
             {ORDER.map((category) => {
               const meta = AFTER12_CATEGORY_META[category];
@@ -53,20 +53,20 @@ export default function After12Page() {
 
               return (
                 <div key={category} className="mb-14 last:mb-0">
-                  <h2 className="font-[family-name:var(--font-sora)] text-[clamp(1.3rem,2.2vw,1.7rem)] font-extrabold tracking-[-0.025em] text-white">
+                  <h2 className="font-[family-name:var(--font-sora)] text-[clamp(1.3rem,2.2vw,1.7rem)] font-extrabold tracking-[-0.025em] text-[#0F172A]">
                     {meta.heading}
                   </h2>
-                  <p className="mt-2 text-[14px] text-white/65">{meta.description}</p>
+                  <p className="mt-2 text-[14px] text-[#475569]">{meta.description}</p>
 
                   <ul className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {items.map((p) => (
                       <li key={p.slug}>
                         <Link
                           href={`/after-12th/${p.slug}`}
-                          className="group flex h-full flex-col rounded-[22px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-6 shadow-[0_20px_48px_-30px_rgba(37,99,235,0.55)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(37,99,235,0.45)] motion-reduce:hover:translate-y-0"
+                          className="group flex h-full flex-col rounded-[22px] border border-slate-200/80 bg-white p-6 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(37,99,235,0.45)] motion-reduce:hover:translate-y-0"
                         >
                           <span className="flex items-start justify-between gap-3">
-                            <span className="font-[family-name:var(--font-sora)] text-[16px] font-bold leading-snug text-white">
+                            <span className="font-[family-name:var(--font-sora)] text-[16px] font-bold leading-snug text-[#0F172A]">
                               {p.title}
                             </span>
                             {p.badge && (
@@ -76,12 +76,12 @@ export default function After12Page() {
                             )}
                           </span>
 
-                          <span className="mt-2.5 flex-1 text-[13px] leading-relaxed text-white/65">
+                          <span className="mt-2.5 flex-1 text-[13px] leading-relaxed text-[#475569]">
                             {p.summary}
                           </span>
 
-                          <span className="mt-5 flex items-center justify-between border-t border-white/[0.08] pt-3.5">
-                            <span className="inline-flex items-center gap-1.5 text-[12px] text-white/50">
+                          <span className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3.5">
+                            <span className="inline-flex items-center gap-1.5 text-[12px] text-[#64748B]">
                               <FiClock aria-hidden className="size-3.5" />
                               {p.duration}
                             </span>

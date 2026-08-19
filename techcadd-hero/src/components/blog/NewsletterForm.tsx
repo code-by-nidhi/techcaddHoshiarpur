@@ -82,7 +82,7 @@ export default function NewsletterForm({ source = "blog" }: { source?: "blog" | 
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#050B1F] px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:shadow-[0_18px_40px_-16px_rgb(255_255_255/0.6)] disabled:cursor-wait disabled:opacity-70"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-royal-deep transition-all duration-300 hover:shadow-[0_18px_40px_-16px_rgb(255_255_255/0.6)] disabled:cursor-wait disabled:opacity-70"
         >
           {busy ? (
             <>

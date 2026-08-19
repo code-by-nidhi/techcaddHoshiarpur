@@ -33,6 +33,15 @@ const METRIC_TINTS = [
   "from-[#60A5FA] to-[#C026D3]",
 ];
 
+/** Deterministic particles for the banner — no Math.random, so SSR matches. */
+const MOTES = Array.from({ length: 12 }, (_, i) => ({
+  left: `${(i * 41) % 92 + 4}%`,
+  top: `${(i * 57) % 78 + 11}%`,
+  size: i % 3 === 0 ? 3 : 2,
+  duration: 5 + (i % 4),
+  delay: (i % 6) * 0.55,
+}));
+
 export default function CommandCenter() {
   const [active, setActive] = useState(CAPABILITIES[0]);
   const ActiveIcon = TAB_ICONS[active.id] ?? FiCpu;

@@ -14,8 +14,8 @@ import { AdditiveBlending, type Group, type Mesh, type MeshBasicMaterial } from 
 const RINGS = [
   { r: 1.5, color: "#3b82f6", w: 0.022, o: 0.95 },
   { r: 1.78, color: "#60a5fa", w: 0.012, o: 0.6 },
-  { r: 2.15, color: "#8b5cf6", w: 0.014, o: 0.55 },
-  { r: 2.55, color: "#a855f7", w: 0.01, o: 0.35 },
+  { r: 2.15, color: "#3b82f6", w: 0.014, o: 0.55 },
+  { r: 2.55, color: "#60a5fa", w: 0.01, o: 0.35 },
 ];
 
 const TRAILS = [

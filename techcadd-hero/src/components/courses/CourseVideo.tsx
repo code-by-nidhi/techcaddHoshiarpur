@@ -37,8 +37,8 @@ export default function CourseVideo({ course }: { course: Course }) {
                 aria-label="Play course introduction"
                 className="group absolute inset-0 grid place-items-center"
               >
-                <span className="grid size-16 place-items-center rounded-full bg-[rgba(10,15,35,0.9)] shadow-[0_18px_44px_-16px_rgba(5,11,31,0.8)] transition-transform duration-300 group-hover:scale-110 sm:size-20">
-                  <FiPlay className="ml-1 size-6 text-white" />
+                <span className="grid size-16 place-items-center rounded-full bg-white/95 shadow-[0_18px_44px_-16px_rgba(5,11,31,0.8)] transition-transform duration-300 group-hover:scale-110 sm:size-20">
+                  <FiPlay className="ml-1 size-6 text-[#0F172A]" />
                 </span>
               </button>
             ) : (
@@ -55,7 +55,7 @@ export default function CourseVideo({ course }: { course: Course }) {
             title="Watch Course Introduction"
             sub={course.video.caption}
           />
-          <p className="mt-4 text-[14px] leading-[1.85] text-white/65">
+          <p className="mt-4 text-[14px] leading-[1.85] text-[#475569]">
             A short walkthrough of the syllabus, the projects you will build and how the batches
             are run — worth five minutes before you enrol.
           </p>

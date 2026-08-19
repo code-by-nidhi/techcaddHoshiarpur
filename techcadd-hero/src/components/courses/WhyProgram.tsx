@@ -25,7 +25,7 @@ export default function WhyProgram({ course }: { course: Course }) {
               variants={fadeUp}
               whileHover={{ y: -5 }}
               transition={{ type: "spring", stiffness: 300, damping: 24 }}
-              className="group relative overflow-hidden rounded-[22px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-6 shadow-[0_20px_48px_-30px_rgba(37,99,235,0.55)] transition-shadow duration-500 hover:shadow-[0_28px_56px_-30px_rgba(37,99,235,0.45)]"
+              className="group relative overflow-hidden rounded-[22px] border border-slate-200/80 bg-white p-6 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] transition-shadow duration-500 hover:shadow-[0_28px_56px_-30px_rgba(37,99,235,0.45)]"
             >
               <span
                 aria-hidden
@@ -35,14 +35,14 @@ export default function WhyProgram({ course }: { course: Course }) {
                 <span className="grid size-7 place-content-center rounded-lg bg-gradient-to-br from-[#142C8E] to-[#2563EB]">
                   <FiCheck aria-hidden className="size-3.5 text-white" />
                 </span>
-                <span className="font-[family-name:var(--font-mono-face)] text-[11px] text-white/40">
+                <span className="font-[family-name:var(--font-mono-face)] text-[11px] text-[#94A3B8]">
                   {String(i + 1).padStart(2, "0")}
                 </span>
               </span>
-              <h3 className="relative mt-4 font-[family-name:var(--font-sora)] text-[15.5px] font-bold leading-snug text-white">
+              <h3 className="relative mt-4 font-[family-name:var(--font-sora)] text-[15.5px] font-bold leading-snug text-[#0F172A]">
                 {w.title}
               </h3>
-              <p className="relative mt-2 text-[13.5px] leading-relaxed text-white/65">{w.copy}</p>
+              <p className="relative mt-2 text-[13.5px] leading-relaxed text-[#475569]">{w.copy}</p>
             </motion.li>
           ))}
         </ul>
