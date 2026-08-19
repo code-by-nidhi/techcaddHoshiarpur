@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import FloatingTechCards, { TechCardsGrid } from "./FloatingTechCards";
 import OrbitArcs from "./OrbitArcs";
-import PlatformRings from "./PlatformRings";
 import { robotBus, type RobotFocus } from "@/lib/robotBus";
 
 /**
@@ -25,28 +24,26 @@ const FACE_RIGHT = false;
 const IDLE_FLOAT = false;
 
 /*
- * The robot cutout — the model alone on transparency, with no platform baked
- * in. That is what lets the CSS platform below it do its job: PlatformRings
- * draws the neon rings, the glass floor disc and the light pooling, and the
- * mirrored copy of this image draws the reflection standing on it.
+ * The staged render: robot, neon platform and rings all baked into one image.
  *
- * robot-stage.webp is the alternative render with the platform baked in. Do
- * not swap it back in here without removing PlatformRings and the reflection
- * first — two platforms stacked on one another read as a rendering fault.
+ * Because the platform travels with the artwork, the CSS platform is gone —
+ * PlatformRings and the mirrored floor reflection are not rendered, since a
+ * second set of rings under a baked-in one reads as a rendering fault. The
+ * cutout render (robot-cutout.webp) is still in the repo if that treatment is
+ * ever wanted back; restoring it means restoring both of those too.
  */
-const ROBOT = "/images/robot-cutout.webp";
+const ROBOT = "/images/robot-stage.webp";
 
 /*
  * Stage geometry, in percentages of the 9:8 stage box. The reflection reuses
  * ROBOT_LEFT and ROBOT_W verbatim, so the mirror stays locked to the robot at
  * every breakpoint rather than drifting out from under its feet.
  */
-const ROBOT_LEFT = "16%";
-const ROBOT_TOP = "8%";
-const ROBOT_W = "68%";
+const ROBOT_LEFT = "13%";
+const ROBOT_TOP = "6%";
+const ROBOT_W = "76%";
 /** Feet land at 8 + 66 = 74%, which is where the platform disc begins. */
-const ROBOT_H = "66%";
-const FEET = "74%";
+const ROBOT_H = "80%";
 
 /** Ambient motes drifting around the stage, purely decorative. */
 const MOTES = [
@@ -106,9 +103,6 @@ export default function RobotShowcase() {
 
         <OrbitArcs />
 
-        {/* neon platform: concentric rings, glass floor disc, light pooling */}
-        <PlatformRings />
-
         {/* drifting motes */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
           {MOTES.map((m) => (
@@ -146,46 +140,10 @@ export default function RobotShowcase() {
               fill
               priority
               sizes="(max-width: 1024px) 92vw, 50vw"
-              className="object-contain object-bottom"
+              className="object-contain object-center"
             />
           </motion.div>
         </motion.div>
-
-        {/*
-         * Floor reflection: the same cutout, mirrored under the feet.
-         *
-         * The mask is authored in the element's own coordinate space, which is
-         * painted before the flip is applied — so "to top" here lands as
-         * opaque-at-the-contact-point once the element is turned over, and the
-         * reflection fades as it travels away from the robot.
-         */}
-        <div
-          aria-hidden
-          style={{
-            left: ROBOT_LEFT,
-            top: FEET,
-            width: ROBOT_W,
-            height: "22%",
-            maskImage: "linear-gradient(to top, black 0%, transparent 78%)",
-            WebkitMaskImage: "linear-gradient(to top, black 0%, transparent 78%)",
-          }}
-          className={`pointer-events-none absolute z-10 -scale-y-100 opacity-30 blur-[3px] ${flip}`}
-        >
-          <Image
-            src={ROBOT}
-            alt=""
-            fill
-            sizes="(max-width: 1024px) 92vw, 50vw"
-            className="object-contain object-bottom"
-          />
-        </div>
-
-        {/* contact glow where the feet meet the disc */}
-        <div
-          aria-hidden
-          style={{ top: FEET, background: `radial-gradient(ellipse, ${tint} 0%, transparent 70%)` }}
-          className="pointer-events-none absolute left-1/2 z-10 h-[7%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-md transition-[background] duration-500"
-        />
 
         <FloatingTechCards />
       </div>
