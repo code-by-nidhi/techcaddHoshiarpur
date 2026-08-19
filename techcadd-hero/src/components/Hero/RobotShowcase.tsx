@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import FloatingTechCards, { TechCardsGrid } from "./FloatingTechCards";
 import OrbitArcs from "./OrbitArcs";
+import PlatformRings from "./PlatformRings";
 import { robotBus, type RobotFocus } from "@/lib/robotBus";
 
 /**
@@ -21,18 +22,31 @@ import { robotBus, type RobotFocus } from "@/lib/robotBus";
  * "techcadd" and "02" decals on the body.
  */
 const FACE_RIGHT = false;
-const IDLE_FLOAT = true;
+const IDLE_FLOAT = false;
 
 /*
- * The stage render: robot, platform and glow baked into one 840x640 image with
- * feathered transparent edges, so it sits over the hero without a seam.
+ * The robot cutout — the model alone on transparency, with no platform baked
+ * in. That is what lets the CSS platform below it do its job: PlatformRings
+ * draws the neon rings, the glass floor disc and the light pooling, and the
+ * mirrored copy of this image draws the reflection standing on it.
  *
- * Because the platform travels with it, the CSS PlatformRings, floor
- * reflection and ground shadow are no longer drawn — two platforms stacked on
- * one another read as a rendering fault. robot-cutout-clean.webp remains in
- * the folder if you want the cutout composition back.
+ * robot-stage.webp is the alternative render with the platform baked in. Do
+ * not swap it back in here without removing PlatformRings and the reflection
+ * first — two platforms stacked on one another read as a rendering fault.
  */
-const ROBOT = "/images/robot-stage.webp";
+const ROBOT = "/images/robot-cutout.webp";
+
+/*
+ * Stage geometry, in percentages of the 9:8 stage box. The reflection reuses
+ * ROBOT_LEFT and ROBOT_W verbatim, so the mirror stays locked to the robot at
+ * every breakpoint rather than drifting out from under its feet.
+ */
+const ROBOT_LEFT = "16%";
+const ROBOT_TOP = "8%";
+const ROBOT_W = "68%";
+/** Feet land at 8 + 66 = 74%, which is where the platform disc begins. */
+const ROBOT_H = "66%";
+const FEET = "74%";
 
 /** Ambient motes drifting around the stage, purely decorative. */
 const MOTES = [
@@ -92,6 +106,9 @@ export default function RobotShowcase() {
 
         <OrbitArcs />
 
+        {/* neon platform: concentric rings, glass floor disc, light pooling */}
+        <PlatformRings />
+
         {/* drifting motes */}
         <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
           {MOTES.map((m) => (
@@ -120,18 +137,8 @@ export default function RobotShowcase() {
           <motion.div
             animate={IDLE_FLOAT && !reduced ? { y: [0, -6, 0] } : undefined}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-            /*
-             * Geometry, in stage percentages:
-             *   72 wide / 62 tall holds the render's own 21:16 ratio, so
-             *   object-contain never letterboxes it;
-             *   left 14 centres it (100 - 72) / 2;
-             *   top 12 leaves headroom above the robot and ends at 74, which
-             *   keeps the whole composition clear of the badge ring.
-             *
-             * It was 88 wide, sized for the old cutout. At that width the
-             * render reached 94% across and the badges sat on top of it.
-             */
-            className={`absolute left-[14%] top-[12%] h-[62%] w-[72%] drop-shadow-[0_28px_44px_rgba(5,11,31,0.65)] ${flip}`}
+            style={{ left: ROBOT_LEFT, top: ROBOT_TOP, width: ROBOT_W, height: ROBOT_H }}
+            className={`absolute drop-shadow-[0_28px_44px_rgba(5,11,31,0.65)] ${flip}`}
           >
             <Image
               src={ROBOT}
@@ -139,10 +146,46 @@ export default function RobotShowcase() {
               fill
               priority
               sizes="(max-width: 1024px) 92vw, 50vw"
-              className="object-contain object-center"
+              className="object-contain object-bottom"
             />
           </motion.div>
         </motion.div>
+
+        {/*
+         * Floor reflection: the same cutout, mirrored under the feet.
+         *
+         * The mask is authored in the element's own coordinate space, which is
+         * painted before the flip is applied — so "to top" here lands as
+         * opaque-at-the-contact-point once the element is turned over, and the
+         * reflection fades as it travels away from the robot.
+         */}
+        <div
+          aria-hidden
+          style={{
+            left: ROBOT_LEFT,
+            top: FEET,
+            width: ROBOT_W,
+            height: "22%",
+            maskImage: "linear-gradient(to top, black 0%, transparent 78%)",
+            WebkitMaskImage: "linear-gradient(to top, black 0%, transparent 78%)",
+          }}
+          className={`pointer-events-none absolute z-10 -scale-y-100 opacity-30 blur-[3px] ${flip}`}
+        >
+          <Image
+            src={ROBOT}
+            alt=""
+            fill
+            sizes="(max-width: 1024px) 92vw, 50vw"
+            className="object-contain object-bottom"
+          />
+        </div>
+
+        {/* contact glow where the feet meet the disc */}
+        <div
+          aria-hidden
+          style={{ top: FEET, background: `radial-gradient(ellipse, ${tint} 0%, transparent 70%)` }}
+          className="pointer-events-none absolute left-1/2 z-10 h-[7%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-[50%] blur-md transition-[background] duration-500"
+        />
 
         <FloatingTechCards />
       </div>

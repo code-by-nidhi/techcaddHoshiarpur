@@ -264,8 +264,10 @@ npm run db:migrate          # prisma migrate dev
 npm run dev                 # http://localhost:3000
 ```
 
+
 Env files are read once at startup. After editing `.env`, restart the dev
 server or it will still see the old values.
+
 
 Then click **Book Demo**, submit the form, and confirm the row:
 
@@ -275,13 +277,25 @@ npm run db:studio           # or: SELECT * FROM demo_bookings ORDER BY id DESC;
 
 #### If the table already exists
 
+
 `demo_bookings` may already have been created by the Nest service
+
+The `demo_bookings` table may already have been created by the Nest service
+
 (`npm run mysql:push` there). `migrate dev` would then try to create a table
 that exists. Baseline the migration as already-applied instead:
 
 ```bash
 npx prisma migrate resolve --applied 20260818000000_create_demo_requests
 ```
+Confirm the schema matches the live table before doing so:
+
+```bash
+npx prisma migrate diff --from-schema-datasource prisma/schema.prisma \
+                        --to-schema-datamodel  prisma/schema.prisma
+```
+
+An empty diff means the table matches and baselining is safe.
 
 ### Production
 

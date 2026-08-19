@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
@@ -17,6 +17,8 @@
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
     "@prisma/client": "^6.19.3",
+    "@react-three/drei": "^10.0.6",
+    "@react-three/fiber": "^9.1.0",
     "bootstrap": "^5.3.8",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.460.0",
@@ -26,14 +28,18 @@
     "react-hook-form": "^7.85.0",
     "react-icons": "^5.7.0",
     "swiper": "^14.1.0",
+    "three": "^0.174.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@types/three": "^0.174.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.23",
     "prisma": "^6.19.3",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.0"

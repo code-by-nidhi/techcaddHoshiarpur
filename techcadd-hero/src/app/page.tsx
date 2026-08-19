@@ -2,6 +2,7 @@ import Navbar from "@/components/Layout/Navbar";
 import Hero from "@/components/Hero/Hero";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import About from "@/components/sections/About";
+import CourseCategories from "@/components/sections/CourseCategories";
 import FeaturedCourses from "@/components/sections/FeaturedCourses";
 import WhyChoose from "@/components/sections/WhyChoose";
 import CareerOutcomes from "@/components/sections/CareerOutcomes";
@@ -15,9 +16,15 @@ import LaunchCenter from "@/components/sections/LaunchCenter";
 
 
 /**
- * The dark hero opens, then the page runs white/#F8FAFC the whole way down
- * until the Launch Center closes it back on dark. Each section alternates
- * white ↔ surface so no two neighbours share a background.
+ * Home page section order.
+ *
+ * The dark hero opens, the page runs light the whole way down, and the Launch
+ * Center closes it back on dark. Neighbouring sections never share a
+ * background — see each section's own root element for its colour.
+ *
+ * No spacing wrappers between sections: a transparent div between two
+ * differently-coloured sections shows the dark page background through as an
+ * empty band. Each section's own section-pad is the gap.
  */
 export default function Home() {
   return (
@@ -26,17 +33,13 @@ export default function Home() {
       <main id="home">
         <Hero />
         <About />
+        <CourseCategories />
         <FeaturedCourses />
-        {/*
-         * No spacing wrapper here: a transparent div between the dark courses
-         * section and the light TechUniverse showed the dark page background
-         * through as an empty band. Each section's own section-pad is the gap.
-         */}
-        <TechUniverse />
         <WhyChoose />
         <CareerOutcomes />
         <StudentWall />
         <ProgrammeRoadmap />
+        <TechUniverse />
         <CommandCenter />
         <HelpCenter />
         <KnowledgeHub />

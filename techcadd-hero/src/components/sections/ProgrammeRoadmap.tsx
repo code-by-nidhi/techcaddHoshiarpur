@@ -68,7 +68,12 @@ export default function ProgrammeRoadmap() {
   const x = useTransform(progress, [0, 1], ["2%", "-72%"]);
 
   return (
-    <section id="included" ref={ref} className="relative h-[420vh] bg-white">
+    /*
+     * Surface, not white: this sits directly under the Student Wall, which is
+     * white, and two white sections in a row read as one. The stage cards
+     * inside are white, so the surface tone also gives them an edge to sit on.
+     */
+    <section id="included" ref={ref} className="relative h-[420vh] bg-[#F8FAFC]">
       {/*
          * min-h-screen, not h-screen: with `justify-center` a fixed height
          * overflows in BOTH directions once the content is taller than the
