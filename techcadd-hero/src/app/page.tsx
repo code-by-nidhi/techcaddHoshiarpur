@@ -2,7 +2,6 @@ import Navbar from "@/components/Layout/Navbar";
 import Hero from "@/components/Hero/Hero";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import About from "@/components/sections/About";
-import CourseCategories from "@/components/sections/CourseCategories";
 import FeaturedCourses from "@/components/sections/FeaturedCourses";
 import WhyChoose from "@/components/sections/WhyChoose";
 import CareerOutcomes from "@/components/sections/CareerOutcomes";
@@ -33,13 +32,18 @@ export default function Home() {
       <main id="home">
         <Hero />
         <About />
-        <CourseCategories />
         <FeaturedCourses />
+        {/*
+         * Directly after the courses section, with no spacing wrapper: a
+         * transparent div between the dark courses band and the light
+         * TechUniverse showed the page background through as an empty strip.
+         * Each section's own padding is the gap.
+         */}
+        <TechUniverse />
         <WhyChoose />
         <CareerOutcomes />
         <StudentWall />
         <ProgrammeRoadmap />
-        <TechUniverse />
         <CommandCenter />
         <HelpCenter />
         <KnowledgeHub />
