@@ -49,7 +49,11 @@ export default function ColumnsMegaMenu({
   /* First link with artwork seeds the panel, so it is never blank and hovering
      never causes a layout shift. Menus whose links carry no image (After 12th)
      skip the preview entirely. */
-  const firstWithImage = columns.flatMap((c) => c.links).find((l) => l.image);
+  /* `showPreview` is opt-in: the Courses panel is a plain column list, while
+     Training uses the preview to show what a format looks like. */
+  const firstWithImage = menu.showPreview
+    ? columns.flatMap((c) => c.links).find((l) => l.image)
+    : undefined;
   const toPreview = (l: { image?: string; label: string; description?: string; href: string }) => ({
     src: l.image as string,
     label: l.label,

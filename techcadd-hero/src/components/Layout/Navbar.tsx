@@ -45,7 +45,7 @@ const NavDropdownMobile = dynamic(() =>
  * every item not listed stays an ordinary link.
  */
 const MEGA_PANELS = {
-  Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1400 },
+  Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1200, centred: true },
   Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
   /* centred on the viewport rather than on its trigger, which sits left of
      centre in the bar and pulled the panel to the edge */
@@ -113,7 +113,7 @@ export default function Navbar() {
     const r = el.getBoundingClientRect();
     const vw = document.documentElement.clientWidth;
     // never wider than 95vw, so the panel always reads as a floating card
-    const width = Math.min(panelWidth(mega), vw - EDGE * 2, vw * 0.95);
+    const width = Math.min(panelWidth(mega), vw - EDGE * 2, vw * 0.9);
     const centre = r.left + r.width / 2;
     const left = isCentred(mega)
       ? Math.max(EDGE, (vw - width) / 2)

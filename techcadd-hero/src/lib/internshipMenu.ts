@@ -23,12 +23,15 @@ export type ColumnsMenu = {
   columns: { id: string; heading: string; description: string; links: TrainingLink[] }[];
   /** the preview card's button; omitted menus show the image and title only */
   previewCta?: string;
+  /** render the hover preview panel beside the columns */
+  showPreview?: boolean;
   strip: { watermark: string; quote: string; cta: string; href: string };
 };
 
 const ORDER: TrainingCategory[] = ["short-term", "long-term", "programmes"];
 
 export const INTERNSHIP_MENU: ColumnsMenu = {
+  showPreview: true,
   columns: ORDER.map((category) => {
     const meta = CATEGORY_META[category];
     return {
