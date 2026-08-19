@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { FiArrowUpRight, FiClock } from "react-icons/fi";
 import Navbar from "@/components/Layout/Navbar";
@@ -65,6 +66,18 @@ export default function InternshipTrainingPage() {
                           href={`/internship-training/${p.slug}`}
                           className="group flex h-full flex-col rounded-[22px] border border-slate-200/80 bg-white p-6 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(37,99,235,0.45)] motion-reduce:hover:translate-y-0"
                         >
+                          <span className="relative mb-4 block aspect-[16/10] w-full overflow-hidden rounded-[16px]">
+                            <Image
+                              src={p.image}
+                              alt=""
+                              aria-hidden
+                              fill
+                              loading="lazy"
+                              sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 30vw"
+                              className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:group-hover:scale-100"
+                            />
+                          </span>
+
                           <span className="flex items-start justify-between gap-3">
                             <span className="font-[family-name:var(--font-sora)] text-[16px] font-bold leading-snug text-[#0F172A]">
                               {p.title}

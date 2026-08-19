@@ -72,10 +72,18 @@ export type Course = {
   audience: { label: string; copy: string }[];
   whyChooseUs: { title: string; copy: string }[];
   modules: Module[];
+  /**
+   * Stage labels for the roadmap's progress tracker. Optional: without it the
+   * tracker is derived from `level` and the module count, so a course that has
+   * not defined a journey still renders a correct one.
+   */
+  journey?: string[];
   learningOutcomes: string[];
   tools: string[];
   careerOutcomes: {
     roles: string[];
+    /** roles with a line of copy each; falls back to `roles` when absent */
+    roleDetails?: { role: string; copy: string }[];
     opportunities: string[];
     nextSteps: string[];
     industries: string[];

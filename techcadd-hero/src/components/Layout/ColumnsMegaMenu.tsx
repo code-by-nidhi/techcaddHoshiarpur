@@ -44,6 +44,9 @@ export default function ColumnsMegaMenu({
   const { columns, strip } = menu;
   const pathname = usePathname();
 
+  /* First link with artwork seeds the panel, so it is never blank and hovering
+     never causes a layout shift. Menus whose links carry no image (After 12th)
+     skip the preview entirely. */
   return (
     <motion.div variants={panelIn} initial="hidden" animate="show" exit="exit" className="relative">
       <span

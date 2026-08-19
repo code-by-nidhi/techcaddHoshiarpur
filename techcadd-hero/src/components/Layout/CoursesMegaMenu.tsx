@@ -81,32 +81,6 @@ export default function CoursesMegaMenu({
             ))}
           </div>
 
-          {/* preview: right of the list on desktop, above it once stacked */}
-          <AnimatePresence mode="wait">
-            <motion.figure
-                key={preview.src}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="order-first mt-4 overflow-hidden rounded-[18px] border border-white/10 lg:order-none"
-              >
-                <span className="relative block aspect-[16/9] w-full">
-                  <Image
-                    src={preview.src}
-                    alt=""
-                    aria-hidden
-                    fill
-                    loading="lazy"
-                    sizes="(max-width: 1023px) 90vw, 320px"
-                    className="scale-100 object-cover transition-transform duration-300 hover:scale-105"
-                  />
-                </span>
-                <figcaption className="bg-[rgba(7,15,40,0.95)] px-3 py-2 text-[11.5px] font-medium text-white/70">
-                  {preview.label}
-                </figcaption>
-            </motion.figure>
-          </AnimatePresence>
         </div>
       </div>
     </motion.div>

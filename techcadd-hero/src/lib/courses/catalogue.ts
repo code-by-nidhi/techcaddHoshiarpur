@@ -327,146 +327,312 @@ export const COURSES: Course[] = [
   {
     slug: "python-programming",
     title: "Python Programming",
-    shortDescription: "The language, properly — then automation, data and APIs with it.",
+    shortTitle: "Python",
+    shortDescription:
+      "Kick start your programming career with the Best Python Training in Hoshiarpur.",
     overview:
-      "Three months building genuine fluency in Python: the language itself, then the libraries that make it useful for automation, data work and backend services.",
+      "Kick start your programming career with the Best Python Training in Hoshiarpur. Learn Python Programming Language along with Data Structures and Object Oriented Programming. Best for beginners who wish to learn Python training in Hoshiarpur, Python Certification courses and gain industry ready skills.",
     category: "Programming",
     badge: "Trending",
-    level: "Beginner to Intermediate",
+    level: "Beginner to Advanced",
     duration: "3 Months",
     mode: "Online / Offline",
     certification: true,
     heroImage: "/images/courses/python-programming.webp",
     video: {
       url: "",
-      thumbnail: "/images/classroom.webp",
-      caption: "What the first month looks like, and what you build in it.",
+      thumbnail: "/images/courses/python-programming.webp",
+      caption:
+        "Watch. Learn. Code. \u2014 Our Python Course in Action. Gain a glimpse into our Python Course via our course video below. See what it\u2019s like to learn and code in the program, as well as how the entire training experience is set up.",
     },
-    rating: { score: 4.8, count: 192 },
-    audience: [A.beginners, A.students, A.professionals, A.switchers, A.entrepreneurs],
-    whyChooseUs: COMMON_WHY,
-    modules: [
+
+    /* "Who Should Enroll in This Python Training?" */
+    audience: [
       {
-        title: "Python fundamentals",
-        summary: "Syntax, types and control flow, with enough practice to make it automatic.",
-        topics: ["Variables & types", "Control flow", "Functions", "Error handling"],
-        duration: "3 weeks",
-        lessons: 12,
+        label: "Students & Freshers",
+        copy: "Begin learning about coding with the help of basic ideas and Python exercises.",
       },
       {
-        title: "Data structures",
-        summary: "Lists, dicts, sets and when each is the right answer.",
-        topics: ["Collections", "Comprehensions", "Iterators & generators", "Complexity basics"],
-        duration: "2 weeks",
-        lessons: 9,
+        label: "BCA & MCA Students",
+        copy: "Get better at programming by understanding Python and applying it to academic assignments.",
       },
       {
-        title: "Object-oriented Python",
-        summary: "Structuring code that grows past a single file.",
-        topics: ["Classes", "Inheritance", "Dunder methods", "Modules & packages"],
-        duration: "2 weeks",
-        lessons: 8,
+        label: "Developers Aspirants",
+        copy: "Gain knowledge about Python to form the basis of software development.",
       },
       {
-        title: "Files, APIs and automation",
-        summary: "Making Python do the tedious work.",
-        topics: ["File I/O", "CSV & JSON", "requests", "Scheduling scripts"],
-        duration: "2 weeks",
-        lessons: 8,
+        label: "Career Shifters",
+        copy: "Get ready to enter the world of IT with this easy-to-understand language.",
       },
       {
-        title: "Working with data",
-        summary: "NumPy and Pandas for analysis you can act on.",
-        topics: ["NumPy arrays", "Pandas dataframes", "Cleaning", "Plotting"],
-        duration: "2 weeks",
-        lessons: 8,
+        label: "Lovers of Data & AI",
+        copy: "Discover Python as the foundation of learning about data science, automation, and artificial intelligence.",
       },
       {
-        title: "Backend with Django or Flask",
-        summary: "Serving what you have built over HTTP.",
-        topics: ["Routing", "Templates & JSON", "ORM basics", "Deployment"],
-        duration: "3 weeks",
-        lessons: 10,
+        label: "Professionals",
+        copy: "Enhance your skills through the simplification of work processes with the help of Python.",
       },
     ],
+
+    whyChooseUs: COMMON_WHY,
+
+    /* Python Course Modules \u2014 twelve, in the supplied order */
+    modules: [
+      {
+        title: "Python Fundamentals",
+        summary:
+          "Learn Python syntax, variables, data types, operators, input/output, and basic programming concepts.",
+        topics: ["Syntax", "Variables", "Data types", "Operators", "Input/output"],
+      },
+      {
+        title: "Conditional Statements & Loops",
+        summary:
+          "Understand if-else, nested conditions, for loops, while loops, and control statements through practical examples.",
+        topics: ["if-else", "Nested conditions", "for loops", "while loops", "Control statements"],
+      },
+      {
+        title: "Python Data Structures",
+        summary:
+          "Work with lists, tuples, sets, and dictionaries. Learn how to store, access, modify, and manage data efficiently.",
+        topics: ["Lists", "Tuples", "Sets", "Dictionaries"],
+      },
+      {
+        title: "Functions & Modules",
+        summary:
+          "Create reusable functions, understand parameters and return values, use built-in functions, and organize code with modules.",
+        topics: ["Functions", "Parameters", "Return values", "Built-in functions", "Modules"],
+      },
+      {
+        title: "Object-Oriented Programming",
+        summary:
+          "Learn classes, objects, constructors, inheritance, polymorphism, encapsulation, and abstraction to write structured applications.",
+        topics: [
+          "Classes",
+          "Objects",
+          "Constructors",
+          "Inheritance",
+          "Polymorphism",
+          "Encapsulation",
+          "Abstraction",
+        ],
+      },
+      {
+        title: "File Handling & Exception Handling",
+        summary:
+          "Learn to read and write files while handling errors using exceptions, try, except, finally, and custom exceptions.",
+        topics: ["Read/write files", "Exceptions", "try", "except", "finally", "Custom exceptions"],
+      },
+      {
+        title: "Python Libraries",
+        summary:
+          "Explore useful libraries such as NumPy, Pandas, Matplotlib, and other tools for data processing and visualization.",
+        topics: ["NumPy", "Pandas", "Matplotlib", "Data processing", "Visualization"],
+      },
+      {
+        title: "Database Connectivity",
+        summary:
+          "Understand databases and learn how Python interacts with databases to store, retrieve, update, and manage application data.",
+        topics: ["Databases", "Store", "Retrieve", "Update", "Manage data"],
+      },
+      {
+        title: "Web Development with Python",
+        summary:
+          "Get introduced to Python web development using frameworks such as Django or Flask, including routes, templates, forms, and basic backend concepts.",
+        topics: ["Django", "Flask", "Routes", "Templates", "Forms", "Backend concepts"],
+      },
+      {
+        title: "APIs & JSON",
+        summary:
+          "Learn how applications communicate through APIs, work with JSON data, and connect Python applications with external services.",
+        topics: ["APIs", "JSON", "External services"],
+      },
+      {
+        title: "Automation with Python",
+        summary:
+          "Use Python to automate repetitive tasks such as file management, data processing, and everyday workflow activities.",
+        topics: ["File management", "Data processing", "Workflow automation"],
+      },
+      {
+        title: "Projects & Career Preparation",
+        summary:
+          "Apply your knowledge through practical projects, debugging exercises, and portfolio-building activities to develop job-ready confidence.",
+        topics: ["Practical projects", "Debugging", "Portfolio building"],
+      },
+    ],
+
+    /* progress tracker stages for the roadmap */
+    journey: [
+      "Beginner",
+      "Fundamentals",
+      "Programming Logic",
+      "OOP",
+      "Database",
+      "Advanced Python",
+      "Projects",
+      "Certification",
+    ],
+
     learningOutcomes: [
       "Write clear, idiomatic Python",
       "Choose the right data structure for a problem",
-      "Automate repetitive file and data tasks",
-      "Consume and build REST APIs",
-      "Clean and analyse data with Pandas",
-      "Serve a small application with Django or Flask",
+      "Model applications with classes and objects",
+      "Read, write and process files safely",
+      "Work with databases, APIs and JSON",
+      "Automate repetitive tasks end to end",
     ],
-    tools: ["Python", "Pandas", "NumPy", "Flask", "Django", "SQLite", "Git", "GitHub", "VS Code", "Jupyter"],
+
+    /* "Tools & Technologies You Will Learn" */
+    tools: [
+      "Python",
+      "VS Code",
+      "Jupyter Notebook",
+      "Git & GitHub",
+      "NumPy",
+      "Pandas",
+      "Matplotlib",
+      "SQL & Databases",
+      "Django / Flask",
+      "REST APIs & JSON",
+      "Python Automation",
+      "Virtual Environments & pip",
+    ],
+
     careerOutcomes: {
-      roles: ["Python Developer", "Backend Developer", "Automation Engineer", "Data Analyst", "QA Automation Engineer"],
-      opportunities: ["Backend teams", "Data and reporting roles", "Automation and scripting work", "Freelance tooling"],
-      nextSteps: ["Data Analytics", "Machine learning foundations", "Django in depth", "Cloud & DevOps"],
-      industries: ["Software products", "Analytics", "Operations & back office", "Research"],
+      roles: [
+        "Python Developer",
+        "Backend Developer",
+        "Web Developer",
+        "Data Analyst",
+        "Automation Developer",
+        "Software Developer",
+        "AI & Machine Learning Foundation",
+      ],
+      /* the supplied Career Opportunities list, with its copy intact */
+      roleDetails: [
+        {
+          role: "Python Developer",
+          copy: "Development of applications, scripts, APIs, and backend using Python programming.",
+        },
+        {
+          role: "Backend Developer",
+          copy: "Building server-side applications and database driven websites.",
+        },
+        {
+          role: "Web Developer",
+          copy: "Development of dynamic websites and web applications with Python programming.",
+        },
+        {
+          role: "Data Analyst",
+          copy: "Working with data utilizing Python, Pandas, NumPy, and visualization tools.",
+        },
+        {
+          role: "Automation Developer",
+          copy: "Building scripts that automate business and technical activities.",
+        },
+        {
+          role: "Software Developer",
+          copy: "Using Python programming to develop and manage software solutions.",
+        },
+        {
+          role: "AI & Machine Learning Foundation",
+          copy: "Build a strong Python base and take your first step toward exciting careers in AI and Machine Learning.",
+        },
+      ],
+      opportunities: [
+        "Product and agency teams",
+        "Freelance projects",
+        "Campus placements",
+        "In-house roles",
+      ],
+      nextSteps: ["Data Science", "Machine Learning", "Django / Flask", "Automation"],
+      industries: ["Product engineering", "Data and analytics", "Automation", "Web development"],
     },
+
     projects: [
       {
-        name: "Data cleaning pipeline",
-        summary: "Take a messy real-world dataset and produce something reportable.",
-        tech: ["Python", "Pandas"],
-        level: "Intermediate",
-        skills: ["Data cleaning", "Aggregation", "Reporting"],
-        image: "/images/data-science.webp",
-      },
-      {
-        name: "Web scraper & scheduler",
-        summary: "Collect data on a schedule and store it for later analysis.",
-        tech: ["Python", "requests", "SQLite"],
-        level: "Intermediate",
-        skills: ["HTTP", "Parsing", "Persistence"],
-        image: "/images/cyber.webp",
-      },
-      {
-        name: "REST API service",
-        summary: "A small documented service with CRUD and validation.",
-        tech: ["Flask", "SQLite"],
+        name: "Student record system",
+        summary: "A console application over data structures and file storage.",
+        tech: ["Python"],
         level: "Beginner",
-        skills: ["Routing", "Validation", "Testing"],
-        image: "/images/cloud.webp",
-      },
-    ],
-    instructor: DEFAULT_INSTRUCTOR,
-    reviews: [
-      {
-        name: "Manpreet Singh",
-        initials: "MS",
-        rating: 5,
-        course: "Python Programming",
-        role: "Automation Engineer",
-        quote:
-          "I came in wanting to automate reports at work. By month two I had replaced three hours of manual work a week.",
+        skills: ["Data structures", "File I/O", "Functions"],
+        image: "/images/lab.webp",
       },
       {
-        name: "Ritika Sharma",
-        initials: "RS",
-        rating: 5,
-        course: "Python Programming",
-        role: "Data Analyst",
-        quote:
-          "The data module was the turning point. Pandas stopped being intimidating once we used it on a real messy dataset.",
+        name: "Data analysis notebook",
+        summary: "Load, clean and chart a real dataset end to end.",
+        tech: ["Python", "Pandas", "Matplotlib"],
+        level: "Intermediate",
+        skills: ["Pandas", "Cleaning", "Visualisation"],
+        image: "/images/classroom.webp",
+      },
+      {
+        name: "Automation script",
+        summary: "Automate a repetitive file and data workflow.",
+        tech: ["Python"],
+        level: "Intermediate",
+        skills: ["Automation", "File management", "Scheduling"],
+        image: "/images/lab.webp",
       },
     ],
+    /* "Why learn Python Programming with us?" — replaces the shared default
+       so this section carries the course's own copy. */
+    instructor: {
+      heading: "Why learn Python Programming with us?",
+      intro:
+        "Shift your learning experience from theoretical to practical exercises, assignments, and project based training.",
+      points: [
+        {
+          title: "Learning by Practicing",
+          copy: "Shift your learning experience from theoretical to practical exercises, assignments, and project based training.",
+        },
+        {
+          title: "Beginner Oriented Program",
+          copy: "Start learning from scratch and step by step to make the understanding of Python easy.",
+        },
+        {
+          title: "Training with Industry Relevant Tools",
+          copy: "Work with Python, VS Code, Git, GitHub, NumPy, Pandas, Databases, APIs, and other useful tools.",
+        },
+        {
+          title: "Real World Projects",
+          copy: "Make real world projects to enhance your problem solving ability and build your portfolio.",
+        },
+        {
+          title: "Learning through Sessions with Guidance",
+          copy: "Structured sessions to learn through practice, examples, doubt solving, and practicing continuously.",
+        },
+        {
+          title: "Technology Career Skills",
+          copy: "Programming and project based skills to prepare you for interviews, internships, freelancing, and tech careers.",
+        },
+      ],
+    },
+    /* Real testimonials only \u2014 an empty array renders no reviews section. */
+    reviews: [],
     faqs: [
       {
         q: "Is this course suitable for beginners?",
-        a: "Yes. It is designed as a first programming course and assumes nothing beyond basic computer use.",
+        a: "This Python course is perfect for beginners since Python is easy to understand and can help learners develop skills in technology.",
       },
       {
         q: "What are the prerequisites?",
-        a: "None. Bring a laptop and a willingness to practise between sessions.",
+        a: "Basic computer familiarity. Anything else the track needs is introduced in the first module.",
       },
       ...COMMON_FAQS,
     ],
-    relatedCourses: ["data-analytics", "full-stack-web-development", "java-programming", "digital-marketing"],
-    keywords: ["python course Hoshiarpur", "python training", "django flask course", "python for data analysis"],
+    relatedCourses: [
+      "data-science",
+      "machine-learning",
+      "full-stack-web-development",
+      "java-programming",
+    ],
+    keywords: [
+      "best python course in hoshiarpur",
+      "python training in hoshiarpur",
+      "python certification courses",
+      "python programming language",
+    ],
   },
-
-  /* ------------------------------------------------------------------ */
   {
     slug: "java-programming",
     title: "Java Programming",

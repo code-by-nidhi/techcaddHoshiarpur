@@ -21,18 +21,29 @@ import { robotBus, type RobotFocus } from "@/lib/robotBus";
  * "techcadd" and "02" decals on the body.
  */
 const FACE_RIGHT = false;
-const IDLE_FLOAT = true;
+const IDLE_FLOAT = false;
 
 /*
- * The stage render: robot, platform and glow baked into one 840x640 image with
- * feathered transparent edges, so it sits over the hero without a seam.
+ * The staged render: robot, neon platform and rings all baked into one image.
  *
- * Because the platform travels with it, the CSS PlatformRings, floor
- * reflection and ground shadow are no longer drawn — two platforms stacked on
- * one another read as a rendering fault. robot-cutout-clean.webp remains in
- * the folder if you want the cutout composition back.
+ * Because the platform travels with the artwork, the CSS platform is gone —
+ * PlatformRings and the mirrored floor reflection are not rendered, since a
+ * second set of rings under a baked-in one reads as a rendering fault. The
+ * cutout render (robot-cutout.webp) is still in the repo if that treatment is
+ * ever wanted back; restoring it means restoring both of those too.
  */
 const ROBOT = "/images/robot-stage.webp";
+
+/*
+ * Stage geometry, in percentages of the 9:8 stage box. The reflection reuses
+ * ROBOT_LEFT and ROBOT_W verbatim, so the mirror stays locked to the robot at
+ * every breakpoint rather than drifting out from under its feet.
+ */
+const ROBOT_LEFT = "13%";
+const ROBOT_TOP = "6%";
+const ROBOT_W = "76%";
+/** Feet land at 8 + 66 = 74%, which is where the platform disc begins. */
+const ROBOT_H = "80%";
 
 /** Ambient motes drifting around the stage, purely decorative. */
 const MOTES = [
@@ -120,18 +131,8 @@ export default function RobotShowcase() {
           <motion.div
             animate={IDLE_FLOAT && !reduced ? { y: [0, -6, 0] } : undefined}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-            /*
-             * Geometry, in stage percentages:
-             *   72 wide / 62 tall holds the render's own 21:16 ratio, so
-             *   object-contain never letterboxes it;
-             *   left 14 centres it (100 - 72) / 2;
-             *   top 12 leaves headroom above the robot and ends at 74, which
-             *   keeps the whole composition clear of the badge ring.
-             *
-             * It was 88 wide, sized for the old cutout. At that width the
-             * render reached 94% across and the badges sat on top of it.
-             */
-            className={`absolute left-[14%] top-[12%] h-[62%] w-[72%] drop-shadow-[0_28px_44px_rgba(5,11,31,0.65)] ${flip}`}
+            style={{ left: ROBOT_LEFT, top: ROBOT_TOP, width: ROBOT_W, height: ROBOT_H }}
+            className={`absolute drop-shadow-[0_28px_44px_rgba(5,11,31,0.65)] ${flip}`}
           >
             <Image
               src={ROBOT}

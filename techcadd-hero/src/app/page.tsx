@@ -18,9 +18,15 @@ import { getFaqs, getReviews, type CmsFaq, type CmsReview } from "@/lib/cms/cont
 import type { Article, CategorySummary } from "@/lib/blog/types";
 
 /**
- * The dark hero opens, then the page runs white/#F8FAFC the whole way down
- * until the Launch Center closes it back on dark. Each section alternates
- * white ↔ surface so no two neighbours share a background.
+ * Home page section order.
+ *
+ * The dark hero opens, the page runs light the whole way down, and the Launch
+ * Center closes it back on dark. Neighbouring sections never share a
+ * background — see each section's own root element for its colour.
+ *
+ * No spacing wrappers between sections: a transparent div between two
+ * differently-coloured sections shows the dark page background through as an
+ * empty band. Each section's own section-pad is the gap.
  *
  * Three sections read from the CMS — the student wall, the help centre and the
  * knowledge hub. All four requests are made together rather than section by
@@ -48,9 +54,10 @@ export default async function Home() {
         <About />
         <FeaturedCourses />
         {/*
-         * No spacing wrapper here: a transparent div between the dark courses
-         * section and the light TechUniverse showed the dark page background
-         * through as an empty band. Each section's own section-pad is the gap.
+         * Directly after the courses section, with no spacing wrapper: a
+         * transparent div between the dark courses band and the light
+         * TechUniverse showed the page background through as an empty strip.
+         * Each section's own padding is the gap.
          */}
         <TechUniverse />
         <WhyChoose />

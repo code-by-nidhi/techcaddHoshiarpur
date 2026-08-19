@@ -238,6 +238,10 @@ built on it; nothing else constructs a CMS URL.
 
 ### Running the pair
 
+Start MySQL first — the CMS reads from it. On this machine that is **XAMPP's**
+MySQL, started from the XAMPP control panel; the `MYSQL80` Windows service is
+stopped. Don't run both, they both want 3306.
+
 ```bash
 # terminal 1 — the CMS API
 cd ../cms-techcadd/backend && npm run dev      # http://localhost:4000
@@ -245,6 +249,9 @@ cd ../cms-techcadd/backend && npm run dev      # http://localhost:4000
 # terminal 2 — this site
 npm run dev                                    # http://localhost:3000
 ```
+
+Env files are read once at startup. After editing `.env`, restart the dev
+server or it will still see the old values.
 
 `.env` needs two values, both in `.env.example`:
 

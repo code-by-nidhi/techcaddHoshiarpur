@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FiArrowRight, FiCheck, FiClock, FiUsers } from "react-icons/fi";
@@ -119,6 +120,22 @@ export default async function ProgrammePage({
                 <dd className="mt-1 text-[15px] text-white/80">{programme.audience}</dd>
               </div>
             </dl>
+
+            {/* the format's own artwork */}
+            <div className="relative mt-10 aspect-[16/7] w-full overflow-hidden rounded-[20px] ring-1 ring-inset ring-white/10">
+              <Image
+                src={programme.image}
+                alt={programme.title}
+                fill
+                priority
+                sizes="(max-width: 1023px) 92vw, 1200px"
+                className="object-cover"
+              />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(5,11,31,0.55))]"
+              />
+            </div>
           </div>
         </section>
 
@@ -127,6 +144,19 @@ export default async function ProgrammePage({
           <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
+                {/* supporting image: above the copy once stacked */}
+                <div className="relative mb-8 aspect-[4/3] w-full overflow-hidden rounded-[20px] shadow-[0_22px_50px_-32px_rgba(15,23,42,0.7)] lg:hidden">
+                  <Image
+                    src={programme.image}
+                    alt=""
+                    aria-hidden
+                    fill
+                    loading="lazy"
+                    sizes="92vw"
+                    className="object-cover"
+                  />
+                </div>
+
                 <h2 className="font-[family-name:var(--font-sora)] text-[clamp(1.4rem,2.4vw,1.9rem)] font-extrabold tracking-[-0.025em] text-[#0F172A]">
                   What is included
                 </h2>
