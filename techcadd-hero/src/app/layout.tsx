@@ -101,7 +101,7 @@ export default function RootLayout({
       <body className="bg-[#050B1F] text-white antialiased">
         <a
           href="#hero-heading"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-[#050B1F] focus:px-4 focus:py-2 focus:text-black"
         >
           Skip to content
         </a>

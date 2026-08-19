@@ -54,7 +54,7 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
           <div className="relative mx-auto mt-8 max-w-2xl">
             <Search
               aria-hidden
-              className="pointer-events-none absolute left-5 top-1/2 size-[18px] -translate-y-1/2 text-[#94A3B8]"
+              className="pointer-events-none absolute left-5 top-1/2 size-[18px] -translate-y-1/2 text-white/40"
             />
             <input
               type="search"
@@ -62,7 +62,7 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search fees, batches, internships…"
               aria-label="Search help articles"
-              className="w-full rounded-2xl border border-slate-200 bg-white py-4 pl-13 pr-5 text-[15px] text-[#0F172A] shadow-[0_14px_40px_-32px_rgba(15,23,42,0.8)] outline-none transition-all duration-300 placeholder:text-[#94A3B8] focus:border-[#2563EB] focus:shadow-[0_18px_44px_-26px_rgba(37,99,235,0.7)]"
+              className="w-full rounded-2xl border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] py-4 pl-13 pr-5 text-[15px] text-white shadow-[0_14px_40px_-32px_rgba(15,23,42,0.8)] outline-none transition-all duration-300 placeholder:text-white/40 focus:border-[#2563EB] focus:shadow-[0_18px_44px_-26px_rgba(37,99,235,0.7)]"
               style={{ paddingLeft: "3.25rem" }}
             />
           </div>
@@ -80,7 +80,7 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
                   onClick={() => setCategory(c)}
                   aria-pressed={on}
                   className={`relative rounded-full px-4 py-2 text-[13.5px] font-medium transition-colors duration-300 ${
-                    on ? "text-white" : "text-[#475569] hover:text-[#0F172A]"
+                    on ? "text-white" : "text-white/65 hover:text-white"
                   }`}
                 >
                   {on && (
@@ -91,7 +91,7 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
                     />
                   )}
                   {!on && (
-                    <span className="absolute inset-0 -z-10 rounded-full border border-slate-200 bg-white" />
+                    <span className="absolute inset-0 -z-10 rounded-full border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px]" />
                   )}
                   {c}
                 </button>
@@ -113,8 +113,8 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                  className={`overflow-hidden rounded-2xl border bg-white transition-colors duration-300 ${
-                    isOpen ? "border-[#2563EB]/45 shadow-[0_20px_50px_-38px_rgba(37,99,235,0.9)]" : "border-slate-200 hover:border-slate-300"
+                  className={`overflow-hidden rounded-2xl border bg-[#050B1F] transition-colors duration-300 ${
+                    isOpen ? "border-[#2563EB]/45 shadow-[0_20px_50px_-38px_rgba(37,99,235,0.9)]" : "border-[rgba(80,130,255,0.2)] hover:border-slate-300"
                   }`}
                 >
                   <button
@@ -130,6 +130,10 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
                       <span className="text-[15.5px] font-medium text-[#0F172A]">
                         {faq.question}
                       </span>
+<<<<<<< HEAD
+=======
+                      <span className="text-[15.5px] font-medium text-white">{h.q}</span>
+>>>>>>> 846a78cb9390a2bc067ce316d489cb2e71af6a80
                     </span>
                     <Plus
                       aria-hidden
@@ -147,8 +151,13 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
                       >
+<<<<<<< HEAD
                         <p className="px-6 pb-6 text-[14.5px] leading-[1.8] text-[#475569] sm:pl-[7.5rem]">
                           {faq.answer}
+=======
+                        <p className="px-6 pb-6 text-[14.5px] leading-[1.8] text-white/65 sm:pl-[7.5rem]">
+                          {h.a}
+>>>>>>> 846a78cb9390a2bc067ce316d489cb2e71af6a80
                         </p>
                       </motion.div>
                     )}
@@ -159,9 +168,9 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
           </AnimatePresence>
 
           {results.length === 0 && (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-12 text-center">
-              <LifeBuoy aria-hidden className="mx-auto size-6 text-[#94A3B8]" />
-              <p className="mt-3 text-[14.5px] text-[#475569]">
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-[#050B1F] px-6 py-12 text-center">
+              <LifeBuoy aria-hidden className="mx-auto size-6 text-white/40" />
+              <p className="mt-3 text-[14.5px] text-white/65">
                 Nothing matches that yet — try a different word, or ask a counsellor directly.
               </p>
               <a

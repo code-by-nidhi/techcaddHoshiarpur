@@ -69,12 +69,19 @@ function BrandHeader({
       {/* Full wordmark, except on desktop when the rail is collapsed. The
           branch sits on its own line under it: it is the thing that tells an
           admin which of TechCADD's sites this dashboard edits, so it should
-          not be competing with the wordmark for the same row. */}
+          not be competing with the wordmark for the same row.
+
+          `items-start` is load-bearing. A column flex container stretches its
+          children across the cross axis by default, which sets the SVG's width
+          to the full rail and leaves the artwork floating in the middle of a
+          box far wider than itself — reading as centred while the line below
+          it is flush left. `w-auto` cannot override that; only not stretching
+          can. */}
       <NavLink
         to="/"
         aria-label={`${BRAND_FULL} ${BRAND.product} — go to dashboard`}
         className={cn(
-          'flex min-w-0 flex-1 flex-col gap-1',
+          'flex min-w-0 flex-1 flex-col items-start gap-1',
           collapsed && 'lg:hidden',
         )}
       >

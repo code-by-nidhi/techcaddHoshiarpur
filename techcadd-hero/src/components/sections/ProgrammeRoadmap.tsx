@@ -29,15 +29,15 @@ function Step({
     <motion.li style={{ opacity, y }} className="w-[320px] shrink-0 sm:w-[360px]">
       {/* node on the line */}
       <div className="relative h-[110px]">
-        <span className="absolute left-8 top-[70px] grid size-8 place-items-center rounded-full bg-white ring-2 ring-[#2563EB]">
+        <span className="absolute left-8 top-[70px] grid size-8 place-items-center rounded-full bg-[#050B1F] ring-2 ring-[#2563EB]">
           <span className="size-2.5 rounded-full bg-[#2563EB]" />
         </span>
-        <span className="absolute left-[74px] top-[76px] font-[family-name:var(--font-mono-face)] text-[11px] tracking-[0.16em] text-[#94A3B8]">
+        <span className="absolute left-[74px] top-[76px] font-[family-name:var(--font-mono-face)] text-[11px] tracking-[0.16em] text-white/40">
           {String(index + 1).padStart(2, "0")}
         </span>
       </div>
 
-      <div className="group mt-10 sm:mt-[50px] lg:mt-[60px] rounded-[28px] border border-slate-200/80 bg-white p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)] transition-all duration-500 hover:-translate-y-1.5 hover:border-[#2563EB]/25 hover:shadow-[0_30px_60px_-32px_rgba(37,99,235,0.55)]">
+      <div className="group mt-10 sm:mt-[50px] lg:mt-[60px] rounded-[28px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-7 shadow-[0_14px_40px_-30px_rgba(15,23,42,0.7)] transition-all duration-500 hover:-translate-y-1.5 hover:border-[#2563EB]/25 hover:shadow-[0_30px_60px_-32px_rgba(37,99,235,0.55)]">
         <motion.span
           animate={{ y: [0, -6, 0] }}
           transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: index * 0.4 }}
@@ -46,10 +46,10 @@ function Step({
           <Icon aria-hidden className="size-5 text-[#2563EB]" />
         </motion.span>
 
-        <h3 className="mt-5 font-[family-name:var(--font-poppins)] text-[19px] font-bold text-[#0F172A]">
+        <h3 className="mt-5 font-[family-name:var(--font-poppins)] text-[19px] font-bold text-white">
           {step.step}
         </h3>
-        <p className="mt-2 text-[14px] leading-relaxed text-[#475569]">{step.copy}</p>
+        <p className="mt-2 text-[14px] leading-relaxed text-white/65">{step.copy}</p>
       </div>
     </motion.li>
   );
@@ -86,10 +86,10 @@ export default function ProgrammeRoadmap() {
           <span className="inline-block rounded-full border border-[#2563EB]/20 bg-[#2563EB]/8 px-3.5 py-1.5 font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.18em] text-[#2563EB]">
             Included with every programme
           </span>
-          <h2 className="mt-5 max-w-2xl font-[family-name:var(--font-poppins)] text-[clamp(1.9rem,3.4vw,3rem)] font-extrabold leading-[1.1] tracking-[-0.025em] text-[#0F172A]">
+          <h2 className="mt-5 max-w-2xl font-[family-name:var(--font-poppins)] text-[clamp(1.9rem,3.4vw,3rem)] font-extrabold leading-[1.1] tracking-[-0.025em] text-white">
             The Career Journey, End To End
           </h2>
-          <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-[#475569]">
+          <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-white/65">
             Eight stages, in order. Keep scrolling to walk the path.
           </p>
         </div>

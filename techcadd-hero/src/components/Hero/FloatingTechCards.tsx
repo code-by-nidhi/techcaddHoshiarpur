@@ -28,14 +28,19 @@ function TagIcon({ icon }: { icon: CourseTag["icon"] }) {
   if (icon === "react") return <ReactMark className="size-[22px]" />;
   const Icon = LUCIDE[icon];
   return (
-    <span className="grid size-[30px] place-items-center rounded-[9px] bg-[#1d4ed8]/25 ring-1 ring-[#3b82f6]/50">
-      <Icon aria-hidden className="size-4 text-[#60a5fa]" />
+    <span className="grid size-[30px] place-items-center rounded-[9px] border border-[rgba(120,180,255,0.4)] bg-[rgba(70,140,255,0.18)] shadow-[0_0_14px_-2px_rgba(96,165,250,0.75)]">
+      <Icon aria-hidden className="size-4 text-[#bfdbfe]" />
     </span>
   );
 }
 
+/*
+ * Lit from the hero rather than sitting on it: the fill is a translucent blue
+ * rather than near-black, so the background glow reads through the glass
+ * instead of being blocked by it.
+ */
 const CARD =
-  "flex items-center gap-2.5 rounded-[16px] border border-[#3b82f6]/45 bg-[#070c1c]/75 px-4 py-2.5 shadow-[0_0_26px_-8px_rgba(59,130,246,0.85),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-md transition-shadow duration-300 hover:border-[#60a5fa]/80 hover:shadow-[0_0_44px_-6px_rgba(59,130,246,1)]";
+  "flex items-center gap-2.5 rounded-[16px] border border-[rgba(120,180,255,0.35)] bg-[rgba(35,75,180,0.35)] px-3.5 py-2.5 shadow-[0_8px_30px_rgba(0,120,255,0.25),inset_0_1px_0_rgba(255,255,255,0.10)] backdrop-blur-[18px] transition-[transform,box-shadow,border-color,background-color] duration-300 hover:-translate-y-1 hover:scale-[1.03] hover:border-[rgba(150,200,255,0.65)] hover:bg-[rgba(45,90,205,0.45)] hover:shadow-[0_14px_44px_rgba(0,140,255,0.45)] motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100 sm:px-4";
 
 /**
  * The orbit. Below `sm` the absolute ring would collide with the robot, so the
@@ -78,7 +83,7 @@ export default function FloatingTechCards() {
             className={CARD}
           >
             <TagIcon icon={tag.icon} />
-            <span className="whitespace-nowrap text-[13.5px] font-medium text-white">
+            <span className="whitespace-nowrap text-[13.5px] font-semibold tracking-[0.01em] text-white">
               {tag.label}
             </span>
           </motion.button>
@@ -101,7 +106,7 @@ export function TechCardsGrid() {
         >
           <span className={`${CARD} justify-center px-3 py-2.5`}>
             <TagIcon icon={tag.icon} />
-            <span className="truncate text-[12.5px] font-medium text-white">{tag.label}</span>
+            <span className="truncate text-[12.5px] font-semibold tracking-[0.01em] text-white">{tag.label}</span>
           </span>
         </motion.li>
       ))}

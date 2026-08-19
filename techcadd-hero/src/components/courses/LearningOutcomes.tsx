@@ -21,10 +21,10 @@ export default function LearningOutcomes({ course }: { course: Course }) {
           {course.learningOutcomes.map((o) => (
             <li
               key={o}
-              className="flex items-start gap-3 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-[0_10px_30px_-26px_rgba(15,23,42,0.6)]"
+              className="flex items-start gap-3 rounded-2xl border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-4 shadow-[0_10px_30px_-26px_rgba(15,23,42,0.6)]"
             >
               <FiCheckCircle aria-hidden className="mt-0.5 size-[18px] shrink-0 text-[#2563EB]" />
-              <span className="text-[13.5px] leading-relaxed text-[#334155]">{o}</span>
+              <span className="text-[13.5px] leading-relaxed text-white/75">{o}</span>
             </li>
           ))}
         </motion.ul>

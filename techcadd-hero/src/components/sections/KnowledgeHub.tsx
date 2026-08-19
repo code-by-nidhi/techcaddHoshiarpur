@@ -44,7 +44,7 @@ export default function KnowledgeHub({ articles, topics }: KnowledgeHubProps) {
   if (!hero) return null;
 
   return (
-    <section id="blog" className="relative overflow-x-clip bg-white section-pad">
+    <section id="blog" className="relative overflow-x-clip bg-[#050B1F] section-pad">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         <SectionHeading
           tone="light"
@@ -71,7 +71,7 @@ export default function KnowledgeHub({ articles, topics }: KnowledgeHubProps) {
                   {hero.category.name}
                 </span>
                 {hero.trending && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-[#F59E0B] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[#0F172A]">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#F59E0B] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-white">
                     <Flame aria-hidden className="size-3" />
                     Trending
                   </span>
@@ -119,7 +119,11 @@ export default function KnowledgeHub({ articles, topics }: KnowledgeHubProps) {
                 <motion.article
                   whileHover={{ y: -5 }}
                   transition={{ type: "spring", stiffness: 240, damping: 22 }}
+<<<<<<< HEAD
                   className="group relative h-full rounded-[26px] border border-slate-200/80 bg-white p-7 shadow-[0_14px_40px_-32px_rgba(15,23,42,0.8)] transition-shadow duration-500 hover:shadow-[0_28px_60px_-34px_rgba(37,99,235,0.55)]"
+=======
+                  className="group h-full rounded-[26px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-7 shadow-[0_14px_40px_-32px_rgba(15,23,42,0.8)] transition-shadow duration-500 hover:shadow-[0_28px_60px_-34px_rgba(37,99,235,0.55)]"
+>>>>>>> 846a78cb9390a2bc067ce316d489cb2e71af6a80
                 >
                   <div className="flex items-center gap-2.5">
                     <span
@@ -137,15 +141,25 @@ export default function KnowledgeHub({ articles, topics }: KnowledgeHubProps) {
                     )}
                   </div>
 
+<<<<<<< HEAD
                   <h3 className="mt-4 font-[family-name:var(--font-poppins)] text-[18px] font-bold leading-snug text-[#0F172A] transition-colors duration-300 group-hover:text-[#2563EB]">
                     <Link href={`/blog/${p.slug}`} className="after:absolute after:inset-0">
                       {p.title}
                     </Link>
+=======
+                  <h3 className="mt-4 font-[family-name:var(--font-poppins)] text-[18px] font-bold leading-snug text-white transition-colors duration-300 group-hover:text-[#2563EB]">
+                    {p.title}
+>>>>>>> 846a78cb9390a2bc067ce316d489cb2e71af6a80
                   </h3>
-                  <p className="mt-2.5 text-[13.5px] leading-relaxed text-[#475569]">{p.excerpt}</p>
+                  <p className="mt-2.5 text-[13.5px] leading-relaxed text-white/65">{p.excerpt}</p>
 
+<<<<<<< HEAD
                   <div className="mt-5 flex items-center gap-3 border-t border-slate-100 pt-4 text-[12.5px] text-[#64748B]">
                     <span className="font-medium text-[#0F172A]">{p.author.name}</span>
+=======
+                  <div className="mt-5 flex items-center gap-3 border-t border-white/[0.08] pt-4 text-[12.5px] text-white/50">
+                    <span className="font-medium text-white">{p.author}</span>
+>>>>>>> 846a78cb9390a2bc067ce316d489cb2e71af6a80
                     <span aria-hidden>·</span>
                     <span>{formatDate(p.publishedAt)}</span>
                     <span className="ml-auto inline-flex items-center gap-1.5">
@@ -160,8 +174,8 @@ export default function KnowledgeHub({ articles, topics }: KnowledgeHubProps) {
 
           {/* trending list */}
           <Reveal delay={0.1} className="lg:col-span-7">
-            <div className="h-full rounded-[26px] border border-slate-200/80 bg-[#F8FAFC] p-7">
-              <p className="flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-[#94A3B8]">
+            <div className="h-full rounded-[26px] border border-[rgba(80,130,255,0.2)] bg-[#F8FAFC] p-7">
+              <p className="flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-white/40">
                 <Flame aria-hidden className="size-3.5 text-[#F59E0B]" />
                 Trending this month
               </p>
@@ -177,11 +191,16 @@ export default function KnowledgeHub({ articles, topics }: KnowledgeHubProps) {
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       <span className="flex-1">
-                        <span className="block text-[15px] font-semibold leading-snug text-[#0F172A] transition-colors duration-300 group-hover:text-[#2563EB]">
+                        <span className="block text-[15px] font-semibold leading-snug text-white transition-colors duration-300 group-hover:text-[#2563EB]">
                           {p.title}
                         </span>
+<<<<<<< HEAD
                         <span className="mt-1 block text-[12.5px] text-[#64748B]">
                           {p.category.name} · {p.author.name} · {p.readingTime} min read
+=======
+                        <span className="mt-1 block text-[12.5px] text-white/50">
+                          {p.category} · {p.author} · {p.minutes} min read
+>>>>>>> 846a78cb9390a2bc067ce316d489cb2e71af6a80
                         </span>
                       </span>
                       <ArrowUpRight
@@ -197,16 +216,24 @@ export default function KnowledgeHub({ articles, topics }: KnowledgeHubProps) {
 
           {/* popular topics */}
           <Reveal delay={0.16} className="lg:col-span-5">
-            <div className="h-full rounded-[26px] border border-slate-200/80 bg-white p-7">
-              <p className="text-[11px] uppercase tracking-[0.16em] text-[#94A3B8]">
+            <div className="h-full rounded-[26px] border border-[rgba(80,130,255,0.2)] bg-[rgba(10,15,35,0.75)] backdrop-blur-[20px] p-7">
+              <p className="text-[11px] uppercase tracking-[0.16em] text-white/40">
                 Popular topics
               </p>
               <ul className="mt-5 flex flex-wrap gap-2.5">
+<<<<<<< HEAD
                 {topics.map((topic) => (
                   <li key={topic.id}>
                     <Link
                       href={`/blog?category=${topic.slug}`}
                       className="inline-block rounded-full border border-slate-200 px-4 py-2 text-[13.5px] font-medium text-[#334155] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#2563EB] hover:text-[#2563EB] hover:shadow-[0_10px_24px_-16px_rgba(37,99,235,0.9)]"
+=======
+                {TOPICS.map((t) => (
+                  <li key={t}>
+                    <a
+                      href="#blog"
+                      className="inline-block rounded-full border border-[rgba(80,130,255,0.2)] px-4 py-2 text-[13.5px] font-medium text-white/75 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#2563EB] hover:text-[#2563EB] hover:shadow-[0_10px_24px_-16px_rgba(37,99,235,0.9)]"
+>>>>>>> 846a78cb9390a2bc067ce316d489cb2e71af6a80
                     >
                       {topic.name}
                     </Link>

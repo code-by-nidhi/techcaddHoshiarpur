@@ -29,14 +29,17 @@ export function AuthLayout({ title, description, children, footer, secure }: Aut
    */
   const brand = (
     <span className="flex flex-col items-center gap-2">
-      <span className="flex items-center justify-center gap-2">
-        <BrandLogo height="h-5" />
+      {/* The wordmark sits alone on its row so it lands on the true centre
+          line. With the badge beside it the pair was centred as a group, which
+          pushed the wordmark itself left and left nothing below it aligned. */}
+      <BrandLogo height="h-5" />
+      <span className="flex items-center justify-center gap-1.5">
+        <span className="text-[13px] font-semibold tracking-tight text-slate-500">
+          {BRAND.branch}
+        </span>
         <span className="rounded bg-primary-50 px-1.5 py-0.5 text-[10px] font-semibold tracking-wider text-primary-700 uppercase">
           {BRAND.product}
         </span>
-      </span>
-      <span className="text-[13px] font-semibold tracking-tight text-slate-500">
-        {BRAND.branch}
       </span>
     </span>
   )
