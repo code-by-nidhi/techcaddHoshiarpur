@@ -22,7 +22,7 @@ export const CARD =
  * Brand navy — the same value the navbar carries, so a dark band on a course
  * page and the bar above it read as one surface rather than two near-misses.
  */
-export const DARK = "#101C4D";
+export const DARK = "#101E52";
 
 export function Section({
   id,
