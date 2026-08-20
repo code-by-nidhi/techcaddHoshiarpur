@@ -28,7 +28,7 @@ export const COURSES: Course[] = [
     duration: "6 Months",
     mode: "Online / Offline",
     certification: true,
-    heroImage: "/images/mern.webp",
+    heroImage: "/images/courses/full-stack-web-development.jpeg",
     video: {
       url: "",
       thumbnail: "/images/classroom.webp",
