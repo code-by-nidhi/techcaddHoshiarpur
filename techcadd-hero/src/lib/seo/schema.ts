@@ -1,4 +1,5 @@
 import { MEGA_FOOTER } from "@/lib/site";
+import { MAPS_HREF, POSTAL_ADDRESS } from "@/lib/cta";
 
 /**
  * Structured data builders.
@@ -28,17 +29,20 @@ type Json = Record<string, unknown>;
 const sameAs = Object.values(MEGA_FOOTER.social).filter((u): u is string => Boolean(u));
 
 /**
- * The postal address.
+ * The postal address, in full.
  *
- * `MEGA_FOOTER.contact.address` is "Techcadd, Hoshiarpur, Punjab" — a locality
- * and a region, with no street line. Splitting a street out of it would mean
- * inventing one, so the schema carries what is known and stops there.
+ * This used to carry only a locality and a region, because the footer's line —
+ * "Techcadd, Hoshiarpur, Punjab" — had no street in it and inventing one would
+ * have been worse than omitting it. The real address is now known, so local
+ * search gets the door rather than the town.
  */
 const address: Json = {
   "@type": "PostalAddress",
-  addressLocality: "Hoshiarpur",
-  addressRegion: "Punjab",
-  addressCountry: "IN",
+  streetAddress: POSTAL_ADDRESS.street,
+  addressLocality: POSTAL_ADDRESS.locality,
+  addressRegion: POSTAL_ADDRESS.region,
+  postalCode: POSTAL_ADDRESS.postalCode,
+  addressCountry: POSTAL_ADDRESS.country,
 };
 
 /** The publisher, referenced by @id from every other node. */
@@ -97,6 +101,7 @@ export function localBusinessSchema(): Json {
     email: MEGA_FOOTER.contact.email,
     address,
     parentOrganization: { "@id": ORG_ID },
+    hasMap: MAPS_HREF,
     priceRange: "₹₹",
   };
 }

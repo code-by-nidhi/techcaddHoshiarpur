@@ -6,6 +6,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 import type { IconType } from "react-icons";
 import { useSite } from "@/lib/cms/site-context";
 import { LIGHT_GLASS, SectionTitle, Shell, fadeUp, stagger } from "./shared";
+import { MAPS_HREF, whatsappHref } from "@/lib/cta";
 
 type Card = { icon: IconType; label: string; value: string; href?: string; tint: string };
 type Action = { icon: IconType; label: string; href: string; tint: string };
@@ -34,6 +35,8 @@ export default function ContactInfo() {
       icon: FiMapPin,
       label: "Location",
       value: address,
+      /* the whole card is the link — see the `href ? <a>` branch below */
+      href: MAPS_HREF,
       tint: "from-[#3B82F6] to-[#60A5FA]",
     },
   ];
@@ -48,7 +51,7 @@ export default function ContactInfo() {
     {
       icon: FaWhatsapp,
       label: "WhatsApp",
-      href: `https://wa.me/${phoneDigits}`,
+      href: whatsappHref(),
       tint: "from-[#22C55E] to-[#16A34A]",
     },
     {

@@ -20,7 +20,7 @@ export const WHATSAPP_NUMBER = "916284347710";
 
 /** What the chat is pre-filled with when no CTA asks for something narrower. */
 export const WHATSAPP_DEFAULT_MESSAGE =
-  "Hi TechCadd, I would like to know more about your courses and training programs.";
+  "Hi TechCadd, I would like to know more about your courses.";
 
 /**
  * A wa.me link, optionally with its own opening message.
@@ -55,4 +55,64 @@ export function whatsappLink(message?: string) {
     target: "_blank" as const,
     rel: "noopener noreferrer",
   };
+}
+
+/* -------------------------------------------------------------------------- */
+/*  the other three ways to reach us                                          */
+/* -------------------------------------------------------------------------- */
+
+/*
+ * The phone number, address and email are CMS content — Settings holds one of
+ * each and `useSite()` serves it, falling back to MEGA_FOOTER.contact. So these
+ * are builders that take the current value rather than constants that would go
+ * stale the moment somebody edits Settings.
+ */
+
+/** `tel:` from any formatting of a number: "+91 62843 47710" -> "tel:+916284347710". */
+export function telHref(phone: string): string {
+  return `tel:+${phone.replace(/\D/g, "")}`;
+}
+
+export function mailtoHref(email: string, subject?: string): string {
+  return subject ? `mailto:${email}?subject=${encodeURIComponent(subject)}` : `mailto:${email}`;
+}
+
+/**
+ * A Google Maps link for a written address.
+ *
+ * The `search/?api=1&query=` form is Google's documented URL scheme: it needs
+ * no API key and no coordinates, which matters because we do not have verified
+ * coordinates for the campus and inventing them would drop a pin on the wrong
+ * building.
+ */
+export function mapsHref(address: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+}
+
+/**
+ * The campus, written out in full.
+ *
+ * Separate from the address `useSite()` serves, which is the short line the
+ * footer and the contact cards display. This is the precise one, and it is what
+ * a map lookup and the LocalBusiness schema need: "Techcadd, Hoshiarpur,
+ * Punjab" drops a pin on the town, not on the door.
+ */
+export const POSTAL_ADDRESS = {
+  street: "Shop No 4, City Center, near Bus Stand",
+  locality: "Model Town, Hoshiarpur",
+  region: "Punjab",
+  postalCode: "146001",
+  country: "IN",
+} as const;
+
+/** The full address on one line, as a map query wants it. */
+export const FULL_ADDRESS =
+  `${POSTAL_ADDRESS.street}, ${POSTAL_ADDRESS.locality}, ${POSTAL_ADDRESS.region} ${POSTAL_ADDRESS.postalCode}`;
+
+/** The campus on Google Maps. Every location card points here. */
+export const MAPS_HREF = mapsHref(FULL_ADDRESS);
+
+/** Attributes for any link that leaves the site — maps, WhatsApp, socials. */
+export function externalLink(href: string) {
+  return { href, target: "_blank" as const, rel: "noopener noreferrer" };
 }

@@ -2,22 +2,20 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa6";
-import { MEGA_FOOTER } from "@/lib/site";
+import { whatsappHref } from "@/lib/cta";
 
 /*
  * Floating WhatsApp CTA, bottom-left.
  *
- * The number comes from `MEGA_FOOTER.contact.whatsapp` rather than being
- * written here, so it stays in step with the footer and the contact page —
- * one place to change if the line ever moves.
+ * The number and the opening message both come from lib/cta, so this stays in
+ * step with every other WhatsApp CTA on the site — one place to change if the
+ * line ever moves or the greeting is reworded.
  */
 export default function WhatsAppButton() {
   const reduce = useReducedMotion();
-  const digits = MEGA_FOOTER.contact.whatsapp.replace(/\D/g, "");
-
   return (
     <motion.a
-      href={`https://wa.me/${digits}`}
+      href={whatsappHref()}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

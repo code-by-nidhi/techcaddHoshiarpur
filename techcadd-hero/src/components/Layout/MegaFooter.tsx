@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { MEGA_FOOTER } from "@/lib/site";
 import { useSite } from "@/lib/cms/site-context";
+import { MAPS_HREF } from "@/lib/cta";
 
 /**
  * Icons for the networks the CMS can hold. Which of them actually render is
@@ -139,7 +140,7 @@ export default function MegaFooter() {
 
         {/* contact bar */}
         <motion.ul variants={riseUp} className="mt-16 grid gap-4 sm:grid-cols-3">
-          <ContactCard icon={MapPin} label="Location">
+          <ContactCard icon={MapPin} label="Location" href={MAPS_HREF}>
             {site.address}
           </ContactCard>
           <ContactCard icon={Phone} label="Phone" href={`tel:+${site.phoneDigits}`}>
@@ -293,14 +294,23 @@ function ContactCard({
     <motion.li
       whileHover={{ y: -4, scale: 1.02 }}
       transition={{ type: "spring", stiffness: 320, damping: 24 }}
-      className={`group rounded-3xl p-5 ${GLASS}`}
+      className={`group rounded-3xl ${GLASS}`}
     >
+      {/* The padding lives on the link, not on the card, so the whole card is
+          the hit area rather than just the line of text inside it. Identical
+          to look at — the same 20px is still there. */}
       {href ? (
-        <a href={href} className="flex items-center gap-4">
+        <a
+          href={href}
+          {...(href.startsWith("http")
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+          className="flex items-center gap-4 rounded-3xl p-5"
+        >
           {body}
         </a>
       ) : (
-        <span className="flex items-center gap-4">{body}</span>
+        <span className="flex items-center gap-4 p-5">{body}</span>
       )}
     </motion.li>
   );
