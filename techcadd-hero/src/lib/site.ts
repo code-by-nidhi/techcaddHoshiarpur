@@ -233,21 +233,71 @@ export const LAUNCH = {
 
 /* ------------------------- mega footer -------------------------------- */
 
+/**
+ * The footer sitemap.
+ *
+ * Every entry carries the route it goes to. They were labels with `href="#"`
+ * until now, which read as a five-column sitemap and behaved as thirty dead
+ * links — the single worst thing on the page for anyone using a keyboard or a
+ * screen reader. Nothing here points at a page that does not exist: a heading
+ * with no destination was dropped rather than given a placeholder.
+ */
 export const MEGA_FOOTER = {
   columns: [
-    { title: "Courses", links: ["Artificial Intelligence", "Full Stack Development", "Data Science", "Cyber Security", "Digital Marketing", "Cloud & DevOps"] },
-    { title: "Career Tracks", links: ["MERN Developer", "Data Analyst", "ML Engineer", "Cloud Engineer", "Security Analyst", "Performance Marketer"] },
-    { title: "Resources", links: ["Knowledge Hub", "Student Success", "Technology Universe", "Career Roadmap", "Help Center"] },
-    { title: "Company", links: ["About Us", "Our Labs", "Mentor Network", "Careers at Techcadd", "Contact"] },
-    { title: "Support", links: ["Admissions", "Fees & Instalments", "Batch Schedules", "Doubt Sessions", "Alumni Support"] },
+    {
+      title: "Courses",
+      links: [
+        { label: "Artificial Intelligence", href: "/courses/artificial-intelligence" },
+        { label: "Full Stack Development", href: "/courses/full-stack-web-development" },
+        { label: "Data Science", href: "/courses/data-science" },
+        { label: "Data Analytics", href: "/courses/data-analytics" },
+        { label: "Digital Marketing", href: "/courses/digital-marketing" },
+        { label: "Browse all courses", href: "/courses" },
+      ],
+    },
+    {
+      title: "Career Tracks",
+      links: [
+        { label: "MERN Developer", href: "/courses/mern-stack-development" },
+        { label: "Data Analyst", href: "/courses/data-analytics" },
+        { label: "ML Engineer", href: "/courses/machine-learning" },
+        { label: "Python Developer", href: "/courses/python-programming" },
+        { label: "Java Developer", href: "/courses/java-programming" },
+        { label: "Career outcomes", href: "/#outcomes" },
+      ],
+    },
+    {
+      title: "Resources",
+      links: [
+        { label: "Knowledge Hub", href: "/blog" },
+        { label: "Student Success", href: "/#stories" },
+        { label: "Technology Universe", href: "/#universe-panel" },
+        { label: "Career Roadmap", href: "/#programs" },
+        { label: "Help Center", href: "/#faq" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { label: "About Us", href: "/about" },
+        { label: "Mission and Vision", href: "/about/mission-and-vision" },
+        { label: "Our Founder", href: "/about/our-founder" },
+        { label: "Our Labs", href: "/#capabilities" },
+        { label: "Contact", href: "/contact" },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        { label: "Admissions", href: "/contact" },
+        { label: "Internship & Training", href: "/internship-training" },
+        { label: "After 12th", href: "/after-12th" },
+        { label: "Why choose us", href: "/#why" },
+        { label: "Book a demo", href: "/#launch" },
+      ],
+    },
   ],
-  contact: {
-    address: "Techcadd, Hoshiarpur, Punjab",
-    phone: "+91 00000 00000",
-    whatsapp: "+91 00000 00000",
-    email: "hello@techcadd.com",
-  },
-};
+} as const;
 
 /* --------------------------- about page ------------------------------- */
 

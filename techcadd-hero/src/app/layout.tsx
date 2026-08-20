@@ -11,6 +11,9 @@ import type { Metadata, Viewport } from "next";
 import { Sora, Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import CursorFollower from "@/components/UI/CursorFollower";
 import Preloader from "@/components/UI/Preloader";
+import { safely } from "@/lib/cms/client";
+import { getSite, type CmsSite } from "@/lib/cms/content";
+import { SiteProvider } from "@/lib/cms/site-context";
 import "./globals.css";
 
 const sora = Sora({
@@ -91,9 +94,16 @@ export const viewport: Viewport = {
   colorScheme: "dark",
 };
 
-export default function RootLayout({
+/**
+ * Fetched once here rather than per page: the footer is on every route, and
+ * the contact details it prints are the same on all of them. `safely` means a
+ * CMS that is down costs the site its freshest phone number, not its layout.
+ */
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const site = await safely(getSite(), null as CmsSite | null);
+
   return (
     <html
       lang="en"
@@ -113,8 +123,10 @@ export default function RootLayout({
         <CursorFollower />
         <Preloader />
 
-        {children}
-        <DemoModal />
+        <SiteProvider site={site}>
+          {children}
+          <DemoModal />
+        </SiteProvider>
       </body>
     </html>
   );

@@ -4,53 +4,61 @@ import { motion } from "framer-motion";
 import { FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import type { IconType } from "react-icons";
-import { CONTACT, LIGHT_GLASS, SectionTitle, Shell, fadeUp, phoneDigits, stagger } from "./shared";
+import { useSite } from "@/lib/cms/site-context";
+import { LIGHT_GLASS, SectionTitle, Shell, fadeUp, stagger } from "./shared";
 
-const CARDS: { icon: IconType; label: string; value: string; href?: string; tint: string }[] = [
-  {
-    icon: FiPhone,
-    label: "Phone",
-    value: CONTACT.phone,
-    href: `tel:${phoneDigits}`,
-    tint: "from-[#142C8E] to-[#2563EB]",
-  },
-  {
-    icon: FiMail,
-    label: "Email",
-    value: CONTACT.email,
-    href: `mailto:${CONTACT.email}`,
-    tint: "from-[#3B82F6] to-[#60A5FA]",
-  },
-  {
-    icon: FiMapPin,
-    label: "Location",
-    value: CONTACT.location,
-    tint: "from-[#3B82F6] to-[#60A5FA]",
-  },
-];
-
-const ACTIONS: { icon: IconType; label: string; href: string; tint: string }[] = [
-  {
-    icon: FiPhone,
-    label: "Call Now",
-    href: `tel:${phoneDigits}`,
-    tint: "from-[#142C8E] to-[#2563EB]",
-  },
-  {
-    icon: FaWhatsapp,
-    label: "WhatsApp",
-    href: `https://wa.me/${phoneDigits}`,
-    tint: "from-[#22C55E] to-[#16A34A]",
-  },
-  {
-    icon: FiMail,
-    label: "Email Us",
-    href: `mailto:${CONTACT.email}`,
-    tint: "from-[#60A5FA] to-[#C026D3]",
-  },
-];
+type Card = { icon: IconType; label: string; value: string; href?: string; tint: string };
+type Action = { icon: IconType; label: string; href: string; tint: string };
 
 export default function ContactInfo() {
+  /* Built inside the component rather than at module scope: the details are
+     CMS content now, so they are not known until render. */
+  const { phone, phoneDigits, email, address } = useSite();
+
+  const CARDS: Card[] = [
+    {
+      icon: FiPhone,
+      label: "Phone",
+      value: phone,
+      href: `tel:+${phoneDigits}`,
+      tint: "from-[#142C8E] to-[#2563EB]",
+    },
+    {
+      icon: FiMail,
+      label: "Email",
+      value: email,
+      href: `mailto:${email}`,
+      tint: "from-[#3B82F6] to-[#60A5FA]",
+    },
+    {
+      icon: FiMapPin,
+      label: "Location",
+      value: address,
+      tint: "from-[#3B82F6] to-[#60A5FA]",
+    },
+  ];
+
+  const ACTIONS: Action[] = [
+    {
+      icon: FiPhone,
+      label: "Call Now",
+      href: `tel:+${phoneDigits}`,
+      tint: "from-[#142C8E] to-[#2563EB]",
+    },
+    {
+      icon: FaWhatsapp,
+      label: "WhatsApp",
+      href: `https://wa.me/${phoneDigits}`,
+      tint: "from-[#22C55E] to-[#16A34A]",
+    },
+    {
+      icon: FiMail,
+      label: "Email Us",
+      href: `mailto:${email}`,
+      tint: "from-[#60A5FA] to-[#C026D3]",
+    },
+  ];
+
   return (
     <section className="relative bg-[#EEF4FF] py-24 lg:py-28">
       <Shell>

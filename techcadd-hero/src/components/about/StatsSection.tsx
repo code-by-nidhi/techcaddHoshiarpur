@@ -1,6 +1,9 @@
+"use client";
+
 import AnimatedCounter from "@/components/about/ui/AnimatedCounter";
 import ScrollReveal from "@/components/about/ui/ScrollReveal";
-import { stats } from "@/data/about";
+import { stats as fallbackStats } from "@/data/about";
+import { useSite } from "@/lib/cms/site-context";
 import { cn } from "@/lib/utils";
 
 /**
@@ -11,8 +14,24 @@ import { cn } from "@/lib/utils";
  *
  * A list rather than a `<dl>`: the decorative icon badge has to sit beside the
  * figure, and `<dl>` only permits `dt`/`dd` inside its groups.
+ *
+ * The figures come from the CMS when an admin has entered any, and from the
+ * built-in set otherwise. The icons stay here either way: they are a design
+ * decision about this row, and asking an editor to pick a Lucide icon name in
+ * a text field is how a stat ends up rendering nothing.
  */
 export default function StatsSection() {
+  const cmsStats = useSite().stats;
+
+  /* Positional: the nth figure gets the nth icon, cycling if an editor adds
+     more than the four the row was designed around. */
+  const stats = cmsStats.length
+    ? cmsStats.map((stat, index) => ({
+        ...stat,
+        icon: fallbackStats[index % fallbackStats.length].icon,
+      }))
+    : fallbackStats;
+
   /*
    * Four across only from `xl`. Between 1024 and 1280 the four columns are too
    * narrow for a badge plus a figure like "25,000+", and the number crowded the

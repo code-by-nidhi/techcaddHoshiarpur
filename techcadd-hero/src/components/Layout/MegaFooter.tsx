@@ -5,22 +5,26 @@ import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
-  Mail, MapPin, Phone, MessageCircle, Linkedin, Instagram, Youtube, Facebook, ArrowRight, Check,
+  Mail, MapPin, Phone, MessageCircle, Linkedin, Instagram, Youtube, Facebook, X, Globe,
+  ArrowRight, Check, Loader2,
 } from "lucide-react";
 import { MEGA_FOOTER } from "@/lib/site";
+import { PUBLIC_CMS_API_URL } from "@/lib/cms/client";
+import { useSite } from "@/lib/cms/site-context";
 
-const SOCIALS = [
-  { icon: Linkedin, label: "LinkedIn", href: "#" },
-  { icon: Instagram, label: "Instagram", href: "#" },
-  { icon: Youtube, label: "YouTube", href: "#" },
-  { icon: Facebook, label: "Facebook", href: "#" },
-];
-
-const LEGAL = [
-  { label: "Privacy Policy", href: "#" },
-  { label: "Terms of Service", href: "#" },
-  { label: "Sitemap", href: "#" },
-];
+/**
+ * Icons for the networks the CMS can hold. Which of them actually render is
+ * decided by the settings row — a network nobody has filled in is not shown at
+ * all, rather than linking to `#`.
+ */
+const SOCIAL_ICONS: Record<string, typeof Linkedin> = {
+  linkedin: Linkedin,
+  instagram: Instagram,
+  youtube: Youtube,
+  facebook: Facebook,
+  x: X,
+  website: Globe,
+};
 
 /** The glass recipe every panel down here shares. */
 const GLASS =
@@ -52,11 +56,25 @@ const riseUp: Variants = {
 const MOBILE = /^[6-9]\d{9}$/;
 
 export default function MegaFooter() {
+  const site = useSite();
   const [phone, setPhone] = useState("");
+  const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const subscribe = () => {
+  /**
+   * Records the number as an enquiry in the CMS.
+   *
+   * There is no separate "updates" list to join: the counselling team works out
+   * of the enquiries inbox, and a number left here is a person asking to be
+   * told when a batch opens — which is a lead. `formType` is what tells them
+   * apart from a course enquiry once they arrive.
+   *
+   * Straight to the CMS, matching the course enquiry form. The CMS refuses any
+   * field it does not recognise, so a public form cannot set a status or assign
+   * itself to a colleague.
+   */
+  const subscribe = async () => {
     if (!MOBILE.test(phone)) {
       setError(
         phone.length === 0
@@ -67,9 +85,44 @@ export default function MegaFooter() {
     }
 
     setError(null);
-    // wire this to your updates provider — the number is validated by here
-    setSent(true);
-    setPhone("");
+    setSending(true);
+
+    try {
+      const response = await fetch(`${PUBLIC_CMS_API_URL}/enquiries`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          // The form asks for a number and nothing else, so there is no name to
+          // send. The CMS requires one, and this is the honest description of
+          // what the row is.
+          studentName: "Footer updates request",
+          phone,
+          message: "Asked to be notified when the next batch opens.",
+          source: "website",
+          formType: "Footer Updates",
+          sourceUrl: typeof window === "undefined" ? undefined : window.location.href,
+          userAgent: typeof navigator === "undefined" ? undefined : navigator.userAgent,
+        }),
+      });
+
+      /*
+       * A 429 here is the CMS's duplicate guard far more often than a flood —
+       * the number did reach us, we are simply not recording it twice. Telling
+       * the visitor it worked is the truthful answer.
+       */
+      if (!response.ok && response.status !== 429) {
+        const payload = (await response.json().catch(() => ({}))) as { message?: string };
+        setError(payload.message ?? "That didn't go through. Please try again, or call us.");
+        return;
+      }
+
+      setSent(true);
+      setPhone("");
+    } catch {
+      setError("We couldn't reach the server. Please try again, or call us.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -127,12 +180,16 @@ export default function MegaFooter() {
               <motion.button
                 type="button"
                 onClick={subscribe}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-7 py-3.5 text-[14.5px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)] transition-shadow duration-300 hover:shadow-[0_0_44px_-4px_rgba(59,130,246,1)]"
+                disabled={sending}
+                aria-busy={sending}
+                whileHover={sending ? undefined : { y: -2 }}
+                whileTap={sending ? undefined : { scale: 0.98 }}
+                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-7 py-3.5 text-[14.5px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)] transition-shadow duration-300 hover:shadow-[0_0_44px_-4px_rgba(59,130,246,1)] disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {sent ? "Subscribed" : "Subscribe"}
-                {sent ? (
+                {sending ? "Sending" : sent ? "Subscribed" : "Subscribe"}
+                {sending ? (
+                  <Loader2 aria-hidden className="size-4 animate-spin" />
+                ) : sent ? (
                   <Check aria-hidden className="size-4" />
                 ) : (
                   <ArrowRight
@@ -160,7 +217,7 @@ export default function MegaFooter() {
           </div>
 
           <motion.a
-            href={`https://wa.me/${MEGA_FOOTER.contact.whatsapp.replace(/\D/g, "")}`}
+            href={`https://wa.me/${site.phoneDigits}`}
             whileHover={{ y: -4, scale: 1.02 }}
             transition={{ type: "spring", stiffness: 320, damping: 24 }}
             className="group flex items-center gap-4 rounded-3xl bg-gradient-to-br from-[#22C55E] to-[#16A34A] p-6 text-white shadow-[0_18px_46px_-22px_rgba(34,197,94,0.9)]"
@@ -205,22 +262,31 @@ export default function MegaFooter() {
                 industry mentors and career support that doesn&apos;t stop at the certificate.
               </p>
 
-              <ul className="mt-7 flex gap-3">
-                {SOCIALS.map(({ icon: Icon, label, href }) => (
-                  <li key={label}>
-                    <motion.a
-                      href={href}
-                      aria-label={label}
-                      whileHover={{ scale: 1.08, y: -3 }}
-                      whileTap={{ scale: 0.96 }}
-                      transition={{ type: "spring", stiffness: 340, damping: 20 }}
-                      className={`grid size-11 place-items-center rounded-full text-white/70 transition-colors duration-300 hover:border-[#60A5FA]/70 hover:text-[#93C5FD] hover:shadow-[0_0_28px_-4px_rgba(59,130,246,0.95)] ${GLASS}`}
-                    >
-                      <Icon aria-hidden className="size-[17px]" />
-                    </motion.a>
-                  </li>
-                ))}
-              </ul>
+              {/* Only the profiles an admin has actually filled in. A row of
+                  icons that all link to "#" is worse than no row at all. */}
+              {site.socials.length > 0 && (
+                <ul className="mt-7 flex gap-3">
+                  {site.socials.map(({ network, label, href }) => {
+                    const Icon = SOCIAL_ICONS[network] ?? Globe;
+                    return (
+                      <li key={network}>
+                        <motion.a
+                          href={href}
+                          aria-label={label}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          whileHover={{ scale: 1.08, y: -3 }}
+                          whileTap={{ scale: 0.96 }}
+                          transition={{ type: "spring", stiffness: 340, damping: 20 }}
+                          className={`grid size-11 place-items-center rounded-full text-white/70 transition-colors duration-300 hover:border-[#60A5FA]/70 hover:text-[#93C5FD] hover:shadow-[0_0_28px_-4px_rgba(59,130,246,0.95)] ${GLASS}`}
+                        >
+                          <Icon aria-hidden className="size-[17px]" />
+                        </motion.a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
           </motion.div>
 
@@ -231,8 +297,8 @@ export default function MegaFooter() {
               </h3>
               <ul className="mt-5 space-y-3">
                 {col.links.map((l) => (
-                  <li key={l}>
-                    <FooterLink href="#">{l}</FooterLink>
+                  <li key={l.label}>
+                    <FooterLink href={l.href}>{l.label}</FooterLink>
                   </li>
                 ))}
               </ul>
@@ -243,13 +309,13 @@ export default function MegaFooter() {
         {/* contact bar */}
         <motion.ul variants={riseUp} className="mt-16 grid gap-4 sm:grid-cols-3">
           <ContactCard icon={MapPin} label="Location">
-            {MEGA_FOOTER.contact.address}
+            {site.address}
           </ContactCard>
-          <ContactCard icon={Phone} label="Phone" href={`tel:${MEGA_FOOTER.contact.phone.replace(/\s/g, "")}`}>
-            {MEGA_FOOTER.contact.phone}
+          <ContactCard icon={Phone} label="Phone" href={`tel:+${site.phoneDigits}`}>
+            {site.phone}
           </ContactCard>
-          <ContactCard icon={Mail} label="Email" href={`mailto:${MEGA_FOOTER.contact.email}`}>
-            {MEGA_FOOTER.contact.email}
+          <ContactCard icon={Mail} label="Email" href={`mailto:${site.email}`}>
+            {site.email}
           </ContactCard>
         </motion.ul>
 
@@ -260,15 +326,21 @@ export default function MegaFooter() {
           variants={riseUp}
           className="flex flex-col items-center justify-between gap-4 py-8 text-[12.5px] text-white/50 sm:flex-row"
         >
-          <p>© {new Date().getFullYear()} Techcadd. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} {site.siteName}. All rights reserved.</p>
+          {/* The legal row was three links to "#". A privacy policy and terms
+              page have to be written before they can be linked, so the row is
+              the sitemap — which exists — until they are. */}
           <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
-            {LEGAL.map(({ label, href }) => (
-              <li key={label}>
-                <FooterLink href={href} className="text-[12.5px]">
-                  {label}
-                </FooterLink>
-              </li>
-            ))}
+            <li>
+              <FooterLink href="/sitemap.xml" className="text-[12.5px]">
+                Sitemap
+              </FooterLink>
+            </li>
+            <li>
+              <FooterLink href="/contact" className="text-[12.5px]">
+                Contact
+              </FooterLink>
+            </li>
           </ul>
         </motion.div>
       </motion.div>
