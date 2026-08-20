@@ -42,7 +42,7 @@ export default async function CoursesIndex() {
     <>
       <Navbar />
 
-      <main className="relative overflow-x-clip bg-[#020B2D]">
+      <main className="relative overflow-x-clip bg-[#101E52]">
         {/* ---- ambience: radial glows over a faint grid ---- */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.05)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_at_top,black,transparent_72%)]" />

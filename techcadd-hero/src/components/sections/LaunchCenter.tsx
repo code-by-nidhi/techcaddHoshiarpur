@@ -15,7 +15,7 @@ export default function LaunchCenter() {
   return (
     <section
       id="launch"
-      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#050B1F] section-pad"
+      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#101E52] section-pad"
     >
       {/* animated field */}
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -37,7 +37,7 @@ export default function LaunchCenter() {
             />
           ))}
 
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,#050B1F_80%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,#101E52_80%)]" />
       </div>
 
       <div className="mx-auto w-full max-w-[1100px] px-6 text-center">

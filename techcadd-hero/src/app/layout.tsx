@@ -94,7 +94,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050B1F",
+  themeColor: "#101E52",
   colorScheme: "dark",
 };
 
@@ -127,7 +127,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="bg-[#050B1F] text-white antialiased">
+      <body className="bg-[#101E52] text-white antialiased">
         <a
           href="#hero-heading"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black"

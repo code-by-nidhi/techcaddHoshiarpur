@@ -34,8 +34,8 @@ const TONES = [
   "from-[#0891B2] to-[#60A5FA]",
   "from-[#142C8E] to-[#2563EB]",
   "from-[#0D9488] to-[#60A5FA]",
-  "from-[#60A5FA] to-[#C026D3]",
-  "from-[#DB2777] to-[#60A5FA]",
+  "from-[#60A5FA] to-[#1D4ED8]",
+  "from-[#1D4ED8] to-[#60A5FA]",
   "from-[#1D4ED8] to-[#60A5FA]",
 ];
 

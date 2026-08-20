@@ -153,7 +153,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(50rem 30rem at 50% -10%, #14306e 0%, #0c1c56 50%, #081540 85%)",
+              "radial-gradient(50rem 30rem at 50% -10%, #14306e 0%, #0c1c56 50%, #14245C 85%)",
           }}
         />
 

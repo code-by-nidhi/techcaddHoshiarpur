@@ -17,7 +17,7 @@ export default function ContactHero() {
   const { phone, phoneDigits } = useSite();
 
   return (
-    <section className="relative overflow-hidden bg-[#020817] pb-24 pt-[132px] lg:pb-32 lg:pt-[168px]">
+    <section className="relative overflow-hidden bg-[#101E52] pb-24 pt-[132px] lg:pb-32 lg:pt-[168px]">
       <Ambience />
       <Particles />
 

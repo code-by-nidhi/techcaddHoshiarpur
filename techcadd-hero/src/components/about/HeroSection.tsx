@@ -221,7 +221,7 @@ function HeroBackdrop() {
         blues below it, and a vignette that pulls the left side back down so the
         copy keeps its contrast.
       */}
-      <div className="absolute inset-0 bg-[#050B1F]" />
+      <div className="absolute inset-0 bg-[#101E52]" />
 
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_78%_60%,rgba(12,26,74,0.95)_0%,rgba(6,10,26,0.6)_45%,transparent_75%)]" />
 

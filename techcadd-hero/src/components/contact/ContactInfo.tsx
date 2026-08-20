@@ -55,7 +55,7 @@ export default function ContactInfo() {
       icon: FiMail,
       label: "Email Us",
       href: `mailto:${email}`,
-      tint: "from-[#60A5FA] to-[#C026D3]",
+      tint: "from-[#60A5FA] to-[#1D4ED8]",
     },
   ];
 

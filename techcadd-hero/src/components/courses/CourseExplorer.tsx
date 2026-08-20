@@ -93,7 +93,7 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
       </ul>
 
       {/* ------------------------------ grid ------------------------------- */}
-      <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-12 grid items-stretch gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {visible.map((course, i) => (
           <motion.li
             key={course.slug}
@@ -107,47 +107,60 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
           >
             <Link
               href={`/courses/${course.slug}`}
-              className="group flex h-full flex-col overflow-hidden rounded-[24px] border border-white/[0.08] bg-[rgba(7,15,40,0.95)] shadow-[0_18px_44px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-2 hover:scale-[1.02] hover:border-[#2563EB]/45 hover:shadow-[0_28px_60px_-28px_rgba(37,99,235,0.65)] motion-reduce:hover:translate-y-0"
+              className="group relative flex h-full min-h-[460px] flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#14245C] shadow-[0_20px_50px_-30px_rgba(0,0,0,0.95)] transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-[#2563EB]/55 hover:shadow-[0_36px_80px_-30px_rgba(37,99,235,0.7)] motion-reduce:hover:translate-y-0"
             >
-              <div className="relative aspect-[16/10] w-full overflow-hidden">
-                <Image
-                  src={course.heroImage}
-                  alt={course.title}
-                  fill
-                  loading="lazy"
-                  sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 30vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:group-hover:scale-100"
-                />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_45%,rgba(2,11,45,0.85))]"
-                />
+              {/* the image is the card, not a thumbnail on top of it */}
+              <Image
+                src={course.heroImage}
+                alt={course.title}
+                fill
+                loading="lazy"
+                sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 30vw"
+                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.09] motion-reduce:group-hover:scale-100"
+              />
+
+              {/* Two overlays rather than one: the first is always on and is what
+                  makes the copy legible over an arbitrary photograph; the second
+                  is the blue lift that only arrives on hover. */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(2,11,45,0.74)_0%,rgba(2,11,45,0.28)_38%,rgba(2,11,45,0.93)_100%)]"
+              />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_78%_at_50%_100%,rgba(37,99,235,0.45)_0%,transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              />
+
+              {/* ------------------------- title, top-left ------------------------ */}
+              <div className="relative z-10 flex items-start justify-between gap-3 p-6 pb-0">
+                <div className="min-w-0">
+                  <h3 className="font-[family-name:var(--font-sora)] text-[19px] font-bold leading-[1.2] tracking-[-0.02em] text-white [text-shadow:0_2px_12px_rgba(2,11,45,0.95)]">
+                    {course.title}
+                  </h3>
+
+                  <span className="mt-2.5 inline-flex rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.1em] text-[#BFDBFE] backdrop-blur-md">
+                    {course.category}
+                  </span>
+                </div>
 
                 {course.badge && (
                   <span
-                    className={`absolute left-3 top-3 rounded-full bg-gradient-to-r px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_0_18px_-4px_rgba(37,99,235,1)] ${
+                    className={`shrink-0 rounded-full bg-gradient-to-r px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_0_18px_-4px_rgba(37,99,235,1)] ${
                       BADGE_TONE[course.badge] ?? BADGE_TONE.Trending
                     }`}
                   >
                     {course.badge}
                   </span>
                 )}
-
-                <span className="absolute bottom-3 left-3 rounded-full border border-white/15 bg-[#020B2D]/70 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.1em] text-[#93C5FD] backdrop-blur-md">
-                  {course.category}
-                </span>
               </div>
 
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="font-[family-name:var(--font-sora)] text-[16px] font-bold leading-snug tracking-[-0.015em] text-white">
-                  {course.title}
-                </h3>
-
-                <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-white/55">
+              {/* ---------------------------- foot -------------------------------- */}
+              <div className="relative z-10 mt-auto p-6 pt-8">
+                <p className="line-clamp-2 text-[13px] leading-relaxed text-white/70">
                   {course.shortDescription}
                 </p>
 
-                <ul className="mt-3.5 grid grid-cols-2 gap-x-3 gap-y-1.5">
+                <ul className="mt-3.5 flex flex-wrap gap-x-3.5 gap-y-1.5">
                   {FEATURES.map((feature) => (
                     <li
                       key={feature}
@@ -159,7 +172,7 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
                   ))}
                 </ul>
 
-                <p className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11.5px] text-white/50">
+                <p className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11.5px] text-white/55">
                   <span className="inline-flex items-center gap-1.5">
                     <FiClock aria-hidden className="size-3.5 text-[#60A5FA]" />
                     {course.duration}
@@ -170,10 +183,18 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
                   </span>
                 </p>
 
-                <span className="mt-5 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-5 py-2.5 text-[12.5px] font-semibold text-white shadow-[0_0_24px_-8px_rgba(37,99,235,0.95)] transition-[transform,box-shadow] duration-300 group-hover:scale-[1.03] group-hover:shadow-[0_0_36px_-6px_rgba(37,99,235,1)] motion-reduce:group-hover:scale-100">
+                <span className="mt-5 inline-flex items-center gap-2 text-[12.5px] font-semibold text-white">
                   Explore Course
-                  <FiArrowRight aria-hidden className="size-3.5" />
+                  <FiArrowRight
+                    aria-hidden
+                    className="size-3.5 transition-transform duration-300 group-hover:translate-x-1 motion-reduce:group-hover:translate-x-0"
+                  />
                 </span>
+                {/* rule that draws itself in on hover, in place of a filled button */}
+                <span
+                  aria-hidden
+                  className="mt-2 block h-px w-0 bg-gradient-to-r from-[#60A5FA] to-transparent transition-[width] duration-500 group-hover:w-full"
+                />
               </div>
             </Link>
           </motion.li>

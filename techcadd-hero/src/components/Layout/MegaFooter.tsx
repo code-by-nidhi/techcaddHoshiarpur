@@ -391,7 +391,7 @@ function Atmosphere() {
       ))}
 
       {/* the seam with the section above */}
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#050B1F] to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#101E52] to-transparent" />
     </div>
   );
 }

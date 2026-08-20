@@ -6,7 +6,7 @@
 export default function CourseLoading() {
   return (
     <div aria-busy="true" aria-label="Loading course">
-      <div className="relative overflow-hidden bg-[#020817] pb-16 pt-[104px] lg:pb-20 lg:pt-[128px]">
+      <div className="relative overflow-hidden bg-[#101E52] pb-16 pt-[104px] lg:pb-20 lg:pt-[128px]">
         <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
           <div className="h-3 w-52 animate-pulse rounded-full bg-white/10" />
 

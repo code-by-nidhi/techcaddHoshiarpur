@@ -435,7 +435,7 @@ export default function Navbar() {
             transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
             /* the sheet now carries the whole catalogue, so it scrolls itself
                rather than pushing past the bottom of the screen */
-            className="mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#050B1F]/95 backdrop-blur-xl xl:hidden"
+            className="mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#101E52]/95 backdrop-blur-xl xl:hidden"
           >
             <motion.ul
               initial="hidden"

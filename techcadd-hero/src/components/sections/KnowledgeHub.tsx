@@ -19,7 +19,7 @@ const TONES = [
   "from-[#142C8E] to-[#2563EB]",
   "from-[#0891B2] to-[#60A5FA]",
   "from-[#0D9488] to-[#60A5FA]",
-  "from-[#60A5FA] to-[#C026D3]",
+  "from-[#60A5FA] to-[#1D4ED8]",
 ];
 
 interface KnowledgeHubProps {

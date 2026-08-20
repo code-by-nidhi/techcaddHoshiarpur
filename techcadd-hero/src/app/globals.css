@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-void: #050B1F;
+  --color-void: #101E52;
   --color-electric: #2563EB;
   --color-violetglow: #60A5FA;
   --color-cyanglow: #60A5FA;
@@ -14,7 +14,7 @@
 }
 
 :root {
-  --void: #050B1F;
+  --void: #101E52;
   --electric: #3b82f6;
   --violetglow: #60a5fa;
   --cyanglow: #22d3ee;
@@ -343,10 +343,10 @@ html.custom-cursor [contenteditable="true"] {
 @theme {
   /*
    * The dark palette is the home page's, taken from the hero backdrop so the
-   * two never drift: #050B1F is the same base the body and the robot stage sit
+   * two never drift: #101E52 is the same base the body and the robot stage sit
    * on, and #0c1a4a is the warmer navy pocket behind the composition.
    */
-  --color-royal-deep: #050B1F;
+  --color-royal-deep: #101E52;
   --color-royal: #0c1a4a;
   --color-paper: #ffffff;
   --color-mist: #f2f6fd;
@@ -384,7 +384,7 @@ html.custom-cursor [contenteditable="true"] {
 /* Root defaults mirror the dark shell the rest of the site runs on, so the
    global border rule resolves to exactly the value it carried before. */
 :root {
-  --ctx-bg: #050B1F;
+  --ctx-bg: #101E52;
   --ctx-ink: #ffffff;
   --ctx-ink-muted: #cbd5e1;
   --ctx-ink-dim: #94a3b8;
@@ -399,7 +399,7 @@ html.custom-cursor [contenteditable="true"] {
 }
 
 .surface-dark {
-  --ctx-bg: #081540;
+  --ctx-bg: #14245C;
   --ctx-ink: #ffffff;
   --ctx-ink-muted: #c8d5f0;
   --ctx-ink-dim: #9fb2d8;
@@ -734,7 +734,7 @@ html.custom-cursor [contenteditable="true"] {
 /* Code blocks stay dark on both surfaces — a light code block reads as an
    input field, and the syntax colours a highlighter adds later assume dark. */
 .article-prose pre {
-  background: #081540;
+  background: #14245C;
   border: 1px solid rgb(255 255 255 / 0.1);
   border-radius: var(--radius-card);
   padding: 1.25rem 1.4rem;

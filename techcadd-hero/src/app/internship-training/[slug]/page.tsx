@@ -70,7 +70,7 @@ export default async function ProgrammePage({
 
       <main id="content">
         {/* ---------------------------- hero ---------------------------- */}
-        <section className="relative overflow-x-clip bg-[#050B1F] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
+        <section className="relative overflow-x-clip bg-[#101E52] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
           <span
             aria-hidden
             className="pointer-events-none absolute -left-[10%] top-0 size-[32rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.22),transparent_70%)] blur-3xl"

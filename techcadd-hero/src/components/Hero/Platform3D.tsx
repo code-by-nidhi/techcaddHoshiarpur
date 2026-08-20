@@ -71,7 +71,7 @@ export default function Platform3D() {
           depthScale={1.1}
           minDepthThreshold={0.4}
           maxDepthThreshold={1.35}
-          color="#070c1c"
+          color="#101E52"
           metalness={0.75}
           roughness={0.85}
         />

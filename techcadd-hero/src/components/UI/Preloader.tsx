@@ -82,7 +82,7 @@ export default function Preloader() {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-[100000] grid place-items-center overflow-hidden bg-[linear-gradient(160deg,#050B1F_0%,#0B1642_45%,#101C4D_100%)]"
+          className="fixed inset-0 z-[100000] grid place-items-center overflow-hidden bg-[linear-gradient(160deg,#101E52_0%,#0B1642_45%,#101C4D_100%)]"
           role="status"
           aria-live="polite"
           aria-label="Loading TechCadd"

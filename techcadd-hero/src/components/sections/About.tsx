@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
-  ArrowRight, Briefcase, Building2, Phone, Users,
+  ArrowRight, Briefcase, Building2, Phone, Play, Users,
   type LucideIcon,
 } from "lucide-react";
 import { ABOUT, VALUES } from "@/lib/site";
@@ -22,33 +22,26 @@ import FounderVision from "@/components/sections/FounderVision";
  */
 
 /**
- * Collage imagery, served from public/images. Any frame whose file is not in
- * place yet falls back to a branded gradient carrying its caption, so the
- * section never renders a broken image.
+ * The one credential figure still printed over the media card. The imagery
+ * itself moved to SHOWCASE below when the collage became a video.
  */
 const GALLERY = {
-  featured: {
-    // the file on disk carries a space in its name, hence the %20
-    src: "/images/team-photo.webp",
-    alt: "The Techcadd team and students outside the Hoshiarpur campus",
-    caption: "Team Techcadd",
-    chip: "Industry-Oriented Training",
-  },
-  secondary: [
-    {
-      src: "/images/classroom.webp",
-      alt: "A full auditorium of Techcadd students during a training session",
-      caption: "Classroom training",
-      chip: "Live Projects",
-    },
-    {
-      src: "/images/lab.webp",
-      alt: "Students working at machines in the Techcadd computer lab",
-      caption: "Lab & project floor",
-      chip: "Placement Assistance",
-    },
-  ],
   badge: { value: "10+", label: "Years Experience" },
+};
+
+/**
+ * The campus video, and what stands in for it.
+ *
+ * Nothing sits at `src` yet, so what renders today is `poster` behind a play
+ * control. Drop an mp4 at that path and the video takes over with no code
+ * change: the fallback is picked at runtime from the media element's error
+ * event, not from a build-time check.
+ */
+const SHOWCASE = {
+  src: "/videos/techcadd-campus.mp4",
+  poster: "/images/team-photo.webp",
+  alt: "Inside the Techcadd Hoshiarpur campus",
+  chip: "Industry-Oriented Training",
 };
 
 /** The five training formats, shown as glass cards under the opening copy. */
@@ -68,14 +61,14 @@ export default function About() {
   return (
     <section id="about" className="relative overflow-x-clip bg-white">
       {/* eases the dark hero into the white page */}
-      <div aria-hidden className="h-16 bg-gradient-to-b from-[#050B1F] to-white" />
+      <div aria-hidden className="h-16 bg-gradient-to-b from-[#101E52] to-white" />
 
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         {/* opening statement, with the photo collage opposite */}
         <div className="relative section-pad">
           <AtmosphereLayer />
 
-          <div className="grid gap-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16 xl:gap-24">
+          <div className="grid gap-16 md:grid-cols-[0.95fr_1.05fr] md:items-start lg:gap-16 xl:gap-24">
             {/* not sticky: with five cards and the CTA this column outgrows the viewport */}
             <div>
               <Reveal>
@@ -102,7 +95,7 @@ export default function About() {
               <CallToAction />
             </div>
 
-            <AboutCollage />
+            <AboutVideo />
           </div>
         </div>
 
@@ -214,7 +207,7 @@ function StatsPanel() {
   const items: { icon: LucideIcon; value: number; suffix: string; label: string; tint: string }[] = [
     { icon: Users, value: 25000, suffix: "+", label: "Students Trained", tint: "from-[#142C8E] to-[#2563EB]" },
     { icon: Briefcase, value: 10000, suffix: "+", label: "Placements", tint: "from-[#142C8E] to-[#2563EB]" },
-    { icon: Building2, value: 500, suffix: "+", label: "Hiring Partners", tint: "from-[#60A5FA] to-[#C026D3]" },
+    { icon: Building2, value: 500, suffix: "+", label: "Hiring Partners", tint: "from-[#60A5FA] to-[#1D4ED8]" },
   ];
 
   return (
@@ -308,7 +301,7 @@ function CallToAction() {
       <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
         <a
           href="#programs"
-          className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#0F172A] px-7 py-3.5 text-[15px] font-semibold text-white shadow-[0_20px_45px_-24px_rgba(15,23,42,0.9)] transition-all duration-300 hover:bg-[#2563EB] hover:shadow-[0_22px_48px_-18px_rgba(37,99,235,0.8)]"
+          className="group inline-flex items-center justify-center gap-2.5 rounded-full bg-[#101E52] px-7 py-3.5 text-[15px] font-semibold text-white shadow-[0_20px_45px_-24px_rgba(15,23,42,0.9)] transition-all duration-300 hover:bg-[#2563EB] hover:shadow-[0_22px_48px_-18px_rgba(37,99,235,0.8)]"
         >
           Find your course
           <ArrowRight
@@ -348,24 +341,18 @@ const collage: Variants = {
   show: { transition: { staggerChildren: 0.16, delayChildren: 0.05 } },
 };
 
-const frame: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.96, filter: "blur(12px)" },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
 const glassIn: Variants = {
   hidden: { opacity: 0, y: 12, scale: 0.92 },
   show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
 };
 
-function AboutCollage() {
-  const [first, second] = GALLERY.secondary;
+function AboutVideo() {
+  const reduce = useReducedMotion();
+  /* No file at SHOWCASE.src yet, so the poster path is what renders today.
+     `onError` on the media element only fires when `src` sits on the <video>
+     itself — with a child <source> the event lands on the source element and
+     never reaches React's handler, so the fallback would stay hidden. */
+  const [failed, setFailed] = useState(false);
 
   return (
     <motion.div
@@ -375,129 +362,75 @@ function AboutCollage() {
       viewport={{ once: true, margin: "-90px" }}
       className="relative"
     >
-      {/* featured team photograph, sitting on a tilted ghost card for depth */}
-      <motion.figure variants={frame} className="relative">
+      <motion.div variants={glassIn} className="group relative">
+        {/* blue bloom behind the card; hover lifts it rather than moving the card */}
         <span
           aria-hidden
-          className="absolute -inset-2 -z-10 rotate-[1.4deg] rounded-[28px] bg-gradient-to-br from-[#2563EB]/12 via-[#60A5FA]/8 to-transparent"
-        />
-        <span
-          aria-hidden
-          className="absolute -inset-1 -z-10 -rotate-[0.8deg] rounded-[26px] bg-white shadow-[0_20px_50px_-34px_rgba(15,23,42,0.6)]"
+          className="absolute -inset-4 -z-10 rounded-[36px] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(37,99,235,0.30)_0%,transparent_72%)] opacity-70 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
         />
 
-        <Shot
-          {...GALLERY.featured}
-          /* not `priority`: this sits below the hero, and preloading it
-             competes with the hero image, which is the real LCP element */
-          sizes="(max-width: 1023px) 92vw, 46vw"
-          /* 4:3 matches the group photo, so no one gets cropped out of frame */
-          className="aspect-[4/3]"
-        >
-          <figcaption className="absolute inset-x-5 bottom-5 flex items-center gap-2 sm:inset-x-6 sm:bottom-6">
-            <span aria-hidden className="size-1.5 rounded-full bg-[#60A5FA]" />
-            <span className="font-[family-name:var(--font-poppins)] text-[15px] font-semibold tracking-[-0.01em] text-white drop-shadow-sm sm:text-[17px]">
-              {GALLERY.featured.caption}
-            </span>
-          </figcaption>
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] border border-[#2563EB]/25 bg-[#101E52] shadow-[0_26px_60px_-30px_rgba(15,23,42,0.55)] transition-shadow duration-500 ease-out group-hover:shadow-[0_40px_84px_-28px_rgba(37,99,235,0.6)]">
+          {failed ? (
+            <>
+              <Image
+                src={SHOWCASE.poster}
+                alt={SHOWCASE.alt}
+                fill
+                sizes="(max-width: 767px) 92vw, (max-width: 1023px) 48vw, 46vw"
+                className={`object-cover transition-transform duration-[900ms] ease-out ${
+                  reduce ? "" : "group-hover:scale-[1.06]"
+                }`}
+              />
+
+              {/* the fallback needs to read as a video, hence the play control */}
+              <span className="absolute inset-0 grid place-items-center">
+                <span className="grid size-16 place-items-center rounded-full border border-white/45 bg-white/20 shadow-[0_18px_40px_-16px_rgba(5,11,31,0.9)] backdrop-blur-xl transition-transform duration-500 group-hover:scale-110 motion-reduce:group-hover:scale-100 sm:size-20">
+                  <Play
+                    aria-hidden
+                    className="ml-[3px] size-6 fill-white text-white sm:size-7"
+                  />
+                </span>
+                <span className="sr-only">Campus video unavailable</span>
+              </span>
+            </>
+          ) : (
+            <video
+              src={SHOWCASE.src}
+              poster={SHOWCASE.poster}
+              /* muted is what makes autoplay legal in every browser; without it
+                 the element silently refuses to start */
+              autoPlay={!reduce}
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              controls={reduce === true}
+              aria-label={SHOWCASE.alt}
+              onError={() => setFailed(true)}
+              className={`absolute inset-0 size-full object-cover transition-transform duration-[900ms] ease-out ${
+                reduce ? "" : "group-hover:scale-[1.06]"
+              }`}
+            />
+          )}
+
+          {/* keeps the badges legible over whatever frame is playing */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#101E52]/75 via-[#101E52]/15 to-transparent"
+          />
 
           <GlassChip float className="absolute right-4 top-4 sm:right-6 sm:top-6">
-            {GALLERY.featured.chip}
+            {SHOWCASE.chip}
           </GlassChip>
-        </Shot>
+        </div>
 
-        {/* the one credential card that floats clear of the photograph */}
         <YearsBadge />
-      </motion.figure>
-
-      {/* two supporting frames, 50/50 */}
-      <div className="mt-4 grid grid-cols-2 gap-4 sm:mt-5 sm:gap-5">
-        {[first, second].map((shot) => (
-          <motion.figure key={shot.src} variants={frame} className="relative">
-            <Shot {...shot} sizes="(max-width: 1023px) 45vw, 23vw" className="aspect-[4/3]">
-              <figcaption className="absolute inset-x-3.5 bottom-3.5 sm:inset-x-4 sm:bottom-4">
-                <span className="font-[family-name:var(--font-poppins)] text-[12px] font-semibold text-white drop-shadow-sm sm:text-[13.5px]">
-                  {shot.caption}
-                </span>
-              </figcaption>
-              <GlassChip float className="absolute inset-x-3.5 top-3.5 sm:inset-x-4 sm:top-4">
-                {shot.chip}
-              </GlassChip>
-            </Shot>
-          </motion.figure>
-        ))}
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
 
-/**
- * A photographic frame: 24px corners, soft shadow, gradient scrim for legible
- * overlays, zoom on hover and a lift on the whole card. Falls back to a branded
- * gradient carrying the caption when the file is not in place yet.
- */
-function Shot({
-  src,
-  alt,
-  caption,
-  sizes,
-  className,
-  priority = false,
-  scrim = true,
-  children,
-}: {
-  src: string;
-  alt: string;
-  caption: string;
-  sizes: string;
-  className?: string;
-  priority?: boolean;
-  /** the dark wash exists to keep overlays legible — off for bare portraits */
-  scrim?: boolean;
-  children?: ReactNode;
-}) {
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const reduce = useReducedMotion();
 
-  return (
-    <div
-      className={`group relative w-full overflow-hidden rounded-[24px] bg-gradient-to-br from-[#EEF2FF] via-[#E0F2FE] to-[#F8FAFC] shadow-[0_18px_45px_-24px_rgba(15,23,42,0.45)] ring-1 ring-inset ring-slate-900/[0.06] transition-[transform,box-shadow] duration-500 ease-out will-change-transform hover:-translate-y-1.5 hover:shadow-[0_36px_72px_-30px_rgba(37,99,235,0.45)] motion-reduce:hover:translate-y-0 ${className ?? ""}`}
-    >
-      {!failed && (
-        <Image
-          src={src}
-          alt={alt}
-          fill
-          sizes={sizes}
-          priority={priority}
-          onLoad={() => setLoaded(true)}
-          onError={() => setFailed(true)}
-          className={`object-cover transition-[transform,opacity] duration-[900ms] ease-out ${
-            loaded ? "opacity-100" : "opacity-0"
-          } ${reduce ? "" : "group-hover:scale-[1.07]"}`}
-        />
-      )}
-
-      {/* scrim keeps the overlays legible, and gives the placeholder depth */}
-      {scrim && (
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-950/10 to-transparent"
-        />
-      )}
-
-      {failed && (
-        <p className="absolute inset-x-6 top-1/2 -translate-y-1/2 text-center text-[12.5px] font-medium text-[#64748B]">
-          {caption}
-          <span className="mt-1 block text-[11px] text-[#94A3B8]">Add {src}</span>
-        </p>
-      )}
-
-      {children}
-    </div>
-  );
-}
 
 /** Glassmorphism information pill laid over a photograph. */
 function GlassChip({

@@ -161,7 +161,7 @@ export default function DemoModal() {
           onMouseDown={(e) => {
             if (!panelRef.current?.contains(e.target as Node)) close();
           }}
-          className="fixed inset-0 z-[10000] grid place-items-center overflow-y-auto bg-[#050B1F]/80 p-4 backdrop-blur-md sm:p-6"
+          className="fixed inset-0 z-[10000] grid place-items-center overflow-y-auto bg-[#101E52]/80 p-4 backdrop-blur-md sm:p-6"
         >
           <motion.div
             ref={panelRef}

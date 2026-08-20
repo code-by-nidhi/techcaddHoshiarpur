@@ -70,7 +70,7 @@ const PATHS: CareerPath[] = [
     id: "marketing",
     label: "Digital Marketing",
     icon: FiTrendingUp,
-    tint: "from-[#DB2777] to-[#60A5FA]",
+    tint: "from-[#1D4ED8] to-[#60A5FA]",
     roles: ["Performance Marketer", "SEO Specialist", "Growth Analyst", "Campaign Manager"],
   },
   {
@@ -318,7 +318,7 @@ export default function CounsellingExperience() {
                   icon={FiMail}
                   label="Email Support"
                   href={mail}
-                  tint="from-[#60A5FA] to-[#C026D3]"
+                  tint="from-[#60A5FA] to-[#1D4ED8]"
                 />
               </div>
 
