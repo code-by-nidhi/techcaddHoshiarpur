@@ -1,0 +1,295 @@
+/* ---------------------------------------------------------------------------
+   AI panel skin.
+
+   WideMegaMenu.module.css is shared with the Internship and Courses panels, so
+   it stays light and untouched — restyling it there would repaint two menus
+   nobody asked about. This file is layered on top: every element in the AI
+   panel carries its shared class *and* the matching class from here.
+
+   Both files are CSS modules, so their generated class names are unrelated and
+   a plain `.panel` here would only tie with `.panel` there, leaving the winner
+   to stylesheet order. Every override is therefore written as
+   `.root <element>.<class>` — the descendant plus the element selector puts it
+   comfortably ahead of the single class it replaces, whatever order the
+   bundler emits.
+--------------------------------------------------------------------------- */
+
+.root {
+  position: relative;
+}
+
+/* --------------------------------- shell ---------------------------------- */
+
+.root .panel {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(135deg, #1e2a78 0%, #243a9f 50%, #2a56d4 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 30px 80px -34px rgba(6, 14, 46, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/*
+ * Ambient light, all pointer-events: none so none of it can swallow a click on
+ * the links underneath.
+ */
+.tint,
+.reflection,
+.edgeGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* two soft lamps, one warm-blue at top left and one brighter at bottom right */
+.tint {
+  background:
+    radial-gradient(38rem 22rem at 12% -10%, rgba(125, 183, 255, 0.22), transparent 70%),
+    radial-gradient(32rem 20rem at 96% 108%, rgba(42, 86, 212, 0.45), transparent 72%);
+}
+
+/* the glass highlight running along the top edge */
+.reflection {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 42%);
+  mix-blend-mode: screen;
+}
+
+/* a hairline of light just inside the border, which is what sells the glass */
+.edgeGlow {
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+}
+
+/* the drifting motes are positioned inline by the component */
+.root .mote {
+  background: #bfdbfe;
+  box-shadow: 0 0 10px 3px rgba(125, 183, 255, 0.55);
+}
+
+/* the panel scrolls its own body; the light scrollbar read as a seam on navy */
+.root .body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.24) transparent;
+}
+
+.root .body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.root .body::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+/* the column rule inherited from the shared sheet is a black hairline */
+.root .col + .col {
+  border-left-color: rgba(255, 255, 255, 0.12);
+}
+
+/* --------------------------------- type ----------------------------------- */
+
+.root p.heading {
+  color: #ffffff;
+}
+
+.root p.headingSub {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* ------------------------- section headings ------------------------------- */
+
+/*
+ * "AI Fundamentals" / "AI Development". The shared sheet renders these as a
+ * bare eyebrow; here they head a feature list, so they sit on a row with a
+ * round icon and read at list-title weight rather than as a label.
+ */
+.sectionHead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionIcon {
+  display: grid;
+  flex-shrink: 0;
+  place-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(140deg, #2a56d4, #1e2a78);
+  color: #dbeafe;
+  box-shadow:
+    0 0 18px -4px rgba(125, 183, 255, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.root span.eyebrow {
+  margin-top: 0;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #ffffff;
+}
+
+/* ------------------------------- feature list ----------------------------- */
+
+/*
+ * Grid and flex items default to `min-width: auto`, so the longest course name
+ * — "RAG (Retrieval-Augmented Generation)" — sized its own column and pushed
+ * the list out under the featured card instead of ellipsising inside it.
+ */
+.group {
+  min-width: 0;
+}
+
+/*
+ * The list itself is a grid, and its implicit track is auto-sized: the longest
+ * label is `white-space: nowrap`, so the row's min-content was the full 325px
+ * of "RAG (Retrieval-Augmented Generation)" and the track grew to it inside a
+ * 265px column. `minmax(0, 1fr)` lets the track shrink and `min-width: 0` lets
+ * the row shrink with it, which is what finally hands the overflow to the
+ * label's own ellipsis. Matched on the elements because both lists carry the
+ * shared sheet's class names, which this module cannot spell.
+ */
+.group ul {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.group li {
+  min-width: 0;
+}
+
+
+.root a.link {
+  position: relative;
+  min-width: 0;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  color: #ffffff;
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.root a.link:hover,
+.root a.link:focus-visible {
+  transform: translateX(4px);
+  border-color: rgba(255, 255, 255, 0.16);
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #7db7ff;
+}
+
+/* the course whose page is currently open */
+.root a.linkActive {
+  border-color: rgba(125, 183, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 2px 0 0 0 #7db7ff;
+  color: #7db7ff;
+}
+
+/* the chevron carries the shared sheet's class, which this module cannot name
+   — it is the only svg in the row, so match it structurally */
+.root a.link svg {
+  color: #7db7ff;
+}
+
+/* ------------------------------ featured card ----------------------------- */
+
+/* White body on purpose: it is the one bright object in the panel, which is
+   what makes it read as the featured course rather than another list row. */
+.root a.featured {
+  /*
+   * height: auto rather than the shared sheet's 100%. The body below is laid
+   * out as blocks now, so the card has a real content height; pinning it to
+   * the row height only cropped the last line off under the rounded corner.
+   */
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 18px 44px -26px rgba(6, 14, 46, 0.95);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.root span.featuredShot {
+  flex-shrink: 0;
+}
+
+/*
+ * The shared sheet leaves the card body and its two lines as bare spans, which
+ * are inline: the body's padding drew nothing, the copy's top margin did
+ * nothing, and title and description ran together on one line that spilled out
+ * of the card. Blocks put them back inside it.
+ */
+.root span.featuredBody,
+.root span.featuredTitle,
+.root span.featuredCopy {
+  display: block;
+}
+
+.root a.featured:hover,
+.root a.featured:focus-visible {
+  border-color: rgba(125, 183, 255, 0.7);
+  box-shadow:
+    0 26px 56px -24px rgba(6, 14, 46, 1),
+    0 0 34px -10px rgba(125, 183, 255, 0.85);
+}
+
+/* --------------------------------- cta ------------------------------------ */
+
+.root div.cta {
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(140deg, #2a56d4 0%, #243a9f 55%, #1e2a78 100%);
+  box-shadow:
+    0 20px 48px -26px rgba(6, 14, 46, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.root p.ctaCopy {
+  color: #ffffff;
+}
+
+.root a.button {
+  background: linear-gradient(90deg, #2a56d4, #7db7ff);
+  color: #0a1437;
+  box-shadow:
+    0 0 30px -6px rgba(125, 183, 255, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.root a.button:hover,
+.root a.button:focus-visible {
+  box-shadow:
+    0 0 46px -2px rgba(125, 183, 255, 1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* ------------------------------- mobile sheet ----------------------------- */
+
+/*
+ * The hamburger sheet is already navy (#101E52), so the accordion body gets
+ * the same white-on-blue treatment rather than the shared sheet's near-black
+ * type, which was all but unreadable there.
+ */
+.mobile {
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root a.link:hover,
+  .root a.link:focus-visible {
+    transform: none;
+  }
+}

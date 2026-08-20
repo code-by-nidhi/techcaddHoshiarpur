@@ -132,12 +132,15 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     summary: "Parametric modelling, assemblies and drawings for mechanical design.",
     courseSlugs: ["solidworks"],
   },
+  /* These two have no catalogue course to borrow artwork from, so they carry
+     their own rather than falling through to the shared default hero. */
   {
     slug: "3ds-max",
     title: "3ds Max",
     category: "civil-mechanical",
     duration: "3 to 6 months",
     summary: "Modelling, materials and rendering for architectural visualisation.",
+    heroImage: "/images/courses/civil-mechanical/3ds-max.jpeg",
     courseSlugs: [],
   },
   {
@@ -146,6 +149,7 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     category: "civil-mechanical",
     duration: "3 to 6 months",
     summary: "BIM modelling, families and construction documentation.",
+    heroImage: "/images/courses/civil-mechanical/revit.jpeg",
     courseSlugs: [],
   },
 ];
