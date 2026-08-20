@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion, type Variants } from "framer-motion";
 import { FiArrowRight, FiChevronRight } from "react-icons/fi";
 import { ABOUT_PAGES } from "@/lib/about/pages";
+import { whatsappLink } from "@/lib/cta";
 
 /*
  * About Us panel: a left rail of the same three destinations, three featured
@@ -85,14 +86,14 @@ export default function AboutMegaMenu({
               })}
             </ul>
 
-            <Link
-              href="/contact"
+            <a
+              {...whatsappLink()}
               onClick={onNavigate}
               className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#2563EB] transition-colors duration-300 hover:text-[#1D4ED8]"
             >
               Talk to a Counsellor
               <FiArrowRight aria-hidden size={13} />
-            </Link>
+            </a>
           </motion.nav>
 
           {/* ----------------------------- cards ------------------------------ */}
@@ -163,14 +164,14 @@ export function AboutMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) 
       ))}
 
       <li>
-        <Link
-          href="/contact"
+        <a
+          {...whatsappLink()}
           onClick={onNavigate}
           className="mt-1 inline-flex items-center gap-1.5 px-3 text-[13.5px] font-semibold text-[#60a5fa]"
         >
           Talk to a Counsellor
           <FiArrowRight aria-hidden size={13} />
-        </Link>
+        </a>
       </li>
     </ul>
   );

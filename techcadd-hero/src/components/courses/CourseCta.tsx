@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import { FiArrowRight, FiPhone } from "react-icons/fi";
-import { demoBus } from "@/lib/demoBus";
 import type { Course } from "@/lib/courses/types";
 import { DARK, Reveal, fadeUp } from "./shared";
+import { whatsappLink } from "@/lib/cta";
 
 export default function CourseCta({
   course,
@@ -42,9 +42,8 @@ export default function CourseCta({
               </p>
 
               <div className="mt-9 flex flex-wrap justify-center gap-3.5">
-                <motion.button
-                  type="button"
-                  onClick={() => demoBus.open()}
+                <motion.a
+                  {...whatsappLink()}
                   whileHover={{ y: -3, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}
@@ -55,10 +54,10 @@ export default function CourseCta({
                     aria-hidden
                     className="size-4 transition-transform duration-300 group-hover:translate-x-1"
                   />
-                </motion.button>
+                </motion.a>
 
                 <motion.a
-                  href="/contact"
+                  {...whatsappLink()}
                   whileHover={{ y: -3, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}

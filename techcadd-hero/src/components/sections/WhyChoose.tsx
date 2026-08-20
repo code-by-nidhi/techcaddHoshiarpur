@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react";
 import { WHY } from "@/lib/site";
 import Reveal from "@/components/UI/Reveal";
+import { whatsappLink } from "@/lib/cta";
 
 /**
  * Split layout: the heading holds the left rail on desktop while the feature
@@ -39,7 +40,7 @@ export default function WhyChoose() {
 
           <Reveal delay={0.18}>
             <a
-              href="#contact"
+              {...whatsappLink()}
               className="group mt-8 inline-flex items-center gap-2.5 rounded-full bg-[#0F172A] px-7 py-3.5 text-[15px] font-semibold text-white transition-all duration-300 hover:bg-[#2563EB] hover:shadow-[0_18px_40px_-16px_rgba(37,99,235,0.8)]"
             >
               Talk to a counsellor

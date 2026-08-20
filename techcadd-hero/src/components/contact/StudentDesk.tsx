@@ -208,7 +208,13 @@ export default function StudentDesk() {
                       return (
                         <li key={value}>
                           {href ? (
-                            <a href={href} className={shell}>
+                            <a
+                              href={href}
+                              {...(href.startsWith("http")
+                                ? { target: "_blank", rel: "noopener noreferrer" }
+                                : {})}
+                              className={shell}
+                            >
                               {body}
                             </a>
                           ) : (
@@ -226,7 +232,7 @@ export default function StudentDesk() {
                         key={label}
                         href={href}
                         target={external ? "_blank" : undefined}
-                        rel={external ? "noreferrer" : undefined}
+                        rel={external ? "noopener noreferrer" : undefined}
                         whileHover={{ y: -3, scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         transition={{ type: "spring", stiffness: 340, damping: 22 }}

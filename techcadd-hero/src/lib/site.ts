@@ -2,6 +2,7 @@ import {
   Brain, Code2, BarChart3, Megaphone, Cloud,
   Rocket, Users, GraduationCap, FlaskConical, Compass, BadgeCheck,
 } from "lucide-react";
+import { CTA } from "@/lib/cta";
 
 /* ------------------------------- about -------------------------------- */
 
@@ -211,10 +212,16 @@ export const COMMAND_METRICS = [
 export const LAUNCH = {
   heading: "Start Building Your Career Today",
   sub: "Book a free demo class, sit through a real session, and decide afterwards. No commitment until you've seen how we teach.",
+  /*
+   * These pointed at #demo, #counsellor and #brochure — three anchors that
+   * exist nowhere in the markup, so all three buttons did nothing at all. They
+   * are lead CTAs, so they open WhatsApp; `external` is what tells the Launch
+   * Center to add target and rel.
+   */
   actions: [
-    { label: "Book Demo", href: "#demo", primary: true },
-    { label: "Talk to Counsellor", href: "#counsellor", primary: false },
-    { label: "Download Brochure", href: "#brochure", primary: false },
+    { label: "Book Demo", href: CTA.whatsapp, external: true, primary: true },
+    { label: "Talk to Counsellor", href: CTA.whatsapp, external: true, primary: false },
+    { label: "Download Brochure", href: CTA.whatsapp, external: true, primary: false },
   ],
   metrics: [
     { value: 15000, suffix: "K+", label: "Students", display: 15 },
@@ -280,7 +287,7 @@ export const MEGA_FOOTER = {
         { label: "Placement Support", href: "/#outcomes" },
         { label: "Student Reviews", href: "/#stories" },
         { label: "FAQs", href: "/#faq" },
-        { label: "Enquire Now", href: "/contact" },
+        { label: "Enquire Now", href: CTA.whatsapp, external: true },
         { label: "Knowledge Hub", href: "/#blog" },
       ],
     },

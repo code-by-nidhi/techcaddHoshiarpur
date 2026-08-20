@@ -3,6 +3,7 @@ import { FiArrowRight, FiUserCheck } from "react-icons/fi";
 
 import CourseSpotlight, { type SpotlightCard } from "@/components/courses/CourseSpotlight";
 import { COURSES, getCourse } from "@/lib/courses";
+import { whatsappLink } from "@/lib/cta";
 
 /**
  * The homepage courses section.
@@ -135,13 +136,13 @@ export default function FeaturedCourses() {
             </div>
           </div>
 
-          <Link
-            href="/contact"
+          <a
+            {...whatsappLink()}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#1E3A8A] to-[#2344D4] px-7 py-3.5 text-[14px] font-semibold text-white shadow-[0_0_28px_-8px_rgba(35,68,212,0.95)] transition-[transform,box-shadow] duration-300 hover:scale-[1.03] hover:shadow-[0_0_44px_-6px_rgba(35,68,212,1)] motion-reduce:hover:scale-100 sm:w-auto"
           >
             Talk to Advisor
             <FiArrowRight aria-hidden className="size-4" />
-          </Link>
+          </a>
         </div>
 
         <p className="mt-5 text-center text-[13px] text-white/45">

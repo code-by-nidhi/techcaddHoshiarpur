@@ -9,8 +9,8 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { NAV_LINKS } from "@/lib/content";
 import { SIMPLE_MENUS, isSimpleLabel, type SimpleLabel } from "@/lib/navMenus";
-import { demoBus } from "@/lib/demoBus";
 import megaStyles from "./CoursesMegaMenu.module.css";
+import { whatsappLink } from "@/lib/cta";
 
 /*
  * Every panel is split out of the navbar chunk: their markup and data only
@@ -337,14 +337,13 @@ export default function Navbar() {
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 340, damping: 20 }}
             >
-              {/* opens the enquiry modal rather than navigating */}
-              <button
-                type="button"
-                onClick={() => demoBus.open()}
-                className="inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-3.5 py-2 text-[13.5px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
+              {/* opens WhatsApp in a new tab */}
+              <a
+                {...whatsappLink()}
+                className="tap-44 inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-3.5 py-2 text-[13.5px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
               >
                 Book Demo
-              </button>
+              </a>
             </motion.div>
 
             <motion.button
@@ -501,16 +500,13 @@ export default function Navbar() {
                 variants={{ hidden: { opacity: 0 }, show: { opacity: 1 } }}
                 className="p-2 pt-3"
               >
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpen(false);
-                    demoBus.open();
-                  }}
+                <a
+                  {...whatsappLink()}
+                  onClick={() => setOpen(false)}
                   className="block w-full rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-6 py-3 text-center text-[15px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
                 >
                   Book Demo
-                </button>
+                </a>
               </motion.li>
             </motion.ul>
           </motion.div>

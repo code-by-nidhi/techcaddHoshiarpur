@@ -9,11 +9,16 @@ export default function MagneticButton({
   href = "#",
   className = "",
   strength = 0.28,
+  target,
+  rel,
 }: {
   children: ReactNode;
   href?: string;
   className?: string;
   strength?: number;
+  /** Set together for an external destination, e.g. a wa.me link. */
+  target?: string;
+  rel?: string;
 }) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLAnchorElement>(null);
@@ -38,6 +43,8 @@ export default function MagneticButton({
     <motion.a
       ref={ref}
       href={href}
+      target={target}
+      rel={rel}
       onPointerMove={onMove}
       onPointerLeave={reset}
       style={{ x, y }}

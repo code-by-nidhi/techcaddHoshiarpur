@@ -6,6 +6,7 @@ import { FiArrowRight } from "react-icons/fi";
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import { ABOUT_PAGES, aboutSlugs, getAboutPage } from "@/lib/about/pages";
+import { whatsappLink } from "@/lib/cta";
 
 /**
  * One template for the three About pages. Same route contract as the course
@@ -105,13 +106,13 @@ export default async function AboutDetailPage({
                   </p>
                 ))}
 
-                <Link
-                  href="/contact"
+                <a
+                  {...whatsappLink()}
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
                 >
                   Talk to a Counsellor
                   <FiArrowRight aria-hidden className="size-4" />
-                </Link>
+                </a>
               </div>
 
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] shadow-[0_26px_60px_-34px_rgba(15,23,42,0.55)] ring-1 ring-inset ring-slate-900/[0.06]">

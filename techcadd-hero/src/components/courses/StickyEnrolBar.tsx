@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiArrowRight, FiClock, FiPhone } from "react-icons/fi";
-import { demoBus } from "@/lib/demoBus";
 import type { Course } from "@/lib/courses/types";
+import { whatsappLink } from "@/lib/cta";
 
 /**
  * Sticky enrolment bar.
@@ -56,7 +56,7 @@ export default function StickyEnrolBar({ course }: { course: Course }) {
 
             <div className="flex flex-1 items-center gap-2.5 sm:flex-initial">
               <a
-                href="/contact"
+                {...whatsappLink()}
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-4 py-2.5 text-[13px] font-semibold text-white transition-colors duration-300 hover:border-white/50 sm:flex-initial sm:px-5"
               >
                 <FiPhone aria-hidden className="size-3.5" />
@@ -64,9 +64,8 @@ export default function StickyEnrolBar({ course }: { course: Course }) {
                 <span className="xs:hidden sm:hidden">Call</span>
               </a>
 
-              <motion.button
-                type="button"
-                onClick={() => demoBus.open()}
+              <motion.a
+                {...whatsappLink()}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 340, damping: 22 }}
@@ -77,7 +76,7 @@ export default function StickyEnrolBar({ course }: { course: Course }) {
                   aria-hidden
                   className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
                 />
-              </motion.button>
+              </motion.a>
             </div>
           </div>
         </motion.div>

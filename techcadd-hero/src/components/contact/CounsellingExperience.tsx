@@ -345,7 +345,7 @@ export default function CounsellingExperience() {
                 <motion.a
                   href={whatsapp}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}

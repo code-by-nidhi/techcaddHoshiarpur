@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
-import { demoBus } from "@/lib/demoBus";
 import type { Course, Project } from "@/lib/courses/types";
 import { Chip, Reveal, Section, SectionHead, fadeUp } from "./shared";
+import { whatsappLink } from "@/lib/cta";
 
 const LEVEL_TINT: Record<Project["level"], string> = {
   Beginner: "bg-[#DCFCE7] text-[#166534]",
@@ -78,9 +78,8 @@ export default function Projects({ course }: { course: Course }) {
         </ul>
 
         <motion.div variants={fadeUp} className="mt-9 text-center">
-          <button
-            type="button"
-            onClick={() => demoBus.open()}
+          <a
+            {...whatsappLink()}
             className="group inline-flex items-center gap-2.5 rounded-full border border-[#2563EB]/25 bg-white px-7 py-3.5 text-[14px] font-semibold text-[#2563EB] shadow-[0_14px_36px_-28px_rgba(37,99,235,0.8)] transition-colors duration-300 hover:bg-[#2563EB] hover:text-white"
           >
             Explore Projects
@@ -88,7 +87,7 @@ export default function Projects({ course }: { course: Course }) {
               aria-hidden
               className="size-4 transition-transform duration-300 group-hover:translate-x-1"
             />
-          </button>
+          </a>
         </motion.div>
       </Reveal>
     </Section>

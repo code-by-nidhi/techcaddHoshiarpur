@@ -241,9 +241,15 @@ function FooterLink({
   children: ReactNode;
   className?: string;
 }) {
+  /* A sitemap entry can point off-site — "Enquire Now" opens WhatsApp — and
+     next/link is for routes, not for that. */
+  const external = /^https?:\/\//.test(href);
+  const Tag = external ? "a" : Link;
+
   return (
-    <Link
+    <Tag
       href={href}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={`group/link relative inline-block text-[13.5px] text-white/60 transition-[color,transform] duration-300 hover:translate-x-1 hover:text-[#93C5FD] ${className}`}
     >
       {children}
@@ -251,7 +257,7 @@ function FooterLink({
         aria-hidden
         className="absolute -bottom-0.5 left-0 h-px w-0 bg-[#60A5FA] transition-[width] duration-300 ease-out group-hover/link:w-full"
       />
-    </Link>
+    </Tag>
   );
 }
 

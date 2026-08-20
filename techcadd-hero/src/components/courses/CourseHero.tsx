@@ -6,10 +6,10 @@ import {
   FiAward, FiArrowRight, FiClock, FiLayers, FiMonitor, FiStar, FiTrendingUp,
 } from "react-icons/fi";
 import type { IconType } from "react-icons";
-import { demoBus } from "@/lib/demoBus";
 import type { Course } from "@/lib/courses/types";
 import { DEFAULT_HERO } from "@/lib/courses/shared";
 import Breadcrumbs from "./Breadcrumbs";
+import { whatsappLink } from "@/lib/cta";
 
 /**
  * The hero has to answer three questions before anything else on the page:
@@ -84,9 +84,8 @@ export default function CourseHero({ course }: { course: Course }) {
               )}
 
               <div className="mt-8 flex flex-wrap gap-3">
-                <motion.button
-                  type="button"
-                  onClick={() => demoBus.open()}
+                <motion.a
+                  {...whatsappLink()}
                   whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}
@@ -97,10 +96,10 @@ export default function CourseHero({ course }: { course: Course }) {
                     aria-hidden
                     className="size-4 transition-transform duration-300 group-hover:translate-x-1"
                   />
-                </motion.button>
+                </motion.a>
 
                 <motion.a
-                  href="/contact"
+                  {...whatsappLink()}
                   whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}

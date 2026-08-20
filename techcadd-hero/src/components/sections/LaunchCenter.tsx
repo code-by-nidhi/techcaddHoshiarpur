@@ -76,6 +76,9 @@ export default function LaunchCenter() {
                 <MagneticButton
                   key={a.label}
                   href={a.href}
+                  {...("external" in a && a.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
                   className={
                     a.primary
                       ? "group inline-flex items-center gap-2.5 rounded-full bg-gradient-to-r from-[#2563EB] via-[#2563EB] to-[#60A5FA] px-9 py-4 text-[15.5px] font-semibold text-white shadow-[0_0_48px_-8px_rgba(37, 99, 235,0.95)] transition-shadow duration-300 hover:shadow-[0_0_76px_-6px_rgba(96, 165, 250,1)]"

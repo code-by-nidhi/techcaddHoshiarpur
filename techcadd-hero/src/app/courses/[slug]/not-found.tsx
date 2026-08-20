@@ -2,6 +2,7 @@ import Link from "next/link";
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import { COURSES } from "@/lib/courses";
+import { whatsappLink } from "@/lib/cta";
 
 /**
  * Shown for any slug that is not in the catalogue. Rather than a dead end, it
@@ -53,12 +54,12 @@ export default function CourseNotFound() {
             >
               Browse all courses
             </Link>
-            <Link
-              href="/contact"
+            <a
+              {...whatsappLink()}
               className="rounded-full border border-white/20 bg-white/[0.06] px-7 py-3.5 text-[14.5px] font-semibold text-white backdrop-blur-xl transition-colors hover:border-white/50"
             >
               Talk to a counsellor
-            </Link>
+            </a>
           </div>
         </div>
       </main>

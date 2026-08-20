@@ -109,6 +109,9 @@ export default function ContactInfo() {
                     {href ? (
                       <a
                         href={href}
+                        {...(href.startsWith("http")
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
                         className={`group relative flex h-full flex-col overflow-hidden rounded-[27px] p-8 transition-shadow duration-500 hover:shadow-[0_34px_70px_-32px_rgba(37,99,235,0.45)] ${LIGHT_GLASS}`}
                       >
                         {inner}
@@ -133,7 +136,9 @@ export default function ContactInfo() {
                 key={label}
                 href={href}
                 target={href.startsWith("http") ? "_blank" : undefined}
-                rel={href.startsWith("http") ? "noreferrer" : undefined}
+                /* noopener as well as noreferrer: without it the opened tab
+                   gets a handle on window.opener and can navigate this one. */
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 340, damping: 20 }}

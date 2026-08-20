@@ -134,8 +134,11 @@ export default async function RootLayout({
             references these by @id rather than restating them, so search
             engines see one canonical organisation and not thirteen. */}
         <JsonLd data={graph(organizationSchema(), websiteSchema())} />
+        {/* #main, not #hero-heading: only the home and about heroes carry that
+            id, so on every other route the skip link went nowhere — which is
+            the one link that has to work for a keyboard user. */}
         <a
-          href="#hero-heading"
+          href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black"
         >
           Skip to content
@@ -151,7 +154,13 @@ export default async function RootLayout({
         </Suspense>
 
         <SiteProvider site={site}>
-          {children}
+          {/* The skip link's landing point. It lives here rather than on each
+              page's <main>, because those carry route-specific ids and one of
+              them has to be stable for the link to target. tabIndex -1 makes it
+              focusable by script without putting it in the tab order. */}
+          <div id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </div>
           <ScrollToTopButton />
           <WhatsAppButton />
           <DemoModal />
