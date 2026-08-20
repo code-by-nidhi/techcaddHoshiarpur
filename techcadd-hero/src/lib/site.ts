@@ -1,5 +1,5 @@
 import {
-  Brain, Code2, BarChart3, ShieldCheck, Megaphone, Cloud,
+  Brain, Code2, BarChart3, Megaphone, Cloud,
   Rocket, Users, GraduationCap, FlaskConical, Compass, BadgeCheck,
 } from "lucide-react";
 
