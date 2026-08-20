@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import Navbar from "@/components/Layout/Navbar";
@@ -71,7 +72,9 @@ export default function CoursesIndex() {
             </div>
 
             <div className="mt-12">
-              <CourseExplorer courses={courses} />
+              <Suspense fallback={null}>
+                <CourseExplorer courses={courses} />
+              </Suspense>
             </div>
           </div>
         </section>

@@ -32,7 +32,6 @@ export const CATEGORIES = [
   { icon: Brain, title: "Artificial Intelligence", copy: "Neural networks, LLMs and computer vision, taught with the maths that makes them work.", gradient: "from-[#2563EB] to-[#2563EB]" },
   { icon: Code2, title: "Full Stack Development", copy: "Front to back, database to deploy — MERN, Java and Next.js.", gradient: "from-[#60A5FA] to-[#C026D3]" },
   { icon: BarChart3, title: "Data Science", copy: "Python, statistics and modelling, plus the storytelling that sells the result.", gradient: "from-[#0891B2] to-[#60A5FA]" },
-  { icon: ShieldCheck, title: "Cyber Security", copy: "Offensive and defensive practice on isolated lab networks.", gradient: "from-[#1D4ED8] to-[#3B82F6]" },
   { icon: Megaphone, title: "Digital Marketing", copy: "Performance marketing, SEO and analytics that tie spend to revenue.", gradient: "from-[#DB2777] to-[#60A5FA]" },
   { icon: Cloud, title: "Cloud & DevOps", copy: "AWS, Docker, Kubernetes and pipelines that deploy themselves.", gradient: "from-[#0D9488] to-[#60A5FA]" },
 ];
@@ -41,7 +40,6 @@ export const COURSES = [
   { icon: Brain, title: "AI & Machine Learning", copy: "Build, train and deploy models — from the maths underneath to a system running in production.", duration: "6 months", accent: "#2563EB" },
   { icon: Code2, title: "Full Stack Development", copy: "MERN and Next.js end to end, with real code review and three deployed applications to show for it.", duration: "6 months", accent: "#60A5FA" },
   { icon: BarChart3, title: "Data Science", copy: "Statistics you actually use, SQL you can be tested on, and dashboards a business will act on.", duration: "5 months", accent: "#60A5FA" },
-  { icon: ShieldCheck, title: "Cyber Security", copy: "Network defence, threat modelling and hands-on assessment inside a sandboxed lab range.", duration: "6 months", accent: "#2563EB" },
   { icon: Megaphone, title: "Digital Marketing", copy: "Run live campaigns with a real budget, then report on them the way an agency lead expects.", duration: "4 months", accent: "#60A5FA" },
   { icon: Cloud, title: "Cloud & DevOps", copy: "Ship a service, containerise it, automate the pipeline and keep it running under load.", duration: "5 months", accent: "#60A5FA" },
 ];
@@ -147,12 +145,6 @@ export const UNIVERSE: Domain[] = [
     industries: ["Infrastructure Migration", "Release Automation", "Platform Reliability"],
     careers: ["Cloud Engineer", "DevOps Engineer", "Site Reliability Engineer", "Platform Engineer"],
     placement: "95% Placement Assistance" },
-  { id: "security", label: "Cybersecurity", short: "Cyber Security", accent: "#1D4ED8",
-    tech: ["Linux", "Networking", "SIEM", "Burp Suite", "Wireshark", "Threat Modelling"],
-    projects: ["Internal network assessment", "SIEM alert tuning", "Web app security audit", "Incident response drill"],
-    industries: ["Incident Response", "Compliance Readiness", "Perimeter Defence"],
-    careers: ["Security Analyst", "SOC Engineer", "Penetration Tester", "Security Consultant"],
-    placement: "95% Placement Assistance" },
   { id: "data", label: "Data Analytics", short: "Data Analytics", accent: "#60A5FA",
     tech: ["Python", "Pandas", "SQL", "Power BI", "Tableau", "Statistics"],
     projects: ["Churn prediction model", "Sales analytics dashboard", "Pricing experiment analysis", "Customer segmentation"],
@@ -234,18 +226,74 @@ export const LAUNCH = {
 /* ------------------------- mega footer -------------------------------- */
 
 export const MEGA_FOOTER = {
+  /*
+   * Every entry carries its own href — the footer used to render `href="#"`
+   * for all of them. Category entries point at the catalogue index with a
+   * `?category=` filter rather than inventing per-category routes, because the
+   * index already filters on exactly these names.
+   */
   columns: [
-    { title: "Courses", links: ["Artificial Intelligence", "Full Stack Development", "Data Science", "Cyber Security", "Digital Marketing", "Cloud & DevOps"] },
-    { title: "Career Tracks", links: ["MERN Developer", "Data Analyst", "ML Engineer", "Cloud Engineer", "Security Analyst", "Performance Marketer"] },
-    { title: "Resources", links: ["Knowledge Hub", "Student Success", "Technology Universe", "Career Roadmap", "Help Center"] },
-    { title: "Company", links: ["About Us", "Our Labs", "Mentor Network", "Careers at Techcadd", "Contact"] },
-    { title: "Support", links: ["Admissions", "Fees & Instalments", "Batch Schedules", "Doubt Sessions", "Alumni Support"] },
+    {
+      title: "Courses",
+      links: [
+        { label: "Programming", href: "/courses?category=Programming" },
+        { label: "AI & Data", href: "/courses?category=Data+%26+AI" },
+        { label: "Digital Marketing", href: "/courses?category=Marketing" },
+        { label: "Web Development", href: "/courses?category=Web+Development" },
+        { label: "Civil & Mechanical", href: "/courses?category=Civil+%26+Mechanical+Engineering" },
+        { label: "All Courses", href: "/courses" },
+      ],
+    },
+    {
+      title: "Company",
+      links: [
+        { label: "About Us", href: "/about" },
+        { label: "Our Founder", href: "/about/our-founder" },
+        { label: "Mission and Vision", href: "/about/mission-and-vision" },
+        { label: "AI", href: "/courses?category=AI" },
+        { label: "Resources", href: "/blog" },
+        { label: "Contact Us", href: "/contact" },
+      ],
+    },
+    {
+      title: "Programmes",
+      links: [
+        { label: "Internship & Training", href: "/internship-training" },
+        { label: "After 12th", href: "/after-12th" },
+        { label: "Industrial Training", href: "/internship-training/industrial-training" },
+        { label: "6 Months Training", href: "/internship-training/6-months-training" },
+        { label: "Summer Internship", href: "/internship-training/summer-internship" },
+      ],
+    },
+    {
+      title: "Support",
+      links: [
+        { label: "Placement Support", href: "/#outcomes" },
+        { label: "Student Reviews", href: "/#stories" },
+        { label: "FAQs", href: "/#faq" },
+        { label: "Enquire Now", href: "/contact" },
+        { label: "Knowledge Hub", href: "/#blog" },
+      ],
+    },
   ],
   contact: {
     address: "Techcadd, Hoshiarpur, Punjab",
-    phone: "+91 00000 00000",
-    whatsapp: "+91 00000 00000",
-    email: "hello@techcadd.com",
+    phone: "+91 62843 47710",
+    whatsapp: "+91 62843 47710",
+    email: "info@techcadd.com",
+  },
+  /*
+   * Left empty deliberately: I do not know TechCadd's official handles, and a
+   * guessed URL points at somebody else's account. The footer renders only the
+   * networks with a URL here, so nothing ships as a dead link. Fill these in
+   * and the icons appear.
+   */
+  social: {
+    linkedin: "",
+    instagram: "",
+    youtube: "",
+    facebook: "",
+    x: "",
   },
 };
 

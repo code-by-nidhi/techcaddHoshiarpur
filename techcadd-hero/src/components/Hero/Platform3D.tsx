@@ -20,7 +20,7 @@ const RINGS = [
 
 const TRAILS = [
   { r: 1.94, color: "#93c5fd", speed: 0.5, arc: 1.1, y: 0.035 },
-  { r: 2.32, color: "#c084fc", speed: -0.32, arc: 0.7, y: 0.05 },
+  { r: 2.32, color: "#38bdf8", speed: -0.32, arc: 0.7, y: 0.05 },
   { r: 1.66, color: "#22d3ee", speed: 0.72, arc: 0.45, y: 0.02 },
 ];
 

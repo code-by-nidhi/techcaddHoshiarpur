@@ -79,15 +79,6 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     summary: "The maths that matters, then models you train, evaluate and deploy.",
     courseSlugs: ["machine-learning", "artificial-intelligence"],
   },
-  {
-    slug: "cybersecurity",
-    title: "Cybersecurity",
-    category: "6-month-certificates",
-    duration: "6 months",
-    summary: "Defensive fundamentals: networks, hardening, monitoring and incident response.",
-    /* no catalogue course yet — the pathway page says so rather than 404 */
-    courseSlugs: [],
-  },
 
   /* ---------------------------- 1 year certificates --------------------- */
   {
@@ -122,14 +113,6 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     duration: "1 year",
     summary: "Classical models first, then neural networks and the training loop in depth.",
     courseSlugs: ["machine-learning", "deep-learning"],
-  },
-  {
-    slug: "cybersecurity-ethical-hacking",
-    title: "Cybersecurity & Ethical Hacking",
-    category: "1-year-certificates",
-    duration: "1 year",
-    summary: "Defence and authorised offensive testing, with the reporting discipline that goes with it.",
-    courseSlugs: [],
   },
 
   /* ----------------------------- civil / mechanical --------------------- */

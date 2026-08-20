@@ -130,13 +130,14 @@
 .listTight .link {
   display: flex;
   width: 100%;
-  min-height: 36px;
+  min-height: 0;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 13px;
+  padding: 12px 0;
+  gap: 0.5rem;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 500;
   color: #111827;
   text-decoration: none;
@@ -235,7 +236,7 @@
 .link {
   display: flex;
   width: 100%;
-  min-height: 36px;
+  min-height: 0;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
@@ -251,14 +252,15 @@
     color 0.3s ease;
 }
 
+/* text-only rows: the colour and the nudge carry the hover, with no inset
+   background to re-introduce an image-sized gutter */
 .link:hover,
 .link:focus-visible {
-  transform: translateX(3px);
-  background: #f3f6ff;
-  box-shadow: inset 2px 0 0 0 #2563eb;
+  transform: translateX(4px);
   color: #2563eb;
   cursor: pointer;
   outline: none;
+  transition: all 0.25s ease;
 }
 
 /* the course this page is currently on */

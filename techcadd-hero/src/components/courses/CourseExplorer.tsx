@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
@@ -52,7 +53,14 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
     [courses],
   );
 
-  const [active, setActive] = useState(ALL);
+  /* Footer links arrive as /courses?category=Programming, so the pill they
+     name is the one selected on landing. An unknown value falls back to All
+     rather than showing an empty grid. */
+  const params = useSearchParams();
+  const requested = params.get("category");
+  const [active, setActive] = useState(
+    requested && categories.includes(requested) ? requested : ALL,
+  );
 
   const visible = useMemo(
     () => (active === ALL ? courses : courses.filter((c) => c.category === active)),

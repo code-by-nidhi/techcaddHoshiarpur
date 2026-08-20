@@ -95,7 +95,7 @@ export default function LaunchCenter() {
 
         {/* live metrics */}
         <Reveal delay={0.26}>
-          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-4 rounded-[28px] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-xl">
+          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-4 rounded-[28px] min-[420px]:grid-cols-3 border border-white/10 bg-white/[0.04] p-7 backdrop-blur-xl">
             <div className="text-center">
               <p className="font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
                 <Counter to={15} suffix="K+" />

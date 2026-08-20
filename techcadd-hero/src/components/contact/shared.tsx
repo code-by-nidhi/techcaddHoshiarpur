@@ -13,7 +13,7 @@ export const LIGHT_GLASS =
 
 /** Real contact details, kept in one place so every card and link agrees. */
 export const CONTACT = {
-  phone: "+91 98881 22255",
+  phone: "+91 62843 47710",
   email: "info@techcadd.com",
   location: "TechCadd Hoshiarpur Campus",
 };

@@ -12,7 +12,7 @@ export default function CanvasLoader() {
         <div className="size-9 animate-spin rounded-full border-2 border-white/15 border-t-cyan-300" />
         <div className="h-px w-full overflow-hidden bg-white/10">
           <div
-            className="h-px bg-gradient-to-r from-blue-500 to-violet-400 transition-[width] duration-200"
+            className="h-px bg-gradient-to-r from-blue-500 to-[#38BDF8] transition-[width] duration-200"
             style={{ width: `${progress.toFixed(0)}%` }}
           />
         </div>

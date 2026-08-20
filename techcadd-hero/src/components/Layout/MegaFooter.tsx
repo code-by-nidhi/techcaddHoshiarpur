@@ -9,17 +9,25 @@ import {
 } from "lucide-react";
 import { MEGA_FOOTER } from "@/lib/site";
 
-const SOCIALS = [
-  { icon: Linkedin, label: "LinkedIn", href: "#" },
-  { icon: Instagram, label: "Instagram", href: "#" },
-  { icon: Youtube, label: "YouTube", href: "#" },
-  { icon: Facebook, label: "Facebook", href: "#" },
-];
+/* Only networks with a URL in `MEGA_FOOTER.social` are rendered, so the row
+   never ships an icon that goes nowhere. */
+const SOCIAL = [
+  { icon: Linkedin, label: "LinkedIn", href: MEGA_FOOTER.social.linkedin },
+  { icon: Instagram, label: "Instagram", href: MEGA_FOOTER.social.instagram },
+  { icon: Youtube, label: "YouTube", href: MEGA_FOOTER.social.youtube },
+  { icon: Facebook, label: "Facebook", href: MEGA_FOOTER.social.facebook },
+].filter((s) => s.href);
 
 const LEGAL = [
-  { label: "Privacy Policy", href: "#" },
-  { label: "Terms of Service", href: "#" },
-  { label: "Sitemap", href: "#" },
+  /*
+   * Only rendered when a destination exists. Privacy Policy and Terms of
+   * Service need real legal copy — writing that for a live business is not
+   * something to improvise, so they stay out of the footer until the pages
+   * exist rather than shipping as `href="#"`.
+   */
+  { label: "Privacy Policy", href: "" },
+  { label: "Terms of Service", href: "" },
+  { label: "Sitemap", href: "/sitemap.xml" },
 ];
 
 /** The glass recipe every panel down here shares. */
@@ -73,7 +81,7 @@ export default function MegaFooter() {
   };
 
   return (
-    <footer className="relative overflow-hidden bg-[#050B1F] pt-24 text-white">
+    <footer className="relative overflow-hidden bg-[linear-gradient(180deg,#07103D_0%,#0A1B5E_55%,#07103D_100%)] pt-24 text-white">
       <Atmosphere />
 
       <motion.div
@@ -111,13 +119,13 @@ export default function MegaFooter() {
                   maxLength={10}
                   value={phone}
                   onChange={(e) => {
-                    // digits only, capped at ten: a pasted "+91 98765 43210"
+                    // digits only, capped at ten: a pasted "+91 62843 47710"
                     // becomes the ten digits we actually want
                     setPhone(e.target.value.replace(/\D/g, "").slice(-10));
                     setSent(false);
                     setError(null);
                   }}
-                  placeholder="98765 43210"
+                  placeholder="10-digit mobile number"
                   aria-label="Mobile number"
                   aria-invalid={error !== null}
                   aria-describedby="footer-subscribe-status"
@@ -184,7 +192,15 @@ export default function MegaFooter() {
         </motion.div>
 
         {/* sitemap */}
-        <div className="mt-16 grid gap-10 md:grid-cols-2 lg:grid-cols-[1.3fr_repeat(5,1fr)]">
+        {/* Tracks are generated from the column count. It was hardcoded to five
+            while the footer carries four, so the row always had one empty track
+            and read as left-heavy. */}
+        <div
+          /* Four tracks, matching the four columns in MEGA_FOOTER. It has to
+             be a literal: Tailwind scans class strings statically, so a
+             template literal here would never emit a rule. */
+          className="mt-16 grid items-start justify-center gap-10 md:grid-cols-2 lg:grid-cols-[1.3fr_repeat(4,1fr)]"
+        >
           <motion.div variants={riseUp} className="relative">
             {/* soft blue bloom behind the mark */}
             <span
@@ -206,7 +222,7 @@ export default function MegaFooter() {
               </p>
 
               <ul className="mt-7 flex gap-3">
-                {SOCIALS.map(({ icon: Icon, label, href }) => (
+                {SOCIAL.map(({ icon: Icon, label, href }) => (
                   <li key={label}>
                     <motion.a
                       href={href}
@@ -231,8 +247,8 @@ export default function MegaFooter() {
               </h3>
               <ul className="mt-5 space-y-3">
                 {col.links.map((l) => (
-                  <li key={l}>
-                    <FooterLink href="#">{l}</FooterLink>
+                  <li key={l.href + l.label}>
+                    <FooterLink href={l.href}>{l.label}</FooterLink>
                   </li>
                 ))}
               </ul>
@@ -262,7 +278,7 @@ export default function MegaFooter() {
         >
           <p>© {new Date().getFullYear()} Techcadd. All rights reserved.</p>
           <ul className="flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
-            {LEGAL.map(({ label, href }) => (
+            {LEGAL.filter((l) => l.href).map(({ label, href }) => (
               <li key={label}>
                 <FooterLink href={href} className="text-[12.5px]">
                   {label}
@@ -290,7 +306,7 @@ function Atmosphere() {
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_22%_40%,rgba(12,26,74,0.95)_0%,rgba(6,10,26,0.6)_45%,transparent_75%)]" />
 
-      {/* violet bloom, left edge */}
+      {/* blue bloom, left edge */}
       <div className="absolute -left-[12%] top-[-10%] size-[46rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.26)_0%,transparent_68%)] blur-3xl" />
 
       {/* electric blue pool, bottom right */}

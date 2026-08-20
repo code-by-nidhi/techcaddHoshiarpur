@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { FiArrowRight, FiUserCheck } from "react-icons/fi";
 
@@ -78,7 +79,9 @@ export default function FeaturedCourses() {
 
         {/* ------------------------- filters + grid --------------------------- */}
         <div className="mt-10">
-          <CourseExplorer courses={courses} />
+          <Suspense fallback={null}>
+            <CourseExplorer courses={courses} />
+          </Suspense>
         </div>
 
         {/* ---------------------------- advisor CTA --------------------------- */}

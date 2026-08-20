@@ -89,7 +89,14 @@ export default async function ProgrammePage({
               <span className="text-white/80">{programme.title}</span>
             </nav>
 
-            <span className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 font-[family-name:var(--font-mono-face)] text-[10.5px] uppercase tracking-[0.2em] text-[#93C5FD] backdrop-blur-xl">
+            {/*
+             * Copy left, image right. The banner used to sit full width under
+             * the copy, which is why it read as "below the content" on every
+             * one of these pages — there was no column for it to sit in.
+             */}
+            <div className="mt-6 grid items-start gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10">
+              <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 font-[family-name:var(--font-mono-face)] text-[10.5px] uppercase tracking-[0.2em] text-[#93C5FD] backdrop-blur-xl">
               {category.heading}
               {programme.badge && (
                 <span className="rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-2 py-0.5 text-[9px] font-bold text-white">
@@ -121,20 +128,26 @@ export default async function ProgrammePage({
               </div>
             </dl>
 
-            {/* the format's own artwork */}
-            <div className="relative mt-10 aspect-[16/7] w-full overflow-hidden rounded-[20px] ring-1 ring-inset ring-white/10">
-              <Image
-                src={programme.image}
-                alt={programme.title}
-                fill
-                priority
-                sizes="(max-width: 1023px) 92vw, 1200px"
-                className="object-cover"
-              />
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(5,11,31,0.55))]"
-              />
+              </div>
+
+              {/* image card: sticky beside the copy, and last in the DOM so it
+                  falls below the content once the grid collapses */}
+              <div className="relative order-last h-fit w-full overflow-hidden rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.20)] ring-1 ring-inset ring-white/10 lg:sticky lg:top-[120px]">
+                <div className="relative aspect-[4/3] w-full">
+                  <Image
+                    src={programme.image}
+                    alt={programme.title}
+                    fill
+                    priority
+                    sizes="(max-width: 1023px) 92vw, 420px"
+                    className="object-cover"
+                  />
+                </div>
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,rgba(5,11,31,0.45))]"
+                />
+              </div>
             </div>
           </div>
         </section>
@@ -144,19 +157,6 @@ export default async function ProgrammePage({
           <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
             <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
-                {/* supporting image: above the copy once stacked */}
-                <div className="relative mb-8 aspect-[4/3] w-full overflow-hidden rounded-[20px] shadow-[0_22px_50px_-32px_rgba(15,23,42,0.7)] lg:hidden">
-                  <Image
-                    src={programme.image}
-                    alt=""
-                    aria-hidden
-                    fill
-                    loading="lazy"
-                    sizes="92vw"
-                    className="object-cover"
-                  />
-                </div>
-
                 <h2 className="font-[family-name:var(--font-sora)] text-[clamp(1.4rem,2.4vw,1.9rem)] font-extrabold tracking-[-0.025em] text-[#0F172A]">
                   What is included
                 </h2>

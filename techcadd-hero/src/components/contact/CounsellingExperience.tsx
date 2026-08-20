@@ -52,13 +52,6 @@ const PATHS: CareerPath[] = [
     roles: ["Data Scientist", "Data Analyst", "BI Developer", "Analytics Consultant"],
   },
   {
-    id: "security",
-    label: "Cyber Security",
-    icon: FiShield,
-    tint: "from-[#1D4ED8] to-[#3B82F6]",
-    roles: ["Security Analyst", "SOC Engineer", "Penetration Tester", "Security Consultant"],
-  },
-  {
     id: "cloud",
     label: "Cloud & DevOps",
     icon: FiCloud,

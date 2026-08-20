@@ -76,7 +76,8 @@ export default function ColumnsMegaMenu({
                         aria-current={pathname === link.href ? "page" : undefined}
                         className={`${styles.link} ${pathname === link.href ? styles.linkActive : ""}`}
                       >
-                        <span className={styles.linkLabel}>{link.label}</span>
+
+                  <span className={styles.linkLabel}>{link.label}</span>
                         {link.trending && (
                           <span className={styles.badge}>
                             <FiZap aria-hidden size={9} />

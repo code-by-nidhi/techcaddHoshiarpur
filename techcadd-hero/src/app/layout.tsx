@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 /**
  * Bootstrap's grid-only build: containers, rows, columns and the flex helpers,
  * with no Reboot and no component styles. The full bootstrap.css would restyle
@@ -11,6 +12,9 @@ import type { Metadata, Viewport } from "next";
 import { Sora, Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import CursorFollower from "@/components/UI/CursorFollower";
 import Preloader from "@/components/UI/Preloader";
+import ScrollToTop from "@/components/UI/ScrollToTop";
+import ScrollToTopButton from "@/components/UI/ScrollToTopButton";
+import WhatsAppButton from "@/components/UI/WhatsAppButton";
 import "./globals.css";
 
 const sora = Sora({
@@ -99,6 +103,20 @@ export default function RootLayout({
       lang="en"
       className={`${sora.variable} ${inter.variable} ${poppins.variable} ${mono.variable}`}
     >
+      <head>
+        {/*
+         * Runs before paint. Setting this from a component would be too late:
+         * the browser restores the previous offset during the first frame, so
+         * the correction would be visible as a jump.
+         */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'if("scrollRestoration" in history){history.scrollRestoration="manual";}' +
+              'if(!location.hash){window.scrollTo(0,0);}',
+          }}
+        />
+      </head>
       <body className="bg-[#050B1F] text-white antialiased">
         <a
           href="#hero-heading"
@@ -112,8 +130,13 @@ export default function RootLayout({
             device has a fine pointer and allows motion. */}
         <CursorFollower />
         <Preloader />
+        <Suspense fallback={null}>
+          <ScrollToTop />
+        </Suspense>
 
         {children}
+        <ScrollToTopButton />
+        <WhatsAppButton />
         <DemoModal />
       </body>
     </html>
