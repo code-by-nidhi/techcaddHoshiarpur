@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
-  ArrowRight, Briefcase, Building2, Phone, Play, Users,
+  ArrowRight, Briefcase, Building2, Phone, Users,
   type LucideIcon,
 } from "lucide-react";
 import { ABOUT, VALUES } from "@/lib/site";
@@ -42,7 +42,18 @@ const SHOWCASE = {
   poster: "/images/team-photo.webp",
   alt: "Inside the Techcadd Hoshiarpur campus",
   chip: "Industry-Oriented Training",
+  /* Stills the stand-in loop cycles through when there is no video file. */
+  frames: [
+    { src: "/images/team-photo.webp" },
+    { src: "/images/campus1.webp" },
+    { src: "/images/classroom.webp" },
+    { src: "/images/campus2.webp" },
+    { src: "/images/lab.webp" },
+  ],
 };
+
+/** How long each still holds before the next cross-fade begins. */
+const HOLD_MS = 3800;
 
 /** The five training formats, shown as glass cards under the opening copy. */
 const STATS = [
@@ -346,6 +357,66 @@ const glassIn: Variants = {
   show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
 };
 
+/**
+ * The stand-in loop.
+ *
+ * There is no encoder on this machine to author a real mp4 with, so the card
+ * carries motion by cross-fading the campus stills behind a slow push-in. It
+ * loops for as long as the section is on screen, and it is only ever reached
+ * when the video at SHOWCASE.src is missing — drop that file in and this is
+ * never rendered.
+ */
+function ShowcaseLoop({ reduce }: { reduce: boolean }) {
+  const [frame, setFrame] = useState(0);
+
+  useEffect(() => {
+    if (reduce) return;
+    const id = setInterval(
+      () => setFrame((n) => (n + 1) % SHOWCASE.frames.length),
+      HOLD_MS,
+    );
+    return () => clearInterval(id);
+  }, [reduce]);
+
+  return (
+    <>
+      {SHOWCASE.frames.map((shot, i) => {
+        const on = i === frame;
+        return (
+          <motion.div
+            key={shot.src}
+            aria-hidden={!on}
+            className="absolute inset-0"
+            initial={false}
+            animate={{ opacity: on ? 1 : 0 }}
+            transition={{ duration: 1.1, ease: "easeInOut" }}
+          >
+            {/* the push-in runs on an inner element so the cross-fade above
+                keeps the opacity track to itself */}
+            <motion.div
+              className="absolute inset-0"
+              initial={false}
+              animate={on && !reduce ? { scale: 1.13 } : { scale: 1.02 }}
+              transition={{
+                duration: on && !reduce ? (HOLD_MS + 1200) / 1000 : 0.4,
+                ease: "linear",
+              }}
+            >
+              <Image
+                src={shot.src}
+                alt={i === 0 ? SHOWCASE.alt : ""}
+                fill
+                sizes="(max-width: 767px) 92vw, (max-width: 1023px) 48vw, 46vw"
+                className="object-cover"
+              />
+            </motion.div>
+          </motion.div>
+        );
+      })}
+    </>
+  );
+}
+
 function AboutVideo() {
   const reduce = useReducedMotion();
   /* No file at SHOWCASE.src yet, so the poster path is what renders today.
@@ -371,28 +442,7 @@ function AboutVideo() {
 
         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] border border-[#2563EB]/25 bg-[#101E52] shadow-[0_26px_60px_-30px_rgba(15,23,42,0.55)] transition-shadow duration-500 ease-out group-hover:shadow-[0_40px_84px_-28px_rgba(37,99,235,0.6)]">
           {failed ? (
-            <>
-              <Image
-                src={SHOWCASE.poster}
-                alt={SHOWCASE.alt}
-                fill
-                sizes="(max-width: 767px) 92vw, (max-width: 1023px) 48vw, 46vw"
-                className={`object-cover transition-transform duration-[900ms] ease-out ${
-                  reduce ? "" : "group-hover:scale-[1.06]"
-                }`}
-              />
-
-              {/* the fallback needs to read as a video, hence the play control */}
-              <span className="absolute inset-0 grid place-items-center">
-                <span className="grid size-16 place-items-center rounded-full border border-white/45 bg-white/20 shadow-[0_18px_40px_-16px_rgba(5,11,31,0.9)] backdrop-blur-xl transition-transform duration-500 group-hover:scale-110 motion-reduce:group-hover:scale-100 sm:size-20">
-                  <Play
-                    aria-hidden
-                    className="ml-[3px] size-6 fill-white text-white sm:size-7"
-                  />
-                </span>
-                <span className="sr-only">Campus video unavailable</span>
-              </span>
-            </>
+            <ShowcaseLoop reduce={reduce === true} />
           ) : (
             <video
               src={SHOWCASE.src}
