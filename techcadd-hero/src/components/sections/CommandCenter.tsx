@@ -47,7 +47,13 @@ export default function CommandCenter() {
   const ActiveIcon = TAB_ICONS[active.id] ?? FiCpu;
 
   return (
-    <section id="capabilities" className="relative overflow-x-clip bg-white section-pad">
+    <section
+      id="capabilities"
+      /* Explicit bottom room. `overflow-x-clip` stays: clip on one axis leaves
+         the other visible, so it stops sideways page scroll without cropping
+         anything vertically. */
+      className="relative overflow-x-clip bg-white section-pad pb-[40px] md:pb-[60px] lg:pb-[80px]"
+    >
       {/* depth layers: radial wash, grid pattern, drifting blobs */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(37,99,235,0.08),transparent_70%)]" />
@@ -102,7 +108,7 @@ export default function CommandCenter() {
           <div className="col-12 col-lg-3">
             <nav
               aria-label="Capabilities"
-              className="h-100 rounded-[22px] border border-slate-200/80 bg-white/70 p-2.5 shadow-[0_14px_36px_-30px_rgba(15,23,42,0.7)] backdrop-blur-xl"
+              className="min-h-full rounded-[22px] border border-slate-200/80 bg-white/70 p-2.5 shadow-[0_14px_36px_-30px_rgba(15,23,42,0.7)] backdrop-blur-xl"
             >
               {/* scrolls horizontally on phones, stacks from lg */}
               <ul className="flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1 lg:block lg:space-y-1.5 lg:overflow-visible lg:pb-0">
@@ -149,7 +155,17 @@ export default function CommandCenter() {
 
           {/* --------------------------- centre ---------------------------- */}
           <div className="col-12 col-lg-6">
-            <div className="flex h-100 flex-col gap-3 lg:gap-4">
+            {/*
+             * min-h-full, not Bootstrap's h-100. `.h-100` is
+             * `height: 100% !important`, so this column resolved to the
+             * height of the tallest *other* column: once its own content
+             * grew past that, the AI banner below simply overflowed — 204px
+             * past the section on a desktop, 335px on a phone — and the next
+             * band was drawn straight over it. A minimum lets the column set
+             * the row height while `mt-auto` still drops the banner to the
+             * bottom whenever there is spare room.
+             */}
+            <div className="flex min-h-full flex-col gap-3 lg:gap-4">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={active.id}
@@ -211,7 +227,7 @@ export default function CommandCenter() {
 
           {/* --------------------------- metrics --------------------------- */}
           <div className="col-12 col-lg-3">
-            <div className="row g-2 g-sm-3 h-100">
+            <div className="row g-2 g-sm-3 min-h-full">
               {COMMAND_METRICS.map((m, i) => {
                 const Icon = METRIC_ICONS[i % METRIC_ICONS.length];
 

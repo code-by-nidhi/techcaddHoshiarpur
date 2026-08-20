@@ -6,6 +6,8 @@ import MegaFooter from "@/components/Layout/MegaFooter";
 import Breadcrumbs from "@/components/courses/Breadcrumbs";
 import CourseExplorer, { type ExplorerCourse } from "@/components/courses/CourseExplorer";
 import { getAllCourses } from "@/lib/courses";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, graph, itemListSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = {
   title: "Courses | Industry-focused training programmes",
@@ -40,6 +42,14 @@ export default async function CoursesIndex() {
 
   return (
     <>
+      {/* The catalogue as a list, so the programmes are discoverable as
+          entities rather than only as links on a page. */}
+      <JsonLd
+        data={graph(
+          breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Courses", path: "/courses" }]),
+          itemListSchema("TechCadd courses", courses.map((c) => ({ name: c.title, path: `/courses/${c.slug}` }))),
+        )}
+      />
       <Navbar />
 
       <main className="relative overflow-x-clip bg-[#101E52]">

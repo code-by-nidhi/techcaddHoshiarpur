@@ -19,6 +19,8 @@ import { safely } from "@/lib/cms/client";
 import { getSite, type CmsSite } from "@/lib/cms/content";
 import { SiteProvider } from "@/lib/cms/site-context";
 import "./globals.css";
+import JsonLd from "@/components/seo/JsonLd";
+import { graph, organizationSchema, websiteSchema } from "@/lib/seo/schema";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -128,6 +130,10 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-[#101E52] text-white antialiased">
+        {/* The publisher and the site, declared once. Every other page
+            references these by @id rather than restating them, so search
+            engines see one canonical organisation and not thirteen. */}
+        <JsonLd data={graph(organizationSchema(), websiteSchema())} />
         <a
           href="#hero-heading"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black"

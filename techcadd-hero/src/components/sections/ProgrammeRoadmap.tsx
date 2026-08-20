@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import {
   ClipboardCheck, BookOpen, Award, Building2, Rocket, MessagesSquare, Mic, Trophy,
 } from "lucide-react";
@@ -12,14 +12,20 @@ const ICONS = [ClipboardCheck, BookOpen, Award, Building2, Rocket, MessagesSquar
 /** Height of the node row, so the rail can be dropped on its centre line. */
 const NODE_ROW = 64;
 
-/** One stop on the track. */
+/** Below this the section is a touch scroller instead of a pinned track. */
+const PIN_QUERY = "(min-width: 1024px)";
+
+/* -------------------------------------------------------------------------- */
+/*  card                                                                       */
+/* -------------------------------------------------------------------------- */
+
 function Step({ step, index }: { step: (typeof ROADMAP)[number]; index: number }) {
   const Icon = ICONS[index];
 
   return (
     /* items-stretch on the row plus flex-1 on the card is what gives every
        card the same height, whatever its copy runs to */
-    <li className="flex w-[80vw] max-w-[320px] shrink-0 snap-start flex-col sm:w-[340px] lg:w-[360px]">
+    <li className="flex w-[80vw] max-w-[320px] shrink-0 snap-start flex-col sm:w-[340px] sm:max-w-none lg:w-[360px]">
       {/*
        * The node is centred over its own card. Every cell is the same width,
        * so centring is also what makes the gap between nodes identical — one
@@ -55,38 +61,171 @@ function Step({ step, index }: { step: (typeof ROADMAP)[number]; index: number }
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/*  shared pieces                                                              */
+/* -------------------------------------------------------------------------- */
+
+function Header() {
+  return (
+    <div className="mx-auto w-full max-w-[1600px] px-[24px] lg:px-[80px]">
+      <span className="inline-block rounded-full border border-[#2563EB]/20 bg-[#2563EB]/8 px-3.5 py-1.5 font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.18em] text-[#2563EB]">
+        Included with every programme
+      </span>
+      <h2 className="mt-[20px] max-w-2xl font-[family-name:var(--font-poppins)] text-[clamp(1.9rem,3.4vw,3rem)] font-extrabold leading-[1.1] tracking-[-0.025em] text-[#0F172A]">
+        The Career Journey, End To End
+      </h2>
+      <p className="mt-[12px] max-w-xl text-[15px] leading-relaxed text-[#475569]">
+        Eight stages, in order. Keep scrolling to walk the path.
+      </p>
+    </div>
+  );
+}
+
 /**
- * Horizontal roadmap.
+ * The rail, the fill and the eight cards.
  *
- * The track is a real scroll container — `overflow-x: auto` with x-mandatory
- * snapping — rather than a sticky section translating a row under a pinned
- * viewport. That version drove `x` from a hard-coded percentage of the row's
- * own width, a different distance at every breakpoint and card width, so it
- * always over- or under-shot: the first and last cards sat half off the edge
- * and cards were left clipped mid-scroll. Scrolling the element itself cannot
- * overshoot, and the browser's own snapping settles on a whole card every
- * time.
+ * All three live in the same box, so whatever moves the box moves them
+ * together — which is what keeps each node above its own card. The previous
+ * pinned version drew the rail on the section while the cards slid underneath
+ * it, and the two drifted apart the further along the track you got.
  *
- * The rail and its fill live inside the scrolled row, which is what keeps each
- * node above its own card. Before, the rail was pinned to the section while
- * the cards slid underneath it, and a per-card scroll transform pushed the
- * nodes off it vertically as well — the further down the track, the further
- * the node drifted below the line.
+ * `w-max` and the gutters sit here too, so the box measures exactly
+ * gutter + cards + gutter. That measurement is what the travel distance is
+ * derived from, which is what stops the first and last card being cut.
  */
-export default function ProgrammeRoadmap() {
+function Track({
+  innerRef,
+  fill,
+}: {
+  innerRef?: RefObject<HTMLDivElement | null>;
+  fill: MotionValue<number> | number;
+}) {
+  return (
+    <div
+      ref={innerRef}
+      className="relative w-max px-[24px] pb-[42px] pt-[2px] lg:px-[80px]"
+    >
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-[24px] h-px bg-slate-200 lg:inset-x-[80px]"
+        style={{ top: NODE_ROW / 2 }}
+      />
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-[24px] h-[2px] origin-left bg-gradient-to-r from-[#2563EB] via-[#2563EB] to-[#60A5FA] lg:inset-x-[80px]"
+        style={{ top: NODE_ROW / 2, scaleX: fill }}
+      />
+
+      <ol className="flex items-stretch gap-[28px]">
+        {ROADMAP.map((s, i) => (
+          <Step key={s.step} step={s} index={i} />
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  desktop: pinned, scroll-linked                                             */
+/* -------------------------------------------------------------------------- */
+
+function PinnedRoadmap() {
+  const section = useRef<HTMLDivElement>(null);
+  const pane = useRef<HTMLDivElement>(null);
+  const viewport = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+
+  /** Horizontal distance the track has to cover, and the pinned pane's height. */
+  const [travel, setTravel] = useState(0);
+  const [paneHeight, setPaneHeight] = useState(0);
+
+  /*
+   * Measured, never guessed. The original pinned version drove x from a
+   * hard-coded `-72%` of the row's own width — a different number of pixels at
+   * every breakpoint and card width, so it always over- or under-shot and left
+   * the first and last cards cut off. Re-measuring on resize is the equivalent
+   * of ScrollTrigger's invalidateOnRefresh.
+   */
+  const measure = useCallback(() => {
+    const t = track.current;
+    const v = viewport.current;
+    const p = pane.current;
+    if (!t || !v || !p) return;
+    /* scrollWidth spans gutter + cards + gutter, so at full travel the track's
+       right gutter lands on the viewport's right edge — the last card keeps
+       exactly the breathing space the first one starts with. */
+    setTravel(Math.max(0, t.scrollWidth - v.clientWidth));
+    setPaneHeight(p.offsetHeight);
+  }, []);
+
+  useLayoutEffect(() => {
+    measure();
+
+    /*
+     * A cold first paint can hand back a track of zero width, which measures a
+     * travel of zero and leaves the section its unscrolled height — the pin
+     * then never moves. One more pass after the browser has laid out, and
+     * another once the display faces have swapped in, covers both.
+     */
+    const raf = requestAnimationFrame(measure);
+    document.fonts?.ready.then(measure).catch(() => {});
+
+    const ro = new ResizeObserver(measure);
+    for (const el of [track.current, viewport.current, pane.current]) {
+      if (el) ro.observe(el);
+    }
+    window.addEventListener("resize", measure);
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [measure]);
+
+  /* The section is exactly as tall as the pinned pane plus the distance the
+     track has to travel, so the journey finishes precisely as the pin lets go
+     — no dead scroll at either end. */
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
+  const progress = useSpring(scrollYProgress, { stiffness: 90, damping: 30, restDelta: 0.0005 });
+  const x = useTransform(progress, [0, 1], [0, -travel]);
+
+  return (
+    <div
+      ref={section}
+      style={{ height: paneHeight ? paneHeight + travel : undefined }}
+      className="relative"
+    >
+      <div
+        ref={pane}
+        className="sticky top-0 flex min-h-svh flex-col justify-center overflow-hidden py-12 lg:py-16"
+      >
+        <Header />
+
+        <div ref={viewport} className="relative mt-10 w-full overflow-hidden">
+          <motion.div style={{ x }} className="will-change-transform">
+            <Track innerRef={track} fill={progress} />
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+/*  touch: swipe, no pin                                                       */
+/* -------------------------------------------------------------------------- */
+
+function SwipeRoadmap() {
   const scroller = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
+  const [fill, setFill] = useState(0);
 
   const measure = useCallback(() => {
     const el = scroller.current;
     if (!el) return;
     const travel = el.scrollWidth - el.clientWidth;
-    setProgress(travel > 0 ? el.scrollLeft / travel : 1);
+    setFill(travel > 0 ? el.scrollLeft / travel : 1);
   }, []);
 
-  /* A track with nothing to scroll — a very wide screen — would leave the fill
-     at zero for ever, so it reads as complete instead. Re-measuring on resize
-     keeps that honest as the width changes. */
   useEffect(() => {
     measure();
     const el = scroller.current;
@@ -97,73 +236,62 @@ export default function ProgrammeRoadmap() {
   }, [measure]);
 
   return (
+    <div className="py-16">
+      <Header />
+      <div
+        ref={scroller}
+        onScroll={measure}
+        /* scroll-p matches the gutter so a snapped card lands level with the
+           first one rather than flush against the edge */
+        className="mt-10 snap-x snap-mandatory overflow-x-auto scroll-p-[24px] [scrollbar-color:rgba(37,99,235,0.32)_transparent] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[rgba(37,99,235,0.3)] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-[8px]"
+      >
+        <Track fill={fill} />
+      </div>
+    </div>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
+
+/** Which mode applies. Pinned is the server snapshot, since it is the design. */
+function usePinned() {
+  const [pinned, setPinned] = useState(true);
+  useEffect(() => {
+    const mql = window.matchMedia(PIN_QUERY);
+    const sync = () => setPinned(mql.matches);
+    sync();
+    mql.addEventListener("change", sync);
+    return () => mql.removeEventListener("change", sync);
+  }, []);
+  return pinned;
+}
+
+/**
+ * Horizontal roadmap.
+ *
+ * The section is tall and its inner pane is pinned; scrolling the page drives
+ * the track sideways and fills the progress rail, so the journey reads as one
+ * continuous move from enrolment to placement. Framer's `useScroll` supplies
+ * the scrub — the project already depends on it, and adding GSAP for a single
+ * section would have cost more than it bought.
+ *
+ * Below `lg`, and whenever the reader has asked for reduced motion, the pin is
+ * dropped for an ordinary touch scroller: pinning the viewport and taking over
+ * the scroll wheel is exactly what someone setting that preference is asking
+ * not to have.
+ */
+export default function ProgrammeRoadmap() {
+  const reduce = useReducedMotion();
+  const pinned = usePinned();
+
+  return (
     /*
      * Surface, not white: this sits directly under the Student Wall, which is
      * white, and two white sections in a row read as one. The stage cards
      * inside are white, so the surface tone also gives them an edge to sit on.
      */
-    <section id="included" className="relative bg-[#F8FAFC] py-16 lg:py-24">
-      <div className="mx-auto w-full max-w-[1600px] px-[24px] lg:px-[80px]">
-        <span className="inline-block rounded-full border border-[#2563EB]/20 bg-[#2563EB]/8 px-3.5 py-1.5 font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.18em] text-[#2563EB]">
-          Included with every programme
-        </span>
-        <h2 className="mt-[20px] max-w-2xl font-[family-name:var(--font-poppins)] text-[clamp(1.9rem,3.4vw,3rem)] font-extrabold leading-[1.1] tracking-[-0.025em] text-[#0F172A]">
-          The Career Journey, End To End
-        </h2>
-        <p className="mt-[12px] max-w-xl text-[15px] leading-relaxed text-[#475569]">
-          Eight stages, in order. Keep scrolling to walk the path.
-        </p>
-      </div>
-
-      {/* ------------------------------- track -------------------------------- */}
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-10"
-      >
-        <div
-          ref={scroller}
-          onScroll={measure}
-          /*
-           * scroll-p matches the gutter, so a snapped card lands level with
-           * the first one rather than flush against the edge. The bar is
-           * slimmed rather than hidden: with no sticky section driving the
-           * track any more, it is the only affordance telling a mouse user
-           * that the row scrolls at all.
-           */
-          className="snap-x snap-mandatory overflow-x-auto scroll-p-[24px] [scrollbar-color:rgba(37,99,235,0.32)_transparent] [scrollbar-width:thin] lg:scroll-p-[80px] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[rgba(37,99,235,0.3)] [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar]:h-[8px]"
-        >
-          {/*
-           * min-w-max and the gutters live on this row, not on the scroller:
-           * a scroll container drops its own trailing padding in every engine,
-           * which is the classic reason a last card ends up flush against the
-           * edge. pb leaves room for the card shadow and hover lift, which
-           * `overflow-x: auto` would otherwise clip — the y axis cannot stay
-           * visible once x is scrollable.
-           */}
-          <div className="relative mx-auto min-w-max px-[24px] pb-[42px] pt-[2px] lg:px-[80px]">
-            {/* the rail, spanning exactly the card area */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-x-[24px] h-px bg-slate-200 lg:inset-x-[80px]"
-              style={{ top: NODE_ROW / 2 }}
-            />
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-x-[24px] h-[2px] origin-left bg-gradient-to-r from-[#2563EB] via-[#2563EB] to-[#60A5FA] transition-transform duration-150 ease-out lg:inset-x-[80px]"
-              style={{ top: NODE_ROW / 2, transform: `scaleX(${progress})` }}
-            />
-
-            <ol className="flex items-stretch gap-[28px]">
-              {ROADMAP.map((s, i) => (
-                <Step key={s.step} step={s} index={i} />
-              ))}
-            </ol>
-          </div>
-        </div>
-      </motion.div>
+    <section id="included" className="relative bg-[#F8FAFC]">
+      {pinned && !reduce ? <PinnedRoadmap /> : <SwipeRoadmap />}
     </section>
   );
 }

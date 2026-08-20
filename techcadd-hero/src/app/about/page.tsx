@@ -8,6 +8,8 @@ import TechnologySection from "@/components/about/TechnologySection";
 import TrainingSection from "@/components/about/TrainingSection";
 import ValuesSection from "@/components/about/ValuesSection";
 import WhyChooseSection from "@/components/about/WhyChooseSection";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, graph } from "@/lib/seo/schema";
 
 /**
  * The about page, in tonal movements: the navy hero opens and hands off to
@@ -21,6 +23,7 @@ import WhyChooseSection from "@/components/about/WhyChooseSection";
 export default function AboutPage() {
   return (
     <>
+      <JsonLd data={graph(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "About Us", path: "/about" }]))} />
       <HeroSection>
         <StatsSection />
       </HeroSection>

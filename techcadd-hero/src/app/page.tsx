@@ -16,6 +16,8 @@ import { getArticles, getCategories } from "@/lib/blog/api";
 import { safely } from "@/lib/cms/client";
 import { getFaqs, getReviews, type CmsFaq, type CmsReview } from "@/lib/cms/content";
 import type { Article, CategorySummary } from "@/lib/blog/types";
+import JsonLd from "@/components/seo/JsonLd";
+import { faqSchema, graph, localBusinessSchema } from "@/lib/seo/schema";
 
 /**
  * Home page section order.
@@ -48,6 +50,8 @@ export default async function Home() {
 
   return (
     <>
+      {/* The campus itself, and the FAQs the help centre renders below. */}
+      <JsonLd data={graph(localBusinessSchema(), faqSchema(faqs.map((f) => ({ q: f.question, a: f.answer }))))} />
       <Navbar />
       <main id="home">
         <Hero />

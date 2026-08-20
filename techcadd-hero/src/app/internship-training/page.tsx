@@ -4,6 +4,8 @@ import Link from "next/link";
 import { FiArrowUpRight, FiClock } from "react-icons/fi";
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, graph } from "@/lib/seo/schema";
 import {
   CATEGORY_META,
   programmesByCategory,
@@ -24,6 +26,7 @@ const ORDER: TrainingCategory[] = ["short-term", "long-term", "programmes"];
 export default function InternshipTrainingPage() {
   return (
     <>
+      <JsonLd data={graph(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Internship & Training", path: "/internship-training" }]))} />
       <Navbar />
 
       <main id="content">

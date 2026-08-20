@@ -3,6 +3,8 @@ import Link from "next/link";
 import { FiArrowUpRight, FiClock } from "react-icons/fi";
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, graph } from "@/lib/seo/schema";
 import {
   AFTER12_CATEGORY_META,
   after12ByCategory,
@@ -23,6 +25,7 @@ const ORDER: After12Category[] = ["6-month-certificates", "1-year-certificates",
 export default function After12Page() {
   return (
     <>
+      <JsonLd data={graph(breadcrumbSchema([{ name: "Home", path: "/" }, { name: "After 12th", path: "/after-12th" }]))} />
       <Navbar />
 
       <main id="content">

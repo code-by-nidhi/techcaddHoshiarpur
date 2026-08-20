@@ -5,6 +5,8 @@ import ContactFaq from "@/components/contact/ContactFaq";
 import FinalCta from "@/components/contact/FinalCta";
 import { safely } from "@/lib/cms/client";
 import { getFaqs, type CmsFaq } from "@/lib/cms/content";
+import JsonLd from "@/components/seo/JsonLd";
+import { breadcrumbSchema, graph, localBusinessSchema } from "@/lib/seo/schema";
 
 /**
  * Career counselling page, in three tonal movements:
@@ -24,6 +26,7 @@ export default async function ContactPage() {
 
   return (
     <div className="relative">
+      <JsonLd data={graph(localBusinessSchema(), breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Contact Us", path: "/contact" }]))} />
       <ContactHero />
 
       {/* dark -> white, so the hero dissolves rather than stopping at a line */}
