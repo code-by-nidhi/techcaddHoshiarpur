@@ -20,7 +20,7 @@ import {
   FiUserCheck,
   FiUsers,
 } from "react-icons/fi";
-import { PUBLIC_API_URL } from "@/lib/blog/api";
+import { PUBLIC_CMS_API_URL } from "@/lib/cms/client";
 import { DARK } from "@/components/courses/shared";
 import type { Course } from "@/lib/courses/types";
 
@@ -109,22 +109,27 @@ export default function CourseEnquiryForm({
     setServerError(null);
 
     try {
-      const response = await fetch(`${PUBLIC_API_URL}/course-enquiries`, {
+      /*
+       * Straight to the CMS, which is where the counselling team reads its
+       * enquiries. The field names are the CMS contract, not this form's: it
+       * refuses anything it does not recognise, which is what stops a public
+       * form from setting a status or assigning itself to a colleague.
+       */
+      const response = await fetch(`${PUBLIC_CMS_API_URL}/enquiries`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-          name: values.name.trim(),
+          studentName: values.name.trim(),
           phone: values.phone.replace(/\D/g, "").slice(-10),
           email: values.email.trim() || undefined,
           message: values.message.trim() || undefined,
-          // hidden metadata — collected here so every enquiry is traceable to
-          // the page it came from without the visitor typing anything
           courseName,
-          courseSlug: course.slug,
-          courseCategory: course.category,
-          pageUrl: typeof window === "undefined" ? "" : window.location.href,
-          referrer: typeof document === "undefined" ? "" : document.referrer,
-          submittedAt: new Date().toISOString(),
+          source: "website",
+          // Which form and which page — so an enquiry is traceable without the
+          // visitor having typed anything.
+          formType: "Course Enquiry",
+          sourceUrl: typeof window === "undefined" ? undefined : window.location.href,
+          userAgent: typeof navigator === "undefined" ? undefined : navigator.userAgent,
         }),
       });
 
@@ -132,10 +137,17 @@ export default function CourseEnquiryForm({
         const payload = (await response.json().catch(() => ({}))) as { message?: string | string[] };
         const message = Array.isArray(payload.message) ? payload.message[0] : payload.message;
 
+        /*
+         * A 429 here is usually the duplicate guard rather than a flood — the
+         * enquiry did reach us, we are simply not recording it twice. The
+         * server says so in words a visitor can act on, so they are used as
+         * they are rather than overwritten with a scolding about attempts.
+         */
         setServerError(
-          response.status === 429
-            ? "Too many attempts. Please wait a minute and try again."
-            : (message ?? "We couldn't submit that. Please call us instead."),
+          message ??
+            (response.status === 429
+              ? "We already have your enquiry. A counsellor will call you shortly."
+              : "We couldn't submit that. Please call us instead."),
         );
         return;
       }

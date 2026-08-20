@@ -21,7 +21,7 @@
   position: relative;
   z-index: 10;
   overflow: hidden;
-  background: rgba(8, 15, 40, 0.97);
+  background: rgba(20, 36, 92, 0.97);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -301,7 +301,7 @@
   overflow: hidden;
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(7, 15, 40, 0.95);
+  background: rgba(20, 36, 92, 0.95);
   padding: 10px;
 }
 

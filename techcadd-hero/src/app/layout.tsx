@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 /**
  * Bootstrap's grid-only build: containers, rows, columns and the flex helpers,
  * with no Reboot and no component styles. The full bootstrap.css would restyle
@@ -10,6 +11,13 @@ import DemoModal from "@/components/UI/DemoModal";
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import CursorFollower from "@/components/UI/CursorFollower";
+import Preloader from "@/components/UI/Preloader";
+import ScrollToTop from "@/components/UI/ScrollToTop";
+import ScrollToTopButton from "@/components/UI/ScrollToTopButton";
+import WhatsAppButton from "@/components/UI/WhatsAppButton";
+import { safely } from "@/lib/cms/client";
+import { getSite, type CmsSite } from "@/lib/cms/content";
+import { SiteProvider } from "@/lib/cms/site-context";
 import "./globals.css";
 
 const sora = Sora({
@@ -86,19 +94,40 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050B1F",
+  themeColor: "#101E52",
   colorScheme: "dark",
 };
 
-export default function RootLayout({
+/**
+ * Fetched once here rather than per page: the footer is on every route, and
+ * the contact details it prints are the same on all of them. `safely` means a
+ * CMS that is down costs the site its freshest phone number, not its layout.
+ */
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const site = await safely(getSite(), null as CmsSite | null);
+
   return (
     <html
       lang="en"
       className={`${sora.variable} ${inter.variable} ${poppins.variable} ${mono.variable}`}
     >
-      <body className="bg-[#050B1F] text-white antialiased">
+      <head>
+        {/*
+         * Runs before paint. Setting this from a component would be too late:
+         * the browser restores the previous offset during the first frame, so
+         * the correction would be visible as a jump.
+         */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'if("scrollRestoration" in history){history.scrollRestoration="manual";}' +
+              'if(!location.hash){window.scrollTo(0,0);}',
+          }}
+        />
+      </head>
+      <body className="bg-[#101E52] text-white antialiased">
         <a
           href="#hero-heading"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-black"
@@ -110,9 +139,17 @@ export default function RootLayout({
             of existence on a route change. It renders nothing at all unless the
             device has a fine pointer and allows motion. */}
         <CursorFollower />
+        <Preloader />
+        <Suspense fallback={null}>
+          <ScrollToTop />
+        </Suspense>
 
-        {children}
-        <DemoModal />
+        <SiteProvider site={site}>
+          {children}
+          <ScrollToTopButton />
+          <WhatsAppButton />
+          <DemoModal />
+        </SiteProvider>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { FiArrowRight, FiUserCheck } from "react-icons/fi";
 
@@ -48,7 +49,7 @@ export default function FeaturedCourses() {
   });
 
   return (
-    <section id="programs" className="relative overflow-x-clip bg-[#020B2D] section-pad">
+    <section id="programs" className="relative overflow-x-clip bg-[#101E52] section-pad">
       {/* ambience: radial glows over a faint grid, matching /courses */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.05)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_at_top,black,transparent_72%)]" />
@@ -78,11 +79,13 @@ export default function FeaturedCourses() {
 
         {/* ------------------------- filters + grid --------------------------- */}
         <div className="mt-10">
-          <CourseExplorer courses={courses} />
+          <Suspense fallback={null}>
+            <CourseExplorer courses={courses} />
+          </Suspense>
         </div>
 
         {/* ---------------------------- advisor CTA --------------------------- */}
-        <div className="mt-12 flex flex-col items-center gap-5 rounded-[24px] border border-white/[0.08] bg-[rgba(7,15,40,0.95)] p-6 text-center shadow-[0_18px_44px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:p-8 lg:flex-row lg:justify-between lg:text-left">
+        <div className="mt-12 flex flex-col items-center gap-5 rounded-[24px] border border-white/[0.08] bg-[rgba(20, 36, 92,0.95)] p-6 text-center shadow-[0_18px_44px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:p-8 lg:flex-row lg:justify-between lg:text-left">
           <div className="flex flex-col items-center gap-4 sm:flex-row lg:gap-5">
             <span className="grid size-12 shrink-0 place-content-center rounded-2xl bg-gradient-to-br from-[#142C8E] to-[#2563EB] text-white shadow-[0_0_26px_-8px_rgba(37,99,235,0.95)]">
               <FiUserCheck aria-hidden className="size-5" />

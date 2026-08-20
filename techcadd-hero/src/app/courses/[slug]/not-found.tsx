@@ -13,7 +13,7 @@ export default function CourseNotFound() {
     <>
       <Navbar />
 
-      <main className="relative overflow-hidden bg-[#020817] pb-24 pt-[132px] lg:pt-[160px]">
+      <main className="relative overflow-hidden bg-[#101E52] pb-24 pt-[132px] lg:pt-[160px]">
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute -left-[10%] top-0 size-[34rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.20)_0%,transparent_68%)] blur-3xl" />
           <div className="absolute -right-[8%] top-[12%] size-[38rem] rounded-full bg-[radial-gradient(circle,rgba(37,99,235,0.24)_0%,transparent_70%)] blur-3xl" />

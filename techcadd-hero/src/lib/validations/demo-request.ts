@@ -17,7 +17,6 @@ export const COURSES = [
   "Full Stack Development",
   "AI & Machine Learning",
   "Data Science",
-  "Cyber Security",
   "Cloud & DevOps",
   "Digital Marketing",
   "AutoCAD / Civil CAD",

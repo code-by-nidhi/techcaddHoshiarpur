@@ -56,7 +56,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(46rem 28rem at 50% -10%, #14306e 0%, #0c1c56 52%, #081540 88%)",
+              "radial-gradient(46rem 28rem at 50% -10%, #14306e 0%, #0c1c56 52%, #14245C 88%)",
           }}
         />
 

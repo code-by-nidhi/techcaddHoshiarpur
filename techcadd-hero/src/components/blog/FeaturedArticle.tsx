@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Clock } from "lucide-react";
 
 import ScrollReveal from "@/components/about/ui/ScrollReveal";
-import { formatDate } from "@/lib/blog/format";
+import { coverOf, formatDate } from "@/lib/blog/format";
 import { revealScale } from "@/lib/motion";
 import type { Article } from "@/lib/blog/types";
 
@@ -30,7 +30,7 @@ export default function FeaturedArticle({ article }: { article: Article }) {
         >
           <span className="relative block aspect-video w-full overflow-hidden lg:aspect-auto lg:h-full lg:min-h-[26rem]">
             <Image
-              src={article.featuredImage}
+              src={coverOf(article)}
               alt=""
               fill
               priority

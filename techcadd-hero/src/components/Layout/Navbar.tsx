@@ -35,6 +35,10 @@ const After12MegaMenuMobile = dynamic(() =>
 /* server-rendered, not deferred: it sits above the fold on every route and
    popping in after hydration would shift the nav row */
 const AiNavButton = dynamic(() => import("./AiNavButton"), { ssr: true });
+const AboutMegaMenu = dynamic(() => import("./AboutMegaMenu"));
+const AboutMegaMenuMobile = dynamic(() =>
+  import("./AboutMegaMenu").then((m) => m.AboutMegaMenuMobile),
+);
 const NavDropdown = dynamic(() => import("./NavDropdown"));
 const NavDropdownMobile = dynamic(() =>
   import("./NavDropdown").then((m) => m.NavDropdownMobile),
@@ -45,6 +49,7 @@ const NavDropdownMobile = dynamic(() =>
  * every item not listed stays an ordinary link.
  */
 const MEGA_PANELS = {
+  "About Us": { desktop: AboutMegaMenu, mobile: AboutMegaMenuMobile, width: 1000, centred: true },
   Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1200, centred: true },
   Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
   /* centred on the viewport rather than on its trigger, which sits left of
@@ -200,10 +205,10 @@ export default function Navbar() {
        * the <nav> inside it, which is what actually aligns the content.
        */}
       <div
-        /* Solid brand navy at every scroll position. It used to be transparent
-           over the hero; the bar now carries its own ground so the logo and
-           links keep their contrast wherever the page is scrolled to. */
-        className={`w-full bg-[#101C4D] transition-all duration-500 ${
+        /* Exactly the hero's ground colour, so the bar and the hero read as one
+           surface at the top of the page rather than two navy bands. Kept solid
+           at every scroll position so contrast holds on the light routes too. */
+        className={`w-full bg-[#1E3078] transition-all duration-500 ${
           scrolled
             ? "border-b border-white/10 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
             : "border-b border-transparent"
@@ -430,7 +435,7 @@ export default function Navbar() {
             transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
             /* the sheet now carries the whole catalogue, so it scrolls itself
                rather than pushing past the bottom of the screen */
-            className="mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#050B1F]/95 backdrop-blur-xl xl:hidden"
+            className="mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#101E52]/95 backdrop-blur-xl xl:hidden"
           >
             <motion.ul
               initial="hidden"

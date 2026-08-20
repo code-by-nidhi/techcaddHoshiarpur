@@ -59,7 +59,7 @@ export default function CourseModules({ course }: { course: Course }) {
   return (
     <section
       id="curriculum"
-      className="relative overflow-x-clip bg-[#101C4D] py-16 lg:py-20"
+      className="relative overflow-x-clip bg-[#101E52] py-16 lg:py-20"
     >
       {/* ---------------------------- decoration ---------------------------- */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -187,7 +187,7 @@ function RoadmapStep({
         } ${
           isOpen
             ? "bg-gradient-to-br from-[#142C8E] to-[#2563EB] text-white shadow-[0_0_26px_-4px_rgba(37,99,235,1)]"
-            : "bg-[#0A1533] text-[#93C5FD] shadow-[0_0_18px_-8px_rgba(37,99,235,0.9)]"
+            : "bg-[#14245C] text-[#93C5FD] shadow-[0_0_18px_-8px_rgba(37,99,235,0.9)]"
         }`}
       >
         {String(index + 1).padStart(2, "0")}
@@ -212,7 +212,7 @@ function RoadmapStep({
             : "from-white/[0.14] to-transparent hover:shadow-[0_26px_56px_-30px_rgba(37,99,235,0.7)]"
         }`}
       >
-        <div className="rounded-[21px] bg-[rgba(7,15,40,0.95)] backdrop-blur-xl">
+        <div className="rounded-[21px] bg-[rgba(20, 36, 92,0.95)] backdrop-blur-xl">
           <button
             type="button"
             onClick={onToggle}

@@ -14,13 +14,13 @@ import { AdditiveBlending, type Group, type Mesh, type MeshBasicMaterial } from 
 const RINGS = [
   { r: 1.5, color: "#3b82f6", w: 0.022, o: 0.95 },
   { r: 1.78, color: "#60a5fa", w: 0.012, o: 0.6 },
-  { r: 2.15, color: "#8b5cf6", w: 0.014, o: 0.55 },
-  { r: 2.55, color: "#a855f7", w: 0.01, o: 0.35 },
+  { r: 2.15, color: "#3b82f6", w: 0.014, o: 0.55 },
+  { r: 2.55, color: "#60a5fa", w: 0.01, o: 0.35 },
 ];
 
 const TRAILS = [
   { r: 1.94, color: "#93c5fd", speed: 0.5, arc: 1.1, y: 0.035 },
-  { r: 2.32, color: "#c084fc", speed: -0.32, arc: 0.7, y: 0.05 },
+  { r: 2.32, color: "#38bdf8", speed: -0.32, arc: 0.7, y: 0.05 },
   { r: 1.66, color: "#22d3ee", speed: 0.72, arc: 0.45, y: 0.02 },
 ];
 
@@ -71,7 +71,7 @@ export default function Platform3D() {
           depthScale={1.1}
           minDepthThreshold={0.4}
           maxDepthThreshold={1.35}
-          color="#070c1c"
+          color="#101E52"
           metalness={0.75}
           roughness={0.85}
         />

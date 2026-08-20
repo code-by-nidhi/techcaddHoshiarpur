@@ -14,7 +14,7 @@ import {
 } from "react-icons/fi";
 import { GoogleMark } from "@/components/UI/BrandMarks";
 import { demoBus } from "@/lib/demoBus";
-import { MEGA_FOOTER } from "@/lib/site";
+import { useSite } from "@/lib/cms/site-context";
 import {
   COURSES,
   normalisePhone,
@@ -39,6 +39,7 @@ function validate(v: Fields) {
  * anywhere via `demoBus.open()`.
  */
 export default function DemoModal() {
+  const site = useSite();
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<Fields>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
@@ -160,7 +161,7 @@ export default function DemoModal() {
           onMouseDown={(e) => {
             if (!panelRef.current?.contains(e.target as Node)) close();
           }}
-          className="fixed inset-0 z-[10000] grid place-items-center overflow-y-auto bg-[#050B1F]/80 p-4 backdrop-blur-md sm:p-6"
+          className="fixed inset-0 z-[10000] grid place-items-center overflow-y-auto bg-[#101E52]/80 p-4 backdrop-blur-md sm:p-6"
         >
           <motion.div
             ref={panelRef}
@@ -238,10 +239,10 @@ export default function DemoModal() {
                 <p className="relative mt-4 text-[12px] leading-relaxed text-white/50">
                   You can also share your requirements at{" "}
                   <a
-                    href={`mailto:${MEGA_FOOTER.contact.email}`}
+                    href={`mailto:${site.email}`}
                     className="font-semibold text-[#93C5FD] underline-offset-2 hover:underline"
                   >
-                    {MEGA_FOOTER.contact.email}
+                    {site.email}
                   </a>
                   , and our team will get back to you right away.
                 </p>

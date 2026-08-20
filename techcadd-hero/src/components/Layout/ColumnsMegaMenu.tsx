@@ -52,7 +52,7 @@ export default function ColumnsMegaMenu({
       <span
         aria-hidden
         style={{ left: arrow }}
-        className="absolute -top-[7px] size-3.5 -translate-x-1/2 rotate-45 rounded-[3px] border-l border-t border-white/10 bg-[rgba(8,15,40,0.97)]"
+        className="absolute -top-[7px] size-3.5 -translate-x-1/2 rotate-45 rounded-[3px] border-l border-t border-white/10 bg-[rgba(20, 36, 92,0.97)]"
       />
 
       <div className={styles.panel}>
@@ -76,7 +76,8 @@ export default function ColumnsMegaMenu({
                         aria-current={pathname === link.href ? "page" : undefined}
                         className={`${styles.link} ${pathname === link.href ? styles.linkActive : ""}`}
                       >
-                        <span className={styles.linkLabel}>{link.label}</span>
+
+                  <span className={styles.linkLabel}>{link.label}</span>
                         {link.trending && (
                           <span className={styles.badge}>
                             <FiZap aria-hidden size={9} />

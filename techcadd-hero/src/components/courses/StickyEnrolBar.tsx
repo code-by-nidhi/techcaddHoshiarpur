@@ -37,7 +37,7 @@ export default function StickyEnrolBar({ course }: { course: Course }) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 90, opacity: 0 }}
           transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-x-0 bottom-0 z-[9000] border-t border-white/10 bg-[#070c1c]/95 backdrop-blur-xl"
+          className="fixed inset-x-0 bottom-0 z-[9000] border-t border-white/10 bg-[#101E52]/95 backdrop-blur-xl"
         >
           <div className="mx-auto flex w-full max-w-[1200px] items-center gap-4 px-5 py-3 sm:px-6 lg:px-8">
             <div className="hidden min-w-0 flex-1 sm:block">

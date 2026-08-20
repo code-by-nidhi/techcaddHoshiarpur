@@ -5,12 +5,13 @@ import type { RobotEffect } from "./robotBus";
  * Section links are written as "/#id" rather than "#id" so they still resolve
  * from routes other than the home page, such as /contact.
  *
- * "About Us" is a route of its own (/about), so it carries no dropdown: the
+ * "About Us" is both a route (/about) and a dropdown over its three detail
+ * pages. The old note below is kept for the other plain links: the
  * chevron would promise a panel that does not exist.
  */
 export const NAV_LINKS = [
   { label: "Home", href: "/", dropdown: false },
-  { label: "About Us", href: "/about", dropdown: false },
+  { label: "About Us", href: "/about", dropdown: true },
   { label: "AI", href: "/courses", dropdown: true },
   { label: "Courses", href: "/courses", dropdown: true },
   { label: "Internship & Training", href: "/#included", dropdown: true },

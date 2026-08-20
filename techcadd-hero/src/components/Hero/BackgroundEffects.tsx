@@ -121,10 +121,12 @@ export default function BackgroundEffects() {
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-      <div className="absolute inset-0 bg-[#050B1F]" />
+      {/* base ground: the royal navy from the reference, lighter and more
+          saturated than the near-black the hero used before */}
+      <div className="absolute inset-0 bg-[#1E3078]" />
 
       {/* deep navy wash rising from the bottom right, as in the reference */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_78%_60%,rgba(12,26,74,0.95)_0%,rgba(6,10,26,0.6)_45%,transparent_75%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_90%_at_78%_60%,rgba(28,48,120,0.85)_0%,rgba(16,28,74,0.55)_45%,transparent_75%)]" />
 
       {/* violet bloom at the far right edge */}
       <div className="absolute right-[-12%] top-[6%] size-[52rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.30)_0%,transparent_68%)] blur-3xl" />
@@ -138,7 +140,7 @@ export default function BackgroundEffects() {
       <canvas ref={canvasRef} className="absolute inset-0 size-full" />
 
       {/* vignette to keep the headline crisp */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(2,4,10,0.55)_0%,transparent_60%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_50%,rgba(10,20,60,0.45)_0%,transparent_62%)]" />
     </div>
   );
 }

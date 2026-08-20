@@ -30,7 +30,7 @@ const METRIC_TINTS = [
   "from-[#142C8E] to-[#2563EB]",
   "from-[#F59E0B] to-[#F97316]",
   "from-[#3B82F6] to-[#60A5FA]",
-  "from-[#60A5FA] to-[#C026D3]",
+  "from-[#60A5FA] to-[#1D4ED8]",
 ];
 
 /** Deterministic particles for the banner — no Math.random, so SSR matches. */

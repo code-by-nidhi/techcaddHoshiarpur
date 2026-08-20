@@ -84,7 +84,7 @@ function toneUnder(target: Element | null): Tone {
     node = node.parentElement;
   }
 
-  // the body is #050B1F
+  // the body is #101E52
   return "dark";
 }
 
@@ -254,8 +254,8 @@ export default function CursorFollower() {
             */}
             <path
               d={ARROW}
-              fill="#081540"
-              stroke="#081540"
+              fill="#14245C"
+              stroke="#14245C"
               strokeWidth="4.6"
               strokeLinejoin="round"
               opacity="0.55"

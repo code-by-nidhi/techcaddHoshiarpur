@@ -57,7 +57,7 @@ export default function RobotCanvas() {
         shadow-bias={-0.0004}
       />
       {/* fill: purple ambience */}
-      <pointLight position={[-5, 2.4, 2.6]} intensity={22} color="#8b5cf6" />
+      <pointLight position={[-5, 2.4, 2.6]} intensity={22} color="#3b82f6" />
       {/* rim: blue edge light from behind */}
       <spotLight
         position={[-2.4, 3.8, -5]}

@@ -25,7 +25,7 @@ export default function CTASection() {
                 className="absolute inset-0 -z-10"
                 style={{
                   background:
-                    "radial-gradient(40rem 22rem at 50% 110%, rgb(124 58 237 / 30%), transparent 70%), radial-gradient(48rem 26rem at 50% -20%, rgb(37 99 235 / 30%), transparent 70%)",
+                    "radial-gradient(40rem 22rem at 50% 110%, rgb(30 48 120 / 30%), transparent 70%), radial-gradient(48rem 26rem at 50% -20%, rgb(37 99 235 / 30%), transparent 70%)",
                 }}
               />
               <div

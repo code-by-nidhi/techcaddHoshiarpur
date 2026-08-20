@@ -15,7 +15,7 @@ export default function LaunchCenter() {
   return (
     <section
       id="launch"
-      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#050B1F] section-pad"
+      className="relative flex min-h-[100svh] items-center overflow-hidden bg-[#101E52] section-pad"
     >
       {/* animated field */}
       <div aria-hidden className="absolute inset-0 -z-10">
@@ -37,7 +37,7 @@ export default function LaunchCenter() {
             />
           ))}
 
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,#050B1F_80%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_38%,#101E52_80%)]" />
       </div>
 
       <div className="mx-auto w-full max-w-[1100px] px-6 text-center">
@@ -95,7 +95,7 @@ export default function LaunchCenter() {
 
         {/* live metrics */}
         <Reveal delay={0.26}>
-          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-4 rounded-[28px] border border-white/10 bg-white/[0.04] p-7 backdrop-blur-xl">
+          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-4 rounded-[28px] min-[420px]:grid-cols-3 border border-white/10 bg-white/[0.04] p-7 backdrop-blur-xl">
             <div className="text-center">
               <p className="font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
                 <Counter to={15} suffix="K+" />

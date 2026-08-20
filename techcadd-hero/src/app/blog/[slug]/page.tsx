@@ -12,7 +12,7 @@ import RelatedArticles from "@/components/blog/RelatedArticles";
 import ShareBar from "@/components/blog/ShareBar";
 import TableOfContents from "@/components/blog/TableOfContents";
 import { BlogApiError, getArticle, getArticles, getRelated, safely } from "@/lib/blog/api";
-import { formatDate, withHeadingIds } from "@/lib/blog/format";
+import { coverOf, formatDate, withHeadingIds } from "@/lib/blog/format";
 import type { Article, ArticleDetail } from "@/lib/blog/types";
 
 const SITE = "https://techcadd.com";
@@ -43,9 +43,8 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   }
 
   const url = `${SITE}/blog/${article.slug}`;
-  const image = article.featuredImage.startsWith("http")
-    ? article.featuredImage
-    : `${SITE}${article.featuredImage}`;
+  const cover = coverOf(article);
+  const image = cover.startsWith("http") ? cover : `${SITE}${cover}`;
 
   return {
     title: article.seo.title,
@@ -91,9 +90,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const { html, toc } = withHeadingIds(article.content);
 
   const url = `${SITE}/blog/${article.slug}`;
-  const image = article.featuredImage.startsWith("http")
-    ? article.featuredImage
-    : `${SITE}${article.featuredImage}`;
+  const cover = coverOf(article);
+  const image = cover.startsWith("http") ? cover : `${SITE}${cover}`;
 
   /* Structured data: the article itself, and the breadcrumb trail. Both are
      rendered server-side so a crawler sees them without executing anything. */
@@ -155,7 +153,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           className="absolute inset-0 -z-10"
           style={{
             background:
-              "radial-gradient(50rem 30rem at 50% -10%, #14306e 0%, #0c1c56 50%, #081540 85%)",
+              "radial-gradient(50rem 30rem at 50% -10%, #14306e 0%, #0c1c56 50%, #14245C 85%)",
           }}
         />
 
@@ -243,7 +241,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <div className="mx-auto -mt-10 max-w-[62rem] sm:-mt-14">
             <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-hero)] bg-linear-to-br from-brand/20 to-accent/10 shadow-[0_40px_90px_-50px_rgb(8_21_64/0.9)]">
               <Image
-                src={article.featuredImage}
+                src={coverOf(article)}
                 alt={article.title}
                 fill
                 priority

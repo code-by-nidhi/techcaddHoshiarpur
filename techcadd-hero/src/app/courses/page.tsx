@@ -1,10 +1,11 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import Breadcrumbs from "@/components/courses/Breadcrumbs";
 import CourseExplorer, { type ExplorerCourse } from "@/components/courses/CourseExplorer";
-import { COURSES } from "@/lib/courses";
+import { getAllCourses } from "@/lib/courses";
 
 export const metadata: Metadata = {
   title: "Courses | Industry-focused training programmes",
@@ -17,9 +18,15 @@ export const metadata: Metadata = {
  * The catalogue index. It stays a server component and hands the grid a slim
  * projection: the filter pills need client state, but the course data does not
  * need to travel as whole `Course` objects to render a card.
+ *
+ * `getAllCourses` is the built-in catalogue with anything published in the CMS
+ * merged over it, so a course added by an administrator appears here without a
+ * deploy.
  */
-export default function CoursesIndex() {
-  const courses: ExplorerCourse[] = COURSES.map((c) => ({
+export default async function CoursesIndex() {
+  const all = await getAllCourses();
+
+  const courses: ExplorerCourse[] = all.map((c) => ({
     slug: c.slug,
     title: c.shortTitle ?? c.title,
     shortDescription: c.shortDescription,
@@ -35,7 +42,7 @@ export default function CoursesIndex() {
     <>
       <Navbar />
 
-      <main className="relative overflow-x-clip bg-[#020B2D]">
+      <main className="relative overflow-x-clip bg-[#101E52]">
         {/* ---- ambience: radial glows over a faint grid ---- */}
         <div aria-hidden className="pointer-events-none absolute inset-0">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.05)_1px,transparent_1px)] bg-[size:56px_56px] [mask-image:radial-gradient(ellipse_at_top,black,transparent_72%)]" />
@@ -66,12 +73,14 @@ export default function CoursesIndex() {
               </p>
 
               <p className="mt-3 text-[13px] text-white/40">
-                {COURSES.length} programmes across development, data, design and marketing.
+                {all.length} programmes across development, data, design and marketing.
               </p>
             </div>
 
             <div className="mt-12">
-              <CourseExplorer courses={courses} />
+              <Suspense fallback={null}>
+                <CourseExplorer courses={courses} />
+              </Suspense>
             </div>
           </div>
         </section>

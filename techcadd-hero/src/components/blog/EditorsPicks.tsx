@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 
 import ScrollReveal from "@/components/about/ui/ScrollReveal";
 import TechBackground from "@/components/about/ui/TechBackground";
-import { formatDate } from "@/lib/blog/format";
+import { coverOf, formatDate } from "@/lib/blog/format";
 import type { Article } from "@/lib/blog/types";
 
 import AuthorAvatar from "./AuthorAvatar";
@@ -48,7 +48,7 @@ export default function EditorsPicks({ articles }: { articles: Article[] }) {
               >
                 <span className="relative block aspect-video overflow-hidden rounded-[var(--radius-card)] bg-linear-to-br from-brand/25 to-accent/10">
                   <Image
-                    src={article.featuredImage}
+                    src={coverOf(article)}
                     alt=""
                     fill
                     sizes="(max-width: 640px) 92vw, 224px"

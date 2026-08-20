@@ -2,9 +2,8 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { FiArrowRight, FiCheck, FiPhone } from "react-icons/fi";
-import {
-  Ambience, CONTACT, Eyebrow, GLASS, Particles, Shell, fadeUp, phoneDigits, stagger,
-} from "./shared";
+import { useSite } from "@/lib/cms/site-context";
+import { Ambience, Eyebrow, GLASS, Particles, Shell, fadeUp, stagger } from "./shared";
 
 const PROOF = [
   "25,000+ Students Guided",
@@ -15,9 +14,10 @@ const PROOF = [
 
 export default function ContactHero() {
   const reduced = useReducedMotion();
+  const { phone, phoneDigits } = useSite();
 
   return (
-    <section className="relative overflow-hidden bg-[#020817] pb-24 pt-[132px] lg:pb-32 lg:pt-[168px]">
+    <section className="relative overflow-hidden bg-[#101E52] pb-24 pt-[132px] lg:pb-32 lg:pt-[168px]">
       <Ambience />
       <Particles />
 
@@ -69,7 +69,7 @@ export default function ContactHero() {
               </motion.a>
 
               <motion.a
-                href={`tel:${phoneDigits}`}
+                href={`tel:+${phoneDigits}`}
                 whileHover={{ y: -3 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 340, damping: 22 }}
@@ -129,8 +129,8 @@ export default function ContactHero() {
                   <div className="mt-8 border-t border-white/10 pt-6">
                     <p className="text-[13px] leading-relaxed text-white/50">
                       Counsellors reply within the hour on{" "}
-                      <a href={`tel:${phoneDigits}`} className="font-semibold text-[#93C5FD]">
-                        {CONTACT.phone}
+                      <a href={`tel:+${phoneDigits}`} className="font-semibold text-[#93C5FD]">
+                        {phone}
                       </a>
                     </p>
                   </div>

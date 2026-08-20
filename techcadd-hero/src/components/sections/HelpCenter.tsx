@@ -3,23 +3,41 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, Plus, LifeBuoy } from "lucide-react";
-import { HELP, HELP_CATEGORIES } from "@/lib/site";
+import { faqCategories, type CmsFaq } from "@/lib/cms/content";
 import Reveal from "@/components/UI/Reveal";
 import SectionHeading from "@/components/UI/SectionHeading";
 
-export default function HelpCenter() {
+/**
+ * The help centre.
+ *
+ * Questions are fetched on the server and passed in, so the search and the
+ * category tabs stay instant — they filter a list that is already here rather
+ * than making a request per keystroke. An empty list means the CMS had nothing
+ * published or could not be reached, and the section removes itself rather
+ * than rendering a search box over nothing.
+ */
+export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("All");
-  const [open, setOpen] = useState<string | null>(HELP[0].q);
+  // The first question opens by default; it is the one editors put first.
+  const [open, setOpen] = useState<string | null>(faqs[0]?.id ?? null);
+
+  // Derived from the questions themselves, so adding a category in the CMS is
+  // enough to make a tab for it appear.
+  const categories = useMemo(() => faqCategories(faqs), [faqs]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return HELP.filter(
-      (h) =>
-        (category === "All" || h.category === category) &&
-        (q === "" || h.q.toLowerCase().includes(q) || h.a.toLowerCase().includes(q))
+    return faqs.filter(
+      (faq) =>
+        (category === "All" || faq.category === category) &&
+        (q === "" ||
+          faq.question.toLowerCase().includes(q) ||
+          faq.answer.toLowerCase().includes(q))
     );
-  }, [query, category]);
+  }, [faqs, query, category]);
+
+  if (faqs.length === 0) return null;
 
   return (
     <section id="faq" className="relative overflow-x-clip bg-[#F8FAFC] section-pad">
@@ -53,7 +71,7 @@ export default function HelpCenter() {
         {/* category tabs */}
         <Reveal delay={0.16}>
           <div className="mt-6 flex flex-wrap justify-center gap-2">
-            {["All", ...HELP_CATEGORIES].map((c) => {
+            {["All", ...categories].map((c) => {
               const on = c === category;
               return (
                 <button
@@ -85,11 +103,11 @@ export default function HelpCenter() {
         {/* question cards */}
         <div className="mt-10 space-y-3">
           <AnimatePresence mode="popLayout">
-            {results.map((h) => {
-              const isOpen = open === h.q;
+            {results.map((faq) => {
+              const isOpen = open === faq.id;
               return (
                 <motion.div
-                  key={h.q}
+                  key={faq.id}
                   layout
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -101,15 +119,17 @@ export default function HelpCenter() {
                 >
                   <button
                     type="button"
-                    onClick={() => setOpen(isOpen ? null : h.q)}
+                    onClick={() => setOpen(isOpen ? null : faq.id)}
                     aria-expanded={isOpen}
                     className="flex w-full items-center justify-between gap-5 px-6 py-5 text-left"
                   >
                     <span className="flex items-center gap-3.5">
                       <span className="hidden rounded-lg bg-[#2563EB]/8 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#2563EB] sm:inline-block">
-                        {h.category}
+                        {faq.category}
                       </span>
-                      <span className="text-[15.5px] font-medium text-[#0F172A]">{h.q}</span>
+                      <span className="text-[15.5px] font-medium text-[#0F172A]">
+                        {faq.question}
+                      </span>
                     </span>
                     <Plus
                       aria-hidden
@@ -128,7 +148,7 @@ export default function HelpCenter() {
                         transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
                       >
                         <p className="px-6 pb-6 text-[14.5px] leading-[1.8] text-[#475569] sm:pl-[7.5rem]">
-                          {h.a}
+                          {faq.answer}
                         </p>
                       </motion.div>
                     )}

@@ -28,7 +28,7 @@ const REASONS: { icon: IconType; title: string; copy: string; tint: string }[] =
     icon: FiTarget,
     title: "Skill Assessment",
     copy: "Know what skills employers expect.",
-    tint: "from-[#60A5FA] to-[#C026D3]",
+    tint: "from-[#60A5FA] to-[#1D4ED8]",
   },
 ];
 
