@@ -103,7 +103,7 @@ export default function AiMegaMenu({
         ))}
 
         <div className={`${styles.body} ${ai.body}`}>
-          <div className={styles.aiGrid}>
+          <div className={`${styles.aiGrid} ${ai.grid}`}>
             {/* -------------------------- learning paths ------------------- */}
             <motion.div variants={itemIn} className={styles.col}>
               <p className={`${styles.heading} ${ai.heading}`}>{heading}</p>
@@ -137,7 +137,7 @@ export default function AiMegaMenu({
 
             {/* ---------------------------- featured ------------------------ */}
             <motion.div variants={itemIn} className={styles.aiCard}>
-              <motion.div whileHover={{ y: -6, scale: 1.02 }} transition={{ duration: 0.25 }} className="h-full">
+              <motion.div whileHover={{ y: -6 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }} className="h-full">
                 <Link href={featured.href} onClick={onNavigate} className={`${styles.featured} ${ai.featured}`}>
                   <span className={`${styles.featuredShot} ${ai.featuredShot}`}>
                     <Image
@@ -167,7 +167,7 @@ export default function AiMegaMenu({
 
             {/* ------------------------------ cta --------------------------- */}
             <motion.div variants={itemIn} className={styles.aiCard}>
-              <motion.div whileHover={{ y: -6, scale: 1.02 }} transition={{ duration: 0.25 }} className="h-full">
+              <motion.div whileHover={{ y: -6 }} transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }} className="h-full">
                 <div className={`${styles.cta} ${ai.cta}`}>
                   <p className={`${styles.ctaCopy} ${ai.ctaCopy}`}>{panel.copy}</p>
                   <Link href={panel.href} onClick={onNavigate} className={`${styles.button} ${ai.button}`}>

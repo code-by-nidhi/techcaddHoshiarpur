@@ -45,7 +45,10 @@ export const AI_MENU = {
        earlier and the string appears nowhere else in the codebase. */
     title: "Artificial Intelligence Training in Hoshiarpur",
     description: featured.shortDescription,
-    image: featured.heroImage,
+    /* Its own photograph rather than the course page's hero: this card is the
+       one bright object in the panel, and a real classroom shot carries it
+       better than the catalogue's stock artwork. */
+    image: "/images/featured-ai-course.jpeg",
     href: `/courses/${FEATURED_SLUG}`,
     cta: "View Course",
   },

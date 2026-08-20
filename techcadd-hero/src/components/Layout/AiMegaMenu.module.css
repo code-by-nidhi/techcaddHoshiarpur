@@ -200,30 +200,44 @@
   color: #7db7ff;
 }
 
+/* ---------------------------- the two cards ------------------------------- */
+
+/*
+ * The shared sheet centres the three columns, which left the featured card and
+ * the CTA at their own content heights and visibly unequal. Stretching the row
+ * and letting both cards fill it puts them on one line at one height, whatever
+ * either one contains.
+ */
+.root .grid {
+  align-items: stretch;
+}
+
 /* ------------------------------ featured card ----------------------------- */
 
 /* White body on purpose: it is the one bright object in the panel, which is
    what makes it read as the featured course rather than another list row. */
 .root a.featured {
-  /*
-   * height: auto rather than the shared sheet's 100%. The body below is laid
-   * out as blocks now, so the card has a real content height; pinning it to
-   * the row height only cropped the last line off under the rounded corner.
-   */
+  /* A column: the photograph keeps its aspect at the top and the body takes
+     the rest, so the card can fill the row without stretching the image. */
   display: flex;
   flex-direction: column;
-  height: auto;
+  height: 100%;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 20px;
+  border-radius: 24px;
   background: #ffffff;
-  box-shadow: 0 18px 44px -26px rgba(6, 14, 46, 0.95);
+  box-shadow: 0 18px 44px -22px rgba(6, 14, 46, 0.95);
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
 }
 
+/* the card's own overflow:hidden is what rounds the top of the photograph */
 .root span.featuredShot {
   flex-shrink: 0;
+}
+
+.root span.featuredBody {
+  flex: 1;
 }
 
 /*
@@ -249,30 +263,48 @@
 /* --------------------------------- cta ------------------------------------ */
 
 .root div.cta {
+  /* Centred rather than pushed apart: at the featured card's height the
+     shared sheet's space-between stranded the copy at the top and the button
+     at the very bottom. */
+  justify-content: center;
+  height: 100%;
   border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: linear-gradient(140deg, #2a56d4 0%, #243a9f 55%, #1e2a78 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(150deg, #4f7dff 0%, #3cc8ff 100%);
   box-shadow:
-    0 20px 48px -26px rgba(6, 14, 46, 0.95),
-    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    0 20px 48px -24px rgba(6, 14, 46, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
 .root p.ctaCopy {
   color: #ffffff;
 }
 
+/* glass pill on the gradient. `margin-top: auto` from the shared sheet would
+   drop it back to the bottom of a centred column, so it is overridden. */
 .root a.button {
-  background: linear-gradient(90deg, #2a56d4, #7db7ff);
-  color: #0a1437;
+  margin-top: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   box-shadow:
-    0 0 30px -6px rgba(125, 183, 255, 0.95),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    0 10px 26px -12px rgba(6, 14, 46, 0.85),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .root a.button:hover,
 .root a.button:focus-visible {
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.34);
   box-shadow:
-    0 0 46px -2px rgba(125, 183, 255, 1),
+    0 14px 34px -12px rgba(6, 14, 46, 0.9),
+    0 0 30px -8px rgba(255, 255, 255, 0.75),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 

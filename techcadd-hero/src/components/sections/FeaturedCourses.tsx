@@ -105,10 +105,10 @@ export default function FeaturedCourses() {
       </div>
 
       {/*
-       * The rail sits in its own, wider shell than the header above. An open
-       * row is 1380px of panels, which the header's gutters would not leave
-       * room for — it would either overflow or force the panels below the
-       * widths the design is drawn at.
+       * The rail sits in its own, wider shell than the header above, so the
+       * marquee runs the full width of the band rather than inside the
+       * header's gutters. Its card widths are ratios of this shell, which is
+       * what sets how many are on screen at each breakpoint.
        *
        * The gutters are arbitrary values, not `px-5` / `px-6`: the app loads
        * bootstrap-grid.min.css, whose same-named utilities are !important and

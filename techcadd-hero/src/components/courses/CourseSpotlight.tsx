@@ -1,27 +1,28 @@
 "use client";
 
-import { useCallback, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import useEmblaCarousel from "embla-carousel-react";
+import AutoScroll from "embla-carousel-auto-scroll";
+import { motion, useReducedMotion } from "framer-motion";
 import { FiArrowRight, FiAward, FiClock } from "react-icons/fi";
 
 /**
- * The homepage course rail: six full-bleed panels that expand under the
- * pointer, in place of the old filter-pills-and-grid.
+ * The homepage course rail: a continuous marquee of course cards.
  *
- * Two layouts, one component. Wide enough, the panels sit in a single row and
- * the hovered one grows while its neighbours give up exactly the width it
- * takes — so the row's footprint never changes and only one card is ever open.
- * Narrower than that the row becomes a snap slider, every card renders open,
- * and no hover is needed to read a course.
+ * Embla drives it rather than Swiper, which the project already carries.
+ * Swiper's autoplay advances one slide per `speed` and only stops once the
+ * in-flight transition finishes, so pause-on-hover lagged by seconds on a
+ * marquee this slow. Embla's auto-scroll moves a fixed step per frame, so a
+ * hover stops it on the spot and leaving resumes at the same rate.
  *
  * The catalogue data arrives already resolved from the server component; this
  * file owns presentation only.
  */
 
 export type SpotlightCard = {
-  /** the course this panel opens — also the React key */
+  /** the course this card opens — also the React key */
   slug: string;
   /** display name, which may be broader than one course title (a family card) */
   title: string;
@@ -33,272 +34,160 @@ export type SpotlightCard = {
   href: string;
 };
 
-/* ---------------------------------------------------------------- layout -- */
-
-/** Panels per row — the divisor in the fit check below. */
-const COUNT = 6;
-
 /**
- * Panel widths per tier, in px.
- *
- * `shrunk` is not a guess: it is chosen so `expanded + 5 x shrunk` comes out at
- * or under `6 x collapsed`, which is what keeps the row from reflowing the
- * page — the rail occupies the same span open or closed.
- *
- * `wide` carries the design's own numbers and needs ~1380px of rail. `narrow`
- * is the same proportions at the 1280px breakpoint. Below that it is a slider,
- * so no fixed width applies.
+ * Pixels per frame. Six cards at roughly 316px each is ~1900px of track, so at
+ * 60fps one full pass of the catalogue takes about 27 seconds.
  */
-const TIERS = {
-  wide: { collapsed: 220, expanded: 450, shrunk: 172, pad: 24 },
-  narrow: { collapsed: 192, expanded: 400, shrunk: 150, pad: 20 },
-} as const;
-
-type Tier = keyof typeof TIERS | "slider";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
-
-/** Rail width a tier needs, so the queries below and the numbers above cannot
- *  drift apart silently in development. */
-if (process.env.NODE_ENV !== "production") {
-  for (const [name, t] of Object.entries(TIERS)) {
-    if (t.expanded + (COUNT - 1) * t.shrunk > COUNT * t.collapsed) {
-      throw new Error(`CourseSpotlight: the "${name}" tier grows the row when opened`);
-    }
-  }
-}
-
-const WIDE = "(min-width: 1440px)";
-const ROW = "(min-width: 1280px)";
-
-function subscribe(onChange: () => void) {
-  const queries = [window.matchMedia(WIDE), window.matchMedia(ROW)];
-  queries.forEach((q) => q.addEventListener("change", onChange));
-  return () => queries.forEach((q) => q.removeEventListener("change", onChange));
-}
-
-const readTier = (): Tier => {
-  if (window.matchMedia(WIDE).matches) return "wide";
-  if (window.matchMedia(ROW).matches) return "narrow";
-  return "slider";
-};
-
-/**
- * Which layout applies. The server snapshot is `wide` because the row is the
- * primary design; a narrower viewport corrects on hydration, which costs
- * nothing visible — both layouts render identical markup and only the widths
- * differ.
- */
-const useTier = (): Tier => useSyncExternalStore(subscribe, readTier, () => "wide");
-
-/* ------------------------------------------------------------------ rail -- */
+const SPEED = 1.2;
 
 export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
   const reduce = useReducedMotion();
-  const tier = useTier();
-  const size = tier === "slider" ? null : TIERS[tier];
 
-  /** Index of the open panel, or null when the row is at rest. */
-  const [open, setOpen] = useState<number | null>(null);
-
-  /* Guarded so a pointer that has already reached the next panel is not
-     closed again by the previous panel's late hover-end. */
-  const close = useCallback(
-    (i: number) => setOpen((current) => (current === i ? null : current)),
-    [],
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      /* free rather than snapping: a marquee that settles onto a snap point
+         after every drag reads as a slideshow, not a ticker */
+      dragFree: true,
+      align: "start",
+      containScroll: false,
+      skipSnaps: true,
+    },
+    [
+      AutoScroll({
+        speed: SPEED,
+        startDelay: 0,
+        /* the cards travel left to right, so the track runs backwards */
+        direction: "backward",
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+        stopOnFocusIn: true,
+      }),
+    ],
   );
 
-  const widthOf = (i: number) => {
-    if (!size) return "78vw";
-    if (open === null) return size.collapsed;
-    return i === open ? size.expanded : size.shrunk;
-  };
-
-  const duration = reduce ? 0 : 0.5;
+  /*
+   * Reduced motion parks the rail. It stays a carousel — drag and swipe still
+   * work and every card is in the DOM — it simply does not move on its own.
+   */
+  useEffect(() => {
+    if (!emblaApi) return;
+    const autoScroll = emblaApi.plugins().autoScroll;
+    if (!autoScroll) return;
+    if (reduce) autoScroll.stop();
+    else autoScroll.play();
+  }, [emblaApi, reduce]);
 
   /*
-   * The entrance reveal is triggered once for the whole rail rather than per
-   * panel. On the slider only the first panel is ever inside the viewport, so
-   * a per-panel trigger left the other five blank until they were swiped into
-   * view — the rail looked empty. "some" rather than a fraction because the
-   * rail is six panels wide: on a phone the visible slice is a small
-   * proportion of its area, whatever its vertical position.
+   * The list is rendered twice. Embla loops by repositioning the real slides
+   * rather than cloning them, which wants a track comfortably wider than the
+   * viewport — six cards is only about 1.3 viewports on a wide desktop, thin
+   * enough for the wrap to show. The second pass is inert to assistive tech
+   * and to the tab order, so the six courses are still announced and
+   * focusable exactly once.
    */
-  const rail = useRef<HTMLUListElement>(null);
-  const revealed = useInView(rail, { once: true, amount: "some" });
+  const passes = [
+    { key: "a", ghost: false },
+    { key: "b", ghost: true },
+  ];
 
   return (
-    <ul
-      ref={rail}
-      /* Spacing is written as arbitrary values throughout this file rather
-         than as `px-5` / `gap-3`. The app loads bootstrap-grid.min.css, whose
-         utilities share those names and carry !important, so the plain classes
-         resolve to Bootstrap's scale and silently break the width arithmetic
-         above. Arbitrary values generate class names Bootstrap does not have. */
-      className="-mx-[20px] flex snap-x snap-mandatory gap-[12px] overflow-x-auto px-[20px] pb-[16px] [scrollbar-width:none] xl:mx-0 xl:justify-center xl:overflow-visible xl:px-0 xl:pb-0 [&::-webkit-scrollbar]:hidden"
-      onMouseLeave={() => setOpen(null)}
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: "some" }}
+      transition={{ duration: reduce ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
+      className="relative"
     >
-      {cards.map((card, i) => {
-        /* On the slider there is nothing to hover, so every panel shows its
-           detail rather than hiding it behind an interaction that cannot
-           happen on a touch screen. */
-        const shown = !size || open === i;
-
-        return (
-          <motion.li
-            key={card.slug}
-            /* initial={false}: the width is applied, not animated, on mount —
-               otherwise every panel would grow in from zero on first paint. */
-            initial={false}
-            animate={{ width: widthOf(i) }}
-            transition={{ duration, ease: EASE }}
-            onHoverStart={() => setOpen(i)}
-            onHoverEnd={() => close(i)}
-            className="relative max-w-[300px] shrink-0 snap-center xl:max-w-none"
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 34, scale: 0.97 }}
-              animate={
-                revealed
-                  ? { opacity: 1, y: 0, scale: 1 }
-                  : { opacity: 0, y: 34, scale: 0.97 }
-              }
-              transition={{
-                duration: reduce ? 0 : 0.6,
-                delay: reduce ? 0 : i * 0.07,
-                ease: EASE,
-              }}
-            >
-              <Link
-                href={card.href}
-                onFocus={() => setOpen(i)}
-                onBlur={() => close(i)}
-                aria-label={`${card.title} — explore course`}
-                className="group relative block h-[500px] overflow-hidden rounded-[24px] outline-none ring-offset-2 ring-offset-[#0A1437] focus-visible:ring-2 focus-visible:ring-[#60A5FA] sm:h-[560px] xl:h-[650px]"
+      {/*
+       * The viewport clips the track, so it needs vertical room for the hover
+       * lift and its glow — without the padding a raised card is sliced off at
+       * the top. The edges fade rather than cut, which is what stops the rail
+       * reading as cropped where it runs past the container.
+       */}
+      <div
+        ref={emblaRef}
+        className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_5%,#000_95%,transparent)] lg:[mask-image:linear-gradient(90deg,transparent,#000_3%,#000_97%,transparent)]"
+      >
+        <div className="flex cursor-grab touch-pan-y py-[34px] active:cursor-grabbing [backface-visibility:hidden] [transform:translate3d(0,0,0)]">
+          {passes.map((pass) =>
+            cards.map((card) => (
+              <div
+                key={`${pass.key}-${card.slug}`}
+                aria-hidden={pass.ghost || undefined}
+                /* Widths as flex-basis, so how many cards a screen shows is a
+                   ratio of the viewport rather than a fixed pixel guess:
+                   ~1.3 on a phone, ~2.6 on a tablet, ~4.5 on a desktop. */
+                className="min-w-0 shrink-0 grow-0 basis-[78%] pl-[24px] sm:basis-[46%] md:basis-[38%] lg:basis-[28%] xl:basis-[22%]"
               >
-                {/* ---------------------------- artwork -------------------------- */}
-                <motion.div
-                  className="absolute inset-0"
-                  animate={{ scale: shown && size && !reduce ? 1.08 : 1 }}
-                  transition={{ duration: duration + 0.2, ease: EASE }}
+                <Link
+                  href={card.href}
+                  tabIndex={pass.ghost ? -1 : undefined}
+                  aria-label={`${card.title} — explore course`}
+                  className="group relative block h-[400px] overflow-hidden rounded-[24px] border border-[rgba(59,130,246,0.25)] shadow-[0_18px_44px_-30px_rgba(6,14,46,0.9)] outline-none transition-[transform,box-shadow,border-color] duration-[400ms] ease-out will-change-transform hover:border-[rgba(59,130,246,0.6)] hover:shadow-[0_30px_70px_-26px_rgba(37,99,235,0.95),0_0_44px_-12px_rgba(96,165,250,0.7)] focus-visible:ring-2 focus-visible:ring-[#60A5FA] motion-safe:hover:-translate-y-2 motion-safe:hover:scale-[1.02] sm:h-[420px] xl:h-[440px]"
                 >
+                  {/* ------------------------------ artwork ------------------ */}
                   <Image
                     src={card.image}
                     alt=""
                     fill
-                    sizes="(min-width: 1280px) 450px, 78vw"
-                    className="object-cover"
+                    sizes="(min-width: 1280px) 320px, (min-width: 768px) 40vw, 78vw"
+                    className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
                   />
-                </motion.div>
 
-                {/* Three washes. A flat tint first, because the catalogue
-                    artwork is landscape and cropping it to a 220px column
-                    leaves half-words of the banner type across the panel —
-                    sunk far enough into the brand navy it reads as texture
-                    rather than as broken lettering. Then a base gradient that
-                    keeps the title legible over any image, and a deeper one
-                    that only fades up when the panel opens, so the detail copy
-                    has ground to sit on. */}
-                <div aria-hidden className="absolute inset-0 bg-[#0A1437]/45" />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-gradient-to-t from-[#0A1437] via-[#0A1437]/65 to-[#0A1437]/35"
-                />
-                <motion.div
-                  aria-hidden
-                  className="absolute inset-0 bg-gradient-to-t from-[#0A1437] via-[#0A1437]/85 to-transparent"
-                  animate={{ opacity: shown ? 1 : 0 }}
-                  transition={{ duration, ease: EASE }}
-                />
-
-                {/* --------------------------- glow border ----------------------- */}
-                <motion.div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 rounded-[24px]"
-                  animate={{
-                    boxShadow: shown
-                      ? "inset 0 0 0 1px rgba(96,165,250,0.55), 0 26px 70px -28px rgba(35,68,212,0.95)"
-                      : "inset 0 0 0 1px rgba(255,255,255,0.10), 0 18px 44px -34px rgba(10,20,55,0.90)",
-                  }}
-                  transition={{ duration, ease: EASE }}
-                />
-
-                {/* ------------------------- content overlay --------------------- */}
-                <div
-                  className="relative flex h-full flex-col justify-between p-[24px]"
-                  style={size ? { padding: size.pad } : undefined}
-                >
-                  {/* top: category badge, then the course name. Held at the
-                      *shrunk* content width — the narrowest a panel ever gets —
-                      so the title wraps once and then never reflows again,
-                      whichever card the pointer is on. */}
+                  {/* The catalogue artwork is landscape banner work, so a
+                      portrait crop leaves half-words of its type across the
+                      card. Sunk into the brand navy it reads as texture. */}
+                  <div aria-hidden className="absolute inset-0 bg-[#0A1437]/45" />
                   <div
-                    className="max-w-full"
-                    style={size ? { width: size.shrunk - size.pad * 2 } : undefined}
-                  >
-                    <span className="inline-flex items-center gap-[6px] rounded-full border border-white/20 bg-white/[0.08] px-[10px] py-[4px] font-[family-name:var(--font-mono-face)] text-[8.5px] uppercase tracking-[0.12em] whitespace-nowrap text-[#BFDBFE] backdrop-blur-md">
-                      <span aria-hidden className="size-1 rounded-full bg-[#60A5FA]" />
-                      {card.category}
-                    </span>
+                    aria-hidden
+                    className="absolute inset-0 bg-gradient-to-t from-[#0A1437] via-[#0A1437]/70 to-[#0A1437]/25"
+                  />
 
-                    <h3 className="mt-[12px] font-[family-name:var(--font-sora)] text-[19px] font-extrabold leading-[1.18] tracking-[-0.02em] text-white xl:text-[18px]">
+                  {/* ------------------------- category badge ---------------- */}
+                  <span className="absolute left-5 top-5 inline-flex items-center gap-[6px] whitespace-nowrap rounded-full border border-[rgba(59,130,246,0.35)] bg-white/[0.10] px-[10px] py-[4px] font-[family-name:var(--font-mono-face)] text-[8.5px] uppercase tracking-[0.12em] text-[#BFDBFE] backdrop-blur-md">
+                    <span aria-hidden className="size-1 rounded-full bg-[#60A5FA]" />
+                    {card.category}
+                  </span>
+
+                  {/* --------------------------- glass panel ----------------- */}
+                  <div className="absolute inset-x-3 bottom-3 rounded-[18px] border border-[rgba(59,130,246,0.25)] bg-white/[0.07] p-4 backdrop-blur-xl transition-colors duration-[400ms] ease-out group-hover:border-[rgba(59,130,246,0.5)] group-hover:bg-white/[0.11]">
+                    <h3 className="font-[family-name:var(--font-sora)] text-[17px] font-extrabold leading-[1.2] tracking-[-0.02em] text-white">
                       {card.title}
                     </h3>
+
+                    <p className="mt-[8px] line-clamp-2 text-[12.5px] leading-[1.6] text-white/70">
+                      {card.description}
+                    </p>
+
+                    <dl className="mt-[12px] flex flex-wrap gap-x-[16px] gap-y-[6px] text-[11.5px] text-white/60">
+                      <div className="flex items-center gap-[6px]">
+                        <dt className="sr-only">Duration</dt>
+                        <FiClock aria-hidden className="size-3.5 shrink-0 text-[#60A5FA]" />
+                        <dd>{card.duration}</dd>
+                      </div>
+                      <div className="flex items-center gap-[6px]">
+                        <dt className="sr-only">Placement</dt>
+                        <FiAward aria-hidden className="size-3.5 shrink-0 text-[#60A5FA]" />
+                        <dd>{card.placement}</dd>
+                      </div>
+                    </dl>
+
+                    {/* the whole card is the link, so this is styling only */}
+                    <span className="mt-[14px] inline-flex items-center gap-[6px] text-[12.5px] font-semibold text-[#93C5FD] transition-colors duration-[400ms] group-hover:text-white">
+                      Explore Course
+                      <FiArrowRight
+                        aria-hidden
+                        className="size-3.5 transition-transform duration-[400ms] group-hover:translate-x-1"
+                      />
+                    </span>
                   </div>
-
-                  {/*
-                   * Bottom: the detail, revealed with the width.
-                   *
-                   * Faded rather than mounted on hover — a closed panel still
-                   * carries its description, duration and placement line in the
-                   * server HTML, which is what a crawler reads. Unmounting it
-                   * would have made five of the six courses invisible to search.
-                   */}
-                  <div className="w-full">
-                    <motion.div
-                      initial={false}
-                      animate={{ opacity: shown ? 1 : 0, y: shown ? 0 : 16 }}
-                      transition={{
-                        duration: reduce ? 0 : 0.38,
-                        // on the way in it waits for the panel to be worth
-                        // reading; on the way out it leaves at once
-                        delay: reduce || !shown ? 0 : 0.14,
-                        ease: EASE,
-                      }}
-                      /* laid out at the open width from the first frame, so the
-                         copy does not reflow while the panel grows */
-                      style={size ? { width: size.expanded - size.pad * 2 } : undefined}
-                    >
-                      <p className="text-[13.5px] leading-[1.7] text-white/75">
-                        {card.description}
-                      </p>
-
-                      <dl className="mt-[16px] flex flex-wrap gap-x-[20px] gap-y-[8px] text-[12px] text-white/60">
-                        <div className="flex items-center gap-[6px]">
-                          <dt className="sr-only">Duration</dt>
-                          <FiClock aria-hidden className="size-3.5 shrink-0 text-[#60A5FA]" />
-                          <dd>{card.duration}</dd>
-                        </div>
-                        <div className="flex items-center gap-[6px]">
-                          <dt className="sr-only">Placement</dt>
-                          <FiAward aria-hidden className="size-3.5 shrink-0 text-[#60A5FA]" />
-                          <dd>{card.placement}</dd>
-                        </div>
-                      </dl>
-
-                      {/* the whole panel is the link, so this is styling only */}
-                      <span className="mt-[20px] inline-flex items-center gap-[8px] rounded-full bg-gradient-to-r from-[#1E3A8A] to-[#2344D4] px-[20px] py-[10px] text-[13px] font-semibold text-white shadow-[0_0_26px_-8px_rgba(35,68,212,1)] transition-transform duration-300 group-hover:translate-x-0.5">
-                        Explore Course
-                        <FiArrowRight aria-hidden className="size-3.5" />
-                      </span>
-                    </motion.div>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          </motion.li>
-        );
-      })}
-    </ul>
+                </Link>
+              </div>
+            )),
+          )}
+        </div>
+      </div>
+    </motion.div>
   );
 }
