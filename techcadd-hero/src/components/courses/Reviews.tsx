@@ -21,7 +21,7 @@ export default function Reviews({ course }: { course: Course }) {
   const visible = reviews.slice(page * perPage, page * perPage + perPage);
 
   return (
-    <Section tint>
+    <Section tone="dark">
       <Reveal>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHead

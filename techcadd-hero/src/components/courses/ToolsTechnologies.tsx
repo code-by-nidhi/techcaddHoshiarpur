@@ -8,7 +8,7 @@ export default function ToolsTechnologies({ course }: { course: Course }) {
   if (!course.tools.length) return null;
 
   return (
-    <Section tint>
+    <Section tone="dark">
       <Reveal>
         <SectionHead
           center

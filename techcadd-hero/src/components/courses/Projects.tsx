@@ -17,7 +17,7 @@ export default function Projects({ course }: { course: Course }) {
   if (!course.projects.length) return null;
 
   return (
-    <Section>
+    <Section tone="dark">
       <Reveal>
         <SectionHead
           eyebrow="Practice"

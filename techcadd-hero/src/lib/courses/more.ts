@@ -1,7 +1,7 @@
 import {
   COMMON_AUDIENCE as A, COMMON_FAQS, COMMON_WHY, DEFAULT_INSTRUCTOR,
 } from "./shared";
-import type { Course, Module, Project } from "./types";
+import type { Course, Instructor, Module, Project } from "./types";
 
 /**
  * The remaining catalogue entries, so every card in the mega menu opens its own
@@ -29,6 +29,23 @@ export type Spec = {
   projects: Project[];
   related: string[];
   keywords: string[];
+
+  /*
+   * Optional overrides. Every field below has a sensible shared default, so a
+   * course only writes one when its own copy genuinely differs — which is what
+   * keeps the rest of this file to a handful of lines per track.
+   */
+
+  /** Replaces the generated "Inside the X track." line. */
+  videoCaption?: string;
+  /** Replaces the shared beginner/student/fresher audience blocks. */
+  audience?: { label: string; copy: string }[];
+  /** Replaces COMMON_WHY where a course argues its own case. */
+  whyChooseUs?: { title: string; copy: string }[];
+  /** A line of copy per career role, shown instead of bare role chips. */
+  roleDetails?: { role: string; copy: string }[];
+  /** Replaces DEFAULT_INSTRUCTOR's "Why learn with us?" panel. */
+  instructor?: Instructor;
 };
 
 export function makeCourse(s: Spec): Course {
@@ -43,20 +60,25 @@ export function makeCourse(s: Spec): Course {
     mode: "Online / Offline",
     certification: true,
     heroImage: s.hero,
-    video: { url: "", thumbnail: "/images/classroom.webp", caption: `Inside the ${s.title} track.` },
-    audience: [A.beginners, A.students, A.freshers, A.professionals, A.switchers],
-    whyChooseUs: COMMON_WHY,
+    video: {
+      url: "",
+      thumbnail: "/images/classroom.webp",
+      caption: s.videoCaption ?? `Inside the ${s.title} track.`,
+    },
+    audience: s.audience ?? [A.beginners, A.students, A.freshers, A.professionals, A.switchers],
+    whyChooseUs: s.whyChooseUs ?? COMMON_WHY,
     modules: s.modules,
     learningOutcomes: s.outcomes,
     tools: s.tools,
     careerOutcomes: {
       roles: s.roles,
+      ...(s.roleDetails ? { roleDetails: s.roleDetails } : {}),
       opportunities: ["Product and agency teams", "Freelance projects", "Campus placements", "In-house roles"],
       nextSteps: s.nextSteps,
       industries: s.industries,
     },
     projects: s.projects,
-    instructor: DEFAULT_INSTRUCTOR,
+    instructor: s.instructor ?? DEFAULT_INSTRUCTOR,
     /* Real testimonials only — an empty array renders no reviews section. */
     reviews: [],
     faqs: [
@@ -80,30 +102,278 @@ const SPECS: Spec[] = [
   {
     slug: "c-programming",
     title: "C Programming",
-    short: "Learn C programming from fundamentals to practical application development.",
+    short:
+      "C from first syntax to pointers, data structures and problem solving — the base every later language builds on.",
     overview:
-      "C from the ground up: types, control flow and functions, then pointers, memory and file handling — the foundation every later language builds on.",
+      "Make your entry into programming with structured C training in Hoshiarpur. You learn the C language alongside data structures and the problem-solving habits that carry into every language after it. Built for beginners: C is straightforward to learn and gives you a genuine base in programming and logical thinking.",
     category: "Programming",
     duration: "3 Months",
     level: "Beginner",
     hero: "/images/courses/c-programming.webp",
-    modules: [
-      { title: "C fundamentals", summary: "Types, operators and control flow.", topics: ["Data types", "Operators", "Conditionals", "Loops"], duration: "3 weeks", lessons: 12 },
-      { title: "Functions & arrays", summary: "Structuring a program beyond main().", topics: ["Functions", "Scope", "Arrays", "Strings"], duration: "3 weeks", lessons: 12 },
-      { title: "Pointers & memory", summary: "The part that makes C worth learning.", topics: ["Pointers", "Pointer arithmetic", "malloc & free", "Common leaks"], duration: "3 weeks", lessons: 12 },
-      { title: "Structures & file handling", summary: "Modelling data and persisting it.", topics: ["Structs", "Unions", "File I/O", "Header files"], duration: "3 weeks", lessons: 12 },
+    videoCaption:
+      "Watch. Learn. Code. See what it is like to learn programming here — how code is written, how concepts are explained, and how the course is structured from the first module to the last.",
+    audience: [
+      {
+        label: "Students & freshers",
+        copy: "Get started in programming with basic programming concepts and by solving C programming problems.",
+      },
+      {
+        label: "BCA & MCA students",
+        copy: "Improve your programming skills by learning C concepts and applying them to assignment work.",
+      },
+      {
+        label: "Aspiring developers",
+        copy: "Develop a strong programming base that supports becoming a software developer later.",
+      },
+      {
+        label: "Career switchers",
+        copy: "Get ready to enter the IT industry through the most fundamental programming language.",
+      },
+      {
+        label: "Programming & technology enthusiasts",
+        copy: "Learn the basics of C to understand logic, algorithms, data structures and software development.",
+      },
     ],
-    outcomes: ["Write and debug idiomatic C", "Reason about pointers and memory", "Model data with structs", "Read and write files", "Break a problem into functions"],
-    tools: ["C", "GCC", "VS Code", "GDB", "Make"],
-    roles: ["Software Engineer", "Embedded Developer", "Systems Programmer", "Firmware Trainee"],
+    whyChooseUs: [
+      {
+        title: "Easy-to-follow program structure",
+        copy: "Start from the basics of C and progress gradually to advanced concepts through clear explanations, coding examples and practice sessions.",
+      },
+      {
+        title: "Learning by coding",
+        copy: "Learn C by writing programs, solving logical problems, working through coding exercises and practising each concept.",
+      },
+      {
+        title: "Strong programming knowledge",
+        copy: "Build real understanding of variables, functions, arrays, pointers, memory, data structures and algorithms.",
+      },
+      {
+        title: "Project practice",
+        copy: "Apply what you learn through practical C projects and problem-solving exercises that show how coding logic is used.",
+      },
+      {
+        title: "Guided learning & doubt support",
+        copy: "Understand the harder concepts through live coding, worked examples, demonstrations and doubt-clearing sessions.",
+      },
+      {
+        title: "Core programming skills for careers",
+        copy: "Gain the core skills that support internships, interviews, software development, competitive programming and advanced courses.",
+      },
+    ],
+    modules: [
+      {
+        title: "Basics of C programming",
+        summary: "C syntax, keywords, variables, data types, constants, operators, input/output and programming fundamentals.",
+        topics: ["Syntax & keywords", "Variables & data types", "Constants & operators", "Input & output"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Conditional statements & looping",
+        summary: "Conditional statements, if-else, nested conditions, switch, for, while and do-while through practical examples.",
+        topics: ["if-else & nested conditions", "switch", "for / while / do-while", "Break & continue"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Arrays & strings",
+        summary: "One- and two-dimensional arrays, character arrays, strings, string functions and handling array and string data.",
+        topics: ["1D & 2D arrays", "Character arrays", "String functions", "Array handling"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Functions & modular programming",
+        summary: "Writing reusable functions, understanding parameters and return values, and using library functions.",
+        topics: ["Function definition", "Parameters & return values", "Scope", "Library functions"],
+        duration: "2 weeks",
+        lessons: 8,
+      },
+      {
+        title: "Pointers & memory concepts",
+        summary: "Pointers, pointer arithmetic, address and reference concepts, and dynamic memory in C.",
+        topics: ["Pointer basics", "Pointer arithmetic", "Address & reference", "Pointers with arrays"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Structures, unions & file handling",
+        summary: "Structures, unions, enumeration and file handling, with ways to work with structured data in programs.",
+        topics: ["Structures", "Unions & enums", "File input & output", "Structured data"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Data structures in C",
+        summary: "Basic data structures — arrays, linked lists, stacks and queues — with searching and sorting in C.",
+        topics: ["Linked lists", "Stacks", "Queues", "Searching & sorting"],
+        duration: "3 weeks",
+        lessons: 12,
+      },
+      {
+        title: "Dynamic memory management",
+        summary: "malloc(), calloc(), realloc() and free(), with dynamic memory allocation concepts in C programs.",
+        topics: ["malloc & calloc", "realloc", "free & leaks", "Allocation patterns"],
+        duration: "1 week",
+        lessons: 6,
+      },
+      {
+        title: "Advanced C programming",
+        summary: "Recursion, function pointers, preprocessor directives, command-line arguments and modular programming.",
+        topics: ["Recursion", "Function pointers", "Preprocessor directives", "Command-line arguments"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Algorithms & problem solving",
+        summary: "Basic algorithms, searching, sorting, logical problem solving and programming methods.",
+        topics: ["Algorithm basics", "Searching", "Sorting", "Problem-solving patterns"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Database & application concepts",
+        summary: "Database concepts and the relationship between programming concepts and applications.",
+        topics: ["Database fundamentals", "SQL basics", "Programs & data", "Application concepts"],
+        duration: "1 week",
+        lessons: 6,
+      },
+      {
+        title: "Practical exercises & job readiness",
+        summary: "Build programming skill through coding projects, debugging exercises and problem-solving tasks.",
+        topics: ["Coding projects", "Debugging exercises", "Problem solving", "Interview preparation"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+    ],
+    outcomes: [
+      "C programming fundamentals",
+      "Conditions, loops and functions",
+      "Arrays, strings and data handling",
+      "Pointers, structures and memory management",
+      "File handling, data structures and algorithms",
+      "Practical projects and problem-solving skills",
+    ],
+    tools: [
+      "C Programming",
+      "Visual Studio Code",
+      "Code::Blocks / GCC",
+      "Git & GitHub",
+      "Data Structures",
+      "Algorithms",
+      "Pointers & Memory Management",
+      "File Handling",
+      "SQL & Database Fundamentals",
+      "Debugging Tools",
+      "Command-Line Programming",
+      "Problem-Solving Techniques",
+    ],
+    roles: [
+      "C Programmer",
+      "Software Developer",
+      "Embedded Systems Developer",
+      "System Programmer",
+      "Application Developer",
+      "Junior Software Engineer",
+      "Data Structures & Algorithms Foundation",
+    ],
+    roleDetails: [
+      {
+        role: "C Programmer",
+        copy: "Build programs, utilities, system-level applications and software solutions using C.",
+      },
+      {
+        role: "Software Developer",
+        copy: "Use programming concepts, algorithms and problem-solving skills to design and develop software applications.",
+      },
+      {
+        role: "Embedded Systems Developer",
+        copy: "Work on microcontrollers, hardware-oriented applications and embedded systems using C.",
+      },
+      {
+        role: "System Programmer",
+        copy: "Work with low-level programming concepts, operating systems, memory management and system-oriented software.",
+      },
+      {
+        role: "Application Developer",
+        copy: "Apply programming concepts to build and maintain applications across different development technologies.",
+      },
+      {
+        role: "Junior Software Engineer",
+        copy: "Use C, data structures, algorithms and debugging as an entry point into software engineering.",
+      },
+      {
+        role: "Data Structures & Algorithms Foundation",
+        copy: "Build a solid programming foundation and move toward software development and competitive programming.",
+      },
+    ],
+    instructor: {
+      heading: "Why learn C programming with us?",
+      intro:
+        "The aim is not to get you through a syllabus but to make you comfortable writing, reading and debugging code — which is the skill every later language and every interview actually tests.",
+      points: [
+        {
+          title: "Learning through practice",
+          copy: "Coding problems, assignments, debugging and project-based work rather than theory alone.",
+        },
+        {
+          title: "A program for beginners",
+          copy: "Start with basic concepts and move gradually toward the more advanced parts of C.",
+        },
+        {
+          title: "Training with relevant tools",
+          copy: "Work with VS Code, GCC, Git, GitHub and debugging tools used in real development.",
+        },
+        {
+          title: "Real programming projects",
+          copy: "Build projects that strengthen logical reasoning, coding ability, debugging and your portfolio.",
+        },
+        {
+          title: "Guided sessions",
+          copy: "Practical examples, live code writing, doubt clearing and continuous guidance.",
+        },
+        {
+          title: "Technical career skills",
+          copy: "Programming, algorithms and problem-solving skills that support interviews, internships and further study.",
+        },
+      ],
+    },
     industries: ["Embedded systems", "Product engineering", "Automotive", "Consumer electronics"],
     nextSteps: ["C++ Programming", "Data structures & algorithms", "Embedded systems", "Operating systems"],
     projects: [
-      { name: "Student record system", summary: "A console application over structs and file storage.", tech: ["C"], level: "Beginner", skills: ["Structs", "File I/O", "Functions"], image: "/images/lab.webp" },
-      { name: "Text-based utility tool", summary: "Command-line parsing, dynamic memory and clean teardown.", tech: ["C"], level: "Intermediate", skills: ["Pointers", "Dynamic memory", "Strings"], image: "/images/classroom.webp" },
+      {
+        name: "Student record system",
+        summary: "A console application built over structures and file storage.",
+        tech: ["C"],
+        level: "Beginner",
+        skills: ["Structures", "File I/O", "Functions"],
+        image: "/images/lab.webp",
+      },
+      {
+        name: "Text-based utility tool",
+        summary: "Command-line parsing, dynamic memory and clean teardown.",
+        tech: ["C"],
+        level: "Intermediate",
+        skills: ["Pointers", "Dynamic memory", "Strings"],
+        image: "/images/classroom.webp",
+      },
+      {
+        name: "Data structures workbench",
+        summary: "Linked lists, stacks and queues implemented and exercised against searching and sorting problems.",
+        tech: ["C"],
+        level: "Intermediate",
+        skills: ["Linked lists", "Algorithms", "Debugging"],
+        image: "/images/cyber.webp",
+      },
     ],
-    related: ["cpp-programming", "java-programming", "python-programming", "kotlin-programming"],
-    keywords: ["c course Hoshiarpur", "c programming training", "c language classes", "learn c programming"],
+    related: ["cpp-programming", "java-programming", "python-programming", "data-analytics"],
+    keywords: [
+      "best c programming course in hoshiarpur",
+      "c programming training in hoshiarpur",
+      "c programming certification courses",
+      "c language classes hoshiarpur",
+      "learn c programming",
+    ],
   },
   {
     slug: "cpp-programming",

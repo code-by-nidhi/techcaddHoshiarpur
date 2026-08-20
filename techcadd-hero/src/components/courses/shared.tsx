@@ -18,23 +18,40 @@ export const fadeUp: Variants = {
 export const CARD =
   "rounded-[22px] border border-slate-200/80 bg-white shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)]";
 
+/**
+ * Brand navy — the same value the navbar carries, so a dark band on a course
+ * page and the bar above it read as one surface rather than two near-misses.
+ */
+export const DARK = "#101C4D";
+
 export function Section({
   id,
   tint = false,
+  tone = "light",
   children,
   className = "",
 }: {
   id?: string;
   /** soft blue-grey ground, for alternating bands */
   tint?: boolean;
+  /**
+   * "dark" paints the section brand navy and adds `course-dark`, which
+   * re-tints the headings, body copy, cards and borders inside it. The colour
+   * inversion lives in globals.css rather than in every child component, so a
+   * section can be flipped by changing this one prop.
+   */
+  tone?: "light" | "dark";
   children: ReactNode;
   className?: string;
 }) {
+  const dark = tone === "dark";
+
   return (
     <section
       id={id}
+      style={dark ? { backgroundColor: DARK } : undefined}
       className={`relative overflow-x-clip py-16 lg:py-20 ${
-        tint ? "bg-[#F6F9FF]" : "bg-white"
+        dark ? "course-dark" : tint ? "bg-[#F6F9FF]" : "bg-white"
       } ${className}`}
     >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">{children}</div>

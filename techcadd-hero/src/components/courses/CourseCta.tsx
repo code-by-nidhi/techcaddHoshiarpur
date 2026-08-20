@@ -4,11 +4,21 @@ import { motion } from "framer-motion";
 import { FiArrowRight, FiPhone } from "react-icons/fi";
 import { demoBus } from "@/lib/demoBus";
 import type { Course } from "@/lib/courses/types";
-import { Reveal, fadeUp } from "./shared";
+import { DARK, Reveal, fadeUp } from "./shared";
 
-export default function CourseCta({ course }: { course: Course }) {
+export default function CourseCta({
+  course,
+  tone = "light",
+}: {
+  course: Course;
+  tone?: "light" | "dark";
+}) {
+  const dark = tone === "dark";
   return (
-    <section className="relative overflow-x-clip bg-white py-16 lg:py-20">
+    <section
+      style={dark ? { backgroundColor: DARK } : undefined}
+      className={`relative overflow-x-clip py-16 lg:py-20 ${dark ? "course-dark" : "bg-white"}`}
+    >
       <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
         <Reveal>
           <motion.div

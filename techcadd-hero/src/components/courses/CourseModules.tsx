@@ -59,7 +59,7 @@ export default function CourseModules({ course }: { course: Course }) {
   return (
     <section
       id="curriculum"
-      className="relative overflow-x-clip bg-[#020B2D] py-16 lg:py-20"
+      className="relative overflow-x-clip bg-[#101C4D] py-16 lg:py-20"
     >
       {/* ---------------------------- decoration ---------------------------- */}
       <div aria-hidden className="pointer-events-none absolute inset-0">

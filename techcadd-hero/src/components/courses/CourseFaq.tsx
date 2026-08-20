@@ -6,12 +6,18 @@ import { FiChevronDown } from "react-icons/fi";
 import type { Course } from "@/lib/courses/types";
 import { Reveal, Section, SectionHead, fadeUp } from "./shared";
 
-export default function CourseFaq({ course }: { course: Course }) {
+export default function CourseFaq({
+  course,
+  tone = "light",
+}: {
+  course: Course;
+  tone?: "light" | "dark";
+}) {
   const [open, setOpen] = useState<number | null>(0);
   if (!course.faqs.length) return null;
 
   return (
-    <Section id="faq">
+    <Section id="faq" tone={tone}>
       <Reveal>
         <SectionHead
           center

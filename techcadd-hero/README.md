@@ -345,3 +345,55 @@ Request:
 
 Database and Prisma errors are logged server-side and never returned to the
 browser.
+
+### Deploying the demo form to Vercel
+
+The form works locally but returns 503 on the live site until three things are
+true in production. Locally `DATABASE_URL` points at `localhost:3306`, and
+**Vercel cannot reach your machine** — that address means "this server" to the
+lambda, where no MySQL is listening. A local XAMPP database can never back the
+live site.
+
+**1. Provision a MySQL that is reachable from the internet.** Any managed MySQL
+works (Railway, Aiven, PlanetScale, or your hosting provider's). Whitelist
+Vercel's egress or allow all hosts, and keep the credentials out of the repo.
+
+**2. Set `DATABASE_URL` in Vercel** → Project → Settings → Environment
+Variables, for Production (and Preview if you want the form live there):
+
+```
+DATABASE_URL = mysql://USER:PASSWORD@HOST:3306/DATABASE?connection_limit=5
+```
+
+Never name it `NEXT_PUBLIC_DATABASE_URL` — that would inline the credentials
+into the browser bundle. Environment variables are read at runtime, so a change
+needs a redeploy to take effect.
+
+`connection_limit` matters here: every warm lambda holds its own pool, and a
+small MySQL will refuse connections long before the traffic justifies it. Start
+low and raise it only if you see pool timeouts.
+
+**3. Create the table in that database.** The build does not do this — running
+migrations during a build would race across concurrent deploys. Point at the
+production database once, from your machine:
+
+```bash
+DATABASE_URL="mysql://USER:PASSWORD@HOST:3306/DATABASE" npx prisma migrate deploy
+```
+
+`migrate deploy` only applies migrations that have not run yet and never drops
+data. Do not use `migrate dev` against production — it can reset the database.
+
+Then redeploy. `GET /api/demo-request` should return **405** with
+`{"success":false,"message":"Method not allowed."}`. A **404** means the build
+did not include the route; a **503** means the database is still unreachable.
+
+#### Rate limiting on serverless
+
+`src/lib/rate-limit.ts` counts in process memory, so on Vercel the five-per-
+minute limit is per lambda instance rather than per site. Under real traffic the
+effective limit is that figure times the number of warm instances. It still
+blunts a single script hammering the form, which is what it is there for. If you
+need an exact global limit, swap that module for a shared store (Vercel KV or
+Upstash Redis) — `rateLimit()` is called in one place and its signature would
+not change.
