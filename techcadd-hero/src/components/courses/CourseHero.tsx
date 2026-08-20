@@ -24,7 +24,7 @@ export default function CourseHero({ course }: { course: Course }) {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-[#101E52] pb-16 pt-[104px] lg:pb-20 lg:pt-[128px]">
+    <section className="relative overflow-hidden bg-[#1E3078] pb-16 pt-[104px] lg:pb-20 lg:pt-[128px]">
       {/* brand atmosphere, matching the rest of the site's dark surfaces */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute -left-[10%] top-[-10%] size-[36rem] rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.22)_0%,transparent_68%)] blur-3xl" />
@@ -134,7 +134,7 @@ export default function CourseHero({ course }: { course: Course }) {
             </div>
 
             {course.certification && (
-              <span className="absolute -bottom-4 left-5 inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-[#101E52]/90 px-4 py-2.5 text-[12.5px] font-semibold text-white backdrop-blur-xl">
+              <span className="absolute -bottom-4 left-5 inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-[#1E3078]/90 px-4 py-2.5 text-[12.5px] font-semibold text-white backdrop-blur-xl">
                 <FiAward aria-hidden className="size-4 text-[#93C5FD]" />
                 Certificate on completion
               </span>

@@ -19,8 +19,10 @@ export const CARD =
   "rounded-[22px] border border-slate-200/80 bg-white shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)]";
 
 /**
- * Brand navy — the same value the navbar carries, so a dark band on a course
- * page and the bar above it read as one surface rather than two near-misses.
+ * The dark band colour used by every `tone="dark"` Section and by the modules
+ * band. Deliberately NOT the course hero's colour: the hero matches the home
+ * page hero (#1E3078, see CourseHero), while the bands further down sit a
+ * shade deeper so they read as sections rather than a repeat of the header.
  */
 export const DARK = "#101E52";
 
