@@ -90,6 +90,16 @@ export default function RobotShowcase() {
           className="absolute left-1/2 top-[54%] size-[86%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.26)_0%,rgba(96,165,250,0.16)_48%,transparent_72%)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
         />
 
+        {/*
+          * A violet companion to the blue pools above. Kept low and wide: the
+          * brand accent is blue, and this only has to stop the halo reading as
+          * one flat colour where the masked edges meet the background.
+          */}
+        <div
+          aria-hidden
+          className="absolute left-1/2 top-[52%] size-[104%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(129,111,236,0.16)_0%,rgba(96,165,250,0.10)_45%,transparent_70%)] blur-3xl"
+        />
+
         {/* light beam falling from behind the robot */}
         <div
           aria-hidden
@@ -140,7 +150,9 @@ export default function RobotShowcase() {
               fill
               priority
               sizes="(max-width: 1024px) 92vw, 50vw"
-              className="object-contain object-center"
+              /* robot-blend feathers the render's own rectangle into the
+                 background — see globals.css */
+              className="robot-blend object-contain object-center"
             />
           </motion.div>
         </motion.div>

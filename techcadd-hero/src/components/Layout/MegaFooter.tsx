@@ -1,15 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
-  Mail, MapPin, Phone, MessageCircle, Linkedin, Instagram, Youtube, Facebook, X, Globe,
-  ArrowRight, Check, Loader2,
+  Mail, MapPin, Phone, Linkedin, Instagram, Youtube, Facebook, X, Globe,
 } from "lucide-react";
 import { MEGA_FOOTER } from "@/lib/site";
-import { PUBLIC_CMS_API_URL } from "@/lib/cms/client";
 import { useSite } from "@/lib/cms/site-context";
 
 /**
@@ -52,79 +50,8 @@ const riseUp: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
 };
 
-/** Indian mobile numbers: ten digits, and the first is 6–9. */
-const MOBILE = /^[6-9]\d{9}$/;
-
 export default function MegaFooter() {
   const site = useSite();
-  const [phone, setPhone] = useState("");
-  const [sending, setSending] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  /**
-   * Records the number as an enquiry in the CMS.
-   *
-   * There is no separate "updates" list to join: the counselling team works out
-   * of the enquiries inbox, and a number left here is a person asking to be
-   * told when a batch opens — which is a lead. `formType` is what tells them
-   * apart from a course enquiry once they arrive.
-   *
-   * Straight to the CMS, matching the course enquiry form. The CMS refuses any
-   * field it does not recognise, so a public form cannot set a status or assign
-   * itself to a colleague.
-   */
-  const subscribe = async () => {
-    if (!MOBILE.test(phone)) {
-      setError(
-        phone.length === 0
-          ? "Enter your mobile number."
-          : "That doesn't look like a 10-digit mobile number.",
-      );
-      return;
-    }
-
-    setError(null);
-    setSending(true);
-
-    try {
-      const response = await fetch(`${PUBLIC_CMS_API_URL}/enquiries`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          // The form asks for a number and nothing else, so there is no name to
-          // send. The CMS requires one, and this is the honest description of
-          // what the row is.
-          studentName: "Footer updates request",
-          phone,
-          message: "Asked to be notified when the next batch opens.",
-          source: "website",
-          formType: "Footer Updates",
-          sourceUrl: typeof window === "undefined" ? undefined : window.location.href,
-          userAgent: typeof navigator === "undefined" ? undefined : navigator.userAgent,
-        }),
-      });
-
-      /*
-       * A 429 here is the CMS's duplicate guard far more often than a flood —
-       * the number did reach us, we are simply not recording it twice. Telling
-       * the visitor it worked is the truthful answer.
-       */
-      if (!response.ok && response.status !== 429) {
-        const payload = (await response.json().catch(() => ({}))) as { message?: string };
-        setError(payload.message ?? "That didn't go through. Please try again, or call us.");
-        return;
-      }
-
-      setSent(true);
-      setPhone("");
-    } catch {
-      setError("We couldn't reach the server. Please try again, or call us.");
-    } finally {
-      setSending(false);
-    }
-  };
-
   return (
     <footer className="relative overflow-hidden bg-[linear-gradient(180deg,#07103D_0%,#0A1B5E_55%,#07103D_100%)] pt-24 text-white">
       <Atmosphere />
@@ -136,110 +63,6 @@ export default function MegaFooter() {
         variants={stagger}
         className="relative mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]"
       >
-        {/* newsletter + whatsapp */}
-        <motion.div
-          variants={riseUp}
-          className={`grid gap-6 rounded-[30px] p-8 lg:grid-cols-[1.3fr_1fr] lg:p-10 ${GLASS}`}
-        >
-          <div>
-            <h3 className="font-[family-name:var(--font-poppins)] text-[22px] font-extrabold tracking-tight text-white">
-              Get the batch calendar and career notes
-            </h3>
-            <p className="mt-2 max-w-md text-[14px] leading-relaxed text-white/60">
-              One message a month: new batch dates, mentor articles, and openings from our network.
-            </p>
-
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              {/* The +91 sits in the field as a fixed prefix rather than in the
-                  placeholder, so the reader types ten digits and nothing else —
-                  and the value we validate is never ambiguous. */}
-              <div className="flex w-full items-center gap-2 rounded-full border border-[#142C8E]/45 bg-white/[0.04] px-5 py-3.5 transition-colors focus-within:border-[#3B82F6] focus-within:bg-white/[0.07] sm:max-w-sm">
-                <span aria-hidden className="text-[14.5px] font-medium text-white/45">
-                  +91
-                </span>
-                <input
-                  type="tel"
-                  inputMode="numeric"
-                  autoComplete="tel-national"
-                  maxLength={10}
-                  value={phone}
-                  onChange={(e) => {
-                    // digits only, capped at ten: a pasted "+91 62843 47710"
-                    // becomes the ten digits we actually want
-                    setPhone(e.target.value.replace(/\D/g, "").slice(-10));
-                    setSent(false);
-                    setError(null);
-                  }}
-                  placeholder="10-digit mobile number"
-                  aria-label="Mobile number"
-                  aria-invalid={error !== null}
-                  aria-describedby="footer-subscribe-status"
-                  className="w-full bg-transparent text-[14.5px] text-white outline-none placeholder:text-white/35"
-                />
-              </div>
-              <motion.button
-                type="button"
-                onClick={subscribe}
-                disabled={sending}
-                aria-busy={sending}
-                whileHover={sending ? undefined : { y: -2 }}
-                whileTap={sending ? undefined : { scale: 0.98 }}
-                className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-7 py-3.5 text-[14.5px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)] transition-shadow duration-300 hover:shadow-[0_0_44px_-4px_rgba(59,130,246,1)] disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {sending ? "Sending" : sent ? "Subscribed" : "Subscribe"}
-                {sending ? (
-                  <Loader2 aria-hidden className="size-4 animate-spin" />
-                ) : sent ? (
-                  <Check aria-hidden className="size-4" />
-                ) : (
-                  <ArrowRight
-                    aria-hidden
-                    className="size-4 transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                )}
-              </motion.button>
-            </div>
-
-            {/* One live region for both outcomes, so either is announced */}
-            <p
-              id="footer-subscribe-status"
-              role="status"
-              aria-live="polite"
-              className="mt-3 min-h-[1.25rem] text-[13px]"
-            >
-              {error ? <span className="text-rose-300">{error}</span> : null}
-              {sent && !error ? (
-                <span className="text-emerald-300">
-                  Done — we&apos;ll message you when the next batch opens.
-                </span>
-              ) : null}
-            </p>
-          </div>
-
-          <motion.a
-            href={`https://wa.me/${site.phoneDigits}`}
-            whileHover={{ y: -4, scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 320, damping: 24 }}
-            className="group flex items-center gap-4 rounded-3xl bg-gradient-to-br from-[#22C55E] to-[#16A34A] p-6 text-white shadow-[0_18px_46px_-22px_rgba(34,197,94,0.9)]"
-          >
-            <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-white/20 ring-1 ring-inset ring-white/30">
-              <MessageCircle aria-hidden className="size-6" />
-            </span>
-            <span>
-              <span className="block font-[family-name:var(--font-poppins)] text-[16px] font-bold">
-                Chat on WhatsApp
-              </span>
-              <span className="mt-0.5 block text-[13px] text-white/85">
-                Counsellors reply within the hour
-              </span>
-            </span>
-            <ArrowRight
-              aria-hidden
-              className="ml-auto size-5 transition-transform duration-300 group-hover:translate-x-1"
-            />
-          </motion.a>
-        </motion.div>
-
         {/* sitemap */}
         {/* Tracks are generated from the column count. It was hardcoded to five
             while the footer carries four, so the row always had one empty track
@@ -248,7 +71,7 @@ export default function MegaFooter() {
           /* Four tracks, matching the four columns in MEGA_FOOTER. It has to
              be a literal: Tailwind scans class strings statically, so a
              template literal here would never emit a rule. */
-          className="mt-16 grid items-start justify-center gap-10 md:grid-cols-2 lg:grid-cols-[1.3fr_repeat(4,1fr)]"
+          className="grid items-start justify-center gap-10 md:grid-cols-2 lg:grid-cols-[1.3fr_repeat(4,1fr)]"
         >
           <motion.div variants={riseUp} className="relative">
             {/* soft blue bloom behind the mark */}

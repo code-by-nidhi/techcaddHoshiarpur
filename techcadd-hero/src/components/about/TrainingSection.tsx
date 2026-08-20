@@ -1,8 +1,8 @@
 import ImageCard from "@/components/about/ui/ImageCard";
 import ScrollReveal from "@/components/about/ui/ScrollReveal";
-import ShowcaseTile from "@/components/about/ui/ShowcaseTile";
+import CampusCarousel from "@/components/about/ui/CampusCarousel";
 import TechBackground from "@/components/about/ui/TechBackground";
-import { campusHighlights, images, moreThanTraining } from "@/data/about";
+import { images, moreThanTraining } from "@/data/about";
 import { revealScale } from "@/lib/motion";
 
 /**
@@ -90,24 +90,11 @@ export default function TrainingSection() {
           {/* Image tiles rather than text cards: four stacked paragraphs in a
               row read as a wall of copy, and a campus is better shown than
               described. Nothing was cut — the same names and descriptions now
-              sit over the photographs. */}
-          <ul className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
-            {campusHighlights.map((entry, index) => (
-              <ScrollReveal
-                key={entry.name}
-                as="li"
-                delay={index * 0.08}
-                className="h-full"
-              >
-                <ShowcaseTile
-                  title={entry.name}
-                  description={entry.description}
-                  image={entry.image}
-                  icon={<entry.icon className="size-4.5" strokeWidth={1.75} />}
-                />
-              </ScrollReveal>
-            ))}
-          </ul>
+              sit over the photographs, in a carousel that gives each one a
+              whole card instead of a quarter of a cramped grid row. */}
+          <ScrollReveal>
+            <CampusCarousel />
+          </ScrollReveal>
         </div>
       </div>
     </section>

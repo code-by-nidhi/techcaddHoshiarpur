@@ -331,6 +331,40 @@ html.custom-cursor [contenteditable="true"] {
   }
 }
 
+/* --------------------------------------------------------------------------
+   Hero robot: dissolving the render's own rectangle
+   --------------------------------------------------------------------------
+   robot-stage.webp is a staged render with a near-black background baked in.
+   On the hero's blue that reads as a box with four hard corners — the artefact
+   this removes.
+
+   An ellipse, not an edge feather. Feathering a band off each side was tried
+   first and was not enough: the dark ground is darker than the hero and fills
+   the whole frame, so trimming the outer tenth left the rest of the box
+   sitting there. The ellipse is opaque across the robot and its platform and
+   is fully transparent well before the corners, so the ground never reaches an
+   edge to draw one.
+
+   mix-blend-mode: screen was the other candidate and does not work here: the
+   ancestors framer-motion animates create their own stacking contexts, so the
+   blend has no page backdrop to act against.
+
+   Percentages throughout, so it holds at every breakpoint, and pure CSS — no
+   second asset, no alpha-matted export, nothing extra to download.
+   -------------------------------------------------------------------------- */
+.robot-blend {
+  -webkit-mask-image: radial-gradient(
+    ellipse 68% 60% at 50% 52%,
+    #000 46%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(ellipse 68% 60% at 50% 52%, #000 46%, transparent 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+
 /* ==========================================================================
    About page design system
    --------------------------------------------------------------------------
@@ -868,6 +902,25 @@ html.custom-cursor [contenteditable="true"] {
 .wall-dots .swiper-pagination-bullet-active {
   width: 1.75rem;
   background: linear-gradient(90deg, #142C8E, #2563EB);
+}
+
+/* The campus carousel's dots, on the light About surface. Same behaviour as
+   the wall's — the active one stretches into a capsule rather than just
+   changing colour, so the position in the set is readable at a glance. */
+.campus-dots .swiper-pagination-bullet {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin: 0;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.25);
+  opacity: 1;
+  transition: width 0.35s ease, background-color 0.35s ease;
+}
+
+.campus-dots .swiper-pagination-bullet-active {
+  width: 1.75rem;
+  background: linear-gradient(90deg, #142C8E, #2563EB);
+  box-shadow: 0 0 14px -2px rgba(37, 99, 235, 0.8);
 }
 
 /* ---------------------------------------------------------------------------

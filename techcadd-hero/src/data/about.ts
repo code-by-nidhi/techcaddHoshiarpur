@@ -240,6 +240,14 @@ export const moreThanTraining = {
 /**
  * The campus, shown rather than described: four image tiles under the panel.
  */
+/*
+ * Photographs of the place, not course artwork.
+ *
+ * These four used to point at /images/ai.webp, mern.webp, data-science.webp
+ * and cloud.webp — the catalogue's course banners, which carry their own
+ * baked-in marketing typography. Behind a card title that read as clutter and
+ * as text hidden under the image. Every source below is a real campus shot.
+ */
 export const campusHighlights: {
   name: string;
   description: string;
@@ -249,20 +257,20 @@ export const campusHighlights: {
   {
     name: "AI & robotics lab",
     description: "GPU training rigs, robotics and IoT benches, open outside class hours.",
-    image: { src: "/images/ai.webp", alt: "The TechCADD AI and robotics lab" },
+    image: { src: "/images/featured-ai-course.jpeg", alt: "The TechCADD AI and robotics lab" },
     icon: Bot,
   },
   {
     name: "Live project floor",
     description: "Client briefs run through sprint planning, code review and release.",
-    image: { src: "/images/mern.webp", alt: "Students on the live project floor" },
+    image: { src: "/images/campus1.webp", alt: "Students on the live project floor" },
     icon: Code2,
   },
   {
     name: "Placement drives",
     description: "On-campus rounds, mentor referrals and support that runs until you land.",
     image: {
-      src: "/images/data-science.webp",
+      src: "/images/team-photo.webp",
       alt: "A placement drive in progress on campus",
     },
     icon: Handshake,
@@ -270,7 +278,7 @@ export const campusHighlights: {
   {
     name: "Mentor sessions",
     description: "One-to-one hours, portfolio teardowns and mock technical rounds.",
-    image: { src: "/images/cloud.webp", alt: "A mentor session with students" },
+    image: { src: "/images/campus2.webp", alt: "A mentor session with students" },
     icon: Users,
   },
 ];
