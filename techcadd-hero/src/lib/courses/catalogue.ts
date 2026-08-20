@@ -636,9 +636,10 @@ export const COURSES: Course[] = [
   {
     slug: "java-programming",
     title: "Java Programming",
-    shortDescription: "Core Java through to Spring Boot services and JDBC-backed applications.",
+    shortDescription:
+      "Java from first syntax to application development — object-oriented programming, data structures and practical projects.",
     overview:
-      "Four months on the language that still runs most enterprise backends. Core Java and OOP first, then collections, JDBC and Spring Boot, finishing with a service you have built and deployed.",
+      "Kick-start your programming career with structured Java training in Hoshiarpur. You learn the Java language alongside data structures and object-oriented programming, building the practical skills that support the journey toward becoming an industry-ready developer. The track is designed for beginners: it starts at fundamentals and progresses step by step to database connectivity, web development and a finished application.",
     category: "Programming",
     level: "Beginner to Advanced",
     duration: "4 Months",
@@ -648,91 +649,254 @@ export const COURSES: Course[] = [
     video: {
       url: "",
       thumbnail: "/images/lab.webp",
-      caption: "How the Java track is structured across four months.",
+      caption:
+        "Watch. Learn. Code. See how Java concepts are taught through coding practice, practical examples and a structured training experience built to make programming easier to understand.",
     },
     rating: { score: 4.8, count: 137 },
-    audience: [A.beginners, A.students, A.freshers, A.switchers],
-    whyChooseUs: COMMON_WHY,
+    audience: [
+      {
+        label: "Students & freshers",
+        copy: "Start your coding journey with Java fundamentals, programming concepts and hands-on coding exercises.",
+      },
+      {
+        label: "BCA & MCA students",
+        copy: "Strengthen your programming knowledge by learning Java concepts and applying them to academic projects and assignments.",
+      },
+      {
+        label: "Developer aspirants",
+        copy: "Build a solid Java foundation to move toward software development, backend programming and application development.",
+      },
+      {
+        label: "Career shifters",
+        copy: "Step into the IT industry by learning one of the most widely used programming languages through a structured approach.",
+      },
+      {
+        label: "Software & technology enthusiasts",
+        copy: "Understand Java programming as a foundation for application development, backend technologies and enterprise software.",
+      },
+      {
+        label: "Working professionals",
+        copy: "Upgrade your programming skills and understand how Java is used to develop scalable and reliable software solutions.",
+      },
+    ],
+    whyChooseUs: [
+      {
+        title: "Learning by practicing",
+        copy: "Move beyond theory with coding exercises, assignments, practical examples and project-based learning.",
+      },
+      {
+        title: "Beginner-oriented program",
+        copy: "Start from the basics and progress step by step, making Java programming easier to understand and apply.",
+      },
+      {
+        title: "Training with industry-relevant tools",
+        copy: "Practice with Java, IDEs, Git, GitHub, SQL, JDBC, APIs and other technologies used in modern development environments.",
+      },
+      {
+        title: "Real-world projects",
+        copy: "Work on practical Java projects that strengthen your programming, logical thinking, debugging and problem-solving skills.",
+      },
+      {
+        title: "Learning through guided sessions",
+        copy: "Learn through structured sessions, live examples, coding practice, doubt-solving and continuous guidance.",
+      },
+      {
+        title: "Technology career skills",
+        copy: "Build programming and project-based skills that support your preparation for interviews, internships, software development roles and technology careers.",
+      },
+    ],
     modules: [
       {
-        title: "Core Java",
-        summary: "Syntax, types, control flow and the JVM model underneath.",
-        topics: ["Types & operators", "Control flow", "Arrays & strings", "How the JVM runs code"],
+        title: "Java fundamentals",
+        summary:
+          "Java syntax, variables, data types, operators, input/output, keywords and fundamental programming concepts.",
+        topics: ["Syntax & keywords", "Variables & data types", "Operators", "Input & output"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Conditional statements & loops",
+        summary:
+          "if-else, nested conditions, switch, for, while and do-while, taught through practical coding examples.",
+        topics: ["if-else & nested conditions", "switch", "for / while / do-while", "Control statements"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Java arrays & strings",
+        summary:
+          "Work with arrays and strings while learning how to store, process, compare, search and manipulate different types of data.",
+        topics: ["Arrays", "String handling", "Searching & comparing", "Data manipulation"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Methods & packages",
+        summary:
+          "Create reusable methods, understand parameters and return values, use built-in methods and organise programs using packages.",
+        topics: ["Method creation", "Parameters & return values", "Built-in methods", "Packages"],
+        duration: "2 weeks",
+        lessons: 8,
+      },
+      {
+        title: "Object-oriented programming",
+        summary:
+          "Classes, objects, constructors, inheritance, polymorphism, encapsulation and abstraction for structured, maintainable applications.",
+        topics: ["Classes & objects", "Constructors", "Inheritance & polymorphism", "Encapsulation & abstraction"],
         duration: "3 weeks",
         lessons: 14,
       },
       {
-        title: "Object-oriented programming",
-        summary: "The design ideas Java is built around.",
-        topics: ["Classes & objects", "Inheritance", "Interfaces", "Polymorphism"],
-        duration: "3 weeks",
-        lessons: 12,
+        title: "Exception & file handling",
+        summary:
+          "How Java handles errors and files using try, catch, finally, custom exceptions and file input/output concepts.",
+        topics: ["try / catch / finally", "Custom exceptions", "File input & output", "Error handling patterns"],
+        duration: "2 weeks",
+        lessons: 8,
       },
       {
-        title: "Collections & generics",
-        summary: "The data structures every Java codebase uses.",
-        topics: ["List, Set, Map", "Generics", "Streams", "Comparators"],
-        duration: "3 weeks",
-        lessons: 12,
-      },
-      {
-        title: "Exceptions, files & JDBC",
-        summary: "Talking to the outside world safely.",
-        topics: ["Exception design", "File I/O", "JDBC", "SQL basics"],
-        duration: "3 weeks",
-        lessons: 12,
-      },
-      {
-        title: "Spring Boot",
-        summary: "Building a service the way teams actually do.",
-        topics: ["Dependency injection", "REST controllers", "JPA", "Configuration"],
-        duration: "4 weeks",
-        lessons: 16,
-      },
-      {
-        title: "Project & deployment",
-        summary: "One backend service, reviewed and shipped.",
-        topics: ["Layered architecture", "Testing", "Build tooling", "Deployment"],
-        duration: "3 weeks",
+        title: "Collections framework",
+        summary:
+          "ArrayList, LinkedList, HashSet, HashMap and other collection classes for storing and managing data efficiently.",
+        topics: ["ArrayList & LinkedList", "HashSet", "HashMap", "Choosing a collection"],
+        duration: "2 weeks",
         lessons: 10,
+      },
+      {
+        title: "Database connectivity",
+        summary:
+          "How Java applications communicate with databases using SQL and JDBC to store, retrieve, update and manage application data.",
+        topics: ["SQL basics", "JDBC", "CRUD operations", "Result sets"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Java web development",
+        summary:
+          "Java-based web development concepts including servlets, JSP, request-response handling, sessions and basic backend development.",
+        topics: ["Servlets", "JSP", "Request & response", "Sessions"],
+        duration: "3 weeks",
+        lessons: 12,
+      },
+      {
+        title: "APIs & JSON",
+        summary:
+          "How applications communicate through APIs, working with JSON data and connecting Java applications with external services.",
+        topics: ["REST concepts", "JSON handling", "Consuming APIs", "External services"],
+        duration: "2 weeks",
+        lessons: 8,
+      },
+      {
+        title: "Java application development",
+        summary:
+          "How Java concepts come together to create practical applications, focusing on coding structure, debugging, testing and development practices.",
+        topics: ["Application structure", "Debugging", "Testing", "Development practices"],
+        duration: "2 weeks",
+        lessons: 10,
+      },
+      {
+        title: "Projects & career preparation",
+        summary:
+          "Apply your Java knowledge through practical projects, coding exercises, debugging tasks and portfolio-building activities.",
+        topics: ["Project build", "Coding exercises", "Debugging tasks", "Portfolio & interview prep"],
+        duration: "3 weeks",
+        lessons: 12,
       },
     ],
     learningOutcomes: [
-      "Write clean object-oriented Java",
-      "Use collections and streams fluently",
-      "Query a relational database from Java",
-      "Build REST services with Spring Boot",
-      "Structure a layered backend application",
-      "Test and deploy a Java service",
+      "Write clean, structured Java using core syntax and control flow",
+      "Apply object-oriented programming to build maintainable applications",
+      "Work confidently with arrays, strings and the collections framework",
+      "Handle errors and files safely with exceptions and file I/O",
+      "Connect Java applications to a database using SQL and JDBC",
+      "Build backend features with servlets, JSP and REST APIs",
+      "Debug, test and structure a complete Java application",
+      "Present project work as a portfolio for interviews and internships",
     ],
-    tools: ["Java", "Spring Boot", "JDBC", "JPA", "MySQL", "Maven", "JUnit", "Git", "GitHub", "IntelliJ IDEA"],
+    tools: [
+      "Java",
+      "Eclipse / IntelliJ IDEA",
+      "VS Code",
+      "Git & GitHub",
+      "JDBC",
+      "Collections Framework",
+      "SQL & Databases",
+      "Servlets & JSP",
+      "REST APIs & JSON",
+      "Maven",
+      "Java Application Development",
+      "Object-Oriented Programming",
+    ],
     careerOutcomes: {
-      roles: ["Java Developer", "Backend Developer", "Software Engineer", "API Developer"],
-      opportunities: ["Enterprise engineering teams", "Service and consulting firms", "Product backends", "Campus placements"],
-      nextSteps: ["Microservices", "Cloud & DevOps", "System design", "Android with Kotlin"],
+      roles: [
+        "Java Developer",
+        "Backend Developer",
+        "Software Developer",
+        "Web Developer",
+        "Application Developer",
+        "Full Stack Developer Foundation",
+        "Enterprise Application Developer",
+      ],
+      roleDetails: [
+        {
+          role: "Java Developer",
+          copy: "Build applications, backend systems, APIs and software solutions using Java programming.",
+        },
+        {
+          role: "Backend Developer",
+          copy: "Develop server-side applications, business logic, APIs and database-driven systems.",
+        },
+        {
+          role: "Software Developer",
+          copy: "Use Java to design, develop, test and maintain software applications.",
+        },
+        {
+          role: "Web Developer",
+          copy: "Create dynamic and database-connected web applications using Java technologies.",
+        },
+        {
+          role: "Application Developer",
+          copy: "Develop desktop, enterprise and business applications using Java-based technologies.",
+        },
+        {
+          role: "Full Stack Developer Foundation",
+          copy: "Build a strong Java backend foundation and progress toward full-stack development.",
+        },
+        {
+          role: "Enterprise Application Developer",
+          copy: "Learn the programming foundation required to work toward scalable enterprise and business software development.",
+        },
+      ],
+      opportunities: [
+        "Enterprise engineering teams",
+        "Service and consulting firms",
+        "Product backends",
+        "Campus placements",
+      ],
+      nextSteps: ["Spring Boot & microservices", "Cloud & DevOps", "System design", "Android with Kotlin"],
       industries: ["Banking & finance", "Enterprise software", "Telecom", "Government systems"],
     },
     projects: [
       {
-        name: "Library management service",
-        summary: "Catalogue, lending and returns over a relational database.",
-        tech: ["Java", "Spring Boot", "MySQL"],
+        name: "Library management application",
+        summary: "Catalogue, lending and returns backed by a relational database.",
+        tech: ["Java", "JDBC", "MySQL"],
         level: "Intermediate",
-        skills: ["JPA", "REST", "Validation"],
+        skills: ["OOP", "JDBC", "Validation"],
         image: "/images/classroom.webp",
       },
       {
-        name: "Banking transactions API",
-        summary: "Accounts, transfers and an audit trail, with tests around the money paths.",
-        tech: ["Java", "Spring Boot", "JUnit"],
-        level: "Advanced",
-        skills: ["Transactions", "Testing", "Error handling"],
+        name: "Student record system",
+        summary: "Create, search and update records using collections and database connectivity.",
+        tech: ["Java", "Collections", "SQL"],
+        level: "Intermediate",
+        skills: ["Collections", "CRUD", "Debugging"],
         image: "/images/cyber.webp",
       },
       {
         name: "Inventory console application",
-        summary: "A first end-to-end build using collections and JDBC.",
-        tech: ["Java", "JDBC"],
+        summary: "A first end-to-end build using core Java, collections and file handling.",
+        tech: ["Java", "File I/O"],
         level: "Beginner",
         skills: ["OOP", "Persistence", "CLI design"],
         image: "/images/lab.webp",
@@ -747,7 +911,7 @@ export const COURSES: Course[] = [
         course: "Java Programming",
         role: "Java Developer",
         quote:
-          "Collections and streams were taught with real problems rather than toy examples. That is exactly what the interview asked about.",
+          "Collections and OOP were taught with real problems rather than toy examples. That is exactly what the interview asked about.",
       },
       {
         name: "Anjali Rana",
@@ -756,22 +920,28 @@ export const COURSES: Course[] = [
         course: "Java Programming",
         role: "Backend Developer",
         quote:
-          "Spring Boot felt enormous until the module broke it into pieces. Shipping the final service made it click.",
+          "JDBC and servlets felt enormous until the modules broke them into pieces. Shipping the final application made it click.",
       },
     ],
     faqs: [
       {
         q: "Is this course suitable for beginners?",
-        a: "Yes. Core Java starts from first principles, though the pace picks up once Spring Boot arrives.",
+        a: "Yes. The first modules start from Java syntax and fundamental programming concepts, and the pace builds gradually toward application development.",
       },
       {
         q: "What are the prerequisites?",
-        a: "None, beyond basic computer familiarity. Some programming exposure helps but is not assumed.",
+        a: "None beyond basic computer familiarity. Prior programming exposure helps but is not assumed.",
       },
       ...COMMON_FAQS,
     ],
     relatedCourses: ["python-programming", "full-stack-web-development", "mern-stack-development", "data-analytics"],
-    keywords: ["java course Hoshiarpur", "spring boot training", "core java classes", "java backend course"],
+    keywords: [
+      "best java course in hoshiarpur",
+      "java training in hoshiarpur",
+      "java certification courses",
+      "java programming language",
+      "core java classes hoshiarpur",
+    ],
   },
 
   /* ------------------------------------------------------------------ */

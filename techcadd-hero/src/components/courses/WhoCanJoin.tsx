@@ -9,7 +9,7 @@ export default function WhoCanJoin({ course }: { course: Course }) {
   if (!course.audience.length) return null;
 
   return (
-    <Section>
+    <Section tone="dark">
       <Reveal>
         <SectionHead
           center

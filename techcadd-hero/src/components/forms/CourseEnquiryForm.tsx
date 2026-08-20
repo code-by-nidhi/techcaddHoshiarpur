@@ -21,6 +21,7 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import { PUBLIC_CMS_API_URL } from "@/lib/cms/client";
+import { DARK } from "@/components/courses/shared";
 import type { Course } from "@/lib/courses/types";
 
 /*
@@ -76,7 +77,14 @@ const reveal = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const } },
 };
 
-export default function CourseEnquiryForm({ course }: { course: Course }) {
+export default function CourseEnquiryForm({
+  course,
+  tone = "dark",
+}: {
+  course: Course;
+  tone?: "light" | "dark";
+}) {
+  const dark = tone === "dark";
   const [values, setValues] = useState<Fields>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
   const [sending, setSending] = useState(false);
@@ -156,7 +164,21 @@ export default function CourseEnquiryForm({ course }: { course: Course }) {
   return (
     <section
       id="enquiry"
-      className="relative overflow-x-clip bg-[radial-gradient(circle_at_top_left,rgba(59,130,246,0.15),transparent_35%),radial-gradient(circle_at_bottom_right,rgba(96,165,250,0.12),transparent_35%),#ffffff] py-16 sm:py-20 lg:py-[80px]"
+      /*
+       * Background set here rather than as a `bg-[...]` utility. The previous
+       * class ended the gradient list with a bare hex colour, which Tailwind
+       * compiles into `background-image` — and a colour is not a valid image
+       * layer, so the whole declaration was dropped and the section rendered
+       * with no background at all. It only ever looked right because the page
+       * behind it was white.
+       */
+      style={{
+        backgroundColor: dark ? DARK : "#FFFFFF",
+        backgroundImage: dark
+          ? "radial-gradient(circle at top left, rgba(59,130,246,0.18), transparent 35%), radial-gradient(circle at bottom right, rgba(96,165,250,0.14), transparent 35%)"
+          : "radial-gradient(circle at top left, rgba(59,130,246,0.15), transparent 35%), radial-gradient(circle at bottom right, rgba(96,165,250,0.12), transparent 35%)",
+      }}
+      className={`relative overflow-x-clip py-16 sm:py-20 lg:py-[80px] ${dark ? "course-dark" : ""}`}
     >
       {/* floating blur shapes */}
       <span

@@ -11,11 +11,17 @@ import { Reveal, Section, SectionHead, fadeUp } from "./shared";
  * The current course is filtered out upstream by `getRelated`, so anything
  * reaching this component is safe to render.
  */
-export default function RelatedCourses({ courses }: { courses: CourseSummary[] }) {
+export default function RelatedCourses({
+  courses,
+  tone = "dark",
+}: {
+  courses: CourseSummary[];
+  tone?: "light" | "dark";
+}) {
   if (!courses.length) return null;
 
   return (
-    <Section tint>
+    <Section tone={tone}>
       <Reveal>
         <SectionHead
           eyebrow="Keep exploring"

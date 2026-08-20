@@ -869,3 +869,105 @@ html.custom-cursor [contenteditable="true"] {
   width: 1.75rem;
   background: linear-gradient(90deg, #142C8E, #2563EB);
 }
+
+/* ---------------------------------------------------------------------------
+ * Dark course bands
+ *
+ * The course page alternates light and dark sections. Rather than fork every
+ * child component into two colour variants, a dark <Section> adds this class
+ * and the content inside it is re-tinted here.
+ *
+ * The selectors target the literal values the course components already use —
+ * #0F172A headings, #475569 body copy, white cards, slate borders — so the
+ * components stay written for the light case and need no edits.
+ * ------------------------------------------------------------------------- */
+.course-dark {
+  color: #E2E8F0;
+}
+
+.course-dark :is(h1, h2, h3, h4, h5),
+.course-dark .text-\[\#0F172A\] {
+  color: #FFFFFF;
+}
+
+.course-dark :is(p, li, dd, figcaption),
+.course-dark .text-\[\#475569\],
+.course-dark .text-\[\#64748B\],
+.course-dark .text-slate-600,
+.course-dark .text-slate-500 {
+  color: rgba(226, 232, 240, 0.78);
+}
+
+/* Cards: a translucent lift instead of a solid white block on navy. */
+.course-dark .bg-white {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.course-dark :is(.border-slate-200\/80, .border-slate-200, .border-slate-100) {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.course-dark .bg-\[\#F6F9FF\],
+.course-dark .bg-slate-50 {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* The accent blue is too dark to read on navy; lift it to the lighter ramp. */
+.course-dark .text-\[\#2563EB\] {
+  color: #93C5FD;
+}
+
+/* Shadows do nothing useful on a dark ground and muddy the edges. */
+.course-dark [class*="shadow-"] {
+  box-shadow: none;
+}
+
+/* Translucent surfaces.
+ *
+ * The first pass only matched the literal `.bg-white` class, which missed
+ * `bg-white/85`, `bg-white/75` and friends — the enquiry panel and its inputs
+ * stayed light while the text on them went white, i.e. invisible. Matching the
+ * class prefix catches every alpha variant. */
+.course-dark [class*="bg-white"] {
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.course-dark [class*="border-white"],
+.course-dark [class*="border-[#2563EB]"] {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Form controls need their own treatment: the text being typed and the
+ * placeholder both have to clear the darker ground. */
+.course-dark :is(input, textarea, select) {
+  background-color: rgba(255, 255, 255, 0.09);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.course-dark :is(input, textarea)::placeholder {
+  color: rgba(226, 232, 240, 0.55);
+}
+
+.course-dark :is(input, textarea):focus {
+  background-color: rgba(255, 255, 255, 0.14);
+  border-color: #93C5FD;
+}
+
+/* Remaining slate text ramps used across the course components. */
+.course-dark :is(.text-\[\#334155\], .text-\[\#94A3B8\], .text-\[\#1D4ED8\]) {
+  color: rgba(226, 232, 240, 0.72);
+}
+
+/* Inline validation: red-700 on a red-50 chip is unreadable on navy. */
+.course-dark .bg-red-50 {
+  background-color: rgba(248, 113, 113, 0.14);
+}
+
+.course-dark .text-red-700 {
+  color: #FECACA;
+}
+
+.course-dark .border-red-200 {
+  border-color: rgba(248, 113, 113, 0.4);
+}

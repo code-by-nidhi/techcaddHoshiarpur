@@ -160,6 +160,9 @@ export default async function CoursePage({ params }: Params) {
     ],
   };
 
+  /** Drives the dark/light parity of the sections below Reviews. */
+  const hasReviews = course.reviews.length > 0;
+
   return (
     <>
       <Navbar />
@@ -181,11 +184,18 @@ export default async function CoursePage({ params }: Params) {
         <CareerOutcomes course={course} />
         <Projects course={course} />
         <InstructorSection course={course} />
+        {/*
+         * The page alternates dark and light bands. Reviews is the one section
+         * that can be absent — courses carry real testimonials or none at all —
+         * and dropping it flips the parity of everything below it, which would
+         * put two light bands side by side. So the tail takes its tone from
+         * whether Reviews rendered rather than hard-coding it.
+         */}
         <Reviews course={course} />
-        <CourseFaq course={course} />
-        <CourseEnquiryForm course={course} />
-        <CourseCta course={course} />
-        <RelatedCourses courses={related} />
+        <CourseFaq course={course} tone={hasReviews ? "light" : "dark"} />
+        <CourseEnquiryForm course={course} tone={hasReviews ? "dark" : "light"} />
+        <CourseCta course={course} tone={hasReviews ? "light" : "dark"} />
+        <RelatedCourses courses={related} tone={hasReviews ? "dark" : "light"} />
       </main>
 
       <StickyEnrolBar course={course} />
