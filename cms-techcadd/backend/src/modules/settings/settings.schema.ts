@@ -19,11 +19,14 @@ const social = z.object({
   youtube: z.string().optional(),
 })
 
-const notifications = z.object({
-  newEnquiryEmail: z.boolean(),
-  dailyEnquiryDigest: z.boolean(),
-  contentPublished: z.boolean(),
-})
+/*
+ * `notifications` used to be here.
+ *
+ * Three booleans the settings form wrote and nothing ever read: no mail was
+ * sent when an enquiry arrived, there was no digest job, and nothing fired when
+ * content was published. Removed rather than left in place — a preference the
+ * CMS saves and ignores is a promise it silently breaks.
+ */
 
 const integrations = z.object({
   whatsappNumber: z.string().optional(),
@@ -62,7 +65,6 @@ export const settingsPatchSchema = z.object({
   stats: z.array(stat).max(8, 'Eight figures is already more than the row can show.').optional(),
   social: social.partial().optional(),
   robotsTxt: z.string().max(10_000, 'That robots.txt is unusually long.').optional(),
-  notifications: notifications.partial().optional(),
   integrations: integrations.partial().optional(),
 })
 

@@ -36,12 +36,6 @@ function toSettings(row: Row, profile: Profile): unknown {
     stats: parseJson<{ value: string; label: string }[]>(row.stats, []),
     social: parseJson(row.social, {}),
     robotsTxt: row.robots_txt,
-    notifications: {
-      newEnquiryEmail: false,
-      dailyEnquiryDigest: false,
-      contentPublished: false,
-      ...parseJson(row.notifications, {}),
-    },
     integrations: parseJson(row.integrations, {}),
     // Identity comes from the session, not the settings row: storing it would
     // let it drift out of step with the user account it describes.
@@ -67,8 +61,8 @@ export async function get(profile: Profile): Promise<unknown> {
   // hand. Recreating it beats failing every request on the settings page.
   if (!row) {
     await execute(
-      `INSERT INTO settings (id, site_name, robots_txt, social, notifications, integrations, created_at, updated_at)
-       VALUES (?, 'TechCADD', 'User-agent: *\\nAllow: /\\n', '{}', '{}', '{}', NOW(3), NOW(3))`,
+      `INSERT INTO settings (id, site_name, robots_txt, social, integrations, created_at, updated_at)
+       VALUES (?, 'TechCADD', 'User-agent: *\\nAllow: /\\n', '{}', '{}', NOW(3), NOW(3))`,
       [SINGLETON_ID],
     )
     const seeded = await queryOne<Row>(SELECT_SETTINGS, [SINGLETON_ID])
@@ -139,7 +133,6 @@ export async function update(patch: SettingsPatch, profile: Profile): Promise<un
 
   for (const [column, value] of [
     ['social', await mergedJson('social', patch.social)],
-    ['notifications', await mergedJson('notifications', patch.notifications)],
     ['integrations', await mergedJson('integrations', patch.integrations)],
   ] as const) {
     if (value === undefined) continue

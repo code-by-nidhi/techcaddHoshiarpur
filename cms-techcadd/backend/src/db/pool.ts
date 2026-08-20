@@ -53,9 +53,20 @@ export async function queryOne<T = Row>(sql: string, params?: QueryParams): Prom
   return rows[0]
 }
 
-export async function execute(sql: string, params?: QueryParams): Promise<void> {
-  if (params === undefined) await pool.execute<ResultSetHeader>(sql)
-  else await pool.execute<ResultSetHeader>(sql, toExecuteValues(params))
+/**
+ * Runs a write and hands back the driver's result header.
+ *
+ * Almost every caller ignores it and simply awaits — the return type is here
+ * for the few that need `affectedRows` to report what a bulk delete actually
+ * did, rather than counting the rows in a second query and hoping nothing
+ * changed in between.
+ */
+export async function execute(sql: string, params?: QueryParams): Promise<ResultSetHeader> {
+  const [result] =
+    params === undefined
+      ? await pool.execute<ResultSetHeader>(sql)
+      : await pool.execute<ResultSetHeader>(sql, toExecuteValues(params))
+  return result
 }
 
 /**

@@ -46,13 +46,14 @@ are idempotent, so a repeat run changes nothing:
 
 ```bash
 npm run db:seed:hsp      # the reviews and FAQs that were hard-coded in the site
-npm run db:import:blog   # articles, authors, categories, tags and artwork
-                         # from the retired NestJS API in ../../server
+npm run db:import:blog   # articles, authors, categories, tags and artwork,
+                         # out of the old blog service's SQLite file
 ```
 
-`db:import:blog` reads the old SQLite file read-only and copies each article's
-cover image into the media library, so the source database stays intact as a
-fallback. Point it elsewhere with
+Both have already been run against the live database — the blog is in here and
+the service it came from has been deleted. `db:import:blog` is kept because it
+is idempotent and reads its source read-only, so it can be pointed at an
+archived copy of that file if anything ever needs re-importing:
 `npm run db:import:blog -- <path/to/dev.db> <path/to/site/public>`.
 
 **4. Run.**
@@ -74,7 +75,7 @@ Check it: `curl http://localhost:4000/api/health`
 | `npm run db:migrate` | Apply pending migrations (safe to re-run) |
 | `npm run db:seed` | Create the first administrator (idempotent) |
 | `npm run db:seed:hsp` | Import the website's built-in reviews and FAQs (idempotent) |
-| `npm run db:import:blog` | Import the blog from the retired NestJS API (idempotent) |
+| `npm run db:import:blog` | Re-import the blog from an archived SQLite file (idempotent) |
 | `npm run db:inspect` | Row counts, or the rows in one table |
 | `npm test` | Migrate a throwaway `*_test` database, then run the suite |
 
@@ -90,7 +91,7 @@ src/
     migrate.ts           migration runner
     seed.ts              first administrator
     seed-hsp.ts          the website's built-in reviews and FAQs
-    import-blog.ts       the blog, out of the retired NestJS SQLite database
+    import-blog.ts       the blog, out of the old blog service's SQLite file
     migrations/*.sql     schema, applied in filename order
   http/
     errors.ts            HttpError + the error shape the CMS expects
@@ -101,7 +102,7 @@ src/
     auth/                login, logout, me, password reset/change
     courses/             the reference resource — routes, repo, schema
     public/              everything the website may read
-      public.routes.ts   courses, reviews, FAQs, banners, enquiries, newsletter
+      public.routes.ts   courses, reviews, FAQs, categories, site, enquiries, newsletter
       blog.routes.ts     the blog, in the shape the website already reads
 ```
 
@@ -153,7 +154,15 @@ These are deliberate, not incidental:
   only hides buttons.
 - Sort and filter columns are **whitelisted**. Column names cannot be
   parameterised, so nothing from the query string ever reaches SQL directly.
-- Rate limits on `/auth/login` and `/auth/forgot-password`.
+- Rate limits on `/auth/login`, `/auth/forgot-password` and `/auth/reset-password`,
+  and on both public write endpoints (`/public/enquiries`, `/public/newsletter/subscribe`).
+- Expired sessions and spent reset tokens are **purged on boot and daily**
+  (`startSessionHousekeeping`). Neither is exploitable once expired, but a table
+  of stale credential material that only grows is not worth keeping.
+- The API **refuses to start in production** if any active account still uses
+  the password `db:seed` sets by default, and `db:seed` refuses to create one
+  there. In development it prints a warning instead — the default exists so a
+  fresh clone can sign in.
 
 ## The public API
 
