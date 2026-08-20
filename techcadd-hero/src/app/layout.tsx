@@ -146,6 +146,8 @@ export default async function RootLayout({
 
         <SiteProvider site={site}>
           {children}
+          <ScrollToTopButton />
+          <WhatsAppButton />
           <DemoModal />
         </SiteProvider>
       </body>
