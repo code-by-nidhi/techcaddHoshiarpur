@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
@@ -32,13 +32,13 @@ const GALLERY = {
 /**
  * The campus video, and what stands in for it.
  *
- * Nothing sits at `src` yet, so what renders today is `poster` behind a play
- * control. Drop an mp4 at that path and the video takes over with no code
- * change: the fallback is picked at runtime from the media element's error
- * event, not from a build-time check.
+ * No file sits at `src` yet — `public/videos/` holds only its README — so what
+ * renders today is the still loop below. Drop the mp4 in and the video takes
+ * over with no code change: the fallback is chosen at runtime from the media
+ * element's error event, not from a build-time check.
  */
 const SHOWCASE = {
-  src: "/videos/techcadd-campus.mp4",
+  src: "/videos/about-techcadd.mp4",
   poster: "/images/team-photo.webp",
   alt: "Inside the Techcadd Hoshiarpur campus",
   chip: "Industry-Oriented Training",
@@ -419,11 +419,43 @@ function ShowcaseLoop({ reduce }: { reduce: boolean }) {
 
 function AboutVideo() {
   const reduce = useReducedMotion();
-  /* No file at SHOWCASE.src yet, so the poster path is what renders today.
-     `onError` on the media element only fires when `src` sits on the <video>
-     itself — with a child <source> the event lands on the source element and
-     never reaches React's handler, so the fallback would stay hidden. */
+  /* No file at SHOWCASE.src yet, so the still loop is what renders today. A
+     media error does not bubble, so the handler sits on the <source> that
+     raised it rather than on the <video> — with a child source the event never
+     reaches a handler on the parent and the fallback would stay hidden. */
   const [failed, setFailed] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
+
+  /*
+   * The attributes alone should be enough, and in Chrome, Edge and Safari they
+   * are. This covers the case they do not: an element hydrated into the page
+   * after load can miss its own autoplay, and the promise `play()` returns
+   * rejects silently when a browser declines. Muted playback is always
+   * permitted, so a rejection here means the file is unusable — take the
+   * fallback rather than leave a still frame that never moves.
+   */
+  useEffect(() => {
+    const el = video.current;
+    if (!el || failed) return;
+
+    const fail = () => setFailed(true);
+    el.addEventListener("error", fail);
+    /* Muted playback is always permitted, so a rejection here is the file, not
+       a policy. Swallow it — the checks below decide what to do about it. */
+    el.play().catch(() => {});
+
+    /* NETWORK_NO_SOURCE is the spec's way of saying every <source> failed. A
+       source that 404s leaves the element sitting on its poster for ever
+       otherwise, which looks like a video that simply refuses to start. */
+    const settle = window.setTimeout(() => {
+      if (el.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) setFailed(true);
+    }, 2500);
+
+    return () => {
+      el.removeEventListener("error", fail);
+      window.clearTimeout(settle);
+    };
+  }, [failed]);
 
   return (
     <motion.div
@@ -445,22 +477,28 @@ function AboutVideo() {
             <ShowcaseLoop reduce={reduce === true} />
           ) : (
             <video
-              src={SHOWCASE.src}
+              ref={video}
               poster={SHOWCASE.poster}
-              /* muted is what makes autoplay legal in every browser; without it
-                 the element silently refuses to start */
-              autoPlay={!reduce}
+              /* muted is what makes autoplay legal at all: without it every
+                 browser silently declines to start. playsInline keeps iOS from
+                 taking the loop fullscreen, and no `controls` means no chrome
+                 over the frame. */
+              autoPlay
               muted
               loop
               playsInline
-              preload="metadata"
-              controls={reduce === true}
+              preload="auto"
               aria-label={SHOWCASE.alt}
-              onError={() => setFailed(true)}
               className={`absolute inset-0 size-full object-cover transition-transform duration-[900ms] ease-out ${
                 reduce ? "" : "group-hover:scale-[1.06]"
               }`}
-            />
+            >
+              <source
+                src={SHOWCASE.src}
+                type="video/mp4"
+                onError={() => setFailed(true)}
+              />
+            </video>
           )}
 
           {/* keeps the badges legible over whatever frame is playing */}

@@ -101,15 +101,16 @@ export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
     >
       {/*
        * The viewport clips the track, so it needs vertical room for the hover
-       * lift and its glow — without the padding a raised card is sliced off at
-       * the top. The edges fade rather than cut, which is what stops the rail
-       * reading as cropped where it runs past the container.
+       * scale and its glow — without the padding a raised card is sliced off
+       * at the top. The edges fade rather than cut: a marquee never has a
+       * standing first or last card, so the ones mid-entry read as arriving
+       * instead of as cropped.
        */}
       <div
         ref={emblaRef}
-        className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_5%,#000_95%,transparent)] lg:[mask-image:linear-gradient(90deg,transparent,#000_3%,#000_97%,transparent)]"
+        className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)] lg:[mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]"
       >
-        <div className="flex cursor-grab touch-pan-y py-[34px] active:cursor-grabbing [backface-visibility:hidden] [transform:translate3d(0,0,0)]">
+        <div className="flex cursor-grab touch-pan-y items-stretch py-[34px] active:cursor-grabbing [backface-visibility:hidden] [transform:translate3d(0,0,0)]">
           {passes.map((pass) =>
             cards.map((card) => (
               <div
@@ -118,40 +119,52 @@ export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
                 /* Widths as flex-basis, so how many cards a screen shows is a
                    ratio of the viewport rather than a fixed pixel guess:
                    ~1.3 on a phone, ~2.6 on a tablet, ~4.5 on a desktop. */
-                className="min-w-0 shrink-0 grow-0 basis-[78%] pl-[24px] sm:basis-[46%] md:basis-[38%] lg:basis-[28%] xl:basis-[22%]"
+                className="flex min-w-0 shrink-0 grow-0 basis-[78%] pl-[24px] sm:basis-[46%] md:basis-[38%] lg:basis-[28%] xl:basis-[22%]"
               >
                 <Link
                   href={card.href}
                   tabIndex={pass.ghost ? -1 : undefined}
                   aria-label={`${card.title} — explore course`}
-                  className="group relative block h-[400px] overflow-hidden rounded-[24px] border border-[rgba(59,130,246,0.25)] shadow-[0_18px_44px_-30px_rgba(6,14,46,0.9)] outline-none transition-[transform,box-shadow,border-color] duration-[400ms] ease-out will-change-transform hover:border-[rgba(59,130,246,0.6)] hover:shadow-[0_30px_70px_-26px_rgba(37,99,235,0.95),0_0_44px_-12px_rgba(96,165,250,0.7)] focus-visible:ring-2 focus-visible:ring-[#60A5FA] motion-safe:hover:-translate-y-2 motion-safe:hover:scale-[1.02] sm:h-[420px] xl:h-[440px]"
+                  className="group relative flex w-full flex-col overflow-hidden rounded-[24px] border border-[rgba(59,130,246,0.25)] bg-white/[0.05] shadow-[0_18px_44px_-30px_rgba(6,14,46,0.9)] outline-none backdrop-blur-xl transition-[transform,box-shadow,border-color] duration-[400ms] ease-out will-change-transform hover:border-[rgba(59,130,246,0.65)] hover:shadow-[0_34px_78px_-24px_rgba(37,99,235,1),0_0_54px_-10px_rgba(96,165,250,0.85)] focus-visible:ring-2 focus-visible:ring-[#60A5FA] motion-safe:hover:scale-[1.03]"
                 >
-                  {/* ------------------------------ artwork ------------------ */}
-                  <Image
-                    src={card.image}
-                    alt=""
-                    fill
-                    sizes="(min-width: 1280px) 320px, (min-width: 768px) 40vw, 78vw"
-                    className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.06]"
-                  />
+                  {/*
+                   * The banner band.
+                   *
+                   * Every course banner in the catalogue is 4:3, so a 4:3 band
+                   * shows all of them whole: no crop, no letterbox, and the
+                   * same image height on every card at a given breakpoint.
+                   * `object-contain` rather than cover so that stays true if a
+                   * banner of another shape is ever dropped in — it would sit
+                   * complete on the navy ground instead of being cut into.
+                   */}
+                  <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-[#0A1437]">
+                    <Image
+                      src={card.image}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1280px) 300px, (min-width: 1024px) 26vw, (min-width: 768px) 36vw, 74vw"
+                      className="object-contain object-center"
+                    />
 
-                  {/* The catalogue artwork is landscape banner work, so a
-                      portrait crop leaves half-words of its type across the
-                      card. Sunk into the brand navy it reads as texture. */}
-                  <div aria-hidden className="absolute inset-0 bg-[#0A1437]/45" />
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 bg-gradient-to-t from-[#0A1437] via-[#0A1437]/70 to-[#0A1437]/25"
-                  />
+                    {/* A wash light enough to leave the banner readable — it
+                        only deepens at the very bottom, where the band meets
+                        the copy, so the two do not butt together as a seam. */}
+                    <div
+                      aria-hidden
+                      className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0A1437]/45"
+                    />
+                  </div>
 
-                  {/* ------------------------- category badge ---------------- */}
-                  <span className="absolute left-5 top-5 inline-flex items-center gap-[6px] whitespace-nowrap rounded-full border border-[rgba(59,130,246,0.35)] bg-white/[0.10] px-[10px] py-[4px] font-[family-name:var(--font-mono-face)] text-[8.5px] uppercase tracking-[0.12em] text-[#BFDBFE] backdrop-blur-md">
-                    <span aria-hidden className="size-1 rounded-full bg-[#60A5FA]" />
-                    {card.category}
-                  </span>
+                  {/* ------------------------------ copy -------------------- */}
+                  <div className="flex flex-1 flex-col p-4">
+                    {/* Below the banner, not over it: sitting top-left of the
+                        image it covered the first letter of every banner's
+                        title — the Python card lost its "P". */}
+                    <span className="mb-[10px] inline-flex w-fit items-center gap-[6px] whitespace-nowrap rounded-full border border-[rgba(59,130,246,0.35)] bg-[#0A1437]/70 px-[10px] py-[4px] font-[family-name:var(--font-mono-face)] text-[8.5px] uppercase tracking-[0.12em] text-[#BFDBFE]">
+                      <span aria-hidden className="size-1 rounded-full bg-[#60A5FA]" />
+                      {card.category}
+                    </span>
 
-                  {/* --------------------------- glass panel ----------------- */}
-                  <div className="absolute inset-x-3 bottom-3 rounded-[18px] border border-[rgba(59,130,246,0.25)] bg-white/[0.07] p-4 backdrop-blur-xl transition-colors duration-[400ms] ease-out group-hover:border-[rgba(59,130,246,0.5)] group-hover:bg-white/[0.11]">
                     <h3 className="font-[family-name:var(--font-sora)] text-[17px] font-extrabold leading-[1.2] tracking-[-0.02em] text-white">
                       {card.title}
                     </h3>
@@ -173,8 +186,9 @@ export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
                       </div>
                     </dl>
 
-                    {/* the whole card is the link, so this is styling only */}
-                    <span className="mt-[14px] inline-flex items-center gap-[6px] text-[12.5px] font-semibold text-[#93C5FD] transition-colors duration-[400ms] group-hover:text-white">
+                    {/* mt-auto: the call to action sits on the same baseline on
+                        every card, however many lines the title took */}
+                    <span className="mt-auto inline-flex items-center gap-[6px] pt-[14px] text-[12.5px] font-semibold text-[#93C5FD] transition-colors duration-[400ms] group-hover:text-white">
                       Explore Course
                       <FiArrowRight
                         aria-hidden

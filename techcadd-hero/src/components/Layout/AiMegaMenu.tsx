@@ -156,10 +156,6 @@ export default function AiMegaMenu({
                   <span className={`${styles.featuredBody} ${ai.featuredBody}`}>
                     <span className={`${styles.featuredTitle} ${ai.featuredTitle}`}>{featured.title}</span>
                     <span className={`${styles.featuredCopy} ${ai.featuredCopy}`}>{featured.description}</span>
-                    <span className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#2A56D4]">
-                      {featured.cta}
-                      <FiArrowRight aria-hidden size={13} />
-                    </span>
                   </span>
                 </Link>
               </motion.div>
