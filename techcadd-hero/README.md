@@ -341,15 +341,27 @@ there, swap that module for a shared store. The call site does not change. The
 CMS applies its own limit regardless, which is the one that actually protects
 the database.
 
-## The `prisma/` directory is historical
+## Where the data comes from
 
-Demo requests used to be written straight to the MySQL `demo_bookings` table by
-this app. They are recorded in the CMS now, and nothing in the running site
-imports `src/lib/prisma.ts` any more.
+Everything dynamic on this site is read from the CMS at
+`../cms-techcadd/backend`, through `src/lib/cms/`:
 
-The schema and the client are kept because that table still holds every lead
-submitted before the change, and this is the only description of it left in the
-repository. Set `DATABASE_URL` and run `npm run db:studio` to read them. Once
-those rows have been exported or imported into the CMS, `prisma/`,
-`src/lib/prisma.ts`, the `prisma` scripts and the `@prisma/client` dependency
-can all go.
+| Section | Read from |
+| --- | --- |
+| Blog — index, article, author, categories, rails | `/api/public/blog/*` |
+| Student wall | `/api/public/reviews` |
+| Help centre, contact FAQ | `/api/public/faqs` |
+| Course catalogue and course pages | `/api/public/courses`, merged over `src/lib/courses` |
+| Footer and contact details, social links, About statistics | `/api/public/site` |
+| Book Demo, course enquiry, footer updates | `POST /api/public/enquiries` |
+| Blog newsletter | `POST /api/public/newsletter/subscribe` |
+
+Every read is wrapped in `safely()`, so a CMS that is unreachable costs the page
+that section rather than the whole route, and every one is cache-tagged so the
+CMS's ping to `/api/revalidate` refreshes it the moment an editor saves.
+
+This app has no database of its own. Demo requests used to be written straight
+to a MySQL `demo_bookings` table by a Prisma client here; they are recorded in
+the CMS now, that table no longer exists on this server, and `prisma/`,
+`src/lib/prisma.ts` and both Prisma packages have been removed along with the
+`postinstall` step that regenerated the client on every install.

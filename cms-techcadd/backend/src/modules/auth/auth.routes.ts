@@ -89,8 +89,22 @@ const passwordSchema = z
   .refine((v) => /[a-z]/.test(v) && /[A-Z]/.test(v), 'Mix uppercase and lowercase letters.')
   .refine((v) => /\d/.test(v), 'Include at least one number.')
 
+/**
+ * Guessing a reset token is not realistic — it is 32 random bytes — but this
+ * endpoint was the only unauthenticated one without a limit, and it does an
+ * argon2 hash on every request that gets past the token lookup. That makes an
+ * unthrottled endpoint a way to spend the server's CPU, quite apart from the
+ * token itself.
+ */
 authRouter.post(
   '/reset-password',
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 10,
+    standardHeaders: 'draft-7',
+    legacyHeaders: false,
+    message: { message: 'Too many attempts. Try again in a few minutes.' },
+  }),
   asyncHandler(async (req, res) => {
     const body = z.object({ token: z.string().min(1), password: passwordSchema }).parse(req.body)
     await auth.resetPassword(body.token, body.password)
