@@ -160,9 +160,6 @@ export default async function CoursePage({ params }: Params) {
     ],
   };
 
-  /** Drives the dark/light parity of the sections below Reviews. */
-  const hasReviews = course.reviews.length > 0;
-
   return (
     <>
       <Navbar />
@@ -185,17 +182,22 @@ export default async function CoursePage({ params }: Params) {
         <Projects course={course} />
         <InstructorSection course={course} />
         {/*
-         * The page alternates dark and light bands. Reviews is the one section
-         * that can be absent — courses carry real testimonials or none at all —
-         * and dropping it flips the parity of everything below it, which would
-         * put two light bands side by side. So the tail takes its tone from
-         * whether Reviews rendered rather than hard-coding it.
+         * The tail is pinned rather than alternated by position: the enquiry
+         * form is always dark, because that is the treatment the form was
+         * designed for and it reads far better than the light one.
+         *
+         * Reviews is the one section that can be absent — a course carries
+         * real testimonials or none — so on a course without them the
+         * Instructor and FAQ bands end up adjacent and both light. That is the
+         * cost of pinning the form: with a section missing, something has to
+         * repeat, and two quiet content bands touching is a better trade than
+         * a washed-out form.
          */}
         <Reviews course={course} />
-        <CourseFaq course={course} tone={hasReviews ? "light" : "dark"} />
-        <CourseEnquiryForm course={course} tone={hasReviews ? "dark" : "light"} />
-        <CourseCta course={course} tone={hasReviews ? "light" : "dark"} />
-        <RelatedCourses courses={related} tone={hasReviews ? "dark" : "light"} />
+        <CourseFaq course={course} />
+        <CourseEnquiryForm course={course} />
+        <CourseCta course={course} />
+        <RelatedCourses courses={related} />
       </main>
 
       <StickyEnrolBar course={course} />
