@@ -5,7 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   FiArrowRight, FiAward, FiBarChart2, FiBriefcase, FiCheck, FiCloud, FiCode, FiCpu,
-  FiFileText, FiLayers, FiMail, FiMap, FiMessageCircle, FiPenTool, FiPhone, FiShield,
+  FiFileText, FiLayers, FiMail, FiMap, FiMessageCircle, FiPenTool, FiPhone,
   FiTarget, FiTrendingUp, FiUsers,
 } from "react-icons/fi";
 import type { IconType } from "react-icons";

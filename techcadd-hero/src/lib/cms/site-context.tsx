@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useMemo, type ReactNode } from "react";
 
+import { MEGA_FOOTER } from "@/lib/site";
 import { socialUrl, type CmsSite } from "./content";
 
 /**
@@ -23,14 +24,15 @@ import { socialUrl, type CmsSite } from "./content";
 /**
  * What the site prints when the CMS has nothing to say.
  *
- * These were the values already published on the contact page, kept verbatim
- * rather than replaced with placeholders: a fallback that shows `+91 00000
- * 00000` is worse than no fallback at all, because it looks real.
+ * Read from `MEGA_FOOTER.contact` rather than written out a second time
+ * here. Two hand-maintained copies of the number is how the footer once
+ * printed a different one from the contact page — and with the CMS off,
+ * this fallback is what every page renders, so a stale value hides well.
  */
 export const CONTACT_FALLBACK = {
-  phone: "+91 98881 22255",
-  email: "info@techcadd.com",
-  address: "TechCadd Hoshiarpur Campus",
+  phone: MEGA_FOOTER.contact.phone,
+  email: MEGA_FOOTER.contact.email,
+  address: MEGA_FOOTER.contact.address,
 } as const;
 
 export interface SiteDetails {
