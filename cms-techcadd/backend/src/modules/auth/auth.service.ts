@@ -1,7 +1,7 @@
 import { createHash, randomBytes, randomUUID } from 'node:crypto'
 import argon2 from 'argon2'
 
-import { config } from '../../config.js'
+import { config, isProduction } from '../../config.js'
 import { execute, query, queryOne } from '../../db/pool.js'
 import { forbidden, unauthorised, unprocessable } from '../../http/errors.js'
 
@@ -162,11 +162,95 @@ export async function changePassword(
   await execute('DELETE FROM sessions WHERE user_id = ? AND id <> ?', [userId, keepSessionId])
 }
 
-/** Housekeeping — call from a scheduled job. */
-export async function purgeExpired(): Promise<number> {
-  const before = await query<{ n: number }>('SELECT COUNT(*) AS n FROM sessions')
-  await execute('DELETE FROM sessions WHERE expires_at <= NOW(3)')
-  await execute('DELETE FROM password_resets WHERE expires_at <= NOW(3)')
-  const after = await query<{ n: number }>('SELECT COUNT(*) AS n FROM sessions')
-  return (before[0]?.n ?? 0) - (after[0]?.n ?? 0)
+/**
+ * Deletes expired sessions and spent reset tokens.
+ *
+ * This existed for a long time and was never called, which is exactly the kind
+ * of thing that leaves no symptom until it does: the sessions table had grown
+ * to four hundred rows, every one of them a dead login, and `password_resets`
+ * held every link ever issued. Neither is a hole an attacker can climb through
+ * — an expired session does not resolve and a used token is rejected — but a
+ * table of stale credential material that only ever grows is not something to
+ * leave running.
+ *
+ * Reset rows are removed once they are expired *or* used: a token that has done
+ * its job has nothing left to prove.
+ */
+export async function purgeExpired(): Promise<{ sessions: number; resets: number }> {
+  const sessions = await execute('DELETE FROM sessions WHERE expires_at <= NOW(3)')
+  const resets = await execute(
+    'DELETE FROM password_resets WHERE expires_at <= NOW(3) OR used_at IS NOT NULL',
+  )
+
+  return { sessions: sessions.affectedRows, resets: resets.affectedRows }
+}
+
+/**
+ * Runs the purge now and then daily.
+ *
+ * In-process rather than a cron entry, because a deployment that forgets the
+ * cron entry is the situation this is fixing. `unref` so it never holds the
+ * process open, and every failure is swallowed: housekeeping must not be able
+ * to take the API down.
+ */
+export function startSessionHousekeeping(): void {
+  const run = () => {
+    void purgeExpired()
+      .then(({ sessions, resets }) => {
+        if (sessions || resets) {
+          console.log(`[auth] purged ${sessions} expired session(s), ${resets} reset token(s)`)
+        }
+      })
+      .catch((error: unknown) => {
+        console.warn('[auth] could not purge expired sessions:', error)
+      })
+  }
+
+  run()
+  setInterval(run, 24 * 60 * 60 * 1000).unref()
+}
+
+/**
+ * The password `db:seed` uses when nothing else is given.
+ *
+ * Named here as well as in the seed script because this is the side that has to
+ * detect it: a first administrator whose password was never changed is the most
+ * likely way into this CMS, and it leaves no trace to find by reading the
+ * database — the hash of a default password looks like any other hash.
+ */
+export const SEED_PASSWORD = 'ChangeMe123'
+
+/**
+ * Refuses to run in production with a seeded password still in place.
+ *
+ * A warning would be the polite thing to do and would be ignored, which is how
+ * an install ends up on the internet with a published password on its only
+ * administrator account. In development it is a loud warning instead — the
+ * default exists so a fresh clone can sign in, and blocking that would just
+ * mean nobody runs the seed.
+ */
+export async function assertSeedPasswordChanged(): Promise<void> {
+  const admins = await query<{ id: string; email: string; password_hash: string }>(
+    'SELECT id, email, password_hash FROM users WHERE active = 1',
+  )
+
+  const offenders: string[] = []
+  for (const admin of admins) {
+    if (await verifyPassword(admin.password_hash, SEED_PASSWORD)) offenders.push(admin.email)
+  }
+
+  if (offenders.length === 0) return
+
+  const list = offenders.join(', ')
+
+  if (isProduction) {
+    console.error('\nRefusing to start: an account still uses the seeded password.')
+    console.error(`  ${list}`)
+    console.error('\nSign in and change it under Settings → Security, or set a new one with:')
+    console.error('  SEED_EMAIL=<address> SEED_PASSWORD=<new password> npm run db:seed\n')
+    process.exit(1)
+  }
+
+  console.warn('\n  ⚠  Seeded password still in use — change it before deploying.')
+  console.warn(`     ${list}\n`)
 }

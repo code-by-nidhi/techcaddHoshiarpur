@@ -1,6 +1,7 @@
 import { createApp } from './app.js'
 import { config } from './config.js'
 import { pool, verifyConnection } from './db/pool.js'
+import { assertSeedPasswordChanged, startSessionHousekeeping } from './modules/auth/auth.service.js'
 
 async function start(): Promise<void> {
   try {
@@ -12,6 +13,12 @@ async function start(): Promise<void> {
     console.error('and that you have run: npm run db:migrate')
     process.exit(1)
   }
+
+  // Exits in production if the seeded password is still in use.
+  await assertSeedPasswordChanged()
+
+  // Expired sessions and spent reset tokens, cleared now and daily after.
+  startSessionHousekeeping()
 
   const server = createApp().listen(config.PORT, () => {
     console.log(`API listening on http://localhost:${config.PORT}`)

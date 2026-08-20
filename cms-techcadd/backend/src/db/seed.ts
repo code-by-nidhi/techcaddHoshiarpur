@@ -1,7 +1,8 @@
 import { randomUUID } from 'node:crypto'
 
+import { isProduction } from '../config.js'
 import { execute, pool, queryOne } from './pool.js'
-import { hashPassword } from '../modules/auth/auth.service.js'
+import { hashPassword, SEED_PASSWORD } from '../modules/auth/auth.service.js'
 
 /**
  * Creates the first administrator so the CMS is reachable. Idempotent — running
@@ -9,10 +10,22 @@ import { hashPassword } from '../modules/auth/auth.service.js'
  * someone has already changed.
  */
 const EMAIL = process.env.SEED_EMAIL ?? 'admin@techcadd.com'
-const PASSWORD = process.env.SEED_PASSWORD ?? 'ChangeMe123'
+const PASSWORD = process.env.SEED_PASSWORD ?? SEED_PASSWORD
 const NAME = process.env.SEED_NAME ?? 'techcadd-team'
 
 async function seed(): Promise<void> {
+  /*
+   * The default is for a developer on a fresh clone, and it is published in
+   * this file. Creating an account with it on a production database would be
+   * handing out a working login, so that combination is refused outright.
+   */
+  if (isProduction && !process.env.SEED_PASSWORD) {
+    console.error('Refusing to seed a production database with the default password.')
+    console.error('Set one first:  SEED_PASSWORD=<a real password> npm run db:seed')
+    process.exitCode = 1
+    return
+  }
+
   const existing = await queryOne<{ id: string }>('SELECT id FROM users WHERE email = ? LIMIT 1', [
     EMAIL,
   ])

@@ -15,7 +15,6 @@ import { Spinner } from '../../components/feedback/Spinner'
 import { FormField } from '../../components/form/FormField'
 import { ImageField } from '../../components/form/ImageField'
 import { Input } from '../../components/form/Input'
-import { Switch } from '../../components/form/Switch'
 import { Textarea } from '../../components/form/Textarea'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { useConfirm } from '../../hooks/useConfirm'
@@ -34,7 +33,6 @@ const TABS = [
   { value: 'profile', label: 'Profile' },
   { value: 'security', label: 'Security' },
   { value: 'users', label: 'Users & Roles' },
-  { value: 'notifications', label: 'Notifications' },
   { value: 'integrations', label: 'Integrations' },
 ]
 
@@ -70,9 +68,6 @@ export default function SettingsPage() {
                 </TabPanel>
                 <TabPanel value="users">
                   <UsersTab />
-                </TabPanel>
-                <TabPanel value="notifications">
-                  <NotificationsTab settings={settings.data} />
                 </TabPanel>
                 <TabPanel value="integrations">
                   <IntegrationsTab settings={settings.data} />
@@ -349,57 +344,15 @@ function ProfileTab({ settings }: { settings: SiteSettings }) {
   )
 }
 
-function NotificationsTab({ settings }: { settings: SiteSettings }) {
-  const update = useUpdateSettings()
-  const toast = useToast()
-  const { draft, setDraft, dirty, revert } = useDraft(settings.notifications)
-
-  const rows = [
-    {
-      key: 'newEnquiryEmail' as const,
-      label: 'New enquiry email',
-      description: 'Email the team whenever an enquiry arrives.',
-    },
-    {
-      key: 'dailyEnquiryDigest' as const,
-      label: 'Daily enquiry digest',
-      description: 'One summary each morning instead of individual emails.',
-    },
-    {
-      key: 'contentPublished' as const,
-      label: 'Content published',
-      description: 'Notify when a course, page or article goes live.',
-    },
-  ]
-
-  return (
-    <div>
-      <CardBody className="max-w-2xl space-y-5">
-        {rows.map((row) => (
-          <Switch
-            key={row.key}
-            checked={draft[row.key]}
-            onCheckedChange={(checked) => setDraft({ ...draft, [row.key]: checked })}
-            label={row.label}
-            description={row.description}
-          />
-        ))}
-      </CardBody>
-
-      <SaveBar
-        dirty={dirty}
-        saving={update.isPending}
-        onRevert={revert}
-        onSave={() =>
-          update
-            .mutateAsync({ notifications: draft })
-            .then(() => toast.success('Notification preferences saved.'))
-            .catch(() => toast.error('Could not save preferences'))
-        }
-      />
-    </div>
-  )
-}
+/*
+ * The Notifications tab used to sit here.
+ *
+ * Its three switches wrote to the settings row and nothing ever read them: no
+ * mail was sent when an enquiry arrived, no digest existed, and nothing fired
+ * when content went live. A toggle that saves and does nothing is worse than
+ * no toggle — it is a promise the CMS quietly breaks, and the only way to find
+ * out is to miss a lead.
+ */
 
 function IntegrationsTab({ settings }: { settings: SiteSettings }) {
   const update = useUpdateSettings()

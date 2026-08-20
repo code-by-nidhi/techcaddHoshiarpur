@@ -215,7 +215,6 @@ const publicEnquirySchema = z.object({
   phone: z.string().min(6, 'A contact number is required.').max(30),
   email: z.union([z.email('Enter a valid email address.'), z.literal('')]).optional(),
   courseName: z.string().max(200).default(''),
-  branchName: z.string().max(120).default(''),
   message: z.string().max(2000).optional(),
   source: z.enum(['website', 'walk-in', 'phone', 'referral', 'social']).default('website'),
   // Recorded by the site: which form, which page, and who submitted it.

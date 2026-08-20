@@ -217,12 +217,6 @@ export interface User extends BaseEntity {
 /* Site settings — a singleton, not a collection                        */
 /* ------------------------------------------------------------------ */
 
-export interface NotificationPreferences {
-  newEnquiryEmail: boolean
-  dailyEnquiryDigest: boolean
-  contentPublished: boolean
-}
-
 export interface Integrations {
   whatsappNumber?: string
   analyticsId?: string
@@ -254,9 +248,8 @@ export interface SiteSettings {
   social: SocialLinks
   /** Edited from the SEO module. */
   robotsTxt: string
-  notifications: NotificationPreferences
   integrations: Integrations
-  /** Stands in for the signed-in user until auth lands. */
+  /** The signed-in user, filled in from the session rather than stored. */
   profile: { name: string; email: string }
 }
 
