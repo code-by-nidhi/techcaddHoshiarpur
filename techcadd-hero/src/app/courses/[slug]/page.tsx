@@ -20,21 +20,28 @@ import StickyEnrolBar from "@/components/courses/StickyEnrolBar";
 
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
-import { courseSlugs, getCourse, getRelated } from "@/lib/courses";
+import { allCourseSlugs, findCourse, findRelated } from "@/lib/courses";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://techcadd.com";
 const ORG = "TechCadd Computer Education";
 
 type Params = { params: Promise<{ slug: string }> };
 
-/** Every catalogue slug is prerendered; new courses appear on the next build. */
-export function generateStaticParams() {
-  return courseSlugs().map((slug) => ({ slug }));
+/**
+ * Every slug known at build time is prerendered — the built-in catalogue plus
+ * whatever the CMS has published then.
+ *
+ * `dynamicParams` is left at its default of true, which is what makes a course
+ * added in the CMS after a deploy reachable: its page is rendered on first
+ * request rather than 404ing until the next build.
+ */
+export async function generateStaticParams() {
+  return (await allCourseSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const course = getCourse(slug);
+  const course = await findCourse(slug);
 
   if (!course) {
     return { title: "Course not found", robots: { index: false, follow: true } };
@@ -74,13 +81,20 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function CoursePage({ params }: Params) {
   const { slug } = await params;
-  const course = getCourse(slug);
+  const course = await findCourse(slug);
 
   // an unknown slug renders the course-specific not-found page
   if (!course) notFound();
 
-  const related = getRelated(slug);
+  const related = await findRelated(slug);
   const url = `${SITE}/courses/${course.slug}`;
+
+  /* A catalogue course's artwork is a site-relative path; a CMS course's is an
+     absolute URL on the API's origin. Prefixing the second would produce a
+     nonsense address in the structured data. */
+  const heroUrl = /^https?:\/\//i.test(course.heroImage)
+    ? course.heroImage
+    : `${SITE}${course.heroImage}`;
 
   /*
    * Three graphs in one script: the Course itself, the breadcrumb trail, and
@@ -96,7 +110,7 @@ export default async function CoursePage({ params }: Params) {
         name: course.title,
         description: course.overview,
         url,
-        image: `${SITE}${course.heroImage}`,
+        image: heroUrl,
         inLanguage: "en",
         educationalLevel: course.level,
         teaches: course.learningOutcomes,

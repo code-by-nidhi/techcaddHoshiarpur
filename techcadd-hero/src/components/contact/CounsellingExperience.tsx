@@ -9,7 +9,8 @@ import {
   FiTarget, FiTrendingUp, FiUsers,
 } from "react-icons/fi";
 import type { IconType } from "react-icons";
-import { CONTACT, Shell, fadeUp, phoneDigits, stagger } from "./shared";
+import { useSite } from "@/lib/cms/site-context";
+import { Shell, fadeUp, stagger } from "./shared";
 
 /* ---------------------------------- data ---------------------------------- */
 
@@ -118,6 +119,7 @@ export default function CounsellingExperience() {
   const [path, setPath] = useState<CareerPath>(PATHS[0]);
   const [status, setStatus] = useState<string | null>(null);
   const reduced = useReducedMotion();
+  const { phoneDigits, email } = useSite();
 
   /**
    * The selections are not decorative: they are folded into the WhatsApp and
@@ -128,7 +130,7 @@ export default function CounsellingExperience() {
     status ? ` (${status})` : ""
   }.`;
   const whatsapp = `https://wa.me/${phoneDigits}?text=${encodeURIComponent(intro)}`;
-  const mail = `mailto:${CONTACT.email}?subject=${encodeURIComponent(
+  const mail = `mailto:${email}?subject=${encodeURIComponent(
     `Free counselling - ${path.label}`,
   )}&body=${encodeURIComponent(intro)}`;
 
@@ -302,7 +304,7 @@ export default function CounsellingExperience() {
                 <ActionButton
                   icon={FiPhone}
                   label="Call Now"
-                  href={`tel:${phoneDigits}`}
+                  href={`tel:+${phoneDigits}`}
                   tint="from-[#142C8E] to-[#2563EB]"
                 />
                 <ActionButton

@@ -26,3 +26,36 @@ export function assetUrl(req: Request, path: unknown): string {
   )
   return `${base}${path.startsWith('/') ? '' : '/'}${path}`
 }
+
+/**
+ * Rewrites every stored media path in a response so another origin can load it.
+ *
+ * The blog router calls `assetUrl` field by field because it hand-builds its
+ * responses. The rest of the public API returns the repositories' own shapes,
+ * which carry `/uploads/<name>` verbatim — correct for the CMS, which is told
+ * where the API is, and broken for the website, where it resolves against the
+ * website's own origin and 404s.
+ *
+ * Rewriting by value rather than by field name is deliberate: a media path is
+ * recognisable on sight, and matching on names would have to be kept in step
+ * with every repository that grows a new image slot. Nothing else in these
+ * responses can begin `/uploads/`.
+ */
+export function withAssetUrls<T>(req: Request, value: T): T {
+  if (typeof value === 'string') {
+    return (value.startsWith('/uploads/') ? assetUrl(req, value) : value) as T
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((entry) => withAssetUrls(req, entry)) as T
+  }
+
+  // Plain objects only. A Date or a Buffer must be handed back untouched.
+  if (value !== null && typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype) {
+    const out: Record<string, unknown> = {}
+    for (const [key, entry] of Object.entries(value)) out[key] = withAssetUrls(req, entry)
+    return out as T
+  }
+
+  return value
+}

@@ -47,9 +47,9 @@ export const SITE_MAP: Record<string, Placement> = {
     url: slugUrl('/blog/'),
   },
   courses: {
-    where: '',
-    notLive:
-      'The website builds its course pages from its own catalogue, so nothing here reaches them yet. These records are for internal reference until that catalogue moves across.',
+    where:
+      'The course catalogue at /courses and a page of its own. The website keeps its own built-in courses as well — publishing one here with the same URL slug replaces it, and a new slug adds a course. Sections the form has no fields for (student projects, reviews) are left out of the page rather than filled with placeholder copy.',
+    url: slugUrl('/courses/'),
   },
   categories: {
     where:
@@ -65,7 +65,7 @@ export const SITE_MAP: Record<string, Placement> = {
   },
   settings: {
     where:
-      'Site-wide. Contact details and the headline figures are used wherever the site prints them.',
+      'Site-wide. The phone number, email and address are what the footer and the whole contact page print, the social links are the footer icon row — a network left blank is simply not shown — and the headline figures are the statistics band on the About page.',
   },
   enquiries: {
     where:

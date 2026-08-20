@@ -2,6 +2,7 @@ import { Router } from 'express'
 import rateLimit from 'express-rate-limit'
 import { z } from 'zod'
 
+import { withAssetUrls } from '../../http/assetUrl.js'
 import { asyncHandler, notFound } from '../../http/errors.js'
 import type { ListParams } from '../../http/listParams.js'
 import { queryOne, type Row } from '../../db/pool.js'
@@ -68,7 +69,7 @@ publicRouter.get(
   '/courses',
   asyncHandler(async (req, res) => {
     const result = await coursesRepo.list(listParams(limitFrom(req.query.limit, 50)))
-    res.json({ items: result.items, total: result.total })
+    res.json(withAssetUrls(req, { items: result.items, total: result.total }))
   }),
 )
 
@@ -80,7 +81,7 @@ publicRouter.get(
       [req.params.slug],
     )
     if (!row) throw notFound('Course')
-    res.json(await coursesRepo.get(row.id as string))
+    res.json(withAssetUrls(req, await coursesRepo.get(row.id as string)))
   }),
 )
 
@@ -88,7 +89,7 @@ publicRouter.get(
   '/blogs',
   asyncHandler(async (req, res) => {
     const result = await blogsRepo.list(listParams(limitFrom(req.query.limit, 50)))
-    res.json({ items: result.items, total: result.total })
+    res.json(withAssetUrls(req, { items: result.items, total: result.total }))
   }),
 )
 
@@ -100,7 +101,7 @@ publicRouter.get(
       [req.params.slug],
     )
     if (!row) throw notFound('Post')
-    res.json(await blogsRepo.get(row.id as string))
+    res.json(withAssetUrls(req, await blogsRepo.get(row.id as string)))
   }),
 )
 

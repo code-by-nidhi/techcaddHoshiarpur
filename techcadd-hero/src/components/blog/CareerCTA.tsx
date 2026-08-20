@@ -4,7 +4,7 @@ import Link from "next/link";
 import { BadgeCheck, Phone, Sparkles, Wallet } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
-import { MEGA_FOOTER } from "@/lib/site";
+import { useSite } from "@/lib/cms/site-context";
 
 const TRUST = [
   { icon: Sparkles, label: "Free career counselling" },
@@ -23,7 +23,7 @@ export default function CareerCTA() {
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const contactPhone = MEGA_FOOTER.contact.phone;
+  const contactPhone = useSite().phone;
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

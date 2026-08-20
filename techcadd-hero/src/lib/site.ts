@@ -225,6 +225,15 @@ export const LAUNCH = {
 
 /* ------------------------- mega footer -------------------------------- */
 
+/**
+ * The footer sitemap.
+ *
+ * Every entry carries the route it goes to. They were labels with `href="#"`
+ * until now, which read as a five-column sitemap and behaved as thirty dead
+ * links — the single worst thing on the page for anyone using a keyboard or a
+ * screen reader. Nothing here points at a page that does not exist: a heading
+ * with no destination was dropped rather than given a placeholder.
+ */
 export const MEGA_FOOTER = {
   /*
    * Every entry carries its own href — the footer used to render `href="#"`

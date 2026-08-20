@@ -11,15 +11,14 @@ export const GLASS =
 export const LIGHT_GLASS =
   "border border-white/80 bg-white/70 shadow-[0_10px_40px_rgba(15,23,42,0.07)] backdrop-blur-[20px]";
 
-/** Real contact details, kept in one place so every card and link agrees. */
-export const CONTACT = {
-  phone: "+91 62843 47710",
-  email: "info@techcadd.com",
-  location: "TechCadd Hoshiarpur Campus",
-};
-
-/** Digits only, for tel: and wa.me links. */
-export const phoneDigits = CONTACT.phone.replace(/\D/g, "");
+/*
+ * The contact details used to be a `CONTACT` constant here.
+ *
+ * They are CMS content now — Settings holds one phone number, one address and
+ * one email for the whole site, and every card on this page reads them through
+ * `useSite()`. Keeping a second copy here was how the footer ended up printing
+ * a different number from this page.
+ */
 
 export const stagger: Variants = {
   hidden: {},

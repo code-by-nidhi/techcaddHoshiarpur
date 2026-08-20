@@ -75,3 +75,73 @@ export async function getFaqs(options: { featured?: boolean; limit?: number } = 
 export function faqCategories(faqs: CmsFaq[]): string[] {
   return [...new Set(faqs.map((faq) => faq.category))];
 }
+
+/* ------------------------------------------------------------------ */
+/* Site-wide settings                                                   */
+/* ------------------------------------------------------------------ */
+
+/**
+ * The facts the CMS owns about the institute itself.
+ *
+ * Every field is optional because a settings row can legitimately be blank —
+ * the site is expected to fall back to its own copy rather than print an empty
+ * phone number. `SiteProvider` is what applies those fallbacks, so no component
+ * has to decide what to do with a missing value.
+ */
+export interface CmsSite {
+  siteName: string;
+  tagline?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  address?: string;
+  /** Headline figures — "18k+" / "Students Trained". Editorial, so the count varies. */
+  stats: { value: string; label: string }[];
+  /**
+   * Network → handle or URL, as the editor typed it.
+   *
+   * Deliberately loose: the CMS lets an admin paste either, and normalising a
+   * handle into a URL is this site's job (see `socialUrl`), not the API's.
+   */
+  social: Partial<
+    Record<"linkedin" | "x" | "github" | "website" | "facebook" | "instagram" | "youtube", string>
+  >;
+}
+
+/**
+ * Contact details, social links and headline figures.
+ *
+ * A hand-picked subset of the settings row — the CMS deliberately does not
+ * publish the rest of it here, because this endpoint has no session behind it.
+ */
+export function getSite(): Promise<CmsSite> {
+  return cmsFetch<CmsSite>("/site", ["site"]);
+}
+
+/** Where each network lives, for turning a bare handle into a link. */
+const SOCIAL_BASE: Record<string, string> = {
+  linkedin: "https://www.linkedin.com/company/",
+  x: "https://x.com/",
+  github: "https://github.com/",
+  facebook: "https://www.facebook.com/",
+  instagram: "https://www.instagram.com/",
+  youtube: "https://www.youtube.com/@",
+};
+
+/**
+ * A usable href for a social value, or undefined when there is nothing to link.
+ *
+ * An admin types "techcadd" in the LinkedIn box as readily as the full URL, and
+ * both have to work — a raw handle in an `href` resolves against this site and
+ * 404s. Anything already absolute is left exactly as entered.
+ */
+export function socialUrl(network: string, value: string | undefined): string | undefined {
+  const handle = value?.trim();
+  if (!handle) return undefined;
+  if (/^https?:\/\//i.test(handle)) return handle;
+
+  const base = network === "website" ? undefined : SOCIAL_BASE[network];
+  // A bare "website" value is a domain, not a handle on someone else's site.
+  if (!base) return network === "website" ? `https://${handle.replace(/^\/+/, "")}` : undefined;
+
+  return `${base}${handle.replace(/^[@/]+/, "")}`;
+}

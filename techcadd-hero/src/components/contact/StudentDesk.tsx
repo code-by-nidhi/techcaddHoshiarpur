@@ -4,38 +4,18 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { FiMail, FiMapPin, FiMessageCircle, FiPhone } from "react-icons/fi";
 import type { IconType } from "react-icons";
-import { CONTACT, Shell, fadeUp, phoneDigits, stagger } from "./shared";
+import { useSite } from "@/lib/cms/site-context";
+import { Shell, fadeUp, stagger } from "./shared";
 
-const ROWS: { icon: IconType; value: string; href?: string; external?: boolean }[] = [
-  { icon: FiPhone, value: CONTACT.phone, href: `tel:${phoneDigits}` },
-  { icon: FiMail, value: CONTACT.email, href: `mailto:${CONTACT.email}` },
-  { icon: FiMapPin, value: CONTACT.location },
-];
-
-const ACTIONS: { icon: IconType; label: string; href: string; tint: string; glow: string; external?: boolean }[] = [
-  {
-    icon: FiPhone,
-    label: "Call Now",
-    href: `tel:${phoneDigits}`,
-    tint: "from-[#142C8E] to-[#2563EB]",
-    glow: "hover:shadow-[0_22px_50px_-16px_rgba(37,99,235,0.95)]",
-  },
-  {
-    icon: FiMessageCircle,
-    label: "WhatsApp",
-    href: `https://wa.me/${phoneDigits}`,
-    external: true,
-    tint: "from-[#22C55E] to-[#16A34A]",
-    glow: "hover:shadow-[0_22px_50px_-16px_rgba(34,197,94,0.95)]",
-  },
-  {
-    icon: FiMail,
-    label: "Email",
-    href: `mailto:${CONTACT.email}`,
-    tint: "from-[#F59E0B] to-[#EA580C]",
-    glow: "hover:shadow-[0_22px_50px_-16px_rgba(234,88,12,0.95)]",
-  },
-];
+type Row = { icon: IconType; value: string; href?: string; external?: boolean };
+type Action = {
+  icon: IconType;
+  label: string;
+  href: string;
+  tint: string;
+  glow: string;
+  external?: boolean;
+};
 
 /** Deterministic motes, so SSR and the client render the same markup. */
 const MOTES = Array.from({ length: 12 }, (_, i) => ({
@@ -48,6 +28,39 @@ const MOTES = Array.from({ length: 12 }, (_, i) => ({
 
 export default function StudentDesk() {
   const reduced = useReducedMotion();
+  /* CMS content, so these are built at render rather than at module scope. */
+  const { phone, phoneDigits, email, address } = useSite();
+
+  const ROWS: Row[] = [
+    { icon: FiPhone, value: phone, href: `tel:+${phoneDigits}` },
+    { icon: FiMail, value: email, href: `mailto:${email}` },
+    { icon: FiMapPin, value: address },
+  ];
+
+  const ACTIONS: Action[] = [
+    {
+      icon: FiPhone,
+      label: "Call Now",
+      href: `tel:+${phoneDigits}`,
+      tint: "from-[#142C8E] to-[#2563EB]",
+      glow: "hover:shadow-[0_22px_50px_-16px_rgba(37,99,235,0.95)]",
+    },
+    {
+      icon: FiMessageCircle,
+      label: "WhatsApp",
+      href: `https://wa.me/${phoneDigits}`,
+      external: true,
+      tint: "from-[#22C55E] to-[#16A34A]",
+      glow: "hover:shadow-[0_22px_50px_-16px_rgba(34,197,94,0.95)]",
+    },
+    {
+      icon: FiMail,
+      label: "Email",
+      href: `mailto:${email}`,
+      tint: "from-[#F59E0B] to-[#EA580C]",
+      glow: "hover:shadow-[0_22px_50px_-16px_rgba(234,88,12,0.95)]",
+    },
+  ];
 
   return (
     /* carries the white section above down into the tinted lower half */

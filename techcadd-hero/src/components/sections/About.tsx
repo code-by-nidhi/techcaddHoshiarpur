@@ -7,7 +7,8 @@ import {
   ArrowRight, Briefcase, Building2, Phone, Users,
   type LucideIcon,
 } from "lucide-react";
-import { ABOUT, MEGA_FOOTER, VALUES } from "@/lib/site";
+import { ABOUT, VALUES } from "@/lib/site";
+import { useSite } from "@/lib/cms/site-context";
 import Reveal from "@/components/UI/Reveal";
 import Counter from "@/components/UI/Counter";
 import FounderVision from "@/components/sections/FounderVision";
@@ -300,7 +301,7 @@ function StatCards() {
 
 /** Course CTA paired with a direct line to a counsellor. */
 function CallToAction() {
-  const { phone } = MEGA_FOOTER.contact;
+  const { phone } = useSite();
 
   return (
     <Reveal delay={0.1} y={18}>
