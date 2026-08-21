@@ -24,6 +24,10 @@ import {
 type Fields = { course: string; name: string; phone: string };
 const EMPTY: Fields = { course: "", name: "", phone: "" };
 
+/** Everything inside the panel a keyboard can land on, for the focus trap. */
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 function validate(v: Fields) {
   const e: Partial<Record<keyof Fields, string>> = {};
   if (!v.course) e.course = "Pick the course you're interested in.";
@@ -35,10 +39,14 @@ function validate(v: Fields) {
 }
 
 /**
- * The Book Demo enquiry modal. Mounted once in the root layout and opened from
- * anywhere via `demoBus.open()`.
+ * The site's one lead-capture form.
+ *
+ * Mounted once in the root layout and opened from anywhere with
+ * `openLeadCapture(source)` — the navbar's Book Demo, the launch band, the blog
+ * CTA and the footer's Enquire Now all raise this same dialog rather than
+ * carrying a form, or a second lead pipeline, of their own.
  */
-export default function DemoModal() {
+export default function LeadCaptureModal() {
   const site = useSite();
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<Fields>(EMPTY);
@@ -50,36 +58,87 @@ export default function DemoModal() {
   const sendingRef = useRef(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const closerRef = useRef<HTMLButtonElement>(null);
+  /** The element that opened the dialog, so focus can be handed back to it. */
+  const restoreRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => demoBus.subscribe(setOpen), []);
 
   const close = useCallback(() => demoBus.close(), []);
 
-  // escape to dismiss, and the page must not scroll behind the overlay
+  /*
+   * Escape dismisses, Tab is trapped inside the panel, and the page behind must
+   * not scroll.
+   *
+   * The trap matters more than it looks: without it a Tab from the last field
+   * walks out of the dialog and into the navbar underneath, which is still
+   * rendered and still focusable, leaving a keyboard user reading a page they
+   * cannot see.
+   */
   useEffect(() => {
     if (!open) return;
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") close();
+      if (e.key === "Escape") {
+        close();
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const panel = panelRef.current;
+      if (!panel) return;
+
+      // `offsetParent === null` filters out anything display:none — the form
+      // and the success panel swap places, and the outgoing one is briefly
+      // still mounted while framer animates it away.
+      const stops = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+        (el) => el.offsetParent !== null,
+      );
+      if (stops.length === 0) return;
+
+      const first = stops[0];
+      const last = stops[stops.length - 1];
+      const active = document.activeElement;
+
+      if (e.shiftKey && (active === first || !panel.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     window.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    closerRef.current?.focus();
+
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
   }, [open, close]);
 
-  // a fresh dialog every time it is opened
+  /*
+   * A fresh dialog every time it is opened, seeded with anything the trigger
+   * already knew — the blog CTA collects a phone number on the page itself, and
+   * asking for it a second time is how a lead is lost.
+   */
   useEffect(() => {
     if (open) {
-      setValues(EMPTY);
+      restoreRef.current = document.activeElement as HTMLElement | null;
+
+      const prefill = demoBus.getPrefill();
+      setValues({ ...EMPTY, ...prefill });
       setErrors({});
       setSent(false);
       setSending(false);
       sendingRef.current = false;
       setServerError(null);
+      closerRef.current?.focus();
+    } else {
+      // Back to the button that opened it, rather than to the top of the page.
+      restoreRef.current?.focus?.();
+      restoreRef.current = null;
     }
   }, [open]);
 

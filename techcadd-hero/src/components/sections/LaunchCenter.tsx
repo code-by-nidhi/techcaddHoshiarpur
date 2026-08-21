@@ -1,13 +1,14 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Download, PhoneCall, Star } from "lucide-react";
+import { ArrowRight, PhoneCall } from "lucide-react";
 import { LAUNCH } from "@/lib/site";
+import { CTA } from "@/lib/cta";
+import { openLeadCapture } from "@/lib/demoBus";
 import Reveal from "@/components/UI/Reveal";
-import Counter from "@/components/UI/Counter";
 import MagneticButton from "@/components/UI/MagneticButton";
 
-const ACTION_ICONS = [ArrowRight, PhoneCall, Download];
+const ACTION_ICONS = [ArrowRight, PhoneCall];
 
 export default function LaunchCenter() {
   const reduced = useReducedMotion();
@@ -72,11 +73,16 @@ export default function LaunchCenter() {
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             {LAUNCH.actions.map((a, i) => {
               const Icon = ACTION_ICONS[i];
+              /* `CTA.lead` is a sentinel, not a destination: it asks for the
+                 shared enquiry dialog. Passing no href is what makes
+                 MagneticButton render a real button rather than an anchor. */
+              const lead = a.href === CTA.lead;
               return (
                 <MagneticButton
                   key={a.label}
-                  href={a.href}
-                  {...("external" in a && a.external
+                  href={lead ? undefined : a.href}
+                  onClick={lead ? () => openLeadCapture("hero") : undefined}
+                  {...(!lead && "external" in a && a.external
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
                   className={
@@ -93,31 +99,6 @@ export default function LaunchCenter() {
                 </MagneticButton>
               );
             })}
-          </div>
-        </Reveal>
-
-        {/* live metrics */}
-        <Reveal delay={0.26}>
-          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-4 rounded-[28px] min-[420px]:grid-cols-3 border border-white/10 bg-white/[0.04] p-7 backdrop-blur-xl">
-            <div className="text-center">
-              <p className="font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
-                <Counter to={15} suffix="K+" />
-              </p>
-              <p className="mt-2 text-[13px] text-[#94A3B8]">Students</p>
-            </div>
-            <div className="border-x border-white/10 text-center">
-              <p className="font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
-                <Counter to={750} suffix="+" />
-              </p>
-              <p className="mt-2 text-[13px] text-[#94A3B8]">Reviews</p>
-            </div>
-            <div className="text-center">
-              <p className="flex items-center justify-center gap-1.5 font-[family-name:var(--font-poppins)] text-[clamp(1.6rem,3vw,2.2rem)] font-extrabold leading-none text-white">
-                4.9
-                <Star aria-hidden className="size-5 fill-[#F59E0B] text-[#F59E0B]" />
-              </p>
-              <p className="mt-2 text-[13px] text-[#94A3B8]">Rating</p>
-            </div>
           </div>
         </Reveal>
       </div>

@@ -28,22 +28,49 @@ const IDLE_FLOAT = false;
  *
  * Because the platform travels with the artwork, the CSS platform is gone —
  * PlatformRings and the mirrored floor reflection are not rendered, since a
- * second set of rings under a baked-in one reads as a rendering fault. The
- * cutout render (robot-cutout.webp) is still in the repo if that treatment is
- * ever wanted back; restoring it means restoring both of those too.
+ * second set of rings under a baked-in one reads as a rendering fault.
+ *
+ * This render is a true cutout: 52% of its pixels are fully transparent and all
+ * four corners are clear, so it has no rectangle to hide and needs no blending
+ * mask over it. The earlier `robot-blend` treatment was there because the
+ * render before this one carried its own near-black backdrop; feathering this
+ * one would only eat into the robot and the outer rings of its platform.
  */
-const ROBOT = "/images/robot-stage.webp";
+const ROBOT = "/images/hero-robot.webp";
 
 /*
- * Stage geometry, in percentages of the 9:8 stage box. The reflection reuses
- * ROBOT_LEFT and ROBOT_W verbatim, so the mirror stays locked to the robot at
- * every breakpoint rather than drifting out from under its feet.
+ * The robot's box inside the 9:8 stage, per breakpoint.
+ *
+ * The artwork is 3:2 and its subject runs corner to corner — under 1% of
+ * transparent margin on any side — so the box is cut to that same ratio and
+ * `object-contain` neither letterboxes nor crops. Height is therefore always
+ * width x 0.75 once both are expressed as percentages of their own axis, and
+ * left/top are whatever centres it.
+ *
+ * The widths are not a style choice, they are what the ring leaves over. A tag
+ * at nine o'clock sits with its centre on the ring ellipse, so the robot may be
+ * no wider than twice (ring radius - half a tag - the 24px gap). Worked through
+ * at the narrowest stage in each band:
+ *
+ *   band       stage      ring rx   side tag   robot may be   used
+ *   768-991    720 x 640  295px     ~104px     <= 438px       58%
+ *   992-1199   477 x 424  179px     ~110px     <= 200px       41%
+ *   1200+      575 x 511  221px     ~121px     <= 273px       46%
+ *
+ * Below 768 there is no ring — the tags are a grid under the stage — so the
+ * robot takes nearly the whole box.
+ *
+ * These are classes rather than inline styles because they have to change at
+ * breakpoints, and inline geometry cannot. The 992 and 1200 steps are raw media
+ * queries: Tailwind's own stops are 1024 and 1280, and the brief's bands are
+ * neither.
  */
-const ROBOT_LEFT = "13%";
-const ROBOT_TOP = "6%";
-const ROBOT_W = "76%";
-/** Feet land at 8 + 66 = 74%, which is where the platform disc begins. */
-const ROBOT_H = "80%";
+const ROBOT_BOX = [
+  "left-[4%] top-[15.5%] w-[92%] h-[69%]",
+  "md:left-[21%] md:top-[28.25%] md:w-[58%] md:h-[43.5%]",
+  "[@media(min-width:992px)]:left-[29.5%] [@media(min-width:992px)]:top-[34.6%] [@media(min-width:992px)]:w-[41%] [@media(min-width:992px)]:h-[30.75%]",
+  "[@media(min-width:1200px)]:left-[27%] [@media(min-width:1200px)]:top-[32.75%] [@media(min-width:1200px)]:w-[46%] [@media(min-width:1200px)]:h-[34.5%]",
+].join(" ");
 
 /** Ambient motes drifting around the stage, purely decorative. */
 const MOTES = [
@@ -78,7 +105,7 @@ export default function RobotShowcase() {
         {/* ambient glow pool — takes the colour of the hovered course tag */}
         <div
           aria-hidden
-          className="absolute left-1/2 top-[54%] size-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl transition-[background] duration-500"
+          className="absolute left-1/2 top-[54%] z-[1] size-[78%] -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl transition-[background] duration-500"
           style={{
             background: `radial-gradient(circle, ${tint} 0%, rgba(96, 165, 250,0.14) 45%, transparent 70%)`,
           }}
@@ -87,7 +114,7 @@ export default function RobotShowcase() {
         {/* second pool, revealed on hover so the glow lifts without any scaling */}
         <div
           aria-hidden
-          className="absolute left-1/2 top-[54%] size-[86%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.26)_0%,rgba(96,165,250,0.16)_48%,transparent_72%)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
+          className="absolute left-1/2 top-[54%] z-[1] size-[86%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(96,165,250,0.26)_0%,rgba(96,165,250,0.16)_48%,transparent_72%)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100"
         />
 
         {/*
@@ -97,13 +124,13 @@ export default function RobotShowcase() {
           */}
         <div
           aria-hidden
-          className="absolute left-1/2 top-[52%] size-[104%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(129,111,236,0.16)_0%,rgba(96,165,250,0.10)_45%,transparent_70%)] blur-3xl"
+          className="absolute left-1/2 top-[52%] z-[1] size-[104%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(129,111,236,0.16)_0%,rgba(96,165,250,0.10)_45%,transparent_70%)] blur-3xl"
         />
 
         {/* light beam falling from behind the robot */}
         <div
           aria-hidden
-          className="absolute left-1/2 top-0 h-[78%] w-[48%] -translate-x-1/2 opacity-50 blur-2xl transition-opacity duration-500 group-hover:opacity-80"
+          className="absolute left-1/2 top-0 z-[1] h-[78%] w-[48%] -translate-x-1/2 opacity-50 blur-2xl transition-opacity duration-500 group-hover:opacity-80"
           style={{
             clipPath: "polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%)",
             background:
@@ -141,8 +168,7 @@ export default function RobotShowcase() {
           <motion.div
             animate={IDLE_FLOAT && !reduced ? { y: [0, -6, 0] } : undefined}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-            style={{ left: ROBOT_LEFT, top: ROBOT_TOP, width: ROBOT_W, height: ROBOT_H }}
-            className={`absolute drop-shadow-[0_28px_44px_rgba(5,11,31,0.65)] ${flip}`}
+            className={`absolute drop-shadow-[0_28px_44px_rgba(5,11,31,0.65)] ${ROBOT_BOX} ${flip}`}
           >
             <Image
               src={ROBOT}
@@ -150,9 +176,8 @@ export default function RobotShowcase() {
               fill
               priority
               sizes="(max-width: 1024px) 92vw, 50vw"
-              /* robot-blend feathers the render's own rectangle into the
-                 background — see globals.css */
-              className="robot-blend object-contain object-center"
+              /* No mask: the render is a cutout, so it already has no edge. */
+              className="object-contain object-center"
             />
           </motion.div>
         </motion.div>

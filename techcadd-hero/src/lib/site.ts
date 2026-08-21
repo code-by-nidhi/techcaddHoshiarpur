@@ -213,20 +213,16 @@ export const LAUNCH = {
   heading: "Start Building Your Career Today",
   sub: "Book a free demo class, sit through a real session, and decide afterwards. No commitment until you've seen how we teach.",
   /*
-   * These pointed at #demo, #counsellor and #brochure — three anchors that
-   * exist nowhere in the markup, so all three buttons did nothing at all. They
-   * are lead CTAs, so they open WhatsApp; `external` is what tells the Launch
-   * Center to add target and rel.
+   * Both of these pointed at anchors that exist nowhere in the markup, so
+   * neither button did anything at all.
+   *
+   * "Book Demo" now raises the shared enquiry dialog — `CTA.lead` is the
+   * sentinel the Launch Center reads to render a button rather than a link.
+   * "Talk to Counsellor" stays on WhatsApp, where the counselling team works.
    */
   actions: [
-    { label: "Book Demo", href: CTA.whatsapp, external: true, primary: true },
+    { label: "Book Demo", href: CTA.lead, primary: true },
     { label: "Talk to Counsellor", href: CTA.whatsapp, external: true, primary: false },
-    { label: "Download Brochure", href: CTA.whatsapp, external: true, primary: false },
-  ],
-  metrics: [
-    { value: 15000, suffix: "K+", label: "Students", display: 15 },
-    { value: 750, suffix: "+", label: "Reviews", display: 750 },
-    { value: 4.9, suffix: "", label: "Rating", display: 4.9 },
   ],
 };
 
@@ -287,7 +283,7 @@ export const MEGA_FOOTER = {
         { label: "Placement Support", href: "/#outcomes" },
         { label: "Student Reviews", href: "/#stories" },
         { label: "FAQs", href: "/#faq" },
-        { label: "Enquire Now", href: CTA.whatsapp, external: true },
+        { label: "Enquire Now", href: CTA.lead },
         { label: "Knowledge Hub", href: "/#blog" },
       ],
     },

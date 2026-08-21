@@ -352,6 +352,82 @@ html.custom-cursor [contenteditable="true"] {
    Percentages throughout, so it holds at every breakpoint, and pure CSS — no
    second asset, no alpha-matted export, nothing extra to download.
    -------------------------------------------------------------------------- */
+/* ==========================================================================
+   Mobile navigation sheet
+   --------------------------------------------------------------------------
+   The hamburger sheet is navy, but the panel bodies inside it are the same
+   components the desktop mega menus use — and those are styled by
+   WideMegaMenu / CoursesMegaMenu, which are light sheets. Their link colour is
+   #111827, so on a phone every menu item rendered near-black on dark blue: 33
+   unreadable elements across the accordions.
+
+   Repainting the shared modules is not an option: three desktop panels depend
+   on them being light. This repaints only what is inside the sheet, and it
+   matches on element and attribute rather than on class, because the module
+   class names are hashed and this file cannot spell them.
+   ========================================================================== */
+
+.mobile-nav-sheet a,
+.mobile-nav-sheet [class*="_link__"],
+.mobile-nav-sheet [class*="linkLabel"] {
+  color: #ffffff;
+}
+
+.mobile-nav-sheet a:hover,
+.mobile-nav-sheet a:focus-visible,
+.mobile-nav-sheet a:hover [class*="linkLabel"],
+.mobile-nav-sheet [class*="_link__"]:hover,
+.mobile-nav-sheet [class*="_link__"]:focus-visible {
+  color: #4f8cff;
+}
+
+/* the course whose page is already open */
+.mobile-nav-sheet a[aria-current="page"],
+.mobile-nav-sheet a[aria-current="page"] [class*="linkLabel"],
+.mobile-nav-sheet [class*="linkActive"] {
+  color: #4f8cff;
+}
+
+/*
+ * Section headings — SHORT TERM, LONG TERM, PROGRAMMES. The shared sheet
+ * paints these with a gradient clipped to the glyphs, which needs
+ * `text-fill-color` cleared as well as `color`: with the fill still set, the
+ * colour underneath never shows.
+ */
+.mobile-nav-sheet [class*="eyebrow"],
+.mobile-nav-sheet [class*="colTitle"],
+.mobile-nav-sheet [class*="groupTitle"] {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #a8c8ff;
+  color: #a8c8ff;
+}
+
+/* supporting copy under a heading, and any icon that inherited the dark ink */
+.mobile-nav-sheet [class*="headingSub"],
+.mobile-nav-sheet [class*="colCopy"],
+.mobile-nav-sheet [class*="featuredCopy"] {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.mobile-nav-sheet [class*="heading"]:not([class*="headingSub"]),
+.mobile-nav-sheet [class*="featuredTitle"] {
+  color: #ffffff;
+}
+
+/*
+ * The featured card inside a panel is a white tile by design, so its own copy
+ * has to stay dark or it would be white on white.
+ */
+.mobile-nav-sheet [class*="_featured__"] [class*="featuredTitle"] {
+  color: #0f172a;
+}
+
+.mobile-nav-sheet [class*="_featured__"] [class*="featuredCopy"] {
+  color: #475569;
+}
+
 /* --------------------------------------------------------------------------
    Tap targets
    --------------------------------------------------------------------------
@@ -376,19 +452,6 @@ html.custom-cursor [contenteditable="true"] {
   min-height: 44px;
   width: 100%;
   height: 100%;
-}
-
-.robot-blend {
-  -webkit-mask-image: radial-gradient(
-    ellipse 68% 60% at 50% 52%,
-    #000 46%,
-    transparent 100%
-  );
-  mask-image: radial-gradient(ellipse 68% 60% at 50% 52%, #000 46%, transparent 100%);
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
 }
 
 /* ==========================================================================

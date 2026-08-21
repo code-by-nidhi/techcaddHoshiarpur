@@ -7,11 +7,10 @@ import { Suspense } from "react";
  */
 import "bootstrap/dist/css/bootstrap-grid.min.css";
 
-import DemoModal from "@/components/UI/DemoModal";
+import LeadCaptureModal from "@/components/UI/LeadCaptureModal";
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter, Poppins, JetBrains_Mono } from "next/font/google";
 import CursorFollower from "@/components/UI/CursorFollower";
-import Preloader from "@/components/UI/Preloader";
 import ScrollToTop from "@/components/UI/ScrollToTop";
 import ScrollToTopButton from "@/components/UI/ScrollToTopButton";
 import WhatsAppButton from "@/components/UI/WhatsAppButton";
@@ -148,7 +147,6 @@ export default async function RootLayout({
             of existence on a route change. It renders nothing at all unless the
             device has a fine pointer and allows motion. */}
         <CursorFollower />
-        <Preloader />
         <Suspense fallback={null}>
           <ScrollToTop />
         </Suspense>
@@ -163,7 +161,7 @@ export default async function RootLayout({
           </div>
           <ScrollToTopButton />
           <WhatsAppButton />
-          <DemoModal />
+          <LeadCaptureModal />
         </SiteProvider>
       </body>
     </html>

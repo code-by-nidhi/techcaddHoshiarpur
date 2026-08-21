@@ -5,6 +5,7 @@ import { BadgeCheck, Phone, Sparkles, Wallet } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 import { useSite } from "@/lib/cms/site-context";
+import { openLeadCapture } from "@/lib/demoBus";
 
 const TRUST = [
   { icon: Sparkles, label: "Free career counselling" },
@@ -15,9 +16,10 @@ const TRUST = [
 /**
  * The site's standing career CTA, in the blog's voice.
  *
- * The phone field validates an Indian mobile number and hands off to the
- * counselling page with the number prefilled, rather than inventing a second
- * lead pipeline the team would have to monitor separately.
+ * The phone field validates an Indian mobile number and then hands off to the
+ * shared enquiry dialog with that number already filled in — there is one lead
+ * form on this site and one pipeline behind it, and this is a doorway onto it
+ * rather than a second one of its own.
  */
 export default function CareerCTA() {
   const [phone, setPhone] = useState("");
@@ -35,7 +37,7 @@ export default function CareerCTA() {
     }
 
     setError(null);
-    window.location.href = `/contact?phone=${digits}`;
+    openLeadCapture("blog", { phone: digits });
   }
 
   return (

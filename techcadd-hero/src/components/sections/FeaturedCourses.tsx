@@ -2,78 +2,54 @@ import Link from "next/link";
 import { FiArrowRight, FiUserCheck } from "react-icons/fi";
 
 import CourseSpotlight, { type SpotlightCard } from "@/components/courses/CourseSpotlight";
-import { COURSES, getCourse } from "@/lib/courses";
+import { getAllCourses } from "@/lib/courses";
+import { PROGRAMMES } from "@/lib/training/programmes";
 import { whatsappLink } from "@/lib/cta";
 
 /**
  * The homepage courses section.
  *
- * Six pillar panels rather than the full catalogue grid — the grid belongs on
- * /courses, which the link at the foot of the section goes to. Each panel is
- * anchored to a real catalogue slug so its artwork, duration and category come
- * from the same source the course page renders from, and a renamed or deleted
- * course fails the build rather than shipping a dead card.
- */
-
-/**
- * The six pillars.
+ * The rail is the whole catalogue, not a hand-picked shortlist: `getAllCourses`
+ * is the built-in course data with anything published in the CMS merged over
+ * it, so a course added in either place appears here on the next request with
+ * no code change. The internship and training programmes are appended for the
+ * same reason — they are a category a visitor expects to find in "our courses",
+ * and each one has a page of its own to open.
  *
- * `slug` is the catalogue course the panel draws its facts from. `title` and
- * `description` override it where the panel stands for a family rather than a
- * single course — "Civil & Mechanical" covers eight CAD/CAM programmes, so it
- * borrows AutoCAD's artwork but opens the filtered catalogue.
+ * Nothing in this file names a course. That is deliberate: the previous version
+ * listed six pillars by slug, which meant every new course was invisible here
+ * until someone remembered to add it.
  */
-const PILLARS: {
-  slug: string;
-  title?: string;
-  category?: string;
-  description?: string;
-  duration?: string;
-  href?: string;
-}[] = [
-  { slug: "full-stack-web-development", title: "Full Stack Development" },
-  { slug: "python-programming", title: "Python Programming" },
-  {
-    slug: "data-science",
-    title: "AI & Data Science",
-    description:
-      "Python, statistics and modelling through to the storytelling that gets a result acted on.",
-  },
-  { slug: "digital-marketing", title: "Digital Marketing" },
-  { slug: "java-programming", title: "Java Programming" },
-  {
-    slug: "autocad",
-    title: "Civil & Mechanical",
-    category: "Engineering",
-    description:
-      "AutoCAD, SolidWorks, CATIA and CNC — the drafting and design stack that design offices actually run on.",
-    duration: "2 – 4 Months",
-    href: "/courses?category=Civil+%26+Mechanical+Engineering",
-  },
-];
 
-/** True of every track, so it is stated once rather than stored per course. */
-const PLACEMENT = "Placement assistance";
+/** Programmes are grouped under one label rather than their internal buckets. */
+const PROGRAMME_CATEGORY = "Internship Programs";
 
-export default function FeaturedCourses() {
-  const cards: SpotlightCard[] = PILLARS.map((pillar) => {
-    const course = getCourse(pillar.slug);
-    if (!course) {
-      // a pillar with no catalogue course behind it would render a dead panel
-      throw new Error(`FeaturedCourses references a missing slug: ${pillar.slug}`);
-    }
+export default async function FeaturedCourses() {
+  const courses = await getAllCourses();
 
-    return {
+  const cards: SpotlightCard[] = [
+    ...courses.map((course) => ({
       slug: course.slug,
-      title: pillar.title ?? course.shortTitle ?? course.title,
-      category: pillar.category ?? course.category,
-      description: pillar.description ?? course.shortDescription,
-      duration: pillar.duration ?? course.duration,
-      placement: PLACEMENT,
+      title: course.shortTitle ?? course.title,
+      category: course.category,
+      description: course.shortDescription,
       image: course.heroImage,
-      href: pillar.href ?? `/courses/${course.slug}`,
-    };
-  });
+      href: `/courses/${course.slug}`,
+    })),
+
+    /*
+     * Prefixed keys: a programme and a course could in principle share a slug,
+     * and React would then drop one of the two cards silently.
+     */
+    ...PROGRAMMES.map((programme) => ({
+      slug: `training-${programme.slug}`,
+      title: programme.title,
+      category: PROGRAMME_CATEGORY,
+      description: programme.summary,
+      image: programme.image,
+      href: `/internship-training/${programme.slug}`,
+    })),
+  ];
 
   return (
     <section id="programs" className="relative overflow-x-clip bg-[#0A1437] section-pad">
@@ -106,14 +82,14 @@ export default function FeaturedCourses() {
       </div>
 
       {/*
-       * The rail sits in its own, wider shell than the header above, so the
-       * marquee runs the full width of the band rather than inside the
-       * header's gutters. Its card widths are ratios of this shell, which is
-       * what sets how many are on screen at each breakpoint.
+       * The rail sits in its own, wider shell than the header above, so it runs
+       * the full width of the band rather than inside the header's gutters. Its
+       * card widths are fractions of this shell, which is what sets how many
+       * are on screen at each breakpoint.
        *
        * The gutters are arbitrary values, not `px-5` / `px-6`: the app loads
        * bootstrap-grid.min.css, whose same-named utilities are !important and
-       * would win, putting 48px here whatever this said.
+       * would put 48px here whatever this said.
        */}
       <div className="relative mx-auto mt-9 w-full max-w-[1440px] px-[20px] sm:px-[24px] xl:px-[16px]">
         <CourseSpotlight cards={cards} />
@@ -147,7 +123,7 @@ export default function FeaturedCourses() {
 
         <p className="mt-5 text-center text-[13px] text-white/45">
           <Link href="/courses" className="text-[#93C5FD] underline-offset-4 hover:underline">
-            Browse all {COURSES.length} courses
+            Browse all {courses.length} courses
           </Link>
         </p>
       </div>

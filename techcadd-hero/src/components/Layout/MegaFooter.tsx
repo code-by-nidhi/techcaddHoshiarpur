@@ -9,7 +9,8 @@ import {
 } from "lucide-react";
 import { MEGA_FOOTER } from "@/lib/site";
 import { useSite } from "@/lib/cms/site-context";
-import { MAPS_HREF } from "@/lib/cta";
+import { MAPS_HREF, CTA } from "@/lib/cta";
+import { openLeadCapture } from "@/lib/demoBus";
 
 /**
  * Icons for the networks the CMS can hold. Which of them actually render is
@@ -242,22 +243,40 @@ function FooterLink({
   children: ReactNode;
   className?: string;
 }) {
-  /* A sitemap entry can point off-site — "Enquire Now" opens WhatsApp — and
-     next/link is for routes, not for that. */
+  /* A sitemap entry can point off-site — a wa.me link — and next/link is for
+     routes, not for that. It can also ask for the shared enquiry dialog, which
+     is not a destination at all and has to be a button to be operable. */
   const external = /^https?:\/\//.test(href);
+  const lead = href === CTA.lead;
+
+  const shell = `group/link relative inline-block text-left text-[13.5px] text-white/60 transition-[color,transform] duration-300 hover:translate-x-1 hover:text-[#93C5FD] ${className}`;
+
+  const underline = (
+    <span
+      aria-hidden
+      className="absolute -bottom-0.5 left-0 h-px w-0 bg-[#60A5FA] transition-[width] duration-300 ease-out group-hover/link:w-full"
+    />
+  );
+
+  if (lead) {
+    return (
+      <button type="button" onClick={() => openLeadCapture("footer")} className={shell}>
+        {children}
+        {underline}
+      </button>
+    );
+  }
+
   const Tag = external ? "a" : Link;
 
   return (
     <Tag
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className={`group/link relative inline-block text-[13.5px] text-white/60 transition-[color,transform] duration-300 hover:translate-x-1 hover:text-[#93C5FD] ${className}`}
+      className={shell}
     >
       {children}
-      <span
-        aria-hidden
-        className="absolute -bottom-0.5 left-0 h-px w-0 bg-[#60A5FA] transition-[width] duration-300 ease-out group-hover/link:w-full"
-      />
+      {underline}
     </Tag>
   );
 }

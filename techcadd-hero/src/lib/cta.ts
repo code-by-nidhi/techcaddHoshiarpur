@@ -32,12 +32,24 @@ export function whatsappHref(message: string = WHATSAPP_DEFAULT_MESSAGE): string
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
+/**
+ * Marks a CTA that raises the shared lead-capture dialog instead of navigating.
+ *
+ * It is a sentinel rather than a real destination, so that a CTA defined in a
+ * data file — the launch band's actions, the footer sitemap — can ask for the
+ * modal without every one of those files having to grow a flag. A renderer
+ * compares against `CTA.lead` and puts a button in place of the link.
+ */
+export const LEAD_CAPTURE_HREF = "#book-demo";
+
 /** The destinations themselves. */
 export const CTA = {
   /** Every lead CTA on the site. */
   whatsapp: whatsappHref(),
   /** Where a CTA that names the contact page goes. */
   contact: "/contact",
+  /** Opens <LeadCaptureModal /> — see LEAD_CAPTURE_HREF above. */
+  lead: LEAD_CAPTURE_HREF,
 } as const;
 
 /**
