@@ -125,7 +125,7 @@ export default function CourseHero({ course }: { course: Course }) {
                 fill
                 priority
                 sizes="(max-width: 1023px) 92vw, 45vw"
-                className="object-cover"
+                className="object-contain object-center drop-shadow-[0_6px_18px_rgba(37,99,235,0.45)]"
               />
               <div
                 aria-hidden

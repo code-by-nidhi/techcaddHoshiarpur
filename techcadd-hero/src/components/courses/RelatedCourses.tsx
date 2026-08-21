@@ -44,7 +44,7 @@ export default function RelatedCourses({
                     alt={c.title}
                     fill
                     sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 23vw"
-                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105 motion-reduce:group-hover:scale-100"
+                    className="object-contain object-center drop-shadow-[0_6px_18px_rgba(37,99,235,0.45)] transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
                   />
                   <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-[#2563EB] backdrop-blur-md">
                     {c.category}

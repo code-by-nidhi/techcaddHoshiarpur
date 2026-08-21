@@ -173,9 +173,10 @@ export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
                  *
                  * A fixed 4:3 box, so every card in the rail has the same image
                  * height whatever the source file is — and since every banner in
-                 * the catalogue is itself 4:3, `cover` crops nothing off them. A
-                 * programme photo of another shape is centred and trimmed
-                 * rather than stretched.
+                 * the catalogue is itself 4:3, nothing is letterboxed either.
+                 * `contain` rather than `cover` so that stays true for artwork
+                 * of another shape: it is shown whole on the navy ground instead
+                 * of being cropped into.
                  */}
                 <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-[#0A1437]">
                   <Image
@@ -183,7 +184,7 @@ export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
                     alt=""
                     fill
                     sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 50vw, 92vw"
-                    className="object-cover object-center transition-transform duration-[600ms] ease-out motion-safe:group-hover:scale-[1.04]"
+                    className="object-contain object-center drop-shadow-[0_6px_18px_rgba(37,99,235,0.45)] transition-transform duration-[600ms] ease-out motion-safe:group-hover:scale-[1.03]"
                   />
 
                   {/* A wash that only deepens at the very bottom, where the band

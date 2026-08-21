@@ -129,7 +129,7 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
                   priority={i < 3}
                   loading={i < 3 ? undefined : "lazy"}
                   sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 30vw"
-                  className="object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.06] motion-reduce:group-hover:scale-100"
+                  className="object-contain object-center drop-shadow-[0_6px_18px_rgba(37,99,235,0.45)] transition-transform duration-[900ms] ease-out group-hover:scale-[1.03] motion-reduce:group-hover:scale-100"
                 />
 
                 {/* Light, and only at the foot: the artwork carries the course

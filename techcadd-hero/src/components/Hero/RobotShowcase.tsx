@@ -52,24 +52,25 @@ const ROBOT = "/images/hero-robot.webp";
  * no wider than twice (ring radius - half a tag - the 24px gap). Worked through
  * at the narrowest stage in each band:
  *
- *   band       stage      ring rx   side tag   robot may be   used
- *   768-991    720 x 640  295px     ~104px     <= 438px       58%
- *   992-1199   477 x 424  179px     ~110px     <= 200px       41%
- *   1200+      575 x 511  221px     ~121px     <= 273px       46%
+ *   band        stage      ring rx   side tag   robot may be   used
+ *   768-1023    720 x 640  295px     ~103px     <= 439px       57%
+ *   1024-1279   477 x 424  188px     ~97px      <= 231px       46%
+ *   1280+       620 x 551  245px     ~121px     <= 293px       46%
+ *
+ * The two upper bands land on the same 46% by coincidence, not by design: the
+ * laptop band gets there by shrinking its tags 20%, the desktop band by having
+ * a wider stage to start with.
  *
  * Below 768 there is no ring — the tags are a grid under the stage — so the
  * robot takes nearly the whole box.
  *
  * These are classes rather than inline styles because they have to change at
- * breakpoints, and inline geometry cannot. The 992 and 1200 steps are raw media
- * queries: Tailwind's own stops are 1024 and 1280, and the brief's bands are
- * neither.
+ * breakpoints, and inline geometry cannot.
  */
 const ROBOT_BOX = [
   "left-[4%] top-[15.5%] w-[92%] h-[69%]",
-  "md:left-[21%] md:top-[28.25%] md:w-[58%] md:h-[43.5%]",
-  "[@media(min-width:992px)]:left-[29.5%] [@media(min-width:992px)]:top-[34.6%] [@media(min-width:992px)]:w-[41%] [@media(min-width:992px)]:h-[30.75%]",
-  "[@media(min-width:1200px)]:left-[27%] [@media(min-width:1200px)]:top-[32.75%] [@media(min-width:1200px)]:w-[46%] [@media(min-width:1200px)]:h-[34.5%]",
+  "md:left-[21.5%] md:top-[28.6%] md:w-[57%] md:h-[42.75%]",
+  "lg:left-[27%] lg:top-[32.75%] lg:w-[46%] lg:h-[34.5%]",
 ].join(" ");
 
 /** Ambient motes drifting around the stage, purely decorative. */

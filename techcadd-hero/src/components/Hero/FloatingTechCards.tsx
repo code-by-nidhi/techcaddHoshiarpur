@@ -48,32 +48,33 @@ const CARD =
 /**
  * Card size and ring radius, per breakpoint.
  *
- * The bands are the ones the brief names, and the numbers behind them come from
- * measuring the stage rather than guessing at it:
+ * The bands are Tailwind's own md/lg/xl, because those are where this layout
+ * actually changes: the hero goes from one column to two at 1024, which is what
+ * makes the stage collapse. Measured:
  *
- *   viewport   stage box   layout
- *   768-991    720 x 640   one column, so the stage is wide and there is room
- *   992-1199   477 x 424   two columns — the tightest the stage ever gets
- *   1200+      575 x 511   two columns, widening from there
+ *   viewport    stage box    layout
+ *   768-1023    720 x 640    one column, so the stage is wide and there is room
+ *   1024-1279   477 x 424    two columns - the tightest the stage ever gets
+ *   1280+       620 x 551    two columns, widening from there
  *
- * The 992-1199 band is the one that sets the design. At a 1024px viewport the
- * stage is 477px across, so a tag at nine o'clock plus a 24px gap plus the
- * robot plus the same again on the right has to fit inside 477px — which is
- * why the cards step down and the robot is at its narrowest exactly there.
+ * The 1024 case sets the whole design. The stage is 477px across there, so a
+ * tag at nine o'clock, a 24px gap, the robot, and the same again on the right
+ * all have to fit inside it - which is why the cards step *down* on laptop
+ * rather than up, and why the robot is at its narrowest exactly there.
  *
- * Tablet gets the smallest cards and the widest ring, as the brief asks: it has
- * the room, being a single column.
+ * Tablet gets the smallest cards and the widest ring, as the brief asks. It can
+ * afford both: it is a single column, so the stage is half as wide again.
  */
 const RING_SIZING = [
-  // tablet, 768-991 — cards 15% down, ring pushed out
+  // tablet, 768-1023 - cards 15% down, ring pushed well out
   "[--tag-fs:11.5px] [--tag-icon:26px] [--tag-mark:14px] [--tag-gap:8px] [--tag-px:11px] [--tag-py:8px]",
-  "[--ring-rx:41%] [--ring-ry:43%]",
-  // laptop, 992-1199 — cards 10% down, ring as wide as containment allows
-  "[@media(min-width:992px)]:[--tag-fs:12px] [@media(min-width:992px)]:[--tag-icon:27px] [@media(min-width:992px)]:[--tag-mark:15px] [@media(min-width:992px)]:[--tag-gap:9px] [@media(min-width:992px)]:[--tag-px:12px] [@media(min-width:992px)]:[--tag-py:9px]",
-  "[@media(min-width:992px)]:[--ring-rx:37.5%] [@media(min-width:992px)]:[--ring-ry:42%]",
-  // desktop, 1200+ — full size
-  "[@media(min-width:1200px)]:[--tag-fs:13.5px] [@media(min-width:1200px)]:[--tag-icon:30px] [@media(min-width:1200px)]:[--tag-mark:16px] [@media(min-width:1200px)]:[--tag-gap:10px] [@media(min-width:1200px)]:[--tag-px:14px] [@media(min-width:1200px)]:[--tag-py:10px]",
-  "[@media(min-width:1200px)]:[--ring-rx:38.5%] [@media(min-width:1200px)]:[--ring-ry:42%]",
+  "[--ring-rx:41%] [--ring-ry:46%]",
+  // laptop, 1024-1279 - cards 20% down, which is what buys the robot its width
+  "lg:[--tag-fs:11px] lg:[--tag-icon:25px] lg:[--tag-mark:13px] lg:[--tag-gap:8px] lg:[--tag-px:10px] lg:[--tag-py:8px]",
+  "lg:[--ring-rx:39.5%] lg:[--ring-ry:44.8%]",
+  // desktop, 1280+ - full size
+  "xl:[--tag-fs:13.5px] xl:[--tag-icon:30px] xl:[--tag-mark:16px] xl:[--tag-gap:10px] xl:[--tag-px:14px] xl:[--tag-py:10px]",
+  "xl:[--ring-rx:39.5%] xl:[--ring-ry:41.7%]",
 ].join(" ");
 
 /**
