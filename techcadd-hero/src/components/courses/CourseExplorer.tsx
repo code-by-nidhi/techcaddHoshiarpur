@@ -107,45 +107,46 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
           >
             <Link
               href={`/courses/${course.slug}`}
-              className="group relative flex h-full min-h-[460px] flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#14245C] shadow-[0_20px_50px_-30px_rgba(0,0,0,0.95)] transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-[#2563EB]/55 hover:shadow-[0_36px_80px_-30px_rgba(37,99,235,0.7)] motion-reduce:hover:translate-y-0"
+              className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#14245C] shadow-[0_20px_50px_-30px_rgba(0,0,0,0.95)] transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-[#2563EB]/55 hover:shadow-[0_36px_80px_-30px_rgba(37,99,235,0.7)] motion-reduce:hover:translate-y-0"
             >
-              {/* the image is the card, not a thumbnail on top of it */}
-              <Image
-                src={course.heroImage}
-                alt={course.title}
-                fill
-                loading="lazy"
-                sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 30vw"
-                className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-[1.09] motion-reduce:group-hover:scale-100"
-              />
+              {/*
+               * The banner gets its own 4:3 band rather than filling the card.
+               *
+               * Every course banner in the catalogue is 4:3 and the card is a
+               * portrait 0.77, so a full-bleed cover threw away 43% of each
+               * image off the left and right edges — straight through the
+               * middle of the artwork own title. object-position cannot rescue
+               * that: the overflow is horizontal and the titles are centred, so
+               * shifting the crop only trades one lost half for the other. A
+               * band at the source ratio crops nothing at all.
+               */}
+              <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-[#0A1437]">
+                <Image
+                  src={course.heroImage}
+                  alt={course.title}
+                  fill
+                  /* the first row is above the fold on a desktop */
+                  priority={i < 3}
+                  loading={i < 3 ? undefined : "lazy"}
+                  sizes="(max-width: 639px) 92vw, (max-width: 1023px) 46vw, 30vw"
+                  className="object-cover object-center transition-transform duration-[900ms] ease-out group-hover:scale-[1.06] motion-reduce:group-hover:scale-100"
+                />
 
-              {/* Two overlays rather than one: the first is always on and is what
-                  makes the copy legible over an arbitrary photograph; the second
-                  is the blue lift that only arrives on hover. */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(2,11,45,0.74)_0%,rgba(2,11,45,0.28)_38%,rgba(2,11,45,0.93)_100%)]"
-              />
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_78%_at_50%_100%,rgba(37,99,235,0.45)_0%,transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              />
-
-              {/* ------------------------- title, top-left ------------------------ */}
-              <div className="relative z-10 flex items-start justify-between gap-3 p-6 pb-0">
-                <div className="min-w-0">
-                  <h3 className="font-[family-name:var(--font-sora)] text-[19px] font-bold leading-[1.2] tracking-[-0.02em] text-white [text-shadow:0_2px_12px_rgba(2,11,45,0.95)]">
-                    {course.title}
-                  </h3>
-
-                  <span className="mt-2.5 inline-flex rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.1em] text-[#BFDBFE] backdrop-blur-md">
-                    {course.category}
-                  </span>
-                </div>
+                {/* Light, and only at the foot: the artwork carries the course
+                    name, so burying it would defeat the point. This exists to
+                    blend the band into the card body below it. */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,rgba(0,0,0,0.75),rgba(0,0,0,0.25)_45%,transparent)]"
+                />
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_78%_at_50%_100%,rgba(37,99,235,0.45)_0%,transparent_70%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                />
 
                 {course.badge && (
                   <span
-                    className={`shrink-0 rounded-full bg-gradient-to-r px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_0_18px_-4px_rgba(37,99,235,1)] ${
+                    className={`absolute right-4 top-4 rounded-full bg-gradient-to-r px-2.5 py-1 text-[9px] font-bold uppercase tracking-[0.1em] text-white shadow-[0_0_18px_-4px_rgba(37,99,235,1)] ${
                       BADGE_TONE[course.badge] ?? BADGE_TONE.Trending
                     }`}
                   >
@@ -154,9 +155,20 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
                 )}
               </div>
 
-              {/* ---------------------------- foot -------------------------------- */}
-              <div className="relative z-10 mt-auto p-6 pt-8">
-                <p className="line-clamp-2 text-[13px] leading-relaxed text-white/70">
+              {/* ---------------------------- body -------------------------------- */}
+              <div className="relative z-10 flex flex-1 flex-col p-6">
+                {/* Clamped to two lines and held at two lines height, so a
+                    one-line title and a two-line one make the same card. */}
+                <h3 className="line-clamp-2 min-h-[46px] font-[family-name:var(--font-sora)] text-[19px] font-bold leading-[1.2] tracking-[-0.02em] text-white">
+                  {course.title}
+                </h3>
+
+                <span className="mt-2.5 inline-flex w-fit rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-[9.5px] font-semibold uppercase tracking-[0.1em] text-[#BFDBFE]">
+                  {course.category}
+                </span>
+
+                <div className="mt-4 flex flex-1 flex-col">
+                <p className="line-clamp-2 min-h-[42px] text-[13px] leading-relaxed text-white/70">
                   {course.shortDescription}
                 </p>
 
@@ -172,7 +184,11 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
                   ))}
                 </ul>
 
-                <p className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11.5px] text-white/55">
+                {/* Both rows reserve their tallest form. "Beginner to Advanced"
+                    wraps to a second line on a tablet-width card and not on a
+                    desktop one, which is what left two cards in a row at
+                    different heights. */}
+                <p className="mt-3.5 flex min-h-[40px] flex-wrap items-center gap-x-4 gap-y-1.5 text-[11.5px] text-white/55">
                   <span className="inline-flex items-center gap-1.5">
                     <FiClock aria-hidden className="size-3.5 text-[#60A5FA]" />
                     {course.duration}
@@ -183,7 +199,7 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
                   </span>
                 </p>
 
-                <span className="mt-5 inline-flex items-center gap-2 text-[12.5px] font-semibold text-white">
+                <span className="mt-auto inline-flex items-center gap-2 pt-5 text-[12.5px] font-semibold text-white">
                   Explore Course
                   <FiArrowRight
                     aria-hidden
@@ -195,6 +211,7 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
                   aria-hidden
                   className="mt-2 block h-px w-0 bg-gradient-to-r from-[#60A5FA] to-transparent transition-[width] duration-500 group-hover:w-full"
                 />
+                </div>
               </div>
             </Link>
           </motion.li>
