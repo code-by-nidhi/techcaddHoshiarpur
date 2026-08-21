@@ -96,7 +96,7 @@ export default async function FeaturedCourses() {
        * `overflow-visible` so a lifted card is not sliced off at the top — that
        * would otherwise let the looping slides push the page sideways.
        */}
-      <div className="relative mx-auto mt-7 w-full max-w-[1440px] overflow-x-clip px-[20px] py-[30px] sm:px-[24px] xl:px-[16px]">
+      <div className="relative mx-auto mt-7 w-full max-w-[1440px] overflow-x-clip px-[20px] sm:px-[24px] xl:px-[16px]">
         <CourseSpotlight cards={cards} />
       </div>
 

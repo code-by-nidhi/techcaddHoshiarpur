@@ -244,7 +244,7 @@ export default function Navbar() {
            * button and a nav that needs 916px, and the arithmetic only closes
            * with the tighter gap.
            */
-          className={`mx-auto flex w-full max-w-[1400px] flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap px-4 transition-all duration-500 sm:gap-3 sm:px-6 lg:gap-4 ${
+          className={`mx-auto flex w-full max-w-[1400px] flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap px-4 transition-all duration-500 sm:gap-3 sm:px-6 lg:gap-3 ${
             scrolled ? "h-[60px] sm:h-[68px]" : "h-[68px] sm:h-[86px]"
           }`}
         >
@@ -300,7 +300,7 @@ export default function Navbar() {
            * gap closes a 233px gap — the labels would have to drop to about
            * 10.6px to fit. Below 1280 the hamburger is the honest answer.
            */}
-          <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[12px] xl:flex 2xl:gap-x-[16px]">
+          <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[10px] xl:flex 2xl:gap-x-[16px]">
             {NAV_LINKS.map((link) => {
               const current = isActive(link.href);
               const megaKey = opensPanel(link.label) ? link.label : null;
@@ -340,7 +340,7 @@ export default function Navbar() {
                   {indicator}
                 </>
               );
-              const face_class = `group relative inline-flex items-center gap-1 whitespace-nowrap py-1 text-[14px] transition-colors duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px] ${
+              const face_class = `group relative inline-flex items-center gap-1 whitespace-nowrap py-1 text-[13.5px] transition-colors duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px] ${
                 current || thisOpen ? "font-medium text-white" : "text-white/90"
               }`;
 

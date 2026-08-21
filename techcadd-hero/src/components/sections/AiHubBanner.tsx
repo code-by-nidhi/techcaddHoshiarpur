@@ -31,8 +31,8 @@ const MOTES = Array.from({ length: 16 }, (_, i) => ({
 /**
  * AI Innovation Hub banner.
  *
- * The illustration is robot-stage.webp — the previous asset,
- * robot-cutout-clean.webp, had been deleted from public/images, so the banner
+ * The illustration is hero-robot.webp, the same cutout the hero stage uses —
+ * the two assets it pointed at before this were both deleted, so the banner
  * was requesting a file that no longer existed.
  */
 export default function AiHubBanner() {
@@ -139,10 +139,13 @@ export default function AiHubBanner() {
                 transition={reduced ? undefined : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
               >
                 <Image
-                  src="/images/robot-stage.webp"
+                  /* The same cutout the hero uses. It was pointing at
+                     robot-stage.webp, which went when the hero render was
+                     replaced — the banner had been rendering its alt text. */
+                  src="/images/hero-robot.webp"
                   alt="TechCadd robotics platform in the AI lab"
-                  width={840}
-                  height={640}
+                  width={1536}
+                  height={1024}
                   sizes="(max-width: 575px) 230px, 240px"
                   className="h-auto w-full object-contain drop-shadow-[0_18px_30px_rgba(5,11,31,0.75)]"
                 />

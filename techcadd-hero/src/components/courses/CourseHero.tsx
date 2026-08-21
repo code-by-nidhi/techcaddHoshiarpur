@@ -118,21 +118,30 @@ export default function CourseHero({ course }: { course: Course }) {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             className="relative"
           >
-            {/* No ring and no border: the Python artwork is a transparent cutout, so
-                the inset hairline drew a rectangle around empty space. The
-                radius and the overflow clip stay. */}
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[26px]">
+            {/*
+             * Nothing here paints a box: no border, no ring, no outline, and no
+             * background.
+             *
+             * The rectangle that used to show was never a border. It was the
+             * scrim below — `bg-gradient-to-t from-slate-950/55` — which existed
+             * to keep copy legible over a photograph. Against an opaque banner
+             * it blended into the artwork; behind a transparent cutout it had
+             * nothing to sit on and painted a dark panel the exact size of the
+             * container, with the rounded corners reading as a card edge.
+             * Removing it leaves the artwork floating on the hero itself.
+             *
+             * The radius and the overflow clip stay, and the glow stays too —
+             * it is a drop-shadow on the image, so it follows the alpha channel
+             * and traces the illustration rather than a rectangle.
+             */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[26px] bg-transparent">
               <Image
                 src={course.heroImage || DEFAULT_HERO}
                 alt={`${course.title} training at TechCadd`}
                 fill
                 priority
                 sizes="(max-width: 1023px) 92vw, 45vw"
-                className="object-contain object-center drop-shadow-[0_6px_18px_rgba(37,99,235,0.45)]"
-              />
-              <div
-                aria-hidden
-                className="absolute inset-0 bg-gradient-to-t from-slate-950/55 via-transparent to-transparent"
+                className="object-contain object-center drop-shadow-[0_10px_28px_rgba(37,99,235,0.5)] transition-transform duration-700 ease-out hover:scale-[1.03] motion-reduce:hover:scale-100"
               />
             </div>
 
