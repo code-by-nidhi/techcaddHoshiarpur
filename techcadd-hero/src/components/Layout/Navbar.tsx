@@ -157,9 +157,26 @@ export default function Navbar() {
    * Nested routes count as their parent: reading /blog/some-article should keep
    * "Resources" lit, not leave the bar looking like you navigated off the site.
    */
-  const isActive = (href: string) =>
+  const matches = (href: string) =>
     !href.includes("#") &&
     (pathname === href || (href !== "/" && pathname.startsWith(`${href}/`)));
+
+  /*
+   * The longest matching href wins.
+   *
+   * Now that Our Founder sits in the bar beside About Us, /about/our-founder
+   * matches both — "/about" through the startsWith arm — and without this both
+   * would light at once. Comparing against the most specific match lights only
+   * Our Founder there, and still lights About Us on /about itself.
+   *
+   * Items that share an href, as AI, Courses and After 12th all share
+   * /courses, still light together. That is existing behaviour and unrelated.
+   */
+  const activeHref = NAV_LINKS.map((l) => l.href)
+    .filter(matches)
+    .sort((a, b) => b.length - a.length)[0];
+
+  const isActive = (href: string) => matches(href) && href === activeHref;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -271,6 +288,15 @@ export default function Navbar() {
                 />
               );
               const isAi = link.label === "AI";
+              /*
+               * A `#` href means the item has nowhere to go — Branches, whose
+               * campuses live on their own sites. It renders as a button so the
+               * trigger opens the panel and nothing else: a link to `#` would
+               * jump the page to the top on click, and would read to a screen
+               * reader as a destination that does not exist. Same classes, same
+               * chevron, same indicator, so the bar is unchanged to look at.
+               */
+              const placeholder = link.href === "#";
               const face = (
                 <>
                   {link.label}
@@ -310,6 +336,19 @@ export default function Navbar() {
                       onFocus={() => setMega(megaKey)}
                       onClick={() => setMega(null)}
                     />
+                  ) : placeholder ? (
+                    <button
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded={thisOpen}
+                      aria-controls="mega-menu"
+                      onMouseEnter={() => setMega(megaKey)}
+                      onFocus={() => setMega(megaKey)}
+                      onClick={() => setMega(thisOpen ? null : megaKey)}
+                      className={face_class}
+                    >
+                      {face}
+                    </button>
                   ) : (
                     <Link
                       href={link.href}

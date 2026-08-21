@@ -5,12 +5,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, type Variants } from "framer-motion";
 import { FiArrowRight, FiChevronRight } from "react-icons/fi";
-import { ABOUT_PAGES } from "@/lib/about/pages";
+import { ABOUT_MENU_CARDS, ABOUT_MENU_PAGES } from "@/lib/about/pages";
 import { whatsappLink } from "@/lib/cta";
 
 /*
- * About Us panel: a left rail of the same three destinations, three featured
- * cards on the right, and a counsellor CTA under the rail.
+ * About Us panel: a left rail of destinations, three featured cards on the
+ * right, and a counsellor CTA under the rail.
+ *
+ * The rail and the cards no longer hold the same list. Our Founder has its own
+ * place in the navbar now, so it appears in neither, and the third card is Our
+ * Team — see ABOUT_MENU_PAGES and ABOUT_MENU_CARDS.
  *
  * This one is white rather than the navy the other panels use — the rest of
  * the bar's dropdowns are dark, so if that reads as inconsistent this is the
@@ -64,7 +68,7 @@ export default function AboutMegaMenu({
             </span>
 
             <ul className="mt-3 grid gap-1">
-              {ABOUT_PAGES.map((p) => {
+              {ABOUT_MENU_PAGES.map((p) => {
                 const on = pathname === `/about/${p.slug}`;
                 return (
                   <li key={p.slug}>
@@ -98,10 +102,10 @@ export default function AboutMegaMenu({
 
           {/* ----------------------------- cards ------------------------------ */}
           <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {ABOUT_PAGES.map((p) => (
-              <motion.li key={p.slug} variants={itemIn}>
+            {ABOUT_MENU_CARDS.map((p) => (
+              <motion.li key={p.key} variants={itemIn}>
                 <Link
-                  href={`/about/${p.slug}`}
+                  href={p.href}
                   onClick={onNavigate}
                   className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-slate-200/80 bg-white/70 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] backdrop-blur-xl transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1.5 hover:border-[#2563EB]/35 hover:shadow-[0_26px_54px_-28px_rgba(37,99,235,0.55)] motion-reduce:hover:translate-y-0"
                 >
@@ -139,7 +143,7 @@ export default function AboutMegaMenu({
 export function AboutMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) {
   return (
     <ul className="grid gap-2 px-1">
-      {ABOUT_PAGES.map((p) => (
+      {ABOUT_MENU_PAGES.map((p) => (
         <li key={p.slug}>
           <Link
             href={`/about/${p.slug}`}

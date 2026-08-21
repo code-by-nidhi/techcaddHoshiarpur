@@ -1,20 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useState, type KeyboardEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { A11y, Autoplay, Keyboard } from "swiper/modules";
 import { motion, useReducedMotion } from "framer-motion";
-import { FiArrowRight, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
+
+import "swiper/css";
 
 /**
- * The course rail: every programme the site can open a page for, in one
- * carousel.
+ * The course rail: every programme the site can open a page for, as a board of
+ * lightly tilted cards.
  *
- * Embla drives it rather than Swiper, which the project also carries. Swiper's
- * autoplay only stops once the in-flight transition finishes, so pause-on-hover
- * lagged noticeably; Embla's stops on the spot and resumes where it was.
+ * Swiper rather than Embla, because this layout needs a *centred* active slide
+ * and a class on it to style — `centeredSlides` plus `.swiper-slide-active` are
+ * both built in, and reproducing them on top of Embla would mean tracking the
+ * selected index in React and re-rendering the whole rail on every step.
  *
  * The cards arrive already resolved from the server component above, so this
  * file owns presentation only — and because that component maps the whole
@@ -35,72 +37,18 @@ export type SpotlightCard = {
 /** Milliseconds a card rests before the rail advances. */
 const AUTOPLAY_DELAY = 3000;
 
+/**
+ * The tilt cycle, in degrees, applied by position rather than by course.
+ *
+ * Five values for an arbitrarily long catalogue: the pattern repeats every
+ * fifth card, which is exactly one desktop screenful, so the board looks
+ * hand-pinned wherever it happens to be scrolled to and never settles into a
+ * run of identically angled cards.
+ */
+const TILTS = [-4, 2, 0, -2, 4];
+
 export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
   const reduce = useReducedMotion();
-
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      loop: true,
-      align: "start",
-      slidesToScroll: 1,
-      containScroll: false,
-    },
-    [
-      Autoplay({
-        delay: AUTOPLAY_DELAY,
-        /* A drag or an arrow press should re-time the rail, not kill it —
-           otherwise one stray swipe leaves a dead carousel for the session. */
-        stopOnInteraction: false,
-        stopOnMouseEnter: true,
-        stopOnFocusIn: true,
-      }),
-    ],
-  );
-
-  const [canScroll, setCanScroll] = useState(false);
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
-
-  /*
-   * Reduced motion parks the rail. It stays a carousel — arrows, drag, swipe
-   * and the arrow keys all still work, and every card is in the DOM — it simply
-   * does not advance on its own.
-   */
-  useEffect(() => {
-    if (!emblaApi) return;
-    const autoplay = emblaApi.plugins().autoplay;
-    if (!autoplay) return;
-    if (reduce) autoplay.stop();
-    else autoplay.play();
-  }, [emblaApi, reduce]);
-
-  /* If the cards ever fit the viewport there is nowhere to scroll to, and an
-     arrow that does nothing is worse than no arrow. */
-  useEffect(() => {
-    if (!emblaApi) return;
-    const sync = () => setCanScroll(emblaApi.canScrollNext() || emblaApi.canScrollPrev());
-    sync();
-    emblaApi.on("reInit", sync).on("select", sync);
-    return () => {
-      emblaApi.off("reInit", sync).off("select", sync);
-    };
-  }, [emblaApi]);
-
-  /**
-   * Arrow keys move the rail whenever the region — or anything inside it — has
-   * focus. The buttons are the visible affordance; this is what keeps the
-   * carousel operable once a card itself is the focused element.
-   */
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "ArrowLeft") {
-      e.preventDefault();
-      scrollPrev();
-    } else if (e.key === "ArrowRight") {
-      e.preventDefault();
-      scrollNext();
-    }
-  };
 
   return (
     <motion.div
@@ -108,166 +56,103 @@ export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: "some" }}
       transition={{ duration: reduce ? 0 : 0.7, ease: [0.22, 1, 0.36, 1] }}
-      role="region"
-      aria-roledescription="carousel"
-      aria-label="TechCadd courses"
-      tabIndex={0}
-      onKeyDown={onKeyDown}
-      className="relative outline-none focus-visible:ring-2 focus-visible:ring-[#60A5FA]"
+      className="pin-rail relative"
     >
-      {/*
-       * The viewport clips the track, so it needs vertical room for the hover
-       * lift and its glow — without the padding a raised card is sliced off at
-       * the top. The edges fade rather than cut: a looping rail never has a
-       * standing first or last card, so the ones mid-entry read as arriving
-       * rather than as cropped.
-       */}
-      <div
-        ref={emblaRef}
-        className="overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)]"
+      <Swiper
+        modules={[Autoplay, A11y, Keyboard]}
+        loop
+        grabCursor
+        speed={650}
+        /* the whole point of the layout: the middle card is the subject */
+        centeredSlides
+        /*
+         * Reduced motion parks the rail rather than removing it. Every card is
+         * still in the DOM, and swipe, drag and the arrow keys all still work —
+         * it simply does not advance on its own.
+         */
+        autoplay={
+          reduce
+            ? false
+            : { delay: AUTOPLAY_DELAY, disableOnInteraction: false, pauseOnMouseEnter: true }
+        }
+        keyboard={{ enabled: true }}
+        a11y={{ prevSlideMessage: "Previous course", nextSlideMessage: "Next course" }}
+        /* only the neighbours are decoded up front; a 54-card catalogue would
+           otherwise cost fifty-four image requests on first paint */
+        lazyPreloadPrevNext={2}
+        spaceBetween={18}
+        slidesPerView={1.3}
+        breakpoints={{
+          768: { slidesPerView: 3, spaceBetween: 20 },
+          1280: { slidesPerView: 5, spaceBetween: 24 },
+        }}
+        className="!overflow-visible"
       >
-        {/*
-         * The gutter is left padding inside each slide, and the track carries
-         * no negative margin to compensate.
-         *
-         * That is deliberate, and it is the whole reason the counts come out
-         * right. A percentage flex-basis resolves against the track's own
-         * width; pulling the track 24px left makes it 24px wider than the
-         * viewport, so `20%` becomes a fifth of *that* and five slides no
-         * longer fit — measured, the fifth card was 24px short of clearing the
-         * edge. With the track exactly the viewport's width, five 20% slides
-         * come to precisely 100%.
-         *
-         * The cost is a 24px inset before the first card, which the edge mask
-         * fades over anyway.
-         *
-         * Arbitrary fractions rather than `w-1/5`, because the app loads
-         * bootstrap-grid.min.css, whose same-named utilities are !important and
-         * would win.
-         */}
-        <div className="flex cursor-grab touch-pan-y items-stretch py-[34px] active:cursor-grabbing [backface-visibility:hidden] [transform:translate3d(0,0,0)]">
-          {cards.map((card, i) => (
-            <div
-              key={card.slug}
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`${i + 1} of ${cards.length}`}
-              /*
-               * 1 card on a phone, 2 on a tablet, 4 on a laptop, 5 on a
-               * desktop.
-               *
-               * The last step is a raw media query rather than `xl:`, because
-               * Tailwind's xl is 1280px and a 1280px screen is a laptop — it
-               * was showing five cards there. 1440 is where a desktop actually
-               * starts, and Tailwind has no breakpoint at it.
-               */
-              className="flex min-w-0 shrink-0 grow-0 basis-full pl-[24px] sm:basis-[50%] lg:basis-[25%] [@media(min-width:1440px)]:basis-[20%]"
+        {cards.map((card, i) => (
+          <SwiperSlide key={card.slug} className="!h-auto">
+            <article
+              className="pin-card group h-full"
+              style={{ ["--tilt" as string]: `${TILTS[i % TILTS.length]}deg` }}
             >
               <Link
                 href={card.href}
-                aria-label={`${card.title} — explore course`}
-                className="group relative flex w-full flex-col overflow-hidden rounded-[24px] border border-[rgba(59,130,246,0.25)] bg-white/[0.05] shadow-[0_18px_44px_-30px_rgba(6,14,46,0.9)] outline-none backdrop-blur-xl transition-[transform,box-shadow,border-color] duration-[400ms] ease-out will-change-transform hover:border-[rgba(59,130,246,0.65)] hover:shadow-[0_34px_78px_-24px_rgba(37,99,235,1),0_0_54px_-10px_rgba(96,165,250,0.85)] focus-visible:ring-2 focus-visible:ring-[#60A5FA] motion-safe:hover:-translate-y-2"
+                aria-label={`${card.title} — learn more`}
+                className="flex h-full flex-col overflow-hidden rounded-[24px] border border-[rgba(59,130,246,0.28)] bg-[#14245C]/85 outline-none backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-[#60A5FA]"
               >
                 {/*
-                 * The banner band.
+                 * A 16:10 band, not the 4:3 the old card used.
                  *
-                 * A fixed 4:3 box, so every card in the rail has the same image
-                 * height whatever the source file is — and since every banner in
-                 * the catalogue is itself 4:3, nothing is letterboxed either.
-                 * `contain` rather than `cover` so that stays true for artwork
-                 * of another shape: it is shown whole on the navy ground instead
-                 * of being cropped into.
+                 * The banners are 4:3, so this does crop them — deliberately.
+                 * A pinned card is mostly caption: at 4:3 the artwork was two
+                 * thirds of the card and the copy an afterthought, which is the
+                 * "images dominate the layout" this replaces. `contain` keeps
+                 * the whole banner visible inside the shorter band instead,
+                 * letterboxed on the navy rather than cut into.
                  */}
-                <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden bg-[#0A1437]">
+                <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-[#0A1437]">
                   <Image
                     src={card.image}
                     alt=""
                     fill
-                    sizes="(min-width: 1280px) 20vw, (min-width: 1024px) 25vw, (min-width: 640px) 50vw, 92vw"
-                    className="object-contain object-center drop-shadow-[0_6px_18px_rgba(37,99,235,0.45)] transition-transform duration-[600ms] ease-out motion-safe:group-hover:scale-[1.03]"
+                    sizes="(min-width: 1280px) 260px, (min-width: 768px) 30vw, 72vw"
+                    className="object-contain object-center"
                   />
-
-                  {/* A wash that only deepens at the very bottom, where the band
-                      meets the copy, so the two do not butt together as a seam.
-                      Nothing is written over the image: the banners carry their
-                      own titles, and a caption on top would collide with them. */}
-                  <div
+                  <span
                     aria-hidden
-                    className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0A1437]/45"
+                    className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#14245C]/70"
                   />
                 </div>
 
                 {/* ------------------------------ copy --------------------- */}
-                <div className="flex flex-1 flex-col p-4">
-                  <span className="mb-[10px] inline-flex w-fit items-center gap-[6px] rounded-full border border-[rgba(59,130,246,0.35)] bg-[#0A1437]/70 px-[10px] py-[4px] font-[family-name:var(--font-mono-face)] text-[8.5px] uppercase tracking-[0.12em] text-[#BFDBFE]">
+                <div className="flex flex-1 flex-col p-[14px]">
+                  <h3 className="line-clamp-2 min-h-[38px] font-[family-name:var(--font-sora)] text-[14.5px] font-extrabold leading-[1.25] tracking-[-0.015em] text-white">
+                    {card.title}
+                  </h3>
+
+                  <p className="mt-[6px] line-clamp-2 min-h-[34px] text-[11.5px] leading-[1.55] text-white/65">
+                    {card.description}
+                  </p>
+
+                  <span className="mt-[10px] inline-flex w-fit items-center gap-[5px] rounded-full border border-[rgba(59,130,246,0.35)] bg-[#0A1437]/70 px-[9px] py-[3px] font-[family-name:var(--font-mono-face)] text-[8px] uppercase tracking-[0.12em] text-[#BFDBFE]">
                     <span aria-hidden className="size-1 shrink-0 rounded-full bg-[#60A5FA]" />
                     {card.category}
                   </span>
 
-                  {/* Clamped and floored at two lines each, so a one-line title
-                      and a two-line one still produce the same card. */}
-                  <h3 className="line-clamp-2 min-h-[42px] font-[family-name:var(--font-sora)] text-[16.5px] font-extrabold leading-[1.25] tracking-[-0.02em] text-white">
-                    {card.title}
-                  </h3>
-
-                  <p className="mt-[8px] line-clamp-2 min-h-[40px] text-[12.5px] leading-[1.6] text-white/70">
-                    {card.description}
-                  </p>
-
-                  {/* mt-auto: the call to action sits on the same baseline on
-                      every card, whatever the copy above it did */}
-                  <span className="mt-auto inline-flex items-center gap-[6px] pt-[14px] text-[12.5px] font-semibold text-[#93C5FD] transition-colors duration-[400ms] group-hover:text-white">
-                    Explore Course
+                  {/* mt-auto: the call to action sits on one baseline across
+                      the board, whatever the copy above it did */}
+                  <span className="mt-auto inline-flex items-center gap-[5px] pt-[12px] text-[11.5px] font-semibold text-[#93C5FD] transition-colors duration-300 group-hover:text-white">
+                    Learn More
                     <FiArrowRight
                       aria-hidden
-                      className="size-3.5 transition-transform duration-[400ms] group-hover:translate-x-1"
+                      className="size-3 transition-transform duration-300 group-hover:translate-x-1"
                     />
                   </span>
                 </div>
               </Link>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ------------------------------- controls ------------------------- */}
-      {canScroll && (
-        <>
-          <RailButton onClick={scrollPrev} side="left" label="Previous courses" />
-          <RailButton onClick={scrollNext} side="right" label="Next courses" />
-        </>
-      )}
+            </article>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </motion.div>
-  );
-}
-
-/**
- * A rail arrow.
- *
- * Sits over the mask's fade zone at the edge of the viewport, where there is
- * never a fully visible card to obscure. Hidden below `lg`, where a phone or a
- * tablet swipes instead and an arrow would land on top of a card.
- */
-function RailButton({
-  onClick,
-  side,
-  label,
-}: {
-  onClick: () => void;
-  side: "left" | "right";
-  label: string;
-}) {
-  const Icon = side === "left" ? FiChevronLeft : FiChevronRight;
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={label}
-      className={`absolute top-1/2 z-10 hidden size-11 -translate-y-1/2 place-content-center rounded-full border border-[rgba(59,130,246,0.4)] bg-[#0A1437]/85 text-white shadow-[0_10px_30px_-12px_rgba(6,14,46,1)] backdrop-blur-xl transition-[transform,background-color,border-color] duration-300 hover:border-[#60A5FA] hover:bg-[#142C8E] focus-visible:ring-2 focus-visible:ring-[#60A5FA] motion-safe:hover:scale-110 lg:grid ${
-        side === "left" ? "left-0" : "right-0"
-      }`}
-    >
-      <Icon aria-hidden className="size-5" />
-    </button>
   );
 }

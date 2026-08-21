@@ -12,10 +12,21 @@ import type { RobotEffect } from "./robotBus";
 export const NAV_LINKS = [
   { label: "Home", href: "/", dropdown: false },
   { label: "About Us", href: "/about", dropdown: true },
+  /* Promoted out of the About Us panel to the bar itself. The page it opens is
+     the one that was already there — no new route. */
+  { label: "Our Founder", href: "/about/our-founder", dropdown: false },
   { label: "AI", href: "/courses", dropdown: true },
   { label: "Courses", href: "/courses", dropdown: true },
   { label: "Internship & Training", href: "/#included", dropdown: true },
   { label: "After 12th", href: "/courses", dropdown: true },
+  /*
+   * The only item in the bar with no destination of its own: the branches have
+   * their own websites and none of them is known yet. `#` is what marks that —
+   * the navbar renders a button rather than a link for it, so the trigger opens
+   * the panel and never navigates anywhere. Give it a real href and it goes
+   * back to being an ordinary link with no other change.
+   */
+  { label: "Branches", href: "#", dropdown: true },
   { label: "Resources", href: "/blog", dropdown: false },
   { label: "Contact Us", href: "/contact", dropdown: false },
 ] as const;

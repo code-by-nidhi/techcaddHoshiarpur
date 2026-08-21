@@ -7,12 +7,22 @@ import type { NavMenuItem } from "@/lib/navMenus";
 import styles from "./CoursesMegaMenu.module.css";
 
 /*
- * The short-list dropdown: AI, Internship & Training, After 12th.
+ * The short-list dropdown, used by Branches.
  *
  * It borrows the mega menu's stylesheet rather than restating the glass
  * recipe, so the panel background, card treatment and hover state stay in one
  * place and cannot drift apart.
  */
+
+/**
+ * A branch on its own website is a different kind of link from a route.
+ *
+ * `next/link` is for routes; an off-site address has to be a plain anchor, and
+ * it opens in a new tab — with `noopener`, without which the opened tab can
+ * navigate this one somewhere else. Everything else, including the `#`
+ * placeholders the branches carry today, stays a Link.
+ */
+const isExternal = (href: string) => /^https?:\/\//.test(href);
 
 const panelIn: Variants = {
   hidden: { opacity: 0, y: -15 },
@@ -59,21 +69,32 @@ export default function NavDropdown({
 
         <div className={styles.body}>
           <ul className={styles.list}>
-            {items.map((item) => (
-              <motion.li key={item.href} variants={itemIn}>
-                <Link href={item.href} onClick={onNavigate} className={styles.card}>
-                  <span className="min-w-0">
-                    <span className={styles.label}>{item.label}</span>
-                    {item.note && (
-                      <span className="mt-0.5 block text-[11.5px] leading-snug text-white/45">
-                        {item.note}
-                      </span>
-                    )}
-                  </span>
-                  <FiChevronRight aria-hidden size={14} className={styles.arrow} />
-                </Link>
-              </motion.li>
-            ))}
+            {/* keyed by label, not href: six branches all sitting on `#`
+                would collide and React would drop five of them */}
+            {items.map((item) => {
+              const external = isExternal(item.href);
+              const Tag = external ? "a" : Link;
+              return (
+                <motion.li key={item.label} variants={itemIn}>
+                  <Tag
+                    href={item.href}
+                    {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    onClick={onNavigate}
+                    className={styles.card}
+                  >
+                    <span className="min-w-0">
+                      <span className={styles.label}>{item.label}</span>
+                      {item.note && (
+                        <span className="mt-0.5 block text-[11.5px] leading-snug text-white/45">
+                          {item.note}
+                        </span>
+                      )}
+                    </span>
+                    <FiChevronRight aria-hidden size={14} className={styles.arrow} />
+                  </Tag>
+                </motion.li>
+              );
+            })}
           </ul>
         </div>
       </div>
@@ -91,18 +112,23 @@ export function NavDropdownMobile({
 }) {
   return (
     <ul>
-      {items.map((item) => (
-        <li key={item.href}>
-          <Link
-            href={item.href}
-            onClick={onNavigate}
-            className="flex min-h-[52px] w-full items-center gap-2 rounded-[14px] px-3.5 py-3 text-[15px] text-white/75 transition-colors duration-300 hover:bg-[#3b82f6]/[0.12] hover:text-white"
-          >
-            <span className="min-w-0 flex-1 truncate">{item.label}</span>
-            <FiChevronRight aria-hidden size={14} className="shrink-0 text-[#60a5fa]" />
-          </Link>
-        </li>
-      ))}
+      {items.map((item) => {
+        const external = isExternal(item.href);
+        const Tag = external ? "a" : Link;
+        return (
+          <li key={item.label}>
+            <Tag
+              href={item.href}
+              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              onClick={onNavigate}
+              className="flex min-h-[52px] w-full items-center gap-2 rounded-[14px] px-3.5 py-3 text-[15px] text-white/75 transition-colors duration-300 hover:bg-[#3b82f6]/[0.12] hover:text-white"
+            >
+              <span className="min-w-0 flex-1 truncate">{item.label}</span>
+              <FiChevronRight aria-hidden size={14} className="shrink-0 text-[#60a5fa]" />
+            </Tag>
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -53,6 +53,50 @@ export const ABOUT_PAGES: AboutPage[] = [
   },
 ];
 
+/*
+ * What the About Us panel shows, which is no longer simply ABOUT_PAGES.
+ *
+ * ABOUT_PAGES stays whole: it generates /about/[slug], and Our Founder is still
+ * one of those pages — it just reaches the bar directly now instead of through
+ * this panel. Filtering the array itself would delete the route.
+ */
+
+/** The rail, and the mobile sheet. Our Founder is a top-level nav item. */
+export const ABOUT_MENU_PAGES = ABOUT_PAGES.filter((p) => p.slug !== "our-founder");
+
+export type AboutMenuCard = {
+  key: string;
+  title: string;
+  badge: string;
+  image: string;
+  href: string;
+};
+
+/**
+ * The three cards on the right of the panel.
+ *
+ * Two of them are About pages. The third, Our Team, has no page of its own and
+ * is not getting one — it points at the section of /about that already tells
+ * that story, so the card is a working link rather than a placeholder. Give it
+ * a real slug later and only this line changes.
+ */
+export const ABOUT_MENU_CARDS: AboutMenuCard[] = [
+  ...ABOUT_MENU_PAGES.map((p) => ({
+    key: p.slug,
+    title: p.title,
+    badge: p.badge,
+    image: p.image,
+    href: `/about/${p.slug}`,
+  })),
+  {
+    key: "our-team",
+    title: "Our Team",
+    badge: "People",
+    image: images.heroPrimary.src,
+    href: "/about#who-we-are",
+  },
+];
+
 export const aboutSlugs = () => ABOUT_PAGES.map((p) => p.slug);
 
 export const getAboutPage = (slug: string) => ABOUT_PAGES.find((p) => p.slug === slug);
