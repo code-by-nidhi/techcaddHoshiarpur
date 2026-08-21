@@ -118,7 +118,10 @@ export default function CourseHero({ course }: { course: Course }) {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
             className="relative"
           >
-            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[26px] ring-1 ring-inset ring-white/10">
+            {/* No ring and no border: the Python artwork is a transparent cutout, so
+                the inset hairline drew a rectangle around empty space. The
+                radius and the overflow clip stay. */}
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[26px]">
               <Image
                 src={course.heroImage || DEFAULT_HERO}
                 alt={`${course.title} training at TechCadd`}

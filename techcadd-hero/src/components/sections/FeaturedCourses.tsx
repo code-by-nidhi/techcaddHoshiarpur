@@ -68,14 +68,14 @@ export default async function FeaturedCourses() {
             Explore Our Courses
           </span>
 
-          <h2 className="mx-auto mt-5 max-w-3xl font-[family-name:var(--font-sora)] text-[clamp(1.9rem,4vw,3rem)] font-extrabold leading-[1.08] tracking-[-0.035em] text-white">
+          <h2 className="mx-auto mt-4 max-w-2xl font-[family-name:var(--font-sora)] text-[clamp(1.7rem,3.2vw,2.5rem)] font-extrabold leading-[1.06] tracking-[-0.035em] text-white">
             Build Skills.{" "}
             <span className="bg-gradient-to-r from-white via-[#60A5FA] to-[#2344D4] bg-clip-text pr-[0.08em] text-transparent">
               Build Future.
             </span>
           </h2>
 
-          <p className="mx-auto mt-3.5 max-w-xl text-[15.5px] leading-[1.8] text-white/60">
+          <p className="mx-auto mt-3 max-w-lg text-[14.5px] leading-[1.7] text-white/60">
             Industry-focused programs designed for careers that actually hire.
           </p>
         </div>
@@ -91,13 +91,18 @@ export default async function FeaturedCourses() {
        * bootstrap-grid.min.css, whose same-named utilities are !important and
        * would put 48px here whatever this said.
        */}
-      <div className="relative mx-auto mt-9 w-full max-w-[1440px] px-[20px] sm:px-[24px] xl:px-[16px]">
+      {/*
+       * `overflow-x-clip` on the shell, because the rail itself is
+       * `overflow-visible` so a lifted card is not sliced off at the top — that
+       * would otherwise let the looping slides push the page sideways.
+       */}
+      <div className="relative mx-auto mt-7 w-full max-w-[1440px] overflow-x-clip px-[20px] py-[30px] sm:px-[24px] xl:px-[16px]">
         <CourseSpotlight cards={cards} />
       </div>
 
       <div className="relative mx-auto w-full max-w-[1400px] px-5 sm:px-6 lg:px-[4.5rem]">
         {/* ---------------------------- advisor CTA --------------------------- */}
-        <div className="mt-9 flex flex-col items-center gap-5 rounded-[24px] border border-white/[0.08] bg-[#101E52]/90 p-6 text-center shadow-[0_18px_44px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:p-7 lg:flex-row lg:justify-between lg:text-left">
+        <div className="mt-7 flex flex-col items-center gap-5 rounded-[24px] border border-white/[0.08] bg-[#101E52]/90 p-6 text-center shadow-[0_18px_44px_-30px_rgba(0,0,0,0.9)] backdrop-blur-xl sm:p-7 lg:flex-row lg:justify-between lg:text-left">
           <div className="flex flex-col items-center gap-4 sm:flex-row lg:gap-5">
             <span className="grid size-12 shrink-0 place-content-center rounded-2xl bg-gradient-to-br from-[#1E3A8A] to-[#2344D4] text-white shadow-[0_0_26px_-8px_rgba(35,68,212,0.95)]">
               <FiUserCheck aria-hidden className="size-5" />

@@ -19,6 +19,20 @@ export const ABOUT = {
     { value: "6", unit: "Months", label: "Paid internship track" },
     { value: "Sat–Sun", unit: "", label: "Weekend batches" },
   ],
+  /*
+   * The headline numbers, shown as a row of cards under the opening block.
+   *
+   * `to` and `suffix` are split because the counter animates the number and
+   * cannot animate the string "25,000+". The separator is the counter's own
+   * job — it prints through `toLocaleString`, so 25000 reads as 25,000.
+   */
+  enterpriseStats: [
+    { to: 25000, suffix: "+", label: "Students Trained", icon: "students" },
+    { to: 1000, suffix: "+", label: "Hiring Partners", icon: "partners" },
+    { to: 500, suffix: "+", label: "Industrial Trainings", icon: "training" },
+    { to: 10, suffix: "+", label: "Years Experience", icon: "years" },
+    { to: 100, suffix: "+", label: "Expert Trainers", icon: "trainers" },
+  ],
   tiles: [
     { title: "AI & Robotics Lab", tone: "from-blue-600/40 to-cyan-500/20" },
     { title: "Live Project Floor", tone: "from-cyan-500/40 to-blue-600/20" },

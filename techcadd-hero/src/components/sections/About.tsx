@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
-  ArrowRight, Briefcase, Building2, Phone, Users,
+  ArrowRight, Briefcase, Building2, CalendarClock, GraduationCap, Phone, Users,
   type LucideIcon,
 } from "lucide-react";
 import { ABOUT, VALUES } from "@/lib/site";
@@ -79,9 +79,15 @@ export default function About() {
         <div className="relative section-pad">
           <AtmosphereLayer />
 
-          <div className="grid gap-16 md:grid-cols-[0.95fr_1.05fr] md:items-start lg:gap-16 xl:gap-24">
+          {/*
+           * `order` puts the video above the copy on a phone and back beside it
+           * from `md` up. A plain source-order swap would have done it for
+           * mobile and then needed `flex-row-reverse` on desktop, which also
+           * reverses the tab order — the copy would be read after the video.
+           */}
+          <div className="grid gap-12 md:grid-cols-[0.95fr_1.05fr] md:items-center md:gap-16 xl:gap-24">
             {/* not sticky: with five cards and the CTA this column outgrows the viewport */}
-            <div>
+            <div className="order-2 md:order-1">
               <Reveal>
                 <span className="inline-flex items-center gap-2.5 rounded-full border border-[#2563EB]/15 bg-white/70 px-4 py-2 font-[family-name:var(--font-mono-face)] text-[11px] uppercase tracking-[0.22em] text-[#2563EB] shadow-[0_10px_30px_-22px_rgba(37,99,235,0.9)] backdrop-blur-xl">
                   <span aria-hidden className="size-1.5 rounded-full bg-[#2563EB]" />
@@ -106,8 +112,12 @@ export default function About() {
               <CallToAction />
             </div>
 
-            <AboutVideo />
+            <div className="order-1 md:order-2">
+              <AboutVideo />
+            </div>
           </div>
+
+          <EnterpriseStats />
         </div>
 
         <TrainingFormats />
@@ -145,6 +155,64 @@ export default function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ----------------------------- headline stats ----------------------------- */
+
+/** Blue line icons for the stat cards, one per figure. */
+const STAT_ICONS: Record<string, LucideIcon> = {
+  students: Users,
+  partners: Building2,
+  training: Briefcase,
+  years: CalendarClock,
+  trainers: GraduationCap,
+};
+
+/**
+ * The five headline numbers, as a row of white cards.
+ *
+ * Five across on a desktop and two on a phone, which leaves the fifth card
+ * alone on its own row — `last:odd:col-span-2` widens it to fill the row rather
+ * than leaving a hole beside it.
+ */
+function EnterpriseStats() {
+  return (
+    <motion.ul
+      variants={cardStack}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: "-80px" }}
+      className="mt-16 grid grid-cols-2 gap-4 sm:gap-5 lg:mt-20 lg:grid-cols-5"
+    >
+      {ABOUT.enterpriseStats.map((stat) => {
+        const Icon = STAT_ICONS[stat.icon] ?? Users;
+        return (
+          <motion.li
+            key={stat.label}
+            variants={cardItem}
+            className="group rounded-[20px] border border-slate-200/70 bg-white p-5 text-center shadow-[0_16px_40px_-28px_rgba(15,23,42,0.45)] transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-[#2563EB]/30 hover:shadow-[0_30px_60px_-28px_rgba(37,99,235,0.55)] last:odd:col-span-2 motion-reduce:hover:translate-y-0 lg:p-6 lg:last:odd:col-span-1"
+          >
+            <span
+              aria-hidden
+              className="mx-auto grid size-11 place-content-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-[#2563EB]/15 transition-transform duration-500 group-hover:scale-110 motion-reduce:group-hover:scale-100"
+            >
+              <Icon className="size-5 text-[#2563EB]" />
+            </span>
+
+            <Counter
+              to={stat.to}
+              suffix={stat.suffix}
+              className="mt-3.5 block font-[family-name:var(--font-poppins)] text-[clamp(1.5rem,2.4vw,2.05rem)] font-extrabold leading-none tracking-[-0.03em] text-[#0F172A]"
+            />
+
+            <span className="mt-2 block text-[12.5px] font-medium leading-snug text-[#64748B] lg:text-[13px]">
+              {stat.label}
+            </span>
+          </motion.li>
+        );
+      })}
+    </motion.ul>
   );
 }
 
@@ -472,7 +540,13 @@ function AboutVideo() {
           className="absolute -inset-4 -z-10 rounded-[36px] bg-[radial-gradient(60%_60%_at_50%_45%,rgba(37,99,235,0.30)_0%,transparent_72%)] opacity-70 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
         />
 
-        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] border border-[#2563EB]/25 bg-[#101E52] shadow-[0_26px_60px_-30px_rgba(15,23,42,0.55)] transition-shadow duration-500 ease-out group-hover:shadow-[0_40px_84px_-28px_rgba(37,99,235,0.6)]">
+        {/*
+         * A fixed 600px from `lg` up, which is the height the brief asks for.
+         * Below that it keeps a ratio instead: a 600px box on a 390px screen is
+         * taller than it is wide by half again, and the frame inside it would
+         * be cropped to a letterbox slot.
+         */}
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[24px] border border-[#2563EB]/25 bg-[#101E52] shadow-[0_26px_60px_-30px_rgba(15,23,42,0.55)] transition-shadow duration-500 ease-out group-hover:shadow-[0_40px_84px_-28px_rgba(37,99,235,0.6)] sm:aspect-[16/11] lg:aspect-auto lg:h-[600px]">
           {failed ? (
             <ShowcaseLoop reduce={reduce === true} />
           ) : (

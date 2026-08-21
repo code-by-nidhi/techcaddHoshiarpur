@@ -237,7 +237,14 @@ export default function Navbar() {
          * and sit over the hero copy.
          */}
         <nav
-          className={`mx-auto flex w-full max-w-[1400px] flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap px-4 transition-all duration-500 sm:gap-3 sm:px-6 lg:gap-6 lg:px-8 ${
+          /*
+           * 1400px, centred, 24px of gutter — and the gap between the three
+           * groups is 16px from `lg` rather than 24px. Those 16px matter: at
+           * 1280 the row has 1232px to divide between a 124px logo, a 137px
+           * button and a nav that needs 916px, and the arithmetic only closes
+           * with the tighter gap.
+           */
+          className={`mx-auto flex w-full max-w-[1400px] flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap px-4 transition-all duration-500 sm:gap-3 sm:px-6 lg:gap-4 ${
             scrolled ? "h-[60px] sm:h-[68px]" : "h-[68px] sm:h-[86px]"
           }`}
         >
@@ -251,10 +258,21 @@ export default function Navbar() {
               tight to the image edge, so matching the nav's own padding leaves
               it looking closer to the screen edge than the links are to theirs.
               It scales back on phones, where the row has no width to spare. */}
+          {/*
+           * `shrink-0`, where it used to be `shrink`.
+           *
+           * That single word was the overlap. Under `justify-between` the nav
+           * list is `shrink-0` and keeps its full 988px, so the only element
+           * that could give ground was this one — and its box compressed while
+           * the wordmark inside it did not, because the image is `w-auto`. The
+           * result was the list drawn straight over the logo, by as much as
+           * 130px at 1280 and 1600. Neither may shrink now; the gaps below are
+           * what create the room instead.
+           */}
           <Link
             href="/"
             aria-label="TechCadd — home"
-            className="ml-1 min-w-0 shrink sm:ml-3 lg:ml-5"
+            className="ml-1 shrink-0 sm:ml-2 lg:ml-3"
           >
             <Image
               src="/images/techcadd-logo-white.png"
@@ -271,7 +289,18 @@ export default function Navbar() {
           </Link>
 
           {/* desktop navigation */}
-          <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[20px] xl:flex 2xl:gap-x-[28px]">
+          {/*
+           * Gaps sized to what is actually left over, measured rather than
+           * guessed: the ten items come to 808px of text at `xl` and 854px at
+           * `2xl`, and the row can spare about 940px and 1030px respectively.
+           * 12px and 16px of gap fit inside both with a little slack.
+           *
+           * The list stays behind `xl` (1280px) and not `lg` (1024px). At 1024
+           * the row has roughly 683px to give a list that needs 916px, and no
+           * gap closes a 233px gap — the labels would have to drop to about
+           * 10.6px to fit. Below 1280 the hamburger is the honest answer.
+           */}
+          <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[12px] xl:flex 2xl:gap-x-[16px]">
             {NAV_LINKS.map((link) => {
               const current = isActive(link.href);
               const megaKey = opensPanel(link.label) ? link.label : null;
@@ -369,7 +398,7 @@ export default function Navbar() {
             })}
           </ul>
 
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2.5">
             <motion.div
               className="shrink-0"
               whileHover={{ y: -2, scale: 1.03 }}
