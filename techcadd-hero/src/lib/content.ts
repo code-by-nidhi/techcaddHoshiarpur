@@ -14,7 +14,7 @@ export const NAV_LINKS = [
   { label: "About Us", href: "/about", dropdown: true },
   /* Promoted out of the About Us panel to the bar itself. The page it opens is
      the one that was already there — no new route. */
-  { label: "Our Founder", href: "/about/our-founder", dropdown: false },
+  { label: "Founder", href: "/about/our-founder", dropdown: false },
   { label: "AI", href: "/courses", dropdown: true },
   { label: "Courses", href: "/courses", dropdown: true },
   { label: "Internship & Training", href: "/#included", dropdown: true },

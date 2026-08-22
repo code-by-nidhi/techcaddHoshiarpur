@@ -416,7 +416,21 @@ export default function FounderPage() {
                       alt={item.alt}
                       fill
                       loading="lazy"
-                      sizes="(max-width: 639px) 46vw, (max-width: 1023px) 46vw, 24vw"
+                      /*
+                       * Two `sizes`, because the grid has two frame widths.
+                       *
+                       * A wide frame spans two of four columns — 48vw on a
+                       * desktop and the full row on a phone — while a tall one
+                       * is a single column. One shared `sizes` describing only
+                       * the narrow case had the browser fetching a 384px file
+                       * for a 558px slot and scaling it up by half again, which
+                       * is exactly as soft as it sounds.
+                       */
+                      sizes={
+                        item.span === "wide"
+                          ? "(min-width: 1024px) 48vw, 92vw"
+                          : "(min-width: 1024px) 24vw, 46vw"
+                      }
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] motion-reduce:group-hover:scale-100"
                     />
                     <span
