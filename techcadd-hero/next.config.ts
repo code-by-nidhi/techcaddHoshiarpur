@@ -38,8 +38,40 @@ function cmsImagePattern() {
   }
 }
 
+/**
+ * The old, location-free detail URLs, permanently moved.
+ *
+ * Every detail page now carries the city — `/courses/python-programming` became
+ * `/courses/python-programming-course-in-hoshiarpur` — and anything already
+ * linked or indexed has to keep working.
+ *
+ * A pattern rather than a list of sixty-six entries, so a course added to the
+ * catalogue or published in the CMS is covered without touching this file.
+ *
+ * The negative lookahead is the whole trick. Without it `/courses/:slug` also
+ * matches the *new* address, which would redirect it to
+ * `…-course-in-hoshiarpur-course-in-hoshiarpur` and again, forever. The guard
+ * says: match a single path segment that does not already end in the suffix.
+ *
+ * `statusCode: 301` rather than `permanent: true`, which emits 308. Both are
+ * permanent and both pass link equity, but 301 is what was asked for and what
+ * every SEO tool reports on.
+ */
+const SEO_SLUG_REDIRECTS = [
+  { base: "/courses", suffix: "-course-in-hoshiarpur" },
+  { base: "/internship-training", suffix: "-in-hoshiarpur" },
+  { base: "/after-12th", suffix: "-course-in-hoshiarpur" },
+].map(({ base, suffix }) => ({
+  source: `${base}/:slug((?!.*${suffix}$)[^/]+)`,
+  destination: `${base}/:slug${suffix}`,
+  statusCode: 301 as const,
+}));
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return SEO_SLUG_REDIRECTS;
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: cmsImagePattern(),

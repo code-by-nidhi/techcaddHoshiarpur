@@ -1,4 +1,5 @@
 import { CATEGORY_META, programmesByCategory, type TrainingCategory } from "@/lib/training/programmes";
+import { trainingPath } from "@/lib/seo/routes";
 
 /**
  * Internship & Training mega menu, derived from the programme data rather than
@@ -31,7 +32,7 @@ export const INTERNSHIP_MENU: ColumnsMenu = {
       description: meta.description,
       links: programmesByCategory(category).map((p) => ({
         label: p.title,
-        href: `/internship-training/${p.slug}`,
+        href: trainingPath(p.slug),
         trending: p.badge === "Trending",
       })),
     };

@@ -3,6 +3,7 @@ import {
   Rocket, Users, GraduationCap, FlaskConical, Compass, BadgeCheck,
 } from "lucide-react";
 import { CTA } from "@/lib/cta";
+import { trainingPath } from "@/lib/seo/routes";
 
 /* ------------------------------- about -------------------------------- */
 
@@ -286,9 +287,9 @@ export const MEGA_FOOTER = {
       links: [
         { label: "Internship & Training", href: "/internship-training" },
         { label: "After 12th", href: "/after-12th" },
-        { label: "Industrial Training", href: "/internship-training/industrial-training" },
-        { label: "6 Months Training", href: "/internship-training/6-months-training" },
-        { label: "Summer Internship", href: "/internship-training/summer-internship" },
+        { label: "Industrial Training", href: trainingPath("industrial-training") },
+        { label: "6 Months Training", href: trainingPath("6-months-training") },
+        { label: "Summer Internship", href: trainingPath("summer-internship") },
       ],
     },
     {
@@ -336,8 +337,18 @@ export const MILESTONES = [
 export const FOUNDER = {
   quote:
     "We never wanted to be the biggest institute in Punjab. We wanted to be the one where a student's first job is better than the one they imagined when they walked in. Everything else — the labs, the projects, the mentor hours — exists to serve that single outcome.",
-  name: "Founder & Director",
+  /* Spelled Gourav, not Gaurav — the image file is named the other way. */
+  name: "Mr. Gourav Gupta",
+  /** The post. `name` used to carry this, before there was a name to carry. */
+  title: "Founder & CEO",
+  /** Where, not what — read as the second line under the name. */
   role: "Techcadd, Hoshiarpur",
+  /** The three descriptors that sit under the name on the founder page. */
+  credentials: [
+    "Visionary Entrepreneur",
+    "Technology Educator",
+    "Skill Development Advocate",
+  ],
 };
 
 export const VALUES = [

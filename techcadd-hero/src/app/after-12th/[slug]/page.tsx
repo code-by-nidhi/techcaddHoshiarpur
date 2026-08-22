@@ -13,6 +13,7 @@ import {
   after12Slugs,
   getAfter12,
 } from "@/lib/after12/programmes";
+import { AFTER12_URL, after12Path, coursePath } from "@/lib/seo/routes";
 
 /**
  * A pathway page: what the certificate covers and which catalogue courses it
@@ -22,9 +23,21 @@ import {
 
 export const dynamicParams = false;
 
+/*
+ * Params carry the public suffix, and every lookup strips it first. Old,
+ * suffix-less addresses never reach this route — next.config redirects them
+ * with a 301 before routing — so `dynamicParams` stays false and an unknown
+ * slug is still a clean 404.
+ */
 export function generateStaticParams() {
-  return after12Slugs().map((slug) => ({ slug }));
+  return after12Slugs().map((slug) => ({ slug: AFTER12_URL.param(slug) }));
 }
+
+/** The pathway behind a public URL segment. */
+const resolveAfter12 = (param: string) => {
+  const slug = AFTER12_URL.slugFromParam(param);
+  return slug ? getAfter12(slug) : undefined;
+};
 
 export async function generateMetadata({
   params,
@@ -32,7 +45,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const programme = getAfter12(slug);
+  const programme = resolveAfter12(slug);
 
   if (!programme) {
     return { title: "Programme not found", robots: { index: false, follow: true } };
@@ -43,11 +56,11 @@ export async function generateMetadata({
        the string appears nowhere else in the codebase. */
     title: `${programme.title} Course in Hoshiarpur`,
     description: programme.summary,
-    alternates: { canonical: `/after-12th/${programme.slug}` },
+    alternates: { canonical: after12Path(programme.slug) },
     openGraph: {
       title: `${programme.title} Course in Hoshiarpur`,
       description: programme.summary,
-      url: `/after-12th/${programme.slug}`,
+      url: after12Path(programme.slug),
     },
   };
 }
@@ -58,7 +71,7 @@ export default async function After12ProgrammePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const programme = getAfter12(slug);
+  const programme = resolveAfter12(slug);
 
   if (!programme) notFound();
 
@@ -154,7 +167,7 @@ export default async function After12ProgrammePage({
                   {courses.map((course) => (
                     <li key={course.slug}>
                       <Link
-                        href={`/courses/${course.slug}`}
+                        href={coursePath(course.slug)}
                         className="group flex h-full flex-col rounded-[22px] border border-slate-200/80 bg-white p-6 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(37,99,235,0.45)] motion-reduce:hover:translate-y-0"
                       >
                         <span className="font-[family-name:var(--font-sora)] text-[16px] font-bold leading-snug text-[#0F172A]">

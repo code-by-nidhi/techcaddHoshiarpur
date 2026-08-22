@@ -6,6 +6,7 @@ import MegaFooter from "@/components/Layout/MegaFooter";
 import Breadcrumbs from "@/components/courses/Breadcrumbs";
 import CourseExplorer, { type ExplorerCourse } from "@/components/courses/CourseExplorer";
 import { COURSES } from "@/lib/courses";
+import { coursePath } from "@/lib/seo/routes";
 import JsonLd from "@/components/seo/JsonLd";
 import { breadcrumbSchema, graph, itemListSchema } from "@/lib/seo/schema";
 
@@ -41,7 +42,7 @@ export default function CoursesIndex() {
       <JsonLd
         data={graph(
           breadcrumbSchema([{ name: "Home", path: "/" }, { name: "Courses", path: "/courses" }]),
-          itemListSchema("TechCadd courses", courses.map((c) => ({ name: c.title, path: `/courses/${c.slug}` }))),
+          itemListSchema("TechCadd courses", courses.map((c) => ({ name: c.title, path: coursePath(c.slug) }))),
         )}
       />
       <Navbar />

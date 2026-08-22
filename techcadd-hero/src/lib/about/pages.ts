@@ -46,7 +46,7 @@ export const ABOUT_PAGES: AboutPage[] = [
     slug: "our-founder",
     title: "Our Founder",
     badge: "Profile",
-    summary: `${FOUNDER.name}, ${FOUNDER.role}`,
+    summary: `${FOUNDER.name} — ${FOUNDER.title}, ${FOUNDER.role}`,
     image: "/images/founder-gaurav.webp",
     imageAlt: "The founder of TechCADD",
     paragraphs: [FOUNDER.quote, ...hero.supporting],
@@ -73,12 +73,16 @@ export type AboutMenuCard = {
 };
 
 /**
- * The three cards on the right of the panel.
+ * The three destinations in the About Us panel.
+ *
+ * One list, used by the rail on the left, the cards on the right and the mobile
+ * sheet — so the three can never fall out of order or out of step with each
+ * other. The `key` is what ties a rail item to its card when one is hovered.
  *
  * Two of them are About pages. The third, Our Team, has no page of its own and
  * is not getting one — it points at the section of /about that already tells
- * that story, so the card is a working link rather than a placeholder. Give it
- * a real slug later and only this line changes.
+ * that story, so it is a working link rather than a placeholder. Give it a real
+ * slug later and only this line changes.
  */
 export const ABOUT_MENU_CARDS: AboutMenuCard[] = [
   ...ABOUT_MENU_PAGES.map((p) => ({
@@ -97,7 +101,16 @@ export const ABOUT_MENU_CARDS: AboutMenuCard[] = [
   },
 ];
 
-export const aboutSlugs = () => ABOUT_PAGES.map((p) => p.slug);
+/**
+ * The slugs /about/[slug] generates.
+ *
+ * Our Founder is excluded: it has a dedicated page at app/about/our-founder,
+ * and a literal segment wins over a dynamic one, so anything prerendered here
+ * for that slug would never be served. It stays in ABOUT_PAGES, because the
+ * sibling pages still cross-link to it.
+ */
+export const aboutSlugs = () =>
+  ABOUT_PAGES.filter((p) => p.slug !== "our-founder").map((p) => p.slug);
 
 export const getAboutPage = (slug: string) => ABOUT_PAGES.find((p) => p.slug === slug);
 

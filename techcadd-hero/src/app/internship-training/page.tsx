@@ -11,6 +11,7 @@ import {
   programmesByCategory,
   type TrainingCategory,
 } from "@/lib/training/programmes";
+import { trainingPath } from "@/lib/seo/routes";
 
 /** The index the mega menu's "See All Training Formats" points at. */
 
@@ -66,7 +67,7 @@ export default function InternshipTrainingPage() {
                     {items.map((p) => (
                       <li key={p.slug}>
                         <Link
-                          href={`/internship-training/${p.slug}`}
+                          href={trainingPath(p.slug)}
                           className="group flex h-full flex-col rounded-[22px] border border-slate-200/80 bg-white p-6 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(37,99,235,0.45)] motion-reduce:hover:translate-y-0"
                         >
                           <span className="relative mb-4 block aspect-[16/10] w-full overflow-hidden rounded-[16px]">

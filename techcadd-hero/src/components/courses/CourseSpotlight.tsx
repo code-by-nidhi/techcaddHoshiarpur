@@ -39,6 +39,15 @@ export type SpotlightCard = {
 /** Milliseconds a card rests before the rail advances. */
 const AUTOPLAY_DELAY = 3500;
 
+/**
+ * How long one card takes to travel.
+ *
+ * 700ms against a 3500ms dwell: one card costs 4200ms end to end. This was
+ * briefly run at 450/2300 and put back — the slower pacing is the one the fan
+ * was designed around, and it lets each card settle before the next begins.
+ */
+const SLIDE_SPEED = 700;
+
 /** Decorative motes drifting behind the fan. Positions are fixed, not random,
     so the server and the client agree on the markup. */
 const PARTICLES = [
@@ -90,7 +99,7 @@ export default function CourseSpotlight({ cards }: { cards: SpotlightCard[] }) {
         effect="coverflow"
         loop
         grabCursor
-        speed={700}
+        speed={SLIDE_SPEED}
         /* the whole point of the layout: the middle card is the subject */
         centeredSlides
         /*

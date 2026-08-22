@@ -5,6 +5,7 @@ import CourseSpotlight, { type SpotlightCard } from "@/components/courses/Course
 import { COURSES } from "@/lib/courses";
 import { PROGRAMMES } from "@/lib/training/programmes";
 import { getSiteDetails } from "@/lib/cms/site-details";
+import { coursePath, trainingPath } from "@/lib/seo/routes";
 
 /**
  * The homepage courses section.
@@ -33,7 +34,7 @@ export default async function FeaturedCourses() {
       category: course.category,
       description: course.shortDescription,
       image: course.heroImage,
-      href: `/courses/${course.slug}`,
+      href: coursePath(course.slug),
     })),
 
     /*
@@ -46,7 +47,7 @@ export default async function FeaturedCourses() {
       category: PROGRAMME_CATEGORY,
       description: programme.summary,
       image: programme.image,
-      href: `/internship-training/${programme.slug}`,
+      href: trainingPath(programme.slug),
     })),
   ];
 

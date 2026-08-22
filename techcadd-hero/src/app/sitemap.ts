@@ -3,6 +3,9 @@ import type { MetadataRoute } from "next";
 import { getArticles, getCategories, safely } from "@/lib/blog/api";
 import type { Article, CategorySummary } from "@/lib/blog/types";
 import { COURSES } from "@/lib/courses";
+import { after12Path, coursePath, trainingPath } from "@/lib/seo/routes";
+import { programmeSlugs } from "@/lib/training/programmes";
+import { after12Slugs } from "@/lib/after12/programmes";
 
 const SITE = "https://techcadd.com";
 
@@ -33,12 +36,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   /* Every course page was missing from the sitemap entirely — routes that
-     search engines could only reach by crawling the catalogue index. */
+     search engines could only reach by crawling the catalogue index. The
+     catalogue is a static list, so no fetch is involved. */
   const courseRoutes: MetadataRoute.Sitemap = COURSES.map((course) => ({
-    url: `${SITE}/courses/${course.slug}`,
+    url: `${SITE}${coursePath(course.slug)}`,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
+
+  /* The training formats and the After-12th pathways, which were missing from
+     the sitemap as well. Both lists are static, so no fetch is involved. */
+  const programmeRoutes: MetadataRoute.Sitemap = [
+    ...programmeSlugs().map((slug) => ({
+      url: `${SITE}${trainingPath(slug)}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+    ...after12Slugs().map((slug) => ({
+      url: `${SITE}${after12Path(slug)}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+  ];
 
   const articleRoutes: MetadataRoute.Sitemap = articles.data.map((article) => ({
     url: `${SITE}/blog/${article.slug}`,
@@ -55,5 +74,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
-  return [...staticRoutes, ...courseRoutes, ...articleRoutes, ...categoryRoutes];
+  return [...staticRoutes, ...courseRoutes, ...programmeRoutes, ...articleRoutes, ...categoryRoutes];
 }

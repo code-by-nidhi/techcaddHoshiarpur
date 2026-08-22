@@ -12,6 +12,7 @@ import {
   getProgramme,
   programmeSlugs,
 } from "@/lib/training/programmes";
+import { TRAINING_URL, trainingPath } from "@/lib/seo/routes";
 
 /**
  * One template for every training format, mirroring the course detail route:
@@ -21,9 +22,21 @@ import {
 
 export const dynamicParams = false;
 
+/*
+ * Params carry the public suffix, and every lookup strips it first. Old,
+ * suffix-less addresses never reach this route — next.config redirects them
+ * with a 301 before routing — so `dynamicParams` stays false and an unknown
+ * slug is still a clean 404.
+ */
 export function generateStaticParams() {
-  return programmeSlugs().map((slug) => ({ slug }));
+  return programmeSlugs().map((slug) => ({ slug: TRAINING_URL.param(slug) }));
 }
+
+/** The programme behind a public URL segment. */
+const resolveProgramme = (param: string) => {
+  const slug = TRAINING_URL.slugFromParam(param);
+  return slug ? getProgramme(slug) : undefined;
+};
 
 export async function generateMetadata({
   params,
@@ -31,7 +44,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const programme = getProgramme(slug);
+  const programme = resolveProgramme(slug);
 
   if (!programme) {
     return { title: "Training format not found", robots: { index: false, follow: true } };
@@ -40,11 +53,11 @@ export async function generateMetadata({
   return {
     title: programme.title,
     description: programme.summary,
-    alternates: { canonical: `/internship-training/${programme.slug}` },
+    alternates: { canonical: trainingPath(programme.slug) },
     openGraph: {
       title: programme.title,
       description: programme.summary,
-      url: `/internship-training/${programme.slug}`,
+      url: trainingPath(programme.slug),
     },
   };
 }
@@ -55,7 +68,7 @@ export default async function ProgrammePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const programme = getProgramme(slug);
+  const programme = resolveProgramme(slug);
 
   if (!programme) notFound();
 

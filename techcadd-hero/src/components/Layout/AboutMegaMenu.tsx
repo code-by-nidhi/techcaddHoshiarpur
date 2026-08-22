@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { FiArrowRight, FiChevronRight } from "react-icons/fi";
-import { ABOUT_MENU_CARDS, ABOUT_MENU_PAGES } from "@/lib/about/pages";
+import { ABOUT_MENU_CARDS } from "@/lib/about/pages";
 import { useSite } from "@/lib/cms/site-context";
 
 
@@ -13,9 +14,10 @@ import { useSite } from "@/lib/cms/site-context";
  * About Us panel: a left rail of destinations, three featured cards on the
  * right, and a counsellor CTA under the rail.
  *
- * The rail and the cards no longer hold the same list. Our Founder has its own
- * place in the navbar now, so it appears in neither, and the third card is Our
- * Team — see ABOUT_MENU_PAGES and ABOUT_MENU_CARDS.
+ * The rail and the cards are one list, ABOUT_MENU_CARDS, rendered twice: the
+ * order can only ever match, and hovering an item on the left brings its card
+ * forward on the right. Our Founder is not in it — it has its own place in the
+ * navbar now.
  *
  * This one is white rather than the navy the other panels use — the rest of
  * the bar's dropdowns are dark, so if that reads as inconsistent this is the
@@ -47,6 +49,16 @@ export default function AboutMegaMenu({
   const site = useSite();
   const pathname = usePathname();
 
+  /*
+   * Which card the rail is pointing at.
+   *
+   * Hovering "Our Team" on the left has to bring the matching card forward on
+   * the right, so the two halves of the panel read as one control rather than a
+   * list beside an unrelated gallery. Keyed by card, not by index, so reordering
+   * the list cannot silently mis-pair them.
+   */
+  const [focus, setFocus] = useState<string | null>(null);
+
   return (
     <motion.div variants={panelIn} initial="hidden" animate="show" exit="exit" className="relative">
       <span
@@ -69,22 +81,28 @@ export default function AboutMegaMenu({
               About Us
             </span>
 
+            {/* The same list the cards are built from, so the rail and the
+                gallery are always in the same order and always in step. */}
             <ul className="mt-3 grid gap-1">
-              {ABOUT_MENU_PAGES.map((p) => {
-                const on = pathname === `/about/${p.slug}`;
+              {ABOUT_MENU_CARDS.map((item) => {
+                const on = pathname === item.href;
                 return (
-                  <li key={p.slug}>
+                  <li key={item.key}>
                     <Link
-                      href={`/about/${p.slug}`}
+                      href={item.href}
                       onClick={onNavigate}
+                      onMouseEnter={() => setFocus(item.key)}
+                      onMouseLeave={() => setFocus(null)}
+                      onFocus={() => setFocus(item.key)}
+                      onBlur={() => setFocus(null)}
                       aria-current={on ? "page" : undefined}
                       className={`flex items-center justify-between gap-2 rounded-xl px-3 py-2.5 text-[13.5px] font-semibold transition-colors duration-300 ${
-                        on
+                        on || focus === item.key
                           ? "bg-[#2563EB]/10 text-[#1D4ED8]"
                           : "text-[#334155] hover:bg-[#2563EB]/[0.07] hover:text-[#1D4ED8]"
                       }`}
                     >
-                      {p.title}
+                      {item.title}
                       <FiChevronRight aria-hidden size={13} className="shrink-0 opacity-50" />
                     </Link>
                   </li>
@@ -104,12 +122,28 @@ export default function AboutMegaMenu({
 
           {/* ----------------------------- cards ------------------------------ */}
           <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {ABOUT_MENU_CARDS.map((p) => (
+            {ABOUT_MENU_CARDS.map((p) => {
+              /*
+               * Pointing at this card from the rail gives it exactly the state
+               * hovering the card itself would — the same lift, border and
+               * shadow, reused rather than restated, so the two routes into it
+               * cannot drift apart. The others step back so the focused one
+               * reads as chosen instead of merely raised.
+               */
+              const lit = focus === p.key;
+              const dimmed = focus !== null && !lit;
+              return (
               <motion.li key={p.key} variants={itemIn}>
                 <Link
                   href={p.href}
                   onClick={onNavigate}
-                  className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-slate-200/80 bg-white/70 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)] backdrop-blur-xl transition-[transform,box-shadow,border-color] duration-300 hover:-translate-y-1.5 hover:border-[#2563EB]/35 hover:shadow-[0_26px_54px_-28px_rgba(37,99,235,0.55)] motion-reduce:hover:translate-y-0"
+                  onMouseEnter={() => setFocus(p.key)}
+                  onMouseLeave={() => setFocus(null)}
+                  className={`group flex h-full flex-col overflow-hidden rounded-[20px] border bg-white/70 backdrop-blur-xl transition-[transform,box-shadow,border-color,opacity] duration-300 hover:-translate-y-1.5 hover:border-[#2563EB]/35 hover:shadow-[0_26px_54px_-28px_rgba(37,99,235,0.55)] motion-reduce:hover:translate-y-0 ${
+                    lit
+                      ? "-translate-y-1.5 border-[#2563EB]/35 shadow-[0_26px_54px_-28px_rgba(37,99,235,0.55)] motion-reduce:translate-y-0"
+                      : "border-slate-200/80 shadow-[0_14px_36px_-28px_rgba(15,23,42,0.55)]"
+                  } ${dimmed ? "opacity-60" : "opacity-100"}`}
                 >
                   <span className="relative block aspect-[16/10] w-full overflow-hidden">
                     <Image
@@ -133,7 +167,8 @@ export default function AboutMegaMenu({
                   </span>
                 </Link>
               </motion.li>
-            ))}
+              );
+            })}
           </ul>
         </div>
       </div>
@@ -147,10 +182,10 @@ export function AboutMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) 
 
   return (
     <ul className="grid gap-2 px-1">
-      {ABOUT_MENU_PAGES.map((p) => (
-        <li key={p.slug}>
+      {ABOUT_MENU_CARDS.map((p) => (
+        <li key={p.key}>
           <Link
-            href={`/about/${p.slug}`}
+            href={p.href}
             onClick={onNavigate}
             className="flex w-full items-center gap-3 rounded-[12px] px-3 py-2 text-[14px] text-[#081B63] transition-colors duration-300 hover:bg-[#FFD21F]/20"
           >
