@@ -148,7 +148,7 @@ export function AboutMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) 
           <Link
             href={`/about/${p.slug}`}
             onClick={onNavigate}
-            className="flex min-h-[52px] w-full items-center gap-3 rounded-[14px] px-3 py-2.5 text-[15px] text-white/80 transition-colors duration-300 hover:bg-[#2563eb]/15 hover:text-white"
+            className="flex w-full items-center gap-3 rounded-[12px] px-3 py-2 text-[14px] text-[#081B63] transition-colors duration-300 hover:bg-[#FFD21F]/20"
           >
             <span className="relative size-11 shrink-0 overflow-hidden rounded-lg">
               <Image

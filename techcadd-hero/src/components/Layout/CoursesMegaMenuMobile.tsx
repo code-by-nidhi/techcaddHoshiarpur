@@ -14,8 +14,8 @@ export default function CoursesMegaMenuMobile({ onNavigate }: { onNavigate: () =
   const [open, setOpen] = useState<string | null>(COURSE_MENU[0].id);
 
   return (
-    <div className="mt-1 space-y-2 rounded-xl bg-white/[0.03] p-2">
-      <ul className="space-y-1.5">
+    <div className="mt-1 space-y-1.5 rounded-xl bg-[#081B63]/[0.03] p-1.5">
+      <ul className="space-y-1">
         {COURSE_MENU.map((cat) => {
           const isOpen = open === cat.id;
 
@@ -26,21 +26,23 @@ export default function CoursesMegaMenuMobile({ onNavigate }: { onNavigate: () =
                 onClick={() => setOpen(isOpen ? null : cat.id)}
                 aria-expanded={isOpen}
                 aria-controls={`course-cat-${cat.id}`}
-                className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-[13.5px] transition-colors duration-300 ${
-                  isOpen ? "bg-white/[0.07] text-white" : "text-white/75 hover:bg-white/5"
+                className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-[13.5px] transition-colors duration-300 ${
+                  isOpen
+                    ? "bg-[#FFD21F]/20 text-[#081B63]"
+                    : "text-[#081B63] hover:bg-[#081B63]/[0.05]"
                 }`}
               >
                 <span aria-hidden className="text-[15px]">
                   {cat.emoji}
                 </span>
-                <span className="min-w-0 flex-1 truncate font-semibold uppercase tracking-[0.1em] text-[11.5px]">
+                <span className="min-w-0 flex-1 truncate text-[11.5px] font-semibold uppercase tracking-[0.1em]">
                   {cat.heading}
                 </span>
                 <motion.span
                   aria-hidden
                   animate={{ rotate: isOpen ? 180 : 0 }}
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                  className="shrink-0 text-[#60a5fa]"
+                  className="shrink-0 text-[#2563EB]"
                 >
                   <FiChevronDown className="size-4" />
                 </motion.span>
@@ -61,7 +63,7 @@ export default function CoursesMegaMenuMobile({ onNavigate }: { onNavigate: () =
                         <Link
                           href={c.href}
                           onClick={onNavigate}
-                          className="flex min-h-[52px] w-full items-center gap-2 rounded-[14px] px-3.5 py-3 text-[15px] text-white/75 transition-colors duration-300 hover:bg-[#3b82f6]/[0.12] hover:text-white"
+                          className="flex w-full items-center gap-2 rounded-[12px] px-3 py-2 text-[14px] text-[#4B5563] transition-colors duration-300 hover:bg-[#FFD21F]/20 hover:text-[#081B63]"
                         >
                           <span className="min-w-0 truncate">{c.label}</span>
                           {c.trending && (
@@ -84,7 +86,7 @@ export default function CoursesMegaMenuMobile({ onNavigate }: { onNavigate: () =
       <Link
         href={MENU_FEATURED.cta.href}
         onClick={onNavigate}
-        className="group/cta flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-5 py-3 text-[13.5px] font-semibold text-white shadow-[0_0_28px_-8px_rgba(37,99,235,0.9)]"
+        className="drawer-cta group/cta mt-1 flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-5 py-3 text-[13.5px] font-semibold !text-white shadow-[0_0_28px_-8px_rgba(37,99,235,0.9)] transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
       >
         {MENU_FEATURED.cta.label}
         <FiArrowRight

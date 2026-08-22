@@ -379,8 +379,8 @@ html.custom-cursor [contenteditable="true"] {
    the page you are on.
    ========================================================================== */
 
-.mobile-nav-sheet a,
-.mobile-nav-sheet [class*="_link__"],
+.mobile-nav-sheet a:not(.drawer-cta),
+.mobile-nav-sheet [class*="_link__"]:not(.drawer-cta),
 .mobile-nav-sheet [class*="linkLabel"] {
   color: #081b63;
 }
@@ -420,8 +420,25 @@ html.custom-cursor [contenteditable="true"] {
 }
 
 /* the arrow glyph that trails a link */
-.mobile-nav-sheet a svg {
+.mobile-nav-sheet a:not(.drawer-cta) svg {
   color: #2563eb;
+}
+
+/*
+ * The panel calls to action, stated once and last.
+ *
+ * "Explore All Courses" and its siblings sit on a blue gradient, so both the
+ * label and the arrow have to be white while every other link in the sheet is
+ * navy. Three rules above could otherwise reach them — the base link colour,
+ * the blunt override that beats the AI module, and the arrow tint — so this is
+ * pitched above all of them at (0,5,1) rather than trying to exclude the CTA
+ * from each in turn.
+ */
+.mobile-nav-sheet a.drawer-cta[class][class][class],
+.mobile-nav-sheet a.drawer-cta[class][class][class] svg,
+.mobile-nav-sheet a.drawer-cta[class][class][class]:hover {
+  color: #ffffff;
+  background-color: transparent;
 }
 
 /*
@@ -442,16 +459,26 @@ html.custom-cursor [contenteditable="true"] {
  * the sheet class is (0,4,0), over the module's (0,3,1). It beats it on
  * specificity rather than on `!important`, so the module stays overridable.
  */
-.mobile-nav-sheet a[class][class][class],
-.mobile-nav-sheet [class][class][class][class*="_link__"] {
+.mobile-nav-sheet a[class][class][class]:not(.drawer-cta),
+.mobile-nav-sheet [class][class][class][class*="_link__"]:not(.drawer-cta) {
   color: #081b63;
 }
 
-.mobile-nav-sheet a[class][class][class]:hover,
-.mobile-nav-sheet [class][class][class][class*="_link__"]:hover {
+.mobile-nav-sheet a[class][class][class]:not(.drawer-cta):hover,
+.mobile-nav-sheet [class][class][class][class*="_link__"]:not(.drawer-cta):hover {
   color: #081b63;
   background-color: rgb(255 210 31 / 0.18);
 }
+
+/*
+ * `.drawer-cta` is the way out of the rule above.
+ *
+ * A panel's call to action — "Explore All Courses" and its siblings — sits on
+ * a blue gradient and has to stay white. The rule above is deliberately blunt
+ * so it can beat the AI module, and it was repainting those buttons navy on
+ * blue. `:not(.drawer-cta)` costs nothing and reads better than a second
+ * override chasing the first.
+ */
 
 /* ==========================================================================
    Poster surfaces

@@ -227,7 +227,8 @@ export function AiMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) {
       <Link
         href={panel.href}
         onClick={onNavigate}
-        className={`${styles.button} ${ai.button} justify-center`}
+        /* drawer-cta: white type on its gradient inside the white mobile sheet */
+        className={`drawer-cta ${styles.button} ${ai.button} justify-center transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0`}
       >
         {panel.cta}
         <FiArrowRight aria-hidden size={14} />

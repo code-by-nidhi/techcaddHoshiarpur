@@ -154,7 +154,13 @@ export function ColumnsMegaMenuMobile({
         </div>
       ))}
 
-      <Link href={strip.href} onClick={onNavigate} className={`${styles.button} justify-center`}>
+      {/* `drawer-cta` keeps this white on its gradient inside the white mobile
+          sheet, where every other link is repainted navy — see globals.css */}
+      <Link
+        href={strip.href}
+        onClick={onNavigate}
+        className={`drawer-cta ${styles.button} justify-center transition-transform duration-300 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0`}
+      >
         {strip.cta}
         <FiArrowRight aria-hidden size={14} />
       </Link>

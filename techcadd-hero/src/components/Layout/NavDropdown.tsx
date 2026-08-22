@@ -85,7 +85,7 @@ export default function NavDropdown({
                     <span className="min-w-0">
                       <span className={styles.label}>{item.label}</span>
                       {item.note && (
-                        <span className="mt-0.5 block text-[11.5px] leading-snug text-white/45">
+                        <span className="mt-0.5 block text-[11.5px] leading-snug text-white/45 [.mobile-nav-sheet_&]:text-[#4B5563]">
                           {item.note}
                         </span>
                       )}
@@ -121,7 +121,7 @@ export function NavDropdownMobile({
               href={item.href}
               {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               onClick={onNavigate}
-              className="flex min-h-[52px] w-full items-center gap-2 rounded-[14px] px-3.5 py-3 text-[15px] text-white/75 transition-colors duration-300 hover:bg-[#3b82f6]/[0.12] hover:text-white"
+              className="flex w-full items-center gap-2 rounded-[12px] px-3 py-2 text-[14px] text-[#4B5563] transition-colors duration-300 hover:bg-[#FFD21F]/20 hover:text-[#081B63]"
             >
               <span className="min-w-0 flex-1 truncate">{item.label}</span>
               <FiChevronRight aria-hidden size={14} className="shrink-0 text-[#60a5fa]" />
