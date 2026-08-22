@@ -73,12 +73,16 @@ export type AboutMenuCard = {
 };
 
 /**
- * The three cards on the right of the panel.
+ * The three destinations in the About Us panel.
+ *
+ * One list, used by the rail on the left, the cards on the right and the mobile
+ * sheet — so the three can never fall out of order or out of step with each
+ * other. The `key` is what ties a rail item to its card when one is hovered.
  *
  * Two of them are About pages. The third, Our Team, has no page of its own and
  * is not getting one — it points at the section of /about that already tells
- * that story, so the card is a working link rather than a placeholder. Give it
- * a real slug later and only this line changes.
+ * that story, so it is a working link rather than a placeholder. Give it a real
+ * slug later and only this line changes.
  */
 export const ABOUT_MENU_CARDS: AboutMenuCard[] = [
   ...ABOUT_MENU_PAGES.map((p) => ({
