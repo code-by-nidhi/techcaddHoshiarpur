@@ -1,4 +1,5 @@
 import { getCourse } from "@/lib/courses";
+import { coursePath } from "@/lib/seo/routes";
 
 /**
  * Content for the AI mega menu.
@@ -26,7 +27,7 @@ const toLink = (slug: string): AiLink => {
     // a 404; fail loudly in dev instead
     throw new Error(`AI menu references a missing course slug: ${slug}`);
   }
-  return { label: course.shortTitle ?? course.title, slug, href: `/courses/${slug}` };
+  return { label: course.shortTitle ?? course.title, slug, href: coursePath(slug) };
 };
 
 const featured = getCourse(FEATURED_SLUG);
@@ -49,7 +50,7 @@ export const AI_MENU = {
        one bright object in the panel, and a real classroom shot carries it
        better than the catalogue's stock artwork. */
     image: "/images/featured-ai-course.jpeg",
-    href: `/courses/${FEATURED_SLUG}`,
+    href: coursePath(FEATURED_SLUG),
     cta: "View Course",
   },
 
@@ -57,6 +58,6 @@ export const AI_MENU = {
     copy: "Start with AI fundamentals, then move into real projects and career-ready tools.",
     cta: "Explore AI",
     /* No /ai route exists and the brief said not to create a page. */
-    href: `/courses/${FEATURED_SLUG}`,
+    href: coursePath(FEATURED_SLUG),
   },
 };

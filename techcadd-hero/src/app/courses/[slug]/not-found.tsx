@@ -3,6 +3,7 @@ import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import { COURSES } from "@/lib/courses";
 import { whatsappLink } from "@/lib/cta";
+import { coursePath } from "@/lib/seo/routes";
 
 /**
  * Shown for any slug that is not in the catalogue. Rather than a dead end, it
@@ -37,7 +38,7 @@ export default function CourseNotFound() {
             {COURSES.map((c) => (
               <li key={c.slug}>
                 <Link
-                  href={`/courses/${c.slug}`}
+                  href={coursePath(c.slug)}
                   className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3 text-[13.5px] text-white/85 backdrop-blur-xl transition-colors duration-300 hover:border-[#60A5FA]/50 hover:bg-white/[0.09]"
                 >
                   <span className="min-w-0 truncate font-medium">{c.title}</span>

@@ -4,6 +4,7 @@ import {
   type After12Category,
 } from "@/lib/after12/programmes";
 import type { ColumnsMenu } from "./internshipMenu";
+import { after12Path } from "@/lib/seo/routes";
 
 /**
  * After 12th mega menu, derived from the programme data: labels, badges and
@@ -26,7 +27,7 @@ export const AFTER12_MENU: ColumnsMenu = {
       description: meta.description,
       links: after12ByCategory(category).map((p) => ({
         label: p.title,
-        href: `/after-12th/${p.slug}`,
+        href: after12Path(p.slug),
         trending: p.badge === "Trending",
       })),
     };

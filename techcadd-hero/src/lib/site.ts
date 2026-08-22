@@ -3,6 +3,7 @@ import {
   Rocket, Users, GraduationCap, FlaskConical, Compass, BadgeCheck,
 } from "lucide-react";
 import { CTA } from "@/lib/cta";
+import { trainingPath } from "@/lib/seo/routes";
 
 /* ------------------------------- about -------------------------------- */
 
@@ -286,9 +287,9 @@ export const MEGA_FOOTER = {
       links: [
         { label: "Internship & Training", href: "/internship-training" },
         { label: "After 12th", href: "/after-12th" },
-        { label: "Industrial Training", href: "/internship-training/industrial-training" },
-        { label: "6 Months Training", href: "/internship-training/6-months-training" },
-        { label: "Summer Internship", href: "/internship-training/summer-internship" },
+        { label: "Industrial Training", href: trainingPath("industrial-training") },
+        { label: "6 Months Training", href: trainingPath("6-months-training") },
+        { label: "Summer Internship", href: trainingPath("summer-internship") },
       ],
     },
     {

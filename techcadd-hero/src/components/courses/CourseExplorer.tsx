@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { FiArrowRight, FiBarChart2, FiCheck, FiClock } from "react-icons/fi";
+import { coursePath } from "@/lib/seo/routes";
 
 /*
  * The catalogue grid with category filter pills.
@@ -106,7 +107,7 @@ export default function CourseExplorer({ courses }: { courses: ExplorerCourse[] 
             className="h-full"
           >
             <Link
-              href={`/courses/${course.slug}`}
+              href={coursePath(course.slug)}
               className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-white/10 bg-[#14245C] shadow-[0_20px_50px_-30px_rgba(0,0,0,0.95)] transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-[#2563EB]/55 hover:shadow-[0_36px_80px_-30px_rgba(37,99,235,0.7)] motion-reduce:hover:translate-y-0"
             >
               {/*

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 
 import CourseHero from "@/components/courses/CourseHero";
 import CourseVideo from "@/components/courses/CourseVideo";
@@ -21,6 +21,7 @@ import StickyEnrolBar from "@/components/courses/StickyEnrolBar";
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import { allCourseSlugs, findCourse, findRelated } from "@/lib/courses";
+import { COURSE_URL, coursePath } from "@/lib/seo/routes";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://techcadd.com";
 const ORG = "TechCadd Computer Education";
@@ -36,12 +37,32 @@ type Params = { params: Promise<{ slug: string }> };
  * request rather than 404ing until the next build.
  */
 export async function generateStaticParams() {
-  return (await allCourseSlugs()).map((slug) => ({ slug }));
+  return (await allCourseSlugs()).map((slug) => ({ slug: COURSE_URL.param(slug) }));
+}
+
+/**
+ * The course behind a URL segment.
+ *
+ * The segment is the public form, so the suffix comes off before the data is
+ * asked. A segment without it is an address from before this format; those get
+ * a 301 to the canonical URL rather than a 404, so anything already linked or
+ * indexed keeps working.
+ */
+async function resolveCourse(param: string) {
+  const slug = COURSE_URL.slugFromParam(param);
+
+  if (!slug) {
+    /* a bare slug naming a real course redirects; anything else 404s */
+    if (await findCourse(param)) permanentRedirect(coursePath(param));
+    return null;
+  }
+
+  return (await findCourse(slug)) ?? null;
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
-  const course = await findCourse(slug);
+  const course = await resolveCourse(slug);
 
   if (!course) {
     return { title: "Course not found", robots: { index: false, follow: true } };
@@ -54,13 +75,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const needsSuffix = !course.title.toLowerCase().includes("course");
   const title = needsSuffix ? `${course.title} Course` : course.title;
   const description = course.overview.slice(0, 155);
-  const url = `${SITE}/courses/${course.slug}`;
+  const url = `${SITE}${coursePath(course.slug)}`;
 
   return {
     title,
     description,
     keywords: course.keywords,
-    alternates: { canonical: `/courses/${course.slug}` },
+    alternates: { canonical: coursePath(course.slug) },
     openGraph: {
       type: "article",
       url,
@@ -81,13 +102,13 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function CoursePage({ params }: Params) {
   const { slug } = await params;
-  const course = await findCourse(slug);
+  const course = await resolveCourse(slug);
 
   // an unknown slug renders the course-specific not-found page
   if (!course) notFound();
 
-  const related = await findRelated(slug);
-  const url = `${SITE}/courses/${course.slug}`;
+  const related = await findRelated(course.slug);
+  const url = `${SITE}${coursePath(course.slug)}`;
 
   /* A catalogue course's artwork is a site-relative path; a CMS course's is an
      absolute URL on the API's origin. Prefixing the second would produce a

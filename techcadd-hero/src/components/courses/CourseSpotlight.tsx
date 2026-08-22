@@ -36,27 +36,17 @@ export type SpotlightCard = {
   href: string;
 };
 
-/**
- * Milliseconds a card rests before the rail advances.
- *
- * With SLIDE_SPEED below, one card costs 2300 + 450 = 2750ms of wall clock,
- * against 4200ms before — a third quicker end to end, which is what makes the
- * rail read as responsive rather than as something waiting on you.
- *
- * The dwell is still comfortably longer than the transition: drop it much under
- * two seconds and the fan never settles, which reads as drift rather than as
- * steps.
- */
-const AUTOPLAY_DELAY = 2300;
+/** Milliseconds a card rests before the rail advances. */
+const AUTOPLAY_DELAY = 3500;
 
 /**
  * How long one card takes to travel.
  *
- * 450ms is about the shortest a 3D rotation of this depth can run and still
- * arrive rather than snap — the eye needs roughly a third of a second to follow
- * a card through the curve.
+ * 700ms against a 3500ms dwell: one card costs 4200ms end to end. This was
+ * briefly run at 450/2300 and put back — the slower pacing is the one the fan
+ * was designed around, and it lets each card settle before the next begins.
  */
-const SLIDE_SPEED = 450;
+const SLIDE_SPEED = 700;
 
 /** Decorative motes drifting behind the fan. Positions are fixed, not random,
     so the server and the client agree on the markup. */
