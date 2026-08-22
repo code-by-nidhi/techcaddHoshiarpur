@@ -11,7 +11,7 @@ import { whatsappLink } from "@/lib/cta";
  */
 export default function WhyChoose() {
   return (
-    <section id="why" className="relative overflow-x-clip bg-white section-pad">
+    <section id="why" className="relative overflow-x-clip tech-light section-pad">
       <div className="mx-auto grid w-full max-w-[1400px] gap-14 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20 lg:px-[4.5rem]">
         {/* left rail */}
         <div className="lg:sticky lg:top-32 lg:self-start">

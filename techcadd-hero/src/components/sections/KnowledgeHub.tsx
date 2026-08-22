@@ -44,7 +44,7 @@ export default function KnowledgeHub({ articles, topics }: KnowledgeHubProps) {
   if (!hero) return null;
 
   return (
-    <section id="blog" className="relative overflow-x-clip bg-white section-pad">
+    <section id="blog" className="relative overflow-x-clip tech-light section-pad">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         <SectionHeading
           tone="light"

@@ -290,7 +290,7 @@ export default function ProgrammeRoadmap() {
      * white, and two white sections in a row read as one. The stage cards
      * inside are white, so the surface tone also gives them an edge to sit on.
      */
-    <section id="included" className="relative bg-[#F8FAFC]">
+    <section id="included" className="relative tech-light">
       {pinned && !reduce ? <PinnedRoadmap /> : <SwipeRoadmap />}
     </section>
   );

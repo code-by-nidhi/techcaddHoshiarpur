@@ -222,12 +222,21 @@ export default function Navbar() {
        * the <nav> inside it, which is what actually aligns the content.
        */}
       <div
-        /* Exactly the hero's ground colour, so the bar and the hero read as one
-           surface at the top of the page rather than two navy bands. Kept solid
-           at every scroll position so contrast holds on the light routes too. */
-        className={`w-full bg-[#1E3078] transition-all duration-500 ${
+        /*
+         * Two themes, split at the same breakpoint the hamburger is.
+         *
+         * Below `xl` the bar is white — that is the mobile treatment, and it
+         * stays white at every scroll position rather than turning navy once
+         * the page moves. From `xl` up it is the hero's own ground colour, so
+         * the bar and the hero read as one surface rather than two navy bands.
+         *
+         * The scrolled state has to carry both: a soft drop shadow and a slate
+         * hairline for the white bar, the deep navy shadow and a white hairline
+         * for the dark one.
+         */
+        className={`w-full bg-white transition-all duration-500 xl:bg-[#1E3078] ${
           scrolled
-            ? "border-b border-white/10 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+            ? "border-b border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xl xl:border-white/10 xl:shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)]"
             : "border-b border-transparent"
         }`}
       >
@@ -274,16 +283,38 @@ export default function Navbar() {
             aria-label="TechCadd — home"
             className="ml-1 shrink-0 sm:ml-2 lg:ml-3"
           >
+            {/*
+             * Two files rather than a CSS filter.
+             *
+             * The wordmark is flat white on transparency, so the navy variant
+             * is the same alpha channel with the colour swapped — every glyph
+             * edge survives. A `brightness(0)` style filter would have worked
+             * on the letters and destroyed the antialiasing around them.
+             *
+             * Both are `priority`: this sits above the fold on every route, and
+             * only one of the pair is ever displayed.
+             */}
             <Image
-              src="/images/techcadd-logo-white.png"
+              src="/images/techcadd-logo-navy.png"
               alt="TechCadd — Your Skill & Technology Partner"
               width={899}
               height={242}
               priority
-              className={`w-auto object-contain transition-all duration-500 sm:max-w-none ${
+              className={`w-auto object-contain transition-all duration-500 sm:max-w-none xl:hidden ${
                 scrolled
                   ? "h-[30px] max-w-[112px] sm:h-[42px]"
                   : "h-[34px] max-w-[124px] sm:h-[52px]"
+              }`}
+            />
+            <Image
+              src="/images/techcadd-logo-white.png"
+              alt=""
+              aria-hidden
+              width={899}
+              height={242}
+              priority
+              className={`hidden w-auto object-contain transition-all duration-500 sm:max-w-none xl:block ${
+                scrolled ? "h-[42px]" : "h-[52px]"
               }`}
             />
           </Link>
@@ -422,7 +453,7 @@ export default function Navbar() {
               aria-expanded={open}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 18 }}
-              className="grid size-9 shrink-0 place-items-center rounded-lg text-white/85 transition-colors hover:bg-white/5 sm:size-10 xl:hidden"
+              className="grid size-9 shrink-0 place-items-center rounded-lg text-[#081B63] transition-colors hover:bg-[#081B63]/[0.07] sm:size-10 xl:hidden"
             >
               {/* the two glyphs cross-fade with a quarter turn */}
               <AnimatePresence mode="wait" initial={false}>
@@ -503,13 +534,13 @@ export default function Navbar() {
             transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
             /* the sheet now carries the whole catalogue, so it scrolls itself
                rather than pushing past the bottom of the screen */
-            className="mobile-nav-sheet mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-white/10 bg-[#101E52]/95 backdrop-blur-xl xl:hidden"
+            className="mobile-nav-sheet mx-3 mt-2 max-h-[calc(100svh-5.5rem)] max-w-full overflow-y-auto overscroll-contain rounded-2xl border border-slate-200/80 bg-white shadow-[0_18px_50px_-20px_rgba(8,27,99,0.25)] xl:hidden"
           >
             <motion.ul
               initial="hidden"
               animate="show"
               variants={{ show: { transition: { staggerChildren: 0.045 } } }}
-              className="divide-y divide-white/8 p-2"
+              className="divide-y divide-slate-200/70 p-2"
             >
               {NAV_LINKS.map((link) => (
                 <motion.li
@@ -531,7 +562,7 @@ export default function Navbar() {
                           />
                         </div>
                       ) : (
-                        <p className="px-3 pb-1 text-[11px] uppercase tracking-[0.16em] text-white/40">
+                        <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#64748B]">
                           {link.label}
                         </p>
                       )}
@@ -555,12 +586,12 @@ export default function Navbar() {
                       aria-current={isActive(link.href) ? "page" : undefined}
                       className={`flex items-center justify-between rounded-xl px-4 py-3.5 text-[15px] transition-colors ${
                         isActive(link.href)
-                          ? "bg-gradient-to-r from-[#2563eb]/25 to-transparent font-medium text-white"
-                          : "text-white/85 hover:bg-white/5"
+                          ? "bg-[#FFD21F]/15 font-semibold text-[#081B63]"
+                          : "text-[#081B63] hover:bg-[#081B63]/[0.05]"
                       }`}
                     >
                       {link.label}
-                      {link.dropdown && <ChevronDown aria-hidden className="size-4 text-white/40" />}
+                      {link.dropdown && <ChevronDown aria-hidden className="size-4 text-[#94A3B8]" />}
                     </Link>
                   )}
                 </motion.li>

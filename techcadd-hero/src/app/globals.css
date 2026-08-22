@@ -19,6 +19,16 @@
   --electric: #3b82f6;
   --violetglow: #60a5fa;
   --cyanglow: #22d3ee;
+
+  /*
+   * The poster palette. Three navies, lightest at the top of a section and
+   * deepest at the foot, which is what gives a band its sense of depth rather
+   * than reading as one flat fill.
+   */
+  --navy-700: #081b63;
+  --navy-800: #07164a;
+  --navy-900: #04103a;
+  --brand-yellow: #ffd21f;
 }
 
 /*
@@ -68,7 +78,7 @@ html {
 }
 
 body {
-  background-color: var(--void);
+  background-color: var(--navy-900);
   color: #fff;
   font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -356,22 +366,23 @@ html.custom-cursor [contenteditable="true"] {
 /* ==========================================================================
    Mobile navigation sheet
    --------------------------------------------------------------------------
-   The hamburger sheet is navy, but the panel bodies inside it are the same
-   components the desktop mega menus use — and those are styled by
-   WideMegaMenu / CoursesMegaMenu, which are light sheets. Their link colour is
-   #111827, so on a phone every menu item rendered near-black on dark blue: 33
-   unreadable elements across the accordions.
+   The drawer is white now, and that turns out to need far less CSS than the
+   navy one did.
 
-   Repainting the shared modules is not an option: three desktop panels depend
-   on them being light. This repaints only what is inside the sheet, and it
-   matches on element and attribute rather than on class, because the module
-   class names are hashed and this file cannot spell them.
+   The panel bodies inside it are the same components the desktop mega menus
+   use, and those were always light sheets — WideMegaMenu and CoursesMegaMenu
+   paint their links #111827 on white. Against the old navy drawer that was 33
+   unreadable elements and this block existed to repaint every one of them.
+   Against a white drawer they are simply correct, so all of that is gone.
+
+   What is left is the brand accent: navy links, and #FFD21F for hover and for
+   the page you are on.
    ========================================================================== */
 
 .mobile-nav-sheet a,
 .mobile-nav-sheet [class*="_link__"],
 .mobile-nav-sheet [class*="linkLabel"] {
-  color: #ffffff;
+  color: #081b63;
 }
 
 .mobile-nav-sheet a:hover,
@@ -379,21 +390,24 @@ html.custom-cursor [contenteditable="true"] {
 .mobile-nav-sheet a:hover [class*="linkLabel"],
 .mobile-nav-sheet [class*="_link__"]:hover,
 .mobile-nav-sheet [class*="_link__"]:focus-visible {
-  color: #4f8cff;
+  color: #081b63;
+  background-color: rgb(255 210 31 / 0.18);
 }
 
 /* the course whose page is already open */
 .mobile-nav-sheet a[aria-current="page"],
 .mobile-nav-sheet a[aria-current="page"] [class*="linkLabel"],
 .mobile-nav-sheet [class*="linkActive"] {
-  color: #4f8cff;
+  color: #081b63;
+  font-weight: 600;
+  background-color: rgb(255 210 31 / 0.28);
 }
 
 /*
- * Section headings — SHORT TERM, LONG TERM, PROGRAMMES. The shared sheet
- * paints these with a gradient clipped to the glyphs, which needs
- * `text-fill-color` cleared as well as `color`: with the fill still set, the
- * colour underneath never shows.
+ * Section headings — SHORT TERM, LONG TERM, PROGRAMMES. The shared sheet paints
+ * these with a gradient clipped to the glyphs, which needs `text-fill-color`
+ * cleared as well as `color`: with the fill still set, the colour underneath
+ * never shows.
  */
 .mobile-nav-sheet [class*="eyebrow"],
 .mobile-nav-sheet [class*="colTitle"],
@@ -401,135 +415,122 @@ html.custom-cursor [contenteditable="true"] {
   background: none;
   -webkit-background-clip: border-box;
   background-clip: border-box;
-  -webkit-text-fill-color: #a8c8ff;
-  color: #a8c8ff;
+  -webkit-text-fill-color: #64748b;
+  color: #64748b;
 }
 
-/* supporting copy under a heading, and any icon that inherited the dark ink */
-.mobile-nav-sheet [class*="headingSub"],
-.mobile-nav-sheet [class*="colCopy"],
-.mobile-nav-sheet [class*="featuredCopy"] {
-  color: rgba(255, 255, 255, 0.66);
-}
-
-.mobile-nav-sheet [class*="heading"]:not([class*="headingSub"]),
-.mobile-nav-sheet [class*="featuredTitle"] {
-  color: #ffffff;
+/* the arrow glyph that trails a link */
+.mobile-nav-sheet a svg {
+  color: #2563eb;
 }
 
 /*
- * The featured card inside a panel is a white tile by design, so its own copy
- * has to stay dark or it would be white on white.
+ * The AI panel, which is the one place the rules above are not enough.
+ *
+ * That panel has a dark skin of its own — AiMegaMenu.module.css paints its
+ * links white through `.root a.link`, specificity (0,3,1). The plain
+ * `.mobile-nav-sheet a` above is (0,2,0) and loses, so inside the drawer its
+ * links came out white on white and vanished: two whole sections of the menu
+ * were invisible, and the gaps they left read as broken spacing.
+ *
+ * The dark skin's background does not come with them, because the panel's
+ * mobile variant does not carry the module's root class — only the links do.
+ * So there is no dark card here to keep white text legible on; the drawer is
+ * white, and these have to be navy like everything else in it.
+ *
+ * Repeating `[class]` is what wins the cascade: three attribute selectors plus
+ * the sheet class is (0,4,0), over the module's (0,3,1). It beats it on
+ * specificity rather than on `!important`, so the module stays overridable.
  */
-.mobile-nav-sheet [class*="_featured__"] [class*="featuredTitle"] {
-  color: #0f172a;
+.mobile-nav-sheet a[class][class][class],
+.mobile-nav-sheet [class][class][class][class*="_link__"] {
+  color: #081b63;
 }
 
-.mobile-nav-sheet [class*="_featured__"] [class*="featuredCopy"] {
-  color: #475569;
+.mobile-nav-sheet a[class][class][class]:hover,
+.mobile-nav-sheet [class][class][class][class*="_link__"]:hover {
+  color: #081b63;
+  background-color: rgb(255 210 31 / 0.18);
 }
 
 /* ==========================================================================
-   Curved course carousel
+   Poster surfaces
    --------------------------------------------------------------------------
-   Swiper's coverflow writes a full 3D matrix to each slide's `transform` on
-   every frame. Nothing here may touch that property: a CSS transform on the
-   slide would replace the matrix outright and flatten the fan. Everything
-   below therefore styles opacity, filter, z-index and the card's own inner
-   layers, and leaves the geometry to the engine.
+   Two section grounds, dark and light, each built from one `background`
+   shorthand rather than a stack of absolutely positioned divs.
+
+   That choice is the whole point. Every one of these sections already carries
+   its own ambience layer, several of them at `-z-10`, and adding more
+   positioned children would have meant reasoning about stacking order in
+   thirteen files. A multi-layer background paints on the element itself, below
+   every child, and cannot reorder anything.
+
+   Layer order is top-first: the pattern is listed before the glows, so the
+   circuit grid reads over the light rather than under it, and the flat base
+   colour is last.
+
+   Opacities are held at 3-8% as specified. At that level the pattern is
+   texture, not decoration — it never competes with type sitting on it.
    ========================================================================== */
 
-.coverflow-rail .swiper {
-  /* the fan leans back, so the slides need vertical room or the far cards are
-     clipped at the top and bottom of the viewport box */
-  padding-block: 30px;
-  overflow: visible;
+.tech-dark {
+  background-color: var(--navy-900);
+  background-image:
+    /* dot grid */
+    radial-gradient(rgb(96 165 250 / 0.07) 1px, transparent 1px),
+    /* circuit lines */
+    linear-gradient(90deg, rgb(96 165 250 / 0.045) 1px, transparent 1px),
+    linear-gradient(rgb(96 165 250 / 0.045) 1px, transparent 1px),
+    /* the glows: a cool one top-left, a brighter one top-right, and a wide
+       pool rising from the foot so the band never goes dead at the bottom */
+    radial-gradient(55% 45% at 12% 0%, rgb(37 99 235 / 0.3), transparent 70%),
+    radial-gradient(45% 40% at 88% 16%, rgb(96 165 250 / 0.16), transparent 72%),
+    radial-gradient(85% 55% at 50% 108%, rgb(37 99 235 / 0.2), transparent 70%),
+    /* the base, lightest at the top */
+    linear-gradient(180deg, var(--navy-700) 0%, var(--navy-800) 52%, var(--navy-900) 100%);
+  background-size:
+    26px 26px,
+    130px 130px,
+    130px 130px,
+    auto,
+    auto,
+    auto,
+    auto;
+  background-repeat: repeat, repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
+.tech-light {
+  background-color: #ffffff;
+  background-image:
+    linear-gradient(90deg, rgb(37 99 235 / 0.035) 1px, transparent 1px),
+    linear-gradient(rgb(37 99 235 / 0.035) 1px, transparent 1px),
+    radial-gradient(58% 42% at 6% 0%, rgb(37 99 235 / 0.07), transparent 70%),
+    radial-gradient(48% 38% at 94% 10%, rgb(96 165 250 / 0.1), transparent 72%),
+    radial-gradient(75% 45% at 50% 104%, rgb(37 99 235 / 0.055), transparent 72%);
+  background-size: 68px 68px, 68px 68px, auto, auto, auto;
+  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat;
 }
 
 /*
- * Anything past the immediate neighbours is off-stage.
+ * The seam between a dark band and a light one.
  *
- * Coverflow keeps rendering slides well beyond `slidesPerView`, and at the
- * edges they arrive as thin bright slivers. Dropping them this far back reads
- * as depth rather than as clutter, and keeps the eye on the five cards the
- * layout is actually about.
+ * A hard colour break is what makes a page read as stacked rectangles. This is
+ * a thin band of the brand blue, blurred and fading to nothing at both ends, so
+ * the two grounds meet through light instead of along an edge.
  */
-.coverflow-rail .swiper-slide:not(.swiper-slide-active):not(.swiper-slide-prev):not(
-    .swiper-slide-next
-  ) {
-  opacity: 0.3;
-  filter: brightness(0.55) saturate(0.75);
+.glow-divider {
+  position: relative;
 }
 
-.coverflow-rail .swiper-slide {
-  opacity: 0.55;
-  transition:
-    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
-    filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-  filter: brightness(0.72) saturate(0.9);
-}
-
-.coverflow-rail .swiper-slide-prev,
-.coverflow-rail .swiper-slide-next {
-  opacity: 0.82;
-  filter: brightness(0.88);
-}
-
-/* the centred card: fully lit, in front of its neighbours, and glowing */
-.coverflow-rail .swiper-slide-active {
-  opacity: 1;
-  filter: none;
-  z-index: 3;
-}
-
-.cf-card {
-  height: 100%;
-  /* promoted to its own layer so the rotation is composited on the GPU rather
-     than repainting the card's blur on every frame */
-  will-change: transform;
-  transition: filter 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-  filter: drop-shadow(0 18px 40px rgba(6, 14, 46, 0.6));
-}
-
-.coverflow-rail .swiper-slide-active .cf-card {
-  filter: drop-shadow(0 30px 62px rgba(37, 99, 235, 0.55))
-    drop-shadow(0 0 34px rgba(96, 165, 250, 0.4));
-}
-
-.coverflow-rail .cf-card:hover,
-.coverflow-rail .cf-card:focus-within {
-  filter: drop-shadow(0 34px 70px rgba(37, 99, 235, 0.75))
-    drop-shadow(0 0 40px rgba(96, 165, 250, 0.55)) brightness(1.05);
-}
-
-/* the hairline of brand colour along the top edge of each card */
-.cf-accent {
+.glow-divider::after {
+  content: "";
   position: absolute;
   inset-inline: 0;
-  top: 0;
+  bottom: -1px;
   height: 2px;
-  z-index: 2;
-  background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.55), transparent);
-  opacity: 0.5;
-  transition: opacity 0.55s ease;
-}
-
-.coverflow-rail .swiper-slide-active .cf-accent {
-  opacity: 1;
-  background: linear-gradient(90deg, transparent, #60a5fa, transparent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  /*
-   * The fan itself is Swiper's, and turning it off here would need the effect
-   * disabled in JS. What this can do is stop the card lighting from animating,
-   * which is the part that draws the eye while the rail advances.
-   */
-  .coverflow-rail .swiper-slide,
-  .cf-card,
-  .cf-accent {
-    transition: none;
-  }
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgb(96 165 250 / 0.55), transparent);
+  filter: blur(0.5px);
 }
 
 /* --------------------------------------------------------------------------

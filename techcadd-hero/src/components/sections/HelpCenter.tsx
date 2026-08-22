@@ -40,7 +40,7 @@ export default function HelpCenter({ faqs }: { faqs: CmsFaq[] }) {
   if (faqs.length === 0) return null;
 
   return (
-    <section id="faq" className="relative overflow-x-clip bg-[#F8FAFC] section-pad">
+    <section id="faq" className="relative overflow-x-clip tech-light section-pad">
       <div className="mx-auto w-full max-w-[1100px] px-6">
         <SectionHeading
           tone="light"

@@ -57,7 +57,7 @@ export default function StudentWall({ reviews }: { reviews: CmsReview[] }) {
   if (reviews.length === 0) return null;
 
   return (
-    <section id="stories" className="relative overflow-hidden bg-white section-pad">
+    <section id="stories" className="relative overflow-hidden tech-light section-pad">
       <div
         aria-hidden
         className="absolute inset-x-0 top-0 h-[380px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgba(37,99,235,0.07),transparent_70%)]"

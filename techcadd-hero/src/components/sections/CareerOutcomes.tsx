@@ -30,7 +30,7 @@ export default function CareerOutcomes() {
   const ring = 2 * Math.PI * 52;
 
   return (
-    <section id="outcomes" className="relative overflow-x-clip bg-[#F8FAFC] section-pad">
+    <section id="outcomes" className="relative overflow-x-clip tech-light section-pad">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         <SectionHeading
           tone="light"

@@ -70,7 +70,7 @@ const NOISE =
 
 export default function About() {
   return (
-    <section id="about" className="relative overflow-x-clip bg-white">
+    <section id="about" className="relative overflow-x-clip tech-light">
       {/* eases the dark hero into the white page */}
       <div aria-hidden className="h-16 bg-gradient-to-b from-[#101E52] to-white" />
 

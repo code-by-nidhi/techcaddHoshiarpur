@@ -27,7 +27,7 @@ export default function LaunchCenter() {
        * after Tailwind's utilities in globals.css, so it would have won and the
        * padding here would have done nothing.
        */
-      className="relative overflow-hidden bg-[#101E52] py-16 lg:py-20"
+      className="relative overflow-hidden tech-dark py-16 lg:py-20"
     >
       {/* animated field */}
       <div aria-hidden className="absolute inset-0 -z-10">
