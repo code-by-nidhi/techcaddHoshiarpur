@@ -145,7 +145,7 @@ export default function FounderVision() {
                     <div className="relative overflow-hidden rounded-[30px]">
                       <Image
                         src="/images/founder-gaurav.webp"
-                        alt="Gaurav, Founder & Director of TechCadd"
+                        alt={`${FOUNDER.name}, ${FOUNDER.title} of TechCadd`}
                         width={608}
                         height={580}
                         sizes="(max-width: 991px) 88vw, 34vw"
@@ -182,7 +182,7 @@ export default function FounderVision() {
                       </span>
                       <span className="leading-tight">
                         <span className="block font-[family-name:var(--font-poppins)] text-[13.5px] font-extrabold tracking-[-0.01em] text-[#0F172A]">
-                          Founder &amp; Director
+                          {FOUNDER.title}
                         </span>
                         <span className="mt-0.5 block text-[11.5px] text-[#64748B]">
                           {FOUNDER.role}
@@ -235,7 +235,7 @@ export default function FounderVision() {
                         {FOUNDER.name}
                       </span>
                       <span className="mt-0.5 block text-[12.5px] text-[#64748B]">
-                        {FOUNDER.role}
+                        {FOUNDER.title}, {FOUNDER.role}
                       </span>
                     </span>
 

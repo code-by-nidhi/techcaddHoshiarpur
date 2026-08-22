@@ -336,8 +336,18 @@ export const MILESTONES = [
 export const FOUNDER = {
   quote:
     "We never wanted to be the biggest institute in Punjab. We wanted to be the one where a student's first job is better than the one they imagined when they walked in. Everything else — the labs, the projects, the mentor hours — exists to serve that single outcome.",
-  name: "Founder & Director",
+  /* Spelled Gourav, not Gaurav — the image file is named the other way. */
+  name: "Mr. Gourav Gupta",
+  /** The post. `name` used to carry this, before there was a name to carry. */
+  title: "Founder & CEO",
+  /** Where, not what — read as the second line under the name. */
   role: "Techcadd, Hoshiarpur",
+  /** The three descriptors that sit under the name on the founder page. */
+  credentials: [
+    "Visionary Entrepreneur",
+    "Technology Educator",
+    "Skill Development Advocate",
+  ],
 };
 
 export const VALUES = [

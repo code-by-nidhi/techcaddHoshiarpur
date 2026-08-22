@@ -46,7 +46,7 @@ export const ABOUT_PAGES: AboutPage[] = [
     slug: "our-founder",
     title: "Our Founder",
     badge: "Profile",
-    summary: `${FOUNDER.name}, ${FOUNDER.role}`,
+    summary: `${FOUNDER.name} — ${FOUNDER.title}, ${FOUNDER.role}`,
     image: "/images/founder-gaurav.webp",
     imageAlt: "The founder of TechCADD",
     paragraphs: [FOUNDER.quote, ...hero.supporting],
@@ -101,7 +101,16 @@ export const ABOUT_MENU_CARDS: AboutMenuCard[] = [
   },
 ];
 
-export const aboutSlugs = () => ABOUT_PAGES.map((p) => p.slug);
+/**
+ * The slugs /about/[slug] generates.
+ *
+ * Our Founder is excluded: it has a dedicated page at app/about/our-founder,
+ * and a literal segment wins over a dynamic one, so anything prerendered here
+ * for that slug would never be served. It stays in ABOUT_PAGES, because the
+ * sibling pages still cross-link to it.
+ */
+export const aboutSlugs = () =>
+  ABOUT_PAGES.filter((p) => p.slug !== "our-founder").map((p) => p.slug);
 
 export const getAboutPage = (slug: string) => ABOUT_PAGES.find((p) => p.slug === slug);
 
