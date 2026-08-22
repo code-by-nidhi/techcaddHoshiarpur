@@ -6,7 +6,7 @@ import { FiMail, FiMapPin, FiMessageCircle, FiPhone } from "react-icons/fi";
 import type { IconType } from "react-icons";
 import { useSite } from "@/lib/cms/site-context";
 import { Shell, fadeUp, stagger } from "./shared";
-import { MAPS_HREF, whatsappHref } from "@/lib/cta";
+import { MAPS_HREF } from "@/lib/cta";
 
 type Row = { icon: IconType; value: string; href?: string; external?: boolean };
 type Action = {
@@ -30,7 +30,8 @@ const MOTES = Array.from({ length: 12 }, (_, i) => ({
 export default function StudentDesk() {
   const reduced = useReducedMotion();
   /* CMS content, so these are built at render rather than at module scope. */
-  const { phone, phoneDigits, email, address } = useSite();
+  const site = useSite();
+  const { phone, phoneDigits, email, address } = site;
 
   const ROWS: Row[] = [
     { icon: FiPhone, value: phone, href: `tel:+${phoneDigits}` },
@@ -49,7 +50,7 @@ export default function StudentDesk() {
     {
       icon: FiMessageCircle,
       label: "WhatsApp",
-      href: whatsappHref(),
+      href: site.whatsappLink().href,
       external: true,
       tint: "from-[#22C55E] to-[#16A34A]",
       glow: "hover:shadow-[0_22px_50px_-16px_rgba(34,197,94,0.95)]",

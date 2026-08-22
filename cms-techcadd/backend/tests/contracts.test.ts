@@ -20,7 +20,7 @@ beforeAll(async () => {
 afterAll(stopServer)
 
 beforeEach(async () => {
-  await resetTables('blogs', 'courses', 'categories')
+  await resetTables('enquiries', 'blogs', 'categories')
   await pool.query("DELETE FROM media WHERE folder = 'contract-test'")
 })
 
@@ -39,28 +39,16 @@ async function seedMedia(): Promise<string> {
 describe('absent means leave alone, empty means clear', () => {
   it('clears an optional relation when sent as an empty string', async () => {
     const category = await api.post('/categories', { name: 'Probe', slug: 'probe' })
-    const course = await api.post('/courses', {
-      title: 'Probe course',
-      slug: 'probe-course',
+    const post = await api.post('/blogs', {
+      title: 'Probe post',
+      slug: 'probe-post',
+      excerpt: 'x',
+      body: 'text',
       categoryId: category.body.id,
-      shortDescription: 'x',
-      duration: '4 weeks',
-      fee: 100,
-      level: 'beginner',
-      mode: 'offline',
     })
-    expect(course.body.categoryId).toBe(category.body.id)
+    expect(post.body.categoryId).toBe(category.body.id)
 
-    const cleared = await api.patch(`/courses/${course.body.id}`, {
-      title: 'Probe course',
-      slug: 'probe-course',
-      categoryId: '',
-      shortDescription: 'x',
-      duration: '4 weeks',
-      fee: 100,
-      level: 'beginner',
-      mode: 'offline',
-    })
+    const cleared = await api.patch(`/blogs/${post.body.id}`, { categoryId: '' })
     expect(cleared.status).toBe(200)
     expect(cleared.body.categoryId).toBeUndefined()
   })
@@ -68,15 +56,12 @@ describe('absent means leave alone, empty means clear', () => {
   it('accepts an empty foreign key on create rather than rejecting it', async () => {
     // A placeholder <option> submits '', which is not a valid id but is a
     // perfectly valid "none".
-    const created = await api.post('/courses', {
+    const created = await api.post('/blogs', {
       title: 'No category',
       slug: 'no-category',
+      excerpt: 'x',
+      body: 'text',
       categoryId: '',
-      shortDescription: 'x',
-      duration: '1 week',
-      fee: 0,
-      level: 'beginner',
-      mode: 'online',
     })
     expect(created.status).toBe(201)
     expect(created.body.categoryId).toBeUndefined()
@@ -144,15 +129,12 @@ describe('partial updates', () => {
 
 describe('error contract', () => {
   it('reports an unknown foreign key as a field error, not a server fault', async () => {
-    const res = await api.post('/courses', {
+    const res = await api.post('/blogs', {
       title: 'Ghost',
       slug: 'ghost',
+      excerpt: 'x',
+      body: 'text',
       categoryId: '00000000-0000-0000-0000-000000000000',
-      shortDescription: 'x',
-      duration: '1 week',
-      fee: 0,
-      level: 'beginner',
-      mode: 'online',
     })
 
     expect(res.status).toBe(422)
@@ -168,29 +150,27 @@ describe('error contract', () => {
 
 describe('client-generated ids', () => {
   it('accepts a prefixed id that would not fit the column', async () => {
-    // Forms mint ids locally for React keys: `mod_<uuid>` is 41 characters
+    // Forms mint ids locally for React keys: `note_<uuid>` is 42 characters
     // against CHAR(36). The server must not store it verbatim.
-    const course = await api.post('/courses', {
-      title: 'Id probe',
-      slug: 'id-probe',
-      shortDescription: 'x',
-      duration: '1 week',
-      fee: 0,
-      level: 'beginner',
-      mode: 'online',
-      syllabus: [{ id: `mod_${crypto.randomUUID()}`, title: 'Module one', topics: [] }],
+    const enquiry = await api.post('/enquiries', {
+      studentName: 'Id probe',
+      phone: '9000000001',
+      courseName: 'Anything',
+      source: 'website',
+      status: 'new',
+      notes: [{ id: `note_${crypto.randomUUID()}`, author: 'Tester', body: 'First note' }],
     })
 
-    expect(course.status).toBe(201)
-    expect(course.body.syllabus).toHaveLength(1)
-    expect(course.body.syllabus[0].id).toMatch(/^[0-9a-f-]{36}$/)
+    expect(enquiry.status).toBe(201)
+    expect(enquiry.body.notes).toHaveLength(1)
+    expect(enquiry.body.notes[0].id).toMatch(/^[0-9a-f-]{36}$/)
   })
 })
 
 describe('authentication', () => {
   it('refuses every module without a session', async () => {
     const anonymous = client()
-    for (const path of ['/courses', '/categories', '/media', '/users', '/settings']) {
+    for (const path of ['/blogs', '/categories', '/media', '/users', '/settings']) {
       expect((await anonymous.get(path)).status, path).toBe(401)
     }
   })

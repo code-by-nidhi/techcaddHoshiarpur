@@ -4,6 +4,8 @@ import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
 import { blogApiUrl } from "@/lib/blog/api";
+import { getCaptchaToken } from "@/lib/cms/recaptcha";
+import { useSite } from "@/lib/cms/site-context";
 import type { SubscribeResponse } from "@/lib/blog/types";
 
 type State =
@@ -16,6 +18,7 @@ type State =
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export default function NewsletterForm({ source = "blog" }: { source?: "blog" | "article" }) {
+  const site = useSite();
   const [email, setEmail] = useState("");
   const [state, setState] = useState<State>({ kind: "idle" });
 
@@ -31,10 +34,12 @@ export default function NewsletterForm({ source = "blog" }: { source?: "blog" | 
     setState({ kind: "submitting" });
 
     try {
+      const captchaToken = await getCaptchaToken(site.recaptchaSiteKey, "newsletter");
+
       const response = await fetch(blogApiUrl("/newsletter/subscribe"), {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: value, source }),
+        body: JSON.stringify({ email: value, source, captchaToken }),
       });
 
       const payload = (await response.json()) as SubscribeResponse & { message?: string };

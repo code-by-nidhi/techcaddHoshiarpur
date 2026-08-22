@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { BookOpen, CircleHelp, Inbox, Newspaper, Search, Star } from 'lucide-react'
+import { CircleHelp, Inbox, Newspaper, Search, Star } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 import { fetchSearch, type SearchGroup } from '../../api/resources/dashboard'
@@ -34,7 +34,6 @@ const GROUP_META: Record<SearchGroup['key'], GroupMeta> = {
   blogs: { label: 'Blogs', icon: Newspaper, to: (id) => `/blogs/${id}/edit` },
   faqs: { label: 'FAQ', icon: CircleHelp, to: (id) => `/faqs/${id}/edit` },
   reviews: { label: 'Reviews', icon: Star, to: (id) => `/reviews/${id}/edit` },
-  courses: { label: 'Courses', icon: BookOpen, to: (id) => `/courses/${id}/edit` },
   // Enquiries open in a drawer on the list page, not at their own route.
   enquiries: { label: 'Enquiries', icon: Inbox, to: () => '/enquiries' },
 }
@@ -150,8 +149,8 @@ export function GlobalSearch({ className }: { className?: string }) {
         role="combobox"
         aria-expanded={showPanel}
         aria-controls="global-search-results"
-        aria-label="Search courses, blogs, pages, faculty and enquiries"
-        placeholder="Search courses, blogs, enquiries…"
+        aria-label="Search blogs, FAQs, reviews and enquiries"
+        placeholder="Search blogs, FAQs, enquiries…"
         value={term}
         onChange={(event) => {
           setTerm(event.target.value)

@@ -37,6 +37,7 @@ function toUser(row: Row): unknown {
   return {
     id: row.id,
     name: row.name,
+    username: row.username ?? undefined,
     email: row.email,
     role: row.role,
     avatar: row.avatar_id
@@ -55,7 +56,7 @@ function toUser(row: Row): unknown {
 }
 
 const SELECT_USER = `
-  SELECT u.id, u.name, u.email, u.role, u.avatar_id, u.active, u.created_at, u.updated_at,
+  SELECT u.id, u.name, u.username, u.email, u.role, u.avatar_id, u.active, u.created_at, u.updated_at,
          u.author_slug, u.author_title, u.author_bio, u.author_social,
          m.url AS avatar_url, m.alt AS avatar_alt
     FROM users u
@@ -107,6 +108,20 @@ async function assertEmailFree(email: string, exceptId?: string): Promise<void> 
   if (clash) throw unprocessable({ email: 'This email is already registered.' })
 }
 
+/**
+ * Usernames are what people sign in with, so a duplicate is not a display
+ * problem — it is two accounts fighting over one login. Checked here as well as
+ * by the unique index, so the form gets a message on the field rather than a
+ * constraint error.
+ */
+async function assertUsernameFree(username: string, exceptId?: string): Promise<void> {
+  const clash = await queryOne<{ id: string }>(
+    `SELECT id FROM users WHERE username = ?${exceptId ? ' AND id <> ?' : ''} LIMIT 1`,
+    exceptId ? [username, exceptId] : [username],
+  )
+  if (clash) throw unprocessable({ username: 'That username is already taken.' })
+}
+
 /** The author page's address, so a duplicate would make one byline unreachable. */
 async function assertAuthorSlugFree(slug: string, exceptId?: string): Promise<void> {
   if (!slug) return
@@ -144,19 +159,21 @@ export async function create(
 ): Promise<{ user: unknown; temporaryPassword?: string }> {
   const email = input.email.toLowerCase()
   await assertEmailFree(email)
+  if (input.username?.trim()) await assertUsernameFree(input.username.trim().toLowerCase())
   if (input.author?.slug) await assertAuthorSlugFree(input.author.slug)
 
   const temporary = input.password ? undefined : generatePassword()
   const id = randomUUID()
 
   await execute(
-    `INSERT INTO users (id, name, email, password_hash, role, avatar_id, active,
+    `INSERT INTO users (id, name, username, email, password_hash, role, avatar_id, active,
                         author_slug, author_title, author_bio, author_social,
                         created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(3), NOW(3))`,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(3), NOW(3))`,
     [
       id,
       input.name,
+      input.username?.trim().toLowerCase() || null,
       email,
       await hashPassword(input.password ?? (temporary as string)),
       input.role,
@@ -200,6 +217,12 @@ export async function update(id: string, patch: UserPatch, actor: SessionUser): 
   if (patch.name !== undefined) {
     assignments.push('name = ?')
     params.push(patch.name)
+  }
+  if (patch.username !== undefined) {
+    const username = patch.username.trim().toLowerCase() || null
+    if (username) await assertUsernameFree(username, id)
+    assignments.push('username = ?')
+    params.push(username)
   }
   if (email !== undefined) {
     assignments.push('email = ?')

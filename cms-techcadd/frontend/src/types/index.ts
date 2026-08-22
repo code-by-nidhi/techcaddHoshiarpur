@@ -74,7 +74,7 @@ export interface QuickAction {
 }
 
 /* ------------------------------------------------------------------ */
-/* Courses                                                              */
+/* Publishing                                                           */
 /* ------------------------------------------------------------------ */
 
 export type ContentStatus = 'published' | 'draft' | 'review'

@@ -12,17 +12,13 @@ import {
   BlogsListPage,
   CategoriesListPage,
   CategoryFormPage,
-  CourseFormPage,
-  CoursesListPage,
   EnquiriesListPage,
   FaqFormPage,
   FaqsListPage,
-  ForgotPasswordPage,
   Lazy,
   LoginPage,
   MediaLibraryPage,
   NewsletterListPage,
-  ResetPasswordPage,
   ReviewFormPage,
   ReviewsListPage,
   SettingsPage,
@@ -47,8 +43,6 @@ function crudRoutes(segment: string, list: ReactElement, form: ReactElement) {
  */
 export const router = createBrowserRouter([
   { path: 'login', element: <Lazy><LoginPage /></Lazy> },
-  { path: 'forgot-password', element: <Lazy><ForgotPasswordPage /></Lazy> },
-  { path: 'reset-password', element: <Lazy><ResetPasswordPage /></Lazy> },
 
   {
     element: <ProtectedRoute />,
@@ -62,7 +56,6 @@ export const router = createBrowserRouter([
           ...crudRoutes('categories', <CategoriesListPage />, <CategoryFormPage />),
           ...crudRoutes('faqs', <FaqsListPage />, <FaqFormPage />),
           ...crudRoutes('reviews', <ReviewsListPage />, <ReviewFormPage />),
-          ...crudRoutes('courses', <CoursesListPage />, <CourseFormPage />),
 
           // Enquiries arrive from the public site — no create/edit page, the
           // detail drawer handles everything editable.

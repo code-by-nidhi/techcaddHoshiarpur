@@ -1,5 +1,4 @@
 import { query, queryOne, type Row } from '../../db/pool.js'
-import * as coursesRepo from '../courses/courses.repo.js'
 import * as enquiriesRepo from '../enquiries/enquiries.repo.js'
 
 /** One scalar count. */
@@ -45,23 +44,22 @@ async function enquiryTrend(): Promise<TrendPoint[]> {
 interface Recent {
   id: string
   title: string
-  kind: 'course' | 'blog'
+  kind: 'blog'
   updatedAt: string
 }
 
 /**
- * The most recently touched content across both tables that have a title.
+ * The most recently touched content.
  *
- * UNION ALL, so the database does the interleaving and returns six rows rather
- * than two separate pages the client has to merge and trim.
+ * This was a UNION over courses and blogs. Courses are no longer managed here,
+ * and blogs are the only content type with a title and its own edit page, so
+ * the union has collapsed to one query — `kind` stays on the row because the
+ * dashboard still uses it to pick an icon, and a second content type would slot
+ * straight back in.
  */
 async function recentActivity(): Promise<Recent[]> {
   const rows = await query<Row>(
-    `(SELECT id, title, 'course' AS kind, updated_at FROM courses ORDER BY updated_at DESC LIMIT 6)
-     UNION ALL
-     (SELECT id, title, 'blog'   AS kind, updated_at FROM blogs   ORDER BY updated_at DESC LIMIT 6)
-     ORDER BY updated_at DESC
-     LIMIT 6`,
+    `SELECT id, title, 'blog' AS kind, updated_at FROM blogs ORDER BY updated_at DESC LIMIT 6`,
   )
 
   return rows.map((row) => ({
@@ -72,12 +70,11 @@ async function recentActivity(): Promise<Recent[]> {
   }))
 }
 
-/** Counts by status across the four content tables that have one. */
+/** Counts by status across the three content tables that have one. */
 async function contentOverview(): Promise<Record<string, number>> {
   const rows = await query<Row>(
     `SELECT status, SUM(n) AS n FROM (
-       SELECT status, COUNT(*) AS n FROM courses GROUP BY status
-       UNION ALL SELECT status, COUNT(*) FROM blogs   GROUP BY status
+       SELECT status, COUNT(*) AS n FROM blogs   GROUP BY status
        UNION ALL SELECT status, COUNT(*) FROM faqs    GROUP BY status
        UNION ALL SELECT status, COUNT(*) FROM reviews GROUP BY status
      ) AS combined
@@ -103,22 +100,20 @@ async function contentOverview(): Promise<Record<string, number>> {
  */
 export async function summary(): Promise<unknown> {
   const [
-    blogs, enquiries, reviews, faqs, subscribers, courses,
+    blogs, enquiries, reviews, faqs, subscribers,
     newEnquiriesToday, pendingReview, livePosts,
-    trend, overview, activity, recentEnquiries, recentCourses,
+    trend, overview, activity, recentEnquiries,
   ] = await Promise.all([
     count('SELECT COUNT(*) AS n FROM blogs'),
     count('SELECT COUNT(*) AS n FROM enquiries'),
     count('SELECT COUNT(*) AS n FROM reviews'),
     count('SELECT COUNT(*) AS n FROM faqs'),
     count("SELECT COUNT(*) AS n FROM newsletter_subscribers WHERE status = 'active'"),
-    count('SELECT COUNT(*) AS n FROM courses'),
 
     count('SELECT COUNT(*) AS n FROM enquiries WHERE DATE(created_at) = CURDATE()'),
     // Awaiting an editor across everything that has a review state, not just
     // courses — a blog post sitting in review is the more common case here.
     count(`SELECT (SELECT COUNT(*) FROM blogs   WHERE status = 'review')
-                + (SELECT COUNT(*) FROM courses WHERE status = 'review')
                 + (SELECT COUNT(*) FROM faqs    WHERE status = 'review')
                 + (SELECT COUNT(*) FROM reviews WHERE status = 'review') AS n`),
     count("SELECT COUNT(*) AS n FROM blogs WHERE status = 'published'"),
@@ -127,24 +122,20 @@ export async function summary(): Promise<unknown> {
     contentOverview(),
     recentActivity(),
 
-    // Through the modules' own list functions rather than a bespoke query, so
-    // these rows are byte-for-byte what /api/enquiries and /api/courses return
-    // and the dashboard components need no separate shape.
+    // Through the module's own list function rather than a bespoke query, so
+    // these rows are byte-for-byte what /api/enquiries returns and the
+    // dashboard component needs no separate shape.
     enquiriesRepo.list({
       page: 1, pageSize: 8, sort: { field: 'createdAt', dir: 'desc' }, filters: {},
-    }),
-    coursesRepo.list({
-      page: 1, pageSize: 6, sort: { field: 'updatedAt', dir: 'desc' }, filters: {},
     }),
   ])
 
   return {
-    totals: { blogs, enquiries, reviews, faqs, subscribers, courses },
+    totals: { blogs, enquiries, reviews, faqs, subscribers },
     today: { newEnquiries: newEnquiriesToday, pendingReview, livePosts },
     enquiryTrend: trend,
     contentOverview: overview,
     recentActivity: activity,
     recentEnquiries: recentEnquiries.items,
-    recentCourses: recentCourses.items,
   }
 }

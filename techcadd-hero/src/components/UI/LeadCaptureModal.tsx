@@ -14,6 +14,7 @@ import {
 } from "react-icons/fi";
 import { GoogleMark } from "@/components/UI/BrandMarks";
 import { demoBus } from "@/lib/demoBus";
+import { getCaptchaToken } from "@/lib/cms/recaptcha";
 import { useSite } from "@/lib/cms/site-context";
 import {
   COURSES,
@@ -170,6 +171,8 @@ export default function LeadCaptureModal() {
     setServerError(null);
 
     try {
+      const captchaToken = await getCaptchaToken(site.recaptchaSiteKey, "book_demo");
+
       const response = await fetch("/api/demo-request", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -178,6 +181,7 @@ export default function LeadCaptureModal() {
           phone: normalisePhone(values.phone),
           course: values.course,
           source: demoBus.getSource(),
+          captchaToken,
         }),
       });
 

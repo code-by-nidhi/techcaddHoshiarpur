@@ -24,6 +24,20 @@ const base = z.object({
   /** Shown first on the student wall. */
   featured: z.boolean(),
   source: z.enum(REVIEW_SOURCES),
+  /**
+   * The review's own page on Google, so a visitor can read it at the source.
+   *
+   * A plain URL check rather than a Google-domain one: the same review is
+   * reachable as `google.com/maps/...`, `g.page/...`, `maps.app.goo.gl/...` and
+   * `search.google.com/local/...`, and a host allow-list would reject a link
+   * that works while an editor watched it work. Empty clears it.
+   */
+  googleUrl: z
+    .union([
+      z.url('Enter a full link, starting with https://'),
+      z.literal(''),
+    ])
+    .optional(),
   order: z.number(),
   status: z.enum(['published', 'draft', 'review']),
 })

@@ -1,5 +1,5 @@
 import { request } from '../client'
-import type { Course, EnquiryRecord } from '../../types'
+import type { EnquiryRecord } from '../../types'
 
 export interface DashboardTotals {
   blogs: number
@@ -8,7 +8,6 @@ export interface DashboardTotals {
   faqs: number
   /** Active subscribers only — unsubscribed rows are kept but not counted. */
   subscribers: number
-  courses: number
 }
 
 export interface DashboardTrendPoint {
@@ -20,7 +19,7 @@ export interface DashboardTrendPoint {
 export interface DashboardActivity {
   id: string
   title: string
-  kind: 'course' | 'blog'
+  kind: 'blog'
   updatedAt: string
 }
 
@@ -32,7 +31,6 @@ export interface DashboardSummary {
   recentActivity: DashboardActivity[]
   /** The same shape /api/enquiries returns. */
   recentEnquiries: EnquiryRecord[]
-  recentCourses: Course[]
 }
 
 /** Everything the dashboard renders, in one request. */
@@ -47,7 +45,7 @@ export interface SearchHit {
 }
 
 export interface SearchGroup {
-  key: 'blogs' | 'faqs' | 'reviews' | 'courses' | 'enquiries'
+  key: 'blogs' | 'faqs' | 'reviews' | 'enquiries'
   hits: SearchHit[]
 }
 

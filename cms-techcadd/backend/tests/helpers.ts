@@ -105,6 +105,8 @@ export type Client = ReturnType<typeof client>
 
 export const ADMIN_EMAIL = process.env.TEST_ADMIN_EMAIL ?? 'admin@techcadd.com'
 export const ADMIN_PASSWORD = process.env.TEST_ADMIN_PASSWORD ?? 'ChangeMe123'
+/** The seeded account's username, so sign-in by username can be exercised. */
+export const ADMIN_USERNAME = process.env.TEST_ADMIN_USERNAME ?? 'techcadd-team'
 
 /** Empties the tables a test touches, children first. */
 export async function resetTables(...tables: string[]): Promise<void> {
@@ -121,9 +123,10 @@ export async function resetTables(...tables: string[]): Promise<void> {
  */
 export async function resetUsers(): Promise<void> {
   await pool.query('DELETE FROM users WHERE email <> ?', [ADMIN_EMAIL])
-  await pool.query("UPDATE users SET name = 'techcadd-team', active = 1 WHERE email = ?", [
-    ADMIN_EMAIL,
-  ])
+  await pool.query(
+    "UPDATE users SET name = 'techcadd-team', username = ?, active = 1 WHERE email = ?",
+    [ADMIN_USERNAME, ADMIN_EMAIL],
+  )
 }
 
 export { pool }

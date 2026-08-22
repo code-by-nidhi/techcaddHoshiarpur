@@ -4,8 +4,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
 import type { Course, Project } from "@/lib/courses/types";
+import { useSite } from "@/lib/cms/site-context";
 import { Chip, Reveal, Section, SectionHead, fadeUp } from "./shared";
-import { whatsappLink } from "@/lib/cta";
+
 
 const LEVEL_TINT: Record<Project["level"], string> = {
   Beginner: "bg-[#DCFCE7] text-[#166534]",
@@ -14,6 +15,7 @@ const LEVEL_TINT: Record<Project["level"], string> = {
 };
 
 export default function Projects({ course }: { course: Course }) {
+  const site = useSite();
   if (!course.projects.length) return null;
 
   return (
@@ -79,7 +81,7 @@ export default function Projects({ course }: { course: Course }) {
 
         <motion.div variants={fadeUp} className="mt-9 text-center">
           <a
-            {...whatsappLink()}
+            {...site.whatsappLink()}
             className="group inline-flex items-center gap-2.5 rounded-full border border-[#2563EB]/25 bg-white px-7 py-3.5 text-[14px] font-semibold text-[#2563EB] shadow-[0_14px_36px_-28px_rgba(37,99,235,0.8)] transition-colors duration-300 hover:bg-[#2563EB] hover:text-white"
           >
             Explore Projects

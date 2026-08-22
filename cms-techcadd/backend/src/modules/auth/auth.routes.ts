@@ -3,8 +3,6 @@ import rateLimit from 'express-rate-limit'
 import { z } from 'zod'
 
 import { config, isProduction, loginAttemptLimit } from '../../config.js'
-import { send } from '../../mail/mailer.js'
-import { passwordResetEmail } from '../../mail/templates.js'
 import { asyncHandler, unauthorised } from '../../http/errors.js'
 import { requireAuth, SESSION_COOKIE } from '../../middleware/auth.js'
 import * as auth from './auth.service.js'
@@ -30,7 +28,7 @@ const cookieOptions = {
 }
 
 const loginSchema = z.object({
-  identifier: z.string().min(1, 'Enter your email or username.'),
+  identifier: z.string().min(1, 'Enter your username.'),
   password: z.string().min(1, 'Enter your password.'),
 })
 
@@ -63,54 +61,30 @@ authRouter.get('/me', (req, res) => {
   res.json(req.user)
 })
 
-const emailSchema = z.object({ email: z.email('Enter a valid email address.') })
-
-authRouter.post(
-  '/forgot-password',
-  rateLimit({ windowMs: 15 * 60 * 1000, limit: 5, standardHeaders: 'draft-7' }),
-  asyncHandler(async (req, res) => {
-    const { email } = emailSchema.parse(req.body)
-    const token = await auth.requestPasswordReset(email)
-
-    // Sent, not returned. The token must never appear in a response body — the
-    // whole point is that only whoever controls the mailbox can use it. With no
-    // SMTP server configured the mailer logs the message instead, so local
-    // development still works.
-    if (token) await send(passwordResetEmail(email, token))
-
-    // Always 204, even for unknown addresses — see auth.service.
-    res.status(204).end()
-  }),
-)
-
-const passwordSchema = z
-  .string()
-  .min(8, 'Use at least 8 characters.')
-  .refine((v) => /[a-z]/.test(v) && /[A-Z]/.test(v), 'Mix uppercase and lowercase letters.')
-  .refine((v) => /\d/.test(v), 'Include at least one number.')
+/*
+ * `/forgot-password` and `/reset-password` used to sit here.
+ *
+ * The CMS is operated by a single administrator who signs in with a username;
+ * there is no address to send a reset link to, and the sign-in screen no longer
+ * offers one. An endpoint that mails a working credential to whoever asks is
+ * not something to keep running for nobody.
+ *
+ * The way back into a locked-out install is now the seed script, which is the
+ * only thing that could have helped anyway if the mailbox were unreachable:
+ *
+ *   SEED_EMAIL=<address> SEED_PASSWORD=<new password> npm run db:seed
+ */
 
 /**
- * Guessing a reset token is not realistic — it is 32 random bytes — but this
- * endpoint was the only unauthenticated one without a limit, and it does an
- * argon2 hash on every request that gets past the token lookup. That makes an
- * unthrottled endpoint a way to spend the server's CPU, quite apart from the
- * token itself.
+ * Length, not composition.
+ *
+ * The old rule was eight characters with mixed case and a digit, which rejects
+ * a long memorable passphrase and accepts `Password1`. Twelve characters with
+ * no character-class rules is both stronger in practice and the current NIST
+ * guidance — and it is a rule an administrator can satisfy without inventing a
+ * capital letter they will not remember where they put.
  */
-authRouter.post(
-  '/reset-password',
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    limit: 10,
-    standardHeaders: 'draft-7',
-    legacyHeaders: false,
-    message: { message: 'Too many attempts. Try again in a few minutes.' },
-  }),
-  asyncHandler(async (req, res) => {
-    const body = z.object({ token: z.string().min(1), password: passwordSchema }).parse(req.body)
-    await auth.resetPassword(body.token, body.password)
-    res.status(204).end()
-  }),
-)
+const passwordSchema = z.string().min(12, 'Use at least 12 characters.')
 
 authRouter.post(
   '/change-password',

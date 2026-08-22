@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react'
-import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { ArrowRight, Lock, User } from 'lucide-react'
 
 import { ApiError } from '../../api'
@@ -40,7 +40,7 @@ export default function LoginPage() {
 
   function validate(): boolean {
     const next: FieldErrors = {}
-    if (!identifier.trim()) next.identifier = 'Enter your email or username.'
+    if (!identifier.trim()) next.identifier = 'Enter your username.'
     if (!password) next.password = 'Enter your password.'
 
     setFieldErrors(next)
@@ -75,7 +75,7 @@ export default function LoginPage() {
 
         {/* Visible labels rather than placeholder-only: a placeholder
             disappears once typing starts, taking the field's meaning with it. */}
-        <FormField label="Email or username" error={fieldErrors.identifier}>
+        <FormField label="Username" error={fieldErrors.identifier}>
           <Input
             icon={User}
             type="text"
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 setFieldErrors((errors) => ({ ...errors, identifier: undefined }))
               }
             }}
-            placeholder="Enter your email or username"
+            placeholder="Enter your username"
             className={FIELD_CLASSES}
           />
         </FormField>
@@ -110,16 +110,14 @@ export default function LoginPage() {
           />
         </FormField>
 
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <Checkbox checked={remember} onCheckedChange={setRemember} label="Remember me" />
-
-          <Link
-            to="/forgot-password"
-            className="text-[13px] font-medium text-primary-600 transition-colors hover:text-primary-700"
-          >
-            Forgot Password?
-          </Link>
-        </div>
+        {/*
+         * No "forgot password" link. There is one administrator and they sign
+         * in with a username, so there is no address to send a reset link to —
+         * and a link to a page that cannot help is worse than no link. A
+         * forgotten password is recovered with the seed script; see the note in
+         * the API's auth.routes.ts.
+         */}
+        <Checkbox checked={remember} onCheckedChange={setRemember} label="Remember me" />
 
         <Button
           type="submit"

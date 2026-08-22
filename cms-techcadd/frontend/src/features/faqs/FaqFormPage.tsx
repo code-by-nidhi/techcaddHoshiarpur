@@ -19,7 +19,7 @@ import { FormFooter } from '../../components/layout/FormFooter'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { useToast } from '../../hooks/useToast'
 import { useUnsavedChanges } from '../../hooks/useUnsavedChanges'
-import { STATUS_OPTIONS } from '../courses/courseSchema'
+import { STATUS_OPTIONS } from '../shared/statusOptions'
 import { emptyFaq, faqSchema, FAQ_CATEGORY_SUGGESTIONS, type FaqFormValues } from './faqSchema'
 import { faqHooks } from './useFaqs'
 

@@ -20,7 +20,7 @@ export const ROLES = ['admin'] as const
  */
 const password = z
   .string()
-  .min(10, 'Use at least 10 characters.')
+  .min(12, 'Use at least 12 characters.')
   .max(200, 'That password is too long.')
 
 /**
@@ -48,6 +48,23 @@ const authorProfile = z.object({
 
 const base = z.object({
   name: z.string().min(1, 'Name is required.').max(120),
+  /**
+   * What this person signs in with.
+   *
+   * Lowercase, because the login form should not be case-sensitive about it and
+   * storing one canonical form is simpler than collating on the way in. Empty
+   * clears it, leaving the email address as the only identifier.
+   */
+  username: z
+    .union([
+      z
+        .string()
+        .regex(/^[a-z0-9._-]+$/, 'Use lowercase letters, numbers, dots, dashes or underscores.')
+        .min(3, 'Usernames are at least 3 characters.')
+        .max(60),
+      z.literal(''),
+    ])
+    .optional(),
   email: z.email('Enter a valid email address.').max(190),
   role: z.enum(ROLES),
   avatar: mediaRef.nullish(),

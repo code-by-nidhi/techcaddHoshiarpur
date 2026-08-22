@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { NAV_LINKS } from "@/lib/content";
+import { useSite } from "@/lib/cms/site-context";
 import { SIMPLE_MENUS, isSimpleLabel, type SimpleLabel } from "@/lib/navMenus";
 import megaStyles from "./CoursesMegaMenu.module.css";
 import { openLeadCapture } from "@/lib/demoBus";
@@ -93,6 +94,7 @@ const EDGE = 16;
  * viewport; only the content inside is capped and centred.
  */
 export default function Navbar() {
+  const site = useSite();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [mega, setMega] = useState<PanelLabel | null>(null);
@@ -295,10 +297,10 @@ export default function Navbar() {
              * only one of the pair is ever displayed.
              */}
             <Image
-              src="/images/techcadd-logo-navy.png"
-              alt="TechCadd — Your Skill & Technology Partner"
-              width={899}
-              height={242}
+              src={site.logo("light").src}
+              alt={site.logo("light").alt}
+              width={site.logo("light").width}
+              height={site.logo("light").height}
               priority
               className={`w-auto object-contain transition-all duration-500 sm:max-w-none xl:hidden ${
                 scrolled
@@ -307,11 +309,11 @@ export default function Navbar() {
               }`}
             />
             <Image
-              src="/images/techcadd-logo-white.png"
+              src={site.logo("dark").src}
               alt=""
               aria-hidden
-              width={899}
-              height={242}
+              width={site.logo("dark").width}
+              height={site.logo("dark").height}
               priority
               className={`hidden w-auto object-contain transition-all duration-500 sm:max-w-none xl:block ${
                 scrolled ? "h-[42px]" : "h-[52px]"

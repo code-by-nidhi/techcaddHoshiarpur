@@ -25,7 +25,7 @@ import { PageHeader } from '../../components/layout/PageHeader'
 import { useToast } from '../../hooks/useToast'
 import { useUnsavedChanges } from '../../hooks/useUnsavedChanges'
 import { categoryHooks } from '../categories/useCategories'
-import { STATUS_OPTIONS } from '../courses/courseSchema'
+import { STATUS_OPTIONS } from '../shared/statusOptions'
 import { blogSchema, emptyBlog, readingTimeMinutes, type BlogFormValues } from './blogSchema'
 import { blogHooks } from './useBlogs'
 

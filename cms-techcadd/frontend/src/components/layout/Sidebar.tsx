@@ -175,7 +175,7 @@ function FooterCard({ collapsed }: { collapsed: boolean }) {
       <div className="rounded-lg bg-white/5 p-3">
         <p className="text-xs font-semibold text-white">TechCadd CMS v1.0</p>
         <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
-          Manage courses, enquiries and website content from one place.
+          Manage articles, enquiries and website content from one place.
         </p>
       </div>
     </div>

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FiArrowRight, FiClock, FiPhone } from "react-icons/fi";
 import type { Course } from "@/lib/courses/types";
-import { whatsappLink } from "@/lib/cta";
+import { useSite } from "@/lib/cms/site-context";
+
 
 /**
  * Sticky enrolment bar.
@@ -14,6 +15,7 @@ import { whatsappLink } from "@/lib/cta";
  * same moment.
  */
 export default function StickyEnrolBar({ course }: { course: Course }) {
+  const site = useSite();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function StickyEnrolBar({ course }: { course: Course }) {
 
             <div className="flex flex-1 items-center gap-2.5 sm:flex-initial">
               <a
-                {...whatsappLink()}
+                {...site.whatsappLink()}
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.06] px-4 py-2.5 text-[13px] font-semibold text-white transition-colors duration-300 hover:border-white/50 sm:flex-initial sm:px-5"
               >
                 <FiPhone aria-hidden className="size-3.5" />
@@ -65,7 +67,7 @@ export default function StickyEnrolBar({ course }: { course: Course }) {
               </a>
 
               <motion.a
-                {...whatsappLink()}
+                {...site.whatsappLink()}
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 340, damping: 22 }}

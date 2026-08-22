@@ -2,14 +2,16 @@ import Link from "next/link";
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import { COURSES } from "@/lib/courses";
-import { whatsappLink } from "@/lib/cta";
+import { getSiteDetails } from "@/lib/cms/site-details";
 
 /**
  * Shown for any slug that is not in the catalogue. Rather than a dead end, it
  * offers the courses that do exist — the visitor almost certainly wanted one
  * of them.
  */
-export default function CourseNotFound() {
+export default async function CourseNotFound() {
+  const site = await getSiteDetails();
+
   return (
     <>
       <Navbar />
@@ -55,7 +57,7 @@ export default function CourseNotFound() {
               Browse all courses
             </Link>
             <a
-              {...whatsappLink()}
+              {...site.whatsappLink()}
               className="rounded-full border border-white/20 bg-white/[0.06] px-7 py-3.5 text-[14.5px] font-semibold text-white backdrop-blur-xl transition-colors hover:border-white/50"
             >
               Talk to a counsellor

@@ -21,6 +21,8 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import { PUBLIC_CMS_API_URL } from "@/lib/cms/client";
+import { getCaptchaToken } from "@/lib/cms/recaptcha";
+import { useSite } from "@/lib/cms/site-context";
 import { DARK } from "@/components/courses/shared";
 import type { Course } from "@/lib/courses/types";
 
@@ -84,6 +86,7 @@ export default function CourseEnquiryForm({
   course: Course;
   tone?: "light" | "dark";
 }) {
+  const site = useSite();
   const dark = tone === "dark";
   const [values, setValues] = useState<Fields>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
@@ -115,6 +118,10 @@ export default function CourseEnquiryForm({
        * refuses anything it does not recognise, which is what stops a public
        * form from setting a status or assigning itself to a colleague.
        */
+      // Undefined when no key pair is configured; the API only insists on a
+      // token once an administrator has switched protection on.
+      const captchaToken = await getCaptchaToken(site.recaptchaSiteKey, "course_enquiry");
+
       const response = await fetch(`${PUBLIC_CMS_API_URL}/enquiries`, {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -130,6 +137,7 @@ export default function CourseEnquiryForm({
           formType: "Course Enquiry",
           sourceUrl: typeof window === "undefined" ? undefined : window.location.href,
           userAgent: typeof navigator === "undefined" ? undefined : navigator.userAgent,
+          captchaToken,
         }),
       });
 

@@ -31,7 +31,16 @@ const social = z.object({
 const integrations = z.object({
   whatsappNumber: z.string().optional(),
   analyticsId: z.string().optional(),
-  recaptchaSecret: z.string().optional(),
+  /**
+   * reCAPTCHA v3 needs both halves of the pair.
+   *
+   * The site key is public by design — it is printed into the page for Google's
+   * script to read — and lives here beside the secret only because they are
+   * issued together and useless apart. The public API publishes the site key
+   * and never the secret; see the note on `/public/site`.
+   */
+  recaptchaSiteKey: z.string().max(120).optional(),
+  recaptchaSecret: z.string().max(120).optional(),
 })
 
 /**

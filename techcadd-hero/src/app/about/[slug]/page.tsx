@@ -6,7 +6,7 @@ import { FiArrowRight } from "react-icons/fi";
 import Navbar from "@/components/Layout/Navbar";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import { ABOUT_PAGES, aboutSlugs, getAboutPage } from "@/lib/about/pages";
-import { whatsappLink } from "@/lib/cta";
+import { getSiteDetails } from "@/lib/cms/site-details";
 
 /**
  * One template for the three About pages. Same route contract as the course
@@ -48,6 +48,7 @@ export default async function AboutDetailPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  const site = await getSiteDetails();
   const { slug } = await params;
   const page = getAboutPage(slug);
 
@@ -107,7 +108,7 @@ export default async function AboutDetailPage({
                 ))}
 
                 <a
-                  {...whatsappLink()}
+                  {...site.whatsappLink()}
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-6 py-3 text-[14px] font-semibold text-white shadow-[0_0_30px_-6px_rgba(37,99,235,0.9)]"
                 >
                   Talk to a Counsellor

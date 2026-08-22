@@ -8,6 +8,7 @@ import type { Swiper as SwiperClass } from "swiper";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaQuoteLeft, FaStar } from "react-icons/fa6";
 import type { CmsReview } from "@/lib/cms/content";
+import { GoogleMark } from "@/components/UI/BrandMarks";
 import Reveal from "@/components/UI/Reveal";
 import SectionHeading from "@/components/UI/SectionHeading";
 import Counter from "@/components/UI/Counter";
@@ -164,7 +165,29 @@ export default function StudentWall({ reviews }: { reviews: CmsReview[] }) {
                           />
                         ))}
                       </span>
-                      <FaQuoteLeft aria-hidden className="size-4 shrink-0 text-[#2563EB]/25" />
+                      {/*
+                       * Where the decorative quote mark sat. A review that has
+                       * been linked to its page on Google earns that corner
+                       * instead: provenance a visitor can check is worth more
+                       * than an ornament, and the mark still reads as one at a
+                       * glance. Unlinked reviews keep the ornament, so the
+                       * corner is never empty.
+                       */}
+                      {r.googleUrl ? (
+                        <a
+                          href={r.googleUrl}
+                          target="_blank"
+                          rel="noopener noreferrer nofollow"
+                          onClick={(event) => event.stopPropagation()}
+                          aria-label={`Read ${r.authorName}'s review on Google (opens in a new tab)`}
+                          className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/70 px-2 py-1 text-[10px] font-semibold text-[#475569] transition-colors duration-300 hover:border-[#2563EB]/40 hover:text-[#2563EB] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+                        >
+                          <GoogleMark className="size-3" />
+                          Verify
+                        </a>
+                      ) : (
+                        <FaQuoteLeft aria-hidden className="size-4 shrink-0 text-[#2563EB]/25" />
+                      )}
                     </div>
 
                     {/*

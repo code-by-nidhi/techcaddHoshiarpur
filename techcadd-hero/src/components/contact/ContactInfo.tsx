@@ -6,7 +6,7 @@ import { FaWhatsapp } from "react-icons/fa6";
 import type { IconType } from "react-icons";
 import { useSite } from "@/lib/cms/site-context";
 import { LIGHT_GLASS, SectionTitle, Shell, fadeUp, stagger } from "./shared";
-import { MAPS_HREF, whatsappHref } from "@/lib/cta";
+import { MAPS_HREF } from "@/lib/cta";
 
 type Card = { icon: IconType; label: string; value: string; href?: string; tint: string };
 type Action = { icon: IconType; label: string; href: string; tint: string };
@@ -14,7 +14,8 @@ type Action = { icon: IconType; label: string; href: string; tint: string };
 export default function ContactInfo() {
   /* Built inside the component rather than at module scope: the details are
      CMS content now, so they are not known until render. */
-  const { phone, phoneDigits, email, address } = useSite();
+  const site = useSite();
+  const { phone, phoneDigits, email, address } = site;
 
   const CARDS: Card[] = [
     {
@@ -51,7 +52,7 @@ export default function ContactInfo() {
     {
       icon: FaWhatsapp,
       label: "WhatsApp",
-      href: whatsappHref(),
+      href: site.whatsappLink().href,
       tint: "from-[#22C55E] to-[#16A34A]",
     },
     {

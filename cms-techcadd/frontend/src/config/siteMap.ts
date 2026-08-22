@@ -46,11 +46,6 @@ export const SITE_MAP: Record<string, Placement> = {
       'The blog index at /blog and a page of its own, plus the Knowledge Hub band on the homepage. Marking it the lead story gives it the large panel at the top of /blog; marking it trending puts it in the sidebar and the picks row.',
     url: slugUrl('/blog/'),
   },
-  courses: {
-    where:
-      'The course catalogue at /courses and a page of its own. The website keeps its own built-in courses as well — publishing one here with the same URL slug replaces it, and a new slug adds a course. Sections the form has no fields for (student projects, reviews) are left out of the page rather than filled with placeholder copy.',
-    url: slugUrl('/courses/'),
-  },
   categories: {
     where:
       'The filter row on the blog index, and the heading a post is filed under. Only categories with a published post in them are shown.',
@@ -65,7 +60,7 @@ export const SITE_MAP: Record<string, Placement> = {
   },
   settings: {
     where:
-      'Site-wide. The phone number, email and address are what the footer and the whole contact page print, the social links are the footer icon row — a network left blank is simply not shown — and the headline figures are the statistics band on the About page.',
+      'Site-wide. The phone number, email and address are what the footer and the whole contact page print; the social links are the footer icon row, where a network left blank is simply not shown; the headline figures are the statistics band on the About page; the logo replaces the wordmark in the header and footer and the favicon becomes the browser tab icon; the WhatsApp number is what every lead button on the site opens; and robots.txt is served verbatim to search engines. Only the reCAPTCHA secret goes nowhere — see the note on the field itself.',
   },
   enquiries: {
     where:

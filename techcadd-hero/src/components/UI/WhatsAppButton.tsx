@@ -2,20 +2,22 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { FaWhatsapp } from "react-icons/fa6";
-import { whatsappHref } from "@/lib/cta";
+import { useSite } from "@/lib/cms/site-context";
 
 /*
  * Floating WhatsApp CTA, bottom-left.
  *
- * The number and the opening message both come from lib/cta, so this stays in
- * step with every other WhatsApp CTA on the site — one place to change if the
- * line ever moves or the greeting is reworded.
+ * The number comes from Settings → Integrations through `useSite()`, and the
+ * opening message from lib/cta, so this stays in step with every other
+ * WhatsApp CTA on the site — one place to change if the line ever moves or the
+ * greeting is reworded.
  */
 export default function WhatsAppButton() {
+  const site = useSite();
   const reduce = useReducedMotion();
   return (
     <motion.a
-      href={whatsappHref()}
+      href={site.whatsappLink().href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

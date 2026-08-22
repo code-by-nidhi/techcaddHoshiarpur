@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { motion, type Variants } from "framer-motion";
 import { FiArrowRight, FiChevronRight } from "react-icons/fi";
 import { ABOUT_MENU_CARDS, ABOUT_MENU_PAGES } from "@/lib/about/pages";
-import { whatsappLink } from "@/lib/cta";
+import { useSite } from "@/lib/cms/site-context";
+
 
 /*
  * About Us panel: a left rail of destinations, three featured cards on the
@@ -43,6 +44,7 @@ export default function AboutMegaMenu({
   arrow: number;
   onNavigate: () => void;
 }) {
+  const site = useSite();
   const pathname = usePathname();
 
   return (
@@ -91,7 +93,7 @@ export default function AboutMegaMenu({
             </ul>
 
             <a
-              {...whatsappLink()}
+              {...site.whatsappLink()}
               onClick={onNavigate}
               className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#2563EB] transition-colors duration-300 hover:text-[#1D4ED8]"
             >
@@ -141,6 +143,8 @@ export default function AboutMegaMenu({
 
 /** Stacked list for the hamburger sheet. */
 export function AboutMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) {
+  const site = useSite();
+
   return (
     <ul className="grid gap-2 px-1">
       {ABOUT_MENU_PAGES.map((p) => (
@@ -169,7 +173,7 @@ export function AboutMegaMenuMobile({ onNavigate }: { onNavigate: () => void }) 
 
       <li>
         <a
-          {...whatsappLink()}
+          {...site.whatsappLink()}
           onClick={onNavigate}
           className="mt-1 inline-flex items-center gap-1.5 px-3 text-[13.5px] font-semibold text-[#60a5fa]"
         >

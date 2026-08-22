@@ -1,4 +1,4 @@
-import { BookOpen, History, Newspaper } from 'lucide-react'
+import { History, Newspaper } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 import { useRecentActivity, type ActivityEntry } from '../../features/dashboard/useDashboard'
@@ -7,7 +7,6 @@ import { Card, CardBody, CardHeader } from '../common/Card'
 import { EmptyState } from '../common/EmptyState'
 
 const kindMeta: Record<ActivityEntry['kind'], { icon: LucideIcon; className: string }> = {
-  course: { icon: BookOpen, className: 'bg-primary-50 text-primary-600' },
   blog: { icon: Newspaper, className: 'bg-emerald-50 text-emerald-600' },
 }
 

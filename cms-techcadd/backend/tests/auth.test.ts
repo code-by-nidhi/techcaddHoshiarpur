@@ -3,6 +3,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import {
   ADMIN_EMAIL,
   ADMIN_PASSWORD,
+  ADMIN_USERNAME,
   client,
   pool,
   resetUsers,
@@ -72,37 +73,52 @@ describe('session', () => {
   })
 })
 
-describe('password reset', () => {
-  it('never puts the token in the response', async () => {
-    // The token is the credential. If the response carried it, anyone could
-    // reset any account by asking.
-    const res = await client().post('/auth/forgot-password', { email: ADMIN_EMAIL })
-    expect(res.status).toBe(204)
-    expect(res.body).toBeUndefined()
-  })
-
-  it('answers the same way for an address that does not exist', async () => {
-    const known = await client().post('/auth/forgot-password', { email: ADMIN_EMAIL })
-    const unknown = await client().post('/auth/forgot-password', { email: 'nobody@example.com' })
-    expect(known.status).toBe(unknown.status)
-  })
-
-  it('stores only a hash of the token', async () => {
-    await client().post('/auth/forgot-password', { email: ADMIN_EMAIL })
-
-    const [rows] = await pool.query<any[]>(
-      'SELECT token_hash FROM password_resets ORDER BY created_at DESC LIMIT 1',
-    )
-    // A leaked database must not yield working reset links.
-    expect(rows[0]?.token_hash).toMatch(/^[0-9a-f]{64}$/)
-  })
-
-  it('refuses a token that was never issued', async () => {
-    const res = await client().post('/auth/reset-password', {
-      token: 'a'.repeat(64),
-      password: 'BrandNewPass1',
+describe('signing in', () => {
+  it('accepts the username', async () => {
+    const res = await client().post('/auth/login', {
+      identifier: ADMIN_USERNAME,
+      password: ADMIN_PASSWORD,
     })
-    expect(res.status).toBeGreaterThanOrEqual(400)
+    expect(res.status).toBe(200)
+  })
+
+  it('is not case-sensitive about it', async () => {
+    const res = await client().post('/auth/login', {
+      identifier: ADMIN_USERNAME.toUpperCase(),
+      password: ADMIN_PASSWORD,
+    })
+    expect(res.status).toBe(200)
+  })
+
+  /**
+   * The sign-in screen asks for a username and says nothing about email, but
+   * the address still works. It is the way back in if a username is changed to
+   * something nobody can remember, and there is no reset flow to fall back on.
+   */
+  it('still accepts the email address', async () => {
+    const res = await client().post('/auth/login', {
+      identifier: ADMIN_EMAIL,
+      password: ADMIN_PASSWORD,
+    })
+    expect(res.status).toBe(200)
+  })
+})
+
+describe('password reset is gone', () => {
+  /**
+   * There is one administrator signing in with a username, so there is nobody
+   * to mail a reset link to. These endpoints handed out a working credential to
+   * whoever asked; asserting they stay gone is what stops them coming back.
+   */
+  it('does not answer on either reset route', async () => {
+    const forgot = await client().post('/auth/forgot-password', { email: ADMIN_EMAIL })
+    const reset = await client().post('/auth/reset-password', {
+      token: 'a'.repeat(64),
+      password: 'a-perfectly-long-password',
+    })
+
+    expect(forgot.status).toBe(404)
+    expect(reset.status).toBe(404)
   })
 })
 
@@ -127,14 +143,14 @@ describe('access', () => {
     const other = client()
     await other.signIn('second-admin@example.com', 'AdminPassword1')
 
-    expect((await other.get('/courses')).status).toBe(200)
+    expect((await other.get('/blogs')).status).toBe(200)
     expect((await other.patch('/settings', { siteName: 'TechCADD' })).status).toBe(200)
     expect((await other.get('/users')).status).toBe(200)
   })
 
   it('refuses everything without a session', async () => {
     const anonymous = client()
-    expect((await anonymous.get('/courses')).status).toBe(401)
+    expect((await anonymous.get('/blogs')).status).toBe(401)
     expect((await anonymous.patch('/settings', { siteName: 'Hijacked' })).status).toBe(401)
     expect((await anonymous.post('/users', { name: 'X', email: 'x@y.z' })).status).toBe(401)
   })

@@ -35,54 +35,9 @@ export interface SeoFields {
   canonicalUrl?: string
 }
 
-export type CourseLevel = 'beginner' | 'intermediate' | 'advanced'
-export type CourseMode = 'online' | 'offline' | 'hybrid'
 export type EnquirySource = 'website' | 'walk-in' | 'phone' | 'referral' | 'social'
 /** The CMS has a single role: an admin can do everything. */
 export type UserRole = 'admin'
-
-/* ------------------------------------------------------------------ */
-/* Courses                                                              */
-/* ------------------------------------------------------------------ */
-
-export interface SyllabusModule {
-  id: string
-  title: string
-  topics: string[]
-  hours?: number
-}
-
-export type CourseSegment = 'courses' | 'internship-training' | 'after-12th-courses'
-
-export interface Course extends BaseEntity {
-  title: string
-  slug: string
-  /** Which part of the site the course belongs to; with the slug, its page key. */
-  segment: CourseSegment
-  categoryId?: string
-  shortDescription: string
-  /** The copy the public course page is generated from — see migration 013. */
-  tagline?: string
-  demand?: string
-  careers: string[]
-  tools: string[]
-  salary?: string
-  description: string
-  duration: string
-  fee: number
-  discountedFee?: number
-  level: CourseLevel
-  mode: CourseMode
-  thumbnail?: MediaRef | null
-  gallery: MediaRef[]
-  syllabus: SyllabusModule[]
-  highlights: string[]
-  eligibility?: string
-  certification?: string
-  featured: boolean
-  seo: SeoFields
-  status: ContentStatus
-}
 
 /* ------------------------------------------------------------------ */
 /* Categories                                                           */
@@ -155,7 +110,6 @@ export interface EnquiryRecord extends BaseEntity {
   studentName: string
   phone: string
   email?: string
-  courseId?: string
   courseName: string
   source: EnquirySource
   message?: string
@@ -201,6 +155,8 @@ export interface AuthorProfile {
 
 export interface User extends BaseEntity {
   name: string
+  /** What this person signs in with. Lowercase; the email also still works. */
+  username?: string
   email: string
   role: UserRole
   avatar?: MediaRef | null
@@ -220,7 +176,9 @@ export interface User extends BaseEntity {
 export interface Integrations {
   whatsappNumber?: string
   analyticsId?: string
-  /** Masked in the UI; revealed on demand. */
+  /** Public by design — printed into the page for Google's script to read. */
+  recaptchaSiteKey?: string
+  /** Masked in the UI; revealed on demand. Never leaves the server. */
   recaptchaSecret?: string
 }
 

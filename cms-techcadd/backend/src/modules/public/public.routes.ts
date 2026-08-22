@@ -2,19 +2,19 @@ import { Router } from 'express'
 import rateLimit from 'express-rate-limit'
 import { z } from 'zod'
 
-import { withAssetUrls } from '../../http/assetUrl.js'
+import { assetUrl, withAssetUrls } from '../../http/assetUrl.js'
 import { asyncHandler, notFound } from '../../http/errors.js'
 import type { ListParams } from '../../http/listParams.js'
 import { queryOne, type Row } from '../../db/pool.js'
 import * as blogsRepo from '../blogs/blogs.repo.js'
 import * as categoriesRepo from '../categories/categories.repo.js'
-import * as coursesRepo from '../courses/courses.repo.js'
 import * as enquiriesRepo from '../enquiries/enquiries.repo.js'
 import * as faqsRepo from '../faqs/faqs.repo.js'
 import * as newsletterRepo from '../newsletter/newsletter.repo.js'
 import { subscribeSchema } from '../newsletter/newsletter.schema.js'
 import * as reviewsRepo from '../reviews/reviews.repo.js'
 import { publicBlogRouter } from './blog.routes.js'
+import { assertHuman } from './recaptcha.js'
 
 /**
  * What the public website may read and write.
@@ -64,26 +64,6 @@ const limitFrom = (value: unknown, fallback: number) => {
 /* ------------------------------------------------------------------ */
 /* Content                                                              */
 /* ------------------------------------------------------------------ */
-
-publicRouter.get(
-  '/courses',
-  asyncHandler(async (req, res) => {
-    const result = await coursesRepo.list(listParams(limitFrom(req.query.limit, 50)))
-    res.json(withAssetUrls(req, { items: result.items, total: result.total }))
-  }),
-)
-
-publicRouter.get(
-  '/courses/:slug',
-  asyncHandler(async (req, res) => {
-    const row = await queryOne<Row>(
-      "SELECT id FROM courses WHERE slug = ? AND status = 'published' LIMIT 1",
-      [req.params.slug],
-    )
-    if (!row) throw notFound('Course')
-    res.json(withAssetUrls(req, await coursesRepo.get(row.id as string)))
-  }),
-)
 
 publicRouter.get(
   '/blogs',
@@ -152,15 +132,25 @@ publicRouter.get(
 /**
  * Site-wide facts the marketing pages print.
  *
- * A hand-picked subset of the settings row, not the row itself: it also holds
- * the reCAPTCHA secret and the notification preferences, and this endpoint has
- * no session behind it.
+ * Still a hand-picked list rather than the settings row itself. What is left
+ * out is the point: `recaptcha_secret` lives in the same JSON column as the
+ * analytics id below, and this endpoint has no session behind it. A field is
+ * added here only once it is established that a visitor may read it — which is
+ * true of everything a page prints, a logo, and robots.txt by definition.
  */
 publicRouter.get(
   '/site',
-  asyncHandler(async (_req, res) => {
+  asyncHandler(async (req, res) => {
     const row = await queryOne<Row>(
-      'SELECT site_name, tagline, contact_email, contact_phone, address, stats, social FROM settings WHERE id = 1 LIMIT 1',
+      `SELECT s.site_name, s.tagline, s.contact_email, s.contact_phone, s.address,
+              s.stats, s.social, s.robots_txt, s.integrations,
+              l.url AS logo_url, l.alt AS logo_alt, l.width AS logo_width, l.height AS logo_height,
+              f.url AS favicon_url, f.mime_type AS favicon_mime
+         FROM settings s
+         LEFT JOIN media l ON l.id = s.logo_id
+         LEFT JOIN media f ON f.id = s.favicon_id
+        WHERE s.id = 1
+        LIMIT 1`,
     )
 
     const json = <T,>(value: unknown, fallback: T): T => {
@@ -173,6 +163,18 @@ publicRouter.get(
       }
     }
 
+    /**
+     * Only the two integration fields a browser is allowed to see.
+     *
+     * Destructured by name rather than spread: the group is one JSON column, so
+     * a spread would publish the reCAPTCHA secret stored beside them, and would
+     * publish anything added to the group later without anyone noticing.
+     */
+    const { analyticsId, whatsappNumber, recaptchaSiteKey } = json<Record<string, string>>(
+      row?.integrations,
+      {},
+    )
+
     res.json({
       siteName: row?.site_name ?? '',
       tagline: row?.tagline ?? undefined,
@@ -181,6 +183,24 @@ publicRouter.get(
       address: row?.address ?? undefined,
       stats: json<{ value: string; label: string }[]>(row?.stats, []),
       social: json<Record<string, string>>(row?.social, {}),
+      // Dimensions travel with the logo so the site can reserve its space and
+      // not shift the header while it loads.
+      logo: row?.logo_url
+        ? {
+            url: assetUrl(req, row.logo_url),
+            alt: (row.logo_alt as string) || '',
+            width: row.logo_width ? Number(row.logo_width) : undefined,
+            height: row.logo_height ? Number(row.logo_height) : undefined,
+          }
+        : undefined,
+      favicon: row?.favicon_url
+        ? { url: assetUrl(req, row.favicon_url), mimeType: (row.favicon_mime as string) || undefined }
+        : undefined,
+      analyticsId: analyticsId || undefined,
+      whatsappNumber: whatsappNumber || undefined,
+      // The public half of the pair. The secret beside it is never published.
+      recaptchaSiteKey: recaptchaSiteKey || undefined,
+      robotsTxt: (row?.robots_txt as string) || undefined,
     })
   }),
 )
@@ -192,8 +212,8 @@ publicRouter.get(
 /**
  * Anyone on the internet can reach this, so it carries its own limit.
  *
- * The website in front of it already rate-limits and verifies a captcha, but
- * this endpoint must stand on its own — it is reachable directly.
+ * The website in front of it already rate-limits, but this endpoint must stand
+ * on its own — it is reachable directly.
  */
 const enquiryLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
@@ -222,6 +242,8 @@ const publicEnquirySchema = z.object({
   sourceUrl: z.string().max(500).optional(),
   ip: z.string().max(45).optional(),
   userAgent: z.string().max(255).optional(),
+  /** reCAPTCHA v3. Only required once a key pair is configured in Settings. */
+  captchaToken: z.string().max(4000).optional(),
 })
 
 const MAX_PER_PHONE_PER_DAY = 3
@@ -258,6 +280,10 @@ publicRouter.post(
   asyncHandler(async (req, res) => {
     const input = publicEnquirySchema.parse(req.body)
 
+    // Before anything is written, and before the duplicate lookup: a rejected
+    // submission should cost one Google round trip, not a database query.
+    await assertHuman(input.captchaToken, input.ip ?? req.ip)
+
     if (await isDuplicate(input.phone, input.ip)) {
       // 429 rather than an error: the enquiry did reach us, we are simply not
       // recording it again. The site shows a reassuring message.
@@ -267,12 +293,13 @@ publicRouter.post(
       return
     }
 
+    const { captchaToken: _captchaToken, ...enquiry } = input
+
     await enquiriesRepo.create({
-      ...input,
+      ...enquiry,
       // Every public submission starts at the beginning of the pipeline.
       status: 'new',
       notes: [],
-      courseId: undefined,
       assigneeId: undefined,
       followUpDate: undefined,
     })
@@ -309,6 +336,8 @@ publicRouter.post(
   newsletterLimiter,
   asyncHandler(async (req, res) => {
     const input = subscribeSchema.parse(req.body)
+    await assertHuman(req.body?.captchaToken, req.ip)
+
     const outcome = await newsletterRepo.subscribe(input)
 
     res.status(outcome === 'subscribed' ? 201 : 200).json({

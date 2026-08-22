@@ -3,8 +3,9 @@
 import { motion } from "framer-motion";
 import { FiArrowRight, FiPhone } from "react-icons/fi";
 import type { Course } from "@/lib/courses/types";
+import { useSite } from "@/lib/cms/site-context";
 import { DARK, Reveal, fadeUp } from "./shared";
-import { whatsappLink } from "@/lib/cta";
+
 
 export default function CourseCta({
   course,
@@ -13,6 +14,7 @@ export default function CourseCta({
   course: Course;
   tone?: "light" | "dark";
 }) {
+  const site = useSite();
   const dark = tone === "dark";
   return (
     <section
@@ -43,7 +45,7 @@ export default function CourseCta({
 
               <div className="mt-9 flex flex-wrap justify-center gap-3.5">
                 <motion.a
-                  {...whatsappLink()}
+                  {...site.whatsappLink()}
                   whileHover={{ y: -3, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}
@@ -57,7 +59,7 @@ export default function CourseCta({
                 </motion.a>
 
                 <motion.a
-                  {...whatsappLink()}
+                  {...site.whatsappLink()}
                   whileHover={{ y: -3, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}

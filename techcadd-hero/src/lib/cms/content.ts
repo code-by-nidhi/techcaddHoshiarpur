@@ -26,6 +26,14 @@ export interface CmsReview {
   badge?: string;
   featured: boolean;
   source: "google" | "website" | "walk-in";
+  /**
+   * The review's own page on Google, when an editor has linked it.
+   *
+   * Optional and independent of `source` — a review can be genuinely Google's
+   * with nobody having pasted the link, so the card has to read correctly
+   * without one.
+   */
+  googleUrl?: string;
 }
 
 export interface CmsFaq {
@@ -105,6 +113,23 @@ export interface CmsSite {
   social: Partial<
     Record<"linkedin" | "x" | "github" | "website" | "facebook" | "instagram" | "youtube", string>
   >;
+  /** Wordmark. Dimensions travel with it so the header can reserve its space. */
+  logo?: { url: string; alt: string; width?: number; height?: number };
+  favicon?: { url: string; mimeType?: string };
+  /** GA4 measurement id. Absent unless an administrator has set one. */
+  analyticsId?: string;
+  /** A separate WhatsApp line, when it is not the same as the phone number. */
+  whatsappNumber?: string;
+  /** Served verbatim at /robots.txt. */
+  robotsTxt?: string;
+  /**
+   * reCAPTCHA v3 site key.
+   *
+   * The public half of the pair, and the only half that ever reaches a browser
+   * — it is printed into the page for Google's own script to read. Absent
+   * unless an administrator has configured spam protection.
+   */
+  recaptchaSiteKey?: string;
 }
 
 /**

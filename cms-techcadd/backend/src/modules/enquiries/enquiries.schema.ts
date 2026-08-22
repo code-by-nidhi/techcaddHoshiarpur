@@ -23,7 +23,6 @@ const base = z.object({
   // number is worse than an oddly formatted one.
   phone: z.string().min(6, 'Enter a contact number.').max(30),
   email: z.union([z.email('Enter a valid email address.'), z.literal('')]).optional(),
-  courseId: optionalId,
   courseName: z.string().max(200),
   source: z.enum(['website', 'walk-in', 'phone', 'referral', 'social']),
   /** Where this specific submission came from — see migration 011. */

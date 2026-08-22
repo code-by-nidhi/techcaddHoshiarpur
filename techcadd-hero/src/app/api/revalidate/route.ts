@@ -31,8 +31,6 @@ const TAGS = [
   // Contact details, social links and the headline figures — the footer and
   // the contact page read these on every route.
   "site",
-  // Courses published in the CMS, merged into the site's own catalogue.
-  "courses",
 ];
 
 export async function POST(request: Request): Promise<NextResponse> {

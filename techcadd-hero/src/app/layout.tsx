@@ -16,7 +16,9 @@ import ScrollToTopButton from "@/components/UI/ScrollToTopButton";
 import WhatsAppButton from "@/components/UI/WhatsAppButton";
 import { safely } from "@/lib/cms/client";
 import { getSite, type CmsSite } from "@/lib/cms/content";
+import Analytics from "@/components/UI/Analytics";
 import { SiteProvider } from "@/lib/cms/site-context";
+import { resolveSite } from "@/lib/cms/site-details";
 import "./globals.css";
 import JsonLd from "@/components/seo/JsonLd";
 import { graph, organizationSchema, websiteSchema } from "@/lib/seo/schema";
@@ -50,7 +52,7 @@ const mono = JetBrains_Mono({
 
 const SITE = "https://techcadd.com";
 
-export const metadata: Metadata = {
+const BASE_METADATA: Metadata = {
   metadataBase: new URL(SITE),
   title: {
     default: "TechCadd Hoshiarpur — AI & Software Training",
@@ -93,6 +95,26 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
 };
+
+/**
+ * The static half of the page metadata, plus the CMS favicon when one is set.
+ *
+ * `generateMetadata` rather than a `metadata` const purely so the icon can be
+ * read from Settings — everything else here is fixed. Without an uploaded
+ * favicon nothing is emitted and the browser falls back to its default, which
+ * is what happened before this existed.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await safely(getSite(), null as CmsSite | null);
+  const favicon = site?.favicon?.url;
+
+  if (!favicon) return BASE_METADATA;
+
+  return {
+    ...BASE_METADATA,
+    icons: { icon: [{ url: favicon, type: site?.favicon?.mimeType }] },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#101E52",
@@ -150,6 +172,8 @@ export default async function RootLayout({
         <Suspense fallback={null}>
           <ScrollToTop />
         </Suspense>
+
+        <Analytics id={resolveSite(site).analyticsId} />
 
         <SiteProvider site={site}>
           {/* The skip link's landing point. It lives here rather than on each

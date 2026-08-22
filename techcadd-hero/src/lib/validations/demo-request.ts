@@ -83,6 +83,15 @@ export const demoRequestSchema = z
 
     /** Attribution only. An unknown value is not worth failing a lead over. */
     source: z.enum(DEMO_SOURCES).catch("navbar").default("navbar"),
+
+    /**
+     * reCAPTCHA v3, when Settings has a key pair.
+     *
+     * Declared here because the schema is `.strict()` — an undeclared key is
+     * rejected outright, which is the point of strict, and is why the token has
+     * to be named rather than smuggled through.
+     */
+    captchaToken: z.string().max(4000).optional(),
   })
   /**
    * Unknown keys are rejected rather than ignored, so a caller cannot append

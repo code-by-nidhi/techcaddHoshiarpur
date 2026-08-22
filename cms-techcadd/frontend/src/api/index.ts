@@ -8,7 +8,6 @@
  */
 export { blogsApi } from './resources/blogs'
 export { categoriesApi } from './resources/categories'
-export { coursesApi } from './resources/courses'
 export { enquiriesApi } from './resources/enquiries'
 export { mediaApi } from './resources/media'
 export { newsletterApi } from './resources/newsletter'

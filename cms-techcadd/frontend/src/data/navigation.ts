@@ -1,5 +1,4 @@
 import {
-  BookOpen,
   Folder,
   Images,
   LayoutDashboard,
@@ -24,6 +23,10 @@ import type { NavSection } from '../types'
  * as menu items that manage content no visitor will ever see. Reviews is the
  * student wall; testimonials was the Jalandhar spelling of the same idea and
  * keeping both was the duplication that made this feel like someone else's CMS.
+ *
+ * Courses went the same way. The website builds its course pages from its own
+ * catalogue in `src/lib/courses`, so a course entered here reached no visitor —
+ * a form that looked like it published a page and did not.
  */
 export const navSections: NavSection[] = [
   {
@@ -39,7 +42,6 @@ export const navSections: NavSection[] = [
       { id: 'categories', label: 'Categories', path: '/categories', icon: Folder },
       { id: 'faqs', label: 'FAQ', path: '/faqs', icon: CircleHelp },
       { id: 'reviews', label: 'Reviews', path: '/reviews', icon: Star },
-      { id: 'courses', label: 'Courses', path: '/courses', icon: BookOpen },
     ],
   },
   {

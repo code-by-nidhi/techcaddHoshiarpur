@@ -188,13 +188,15 @@ export async function remove(ids: string[]): Promise<void> {
   // Check before deleting so the message names what is blocking it. The foreign
   // keys are RESTRICT, so the database would refuse anyway — but with a generic
   // error the UI could not tell the user *why*.
-  const [courses] = await query<{ n: number }>(
-    `SELECT COUNT(*) AS n FROM courses WHERE category_id IN (${placeholders})`,
+  // Blog posts, since the Courses module was removed — `blogs.category_id` is
+  // the remaining RESTRICT foreign key onto this table.
+  const [posts] = await query<{ n: number }>(
+    `SELECT COUNT(*) AS n FROM blogs WHERE category_id IN (${placeholders})`,
     ids,
   )
-  if ((courses?.n ?? 0) > 0) {
+  if ((posts?.n ?? 0) > 0) {
     throw badRequest(
-      `${courses?.n} course${courses?.n === 1 ? ' still uses' : 's still use'} this category. Move ${courses?.n === 1 ? 'it' : 'them'} first.`,
+      `${posts?.n} post${posts?.n === 1 ? ' still uses' : 's still use'} this category. Move ${posts?.n === 1 ? 'it' : 'them'} first.`,
     )
   }
 

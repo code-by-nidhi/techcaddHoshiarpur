@@ -10,7 +10,6 @@ import { attachUser } from './middleware/auth.js'
 import { authRouter } from './modules/auth/auth.routes.js'
 import { blogsRouter } from './modules/blogs/blogs.routes.js'
 import { categoriesRouter } from './modules/categories/categories.routes.js'
-import { coursesRouter } from './modules/courses/courses.routes.js'
 import { dashboardRouter, searchRouter } from './modules/dashboard/dashboard.routes.js'
 import { enquiriesRouter } from './modules/enquiries/enquiries.routes.js'
 import { faqsRouter } from './modules/faqs/faqs.routes.js'
@@ -78,7 +77,6 @@ export function createApp() {
   app.use('/api/auth', authRouter)
   app.use('/api/blogs', blogsRouter)
   app.use('/api/categories', categoriesRouter)
-  app.use('/api/courses', coursesRouter)
   app.use('/api/dashboard', dashboardRouter)
   app.use('/api/enquiries', enquiriesRouter)
   app.use('/api/faqs', faqsRouter)

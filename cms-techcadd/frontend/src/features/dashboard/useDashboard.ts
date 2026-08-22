@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { BookOpen, CircleHelp, Mail, MailOpen, Newspaper, Star } from 'lucide-react'
+import { CircleHelp, Mail, MailOpen, Newspaper, Star } from 'lucide-react'
 
 import { fetchDashboardSummary, type DashboardSummary } from '../../api/resources/dashboard'
 import type { Stat, TrendPoint } from '../../types'
@@ -26,7 +26,6 @@ const STAT_META = [
   { id: 'reviews', label: 'Student Reviews', icon: Star, path: '/reviews' },
   { id: 'faqs', label: 'FAQs', icon: CircleHelp, path: '/faqs' },
   { id: 'subscribers', label: 'Subscribers', icon: MailOpen, path: '/newsletter' },
-  { id: 'courses', label: 'Courses', icon: BookOpen, path: '/courses' },
 ] as const
 
 export function useDashboardStats() {
@@ -75,14 +74,10 @@ export function useRecentEnquiries() {
   return useSummary((summary) => ({ items: summary.recentEnquiries }))
 }
 
-export function useRecentCourses() {
-  return useSummary((summary) => ({ items: summary.recentCourses }))
-}
-
 export interface ActivityEntry {
   id: string
   title: string
-  kind: 'course' | 'blog'
+  kind: 'blog'
   updatedAt: string
 }
 

@@ -16,8 +16,6 @@ export const FaqFormPage = lazy(() => import('../features/faqs/FaqFormPage'))
 export const ReviewsListPage = lazy(() => import('../features/reviews/ReviewsListPage'))
 export const ReviewFormPage = lazy(() => import('../features/reviews/ReviewFormPage'))
 
-export const CoursesListPage = lazy(() => import('../features/courses/CoursesListPage'))
-export const CourseFormPage = lazy(() => import('../features/courses/CourseFormPage'))
 
 export const EnquiriesListPage = lazy(() => import('../features/enquiries/EnquiriesListPage'))
 export const NewsletterListPage = lazy(() => import('../features/newsletter/NewsletterListPage'))
@@ -26,8 +24,6 @@ export const MediaLibraryPage = lazy(() => import('../features/media/MediaLibrar
 export const SettingsPage = lazy(() => import('../features/settings/SettingsPage'))
 
 export const LoginPage = lazy(() => import('../features/auth/LoginPage'))
-export const ForgotPasswordPage = lazy(() => import('../features/auth/ForgotPasswordPage'))
-export const ResetPasswordPage = lazy(() => import('../features/auth/ResetPasswordPage'))
 
 /** Route-level suspense boundary — a skeleton, never a bare spinner. */
 export function Lazy({ children }: { children: ReactNode }) {

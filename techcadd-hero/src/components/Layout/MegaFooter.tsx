@@ -83,12 +83,14 @@ export default function MegaFooter() {
             />
 
             <div className="relative">
+              {/* The footer is always dark, so it asks for the dark-ground
+                  mark; a logo uploaded to the CMS is used in preference. */}
               <Image
-                src="/images/techcadd-logo-white.png"
-                alt="Techcadd — Your Skill & Technology Partner"
-                width={899}
-                height={242}
-                className="h-[46px] w-auto"
+                src={site.logo("dark").src}
+                alt={site.logo("dark").alt}
+                width={site.logo("dark").width}
+                height={site.logo("dark").height}
+                className="h-[46px] w-auto object-contain"
               />
               <p className="mt-6 max-w-xs text-[13.5px] leading-relaxed text-white/60">
                 A decade of turning students into working engineers — through live projects,

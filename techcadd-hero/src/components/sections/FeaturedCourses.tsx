@@ -2,19 +2,18 @@ import Link from "next/link";
 import { FiArrowRight, FiUserCheck } from "react-icons/fi";
 
 import CourseSpotlight, { type SpotlightCard } from "@/components/courses/CourseSpotlight";
-import { getAllCourses } from "@/lib/courses";
+import { COURSES } from "@/lib/courses";
 import { PROGRAMMES } from "@/lib/training/programmes";
-import { whatsappLink } from "@/lib/cta";
+import { getSiteDetails } from "@/lib/cms/site-details";
 
 /**
  * The homepage courses section.
  *
- * The rail is the whole catalogue, not a hand-picked shortlist: `getAllCourses`
- * is the built-in course data with anything published in the CMS merged over
- * it, so a course added in either place appears here on the next request with
- * no code change. The internship and training programmes are appended for the
- * same reason — they are a category a visitor expects to find in "our courses",
- * and each one has a page of its own to open.
+ * The rail is the whole catalogue, not a hand-picked shortlist, so a course
+ * added to `@/lib/courses` appears here with no change to this file. The
+ * internship and training programmes are appended for the same reason — they
+ * are a category a visitor expects to find in "our courses", and each one has a
+ * page of its own to open.
  *
  * Nothing in this file names a course. That is deliberate: the previous version
  * listed six pillars by slug, which meant every new course was invisible here
@@ -25,10 +24,10 @@ import { whatsappLink } from "@/lib/cta";
 const PROGRAMME_CATEGORY = "Internship Programs";
 
 export default async function FeaturedCourses() {
-  const courses = await getAllCourses();
+  const site = await getSiteDetails();
 
   const cards: SpotlightCard[] = [
-    ...courses.map((course) => ({
+    ...COURSES.map((course) => ({
       slug: course.slug,
       title: course.shortTitle ?? course.title,
       category: course.category,
@@ -118,7 +117,7 @@ export default async function FeaturedCourses() {
           </div>
 
           <a
-            {...whatsappLink()}
+            {...site.whatsappLink()}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-[#1E3A8A] to-[#2344D4] px-7 py-3.5 text-[14px] font-semibold text-white shadow-[0_0_28px_-8px_rgba(35,68,212,0.95)] transition-[transform,box-shadow] duration-300 hover:scale-[1.03] hover:shadow-[0_0_44px_-6px_rgba(35,68,212,1)] motion-reduce:hover:scale-100 sm:w-auto"
           >
             Talk to Advisor
@@ -128,7 +127,7 @@ export default async function FeaturedCourses() {
 
         <p className="mt-5 text-center text-[13px] text-white/45">
           <Link href="/courses" className="text-[#93C5FD] underline-offset-4 hover:underline">
-            Browse all {courses.length} courses
+            Browse all {COURSES.length} courses
           </Link>
         </p>
       </div>

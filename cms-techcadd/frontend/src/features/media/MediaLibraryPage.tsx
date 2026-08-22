@@ -7,7 +7,7 @@ export default function MediaLibraryPage() {
     <div className="space-y-6">
       <PageHeader
         title="Media Library"
-        description="Images reused across courses, blogs, banners and the gallery"
+        description="Images reused across articles, author photos and site settings"
       />
 
       <Card flush className="flex flex-col">

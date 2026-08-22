@@ -13,7 +13,7 @@ beforeAll(async () => {
 afterAll(stopServer)
 
 beforeEach(async () => {
-  await resetTables('enquiries', 'courses', 'categories')
+  await resetTables('enquiries', 'blogs', 'categories')
 })
 
 describe('dashboard summary', () => {
@@ -28,7 +28,6 @@ describe('dashboard summary', () => {
       'contentOverview',
       'recentActivity',
       'recentEnquiries',
-      'recentCourses',
     ]) {
       expect(res.body, key).toHaveProperty(key)
     }
@@ -53,13 +52,11 @@ describe('dashboard summary', () => {
   })
 
   it('adds up content by status across tables', async () => {
-    await api.post('/courses', {
-      title: 'Live', slug: 'live', shortDescription: 'x', duration: '1w',
-      fee: 0, level: 'beginner', mode: 'online', status: 'published',
+    await api.post('/blogs', {
+      title: 'Live', slug: 'live', excerpt: 'x', body: 'text', status: 'published',
     })
-    await api.post('/courses', {
-      title: 'Hidden', slug: 'hidden', shortDescription: 'x', duration: '1w',
-      fee: 0, level: 'beginner', mode: 'online', status: 'draft',
+    await api.post('/blogs', {
+      title: 'Hidden', slug: 'hidden', excerpt: 'x', body: 'text', status: 'draft',
     })
 
     const { body } = await api.get('/dashboard/summary')
@@ -71,17 +68,16 @@ describe('dashboard summary', () => {
   })
 
   it('returns recent rows in the same shape the list endpoints do', async () => {
-    await api.post('/courses', {
-      title: 'Shape', slug: 'shape', shortDescription: 'x', duration: '1w',
-      fee: 500, level: 'beginner', mode: 'online',
+    await api.post('/enquiries', {
+      studentName: 'Shape', phone: '9000000009', courseName: 'Anything', source: 'website',
     })
 
     const summary = await api.get('/dashboard/summary')
-    const listed = await api.get('/courses?pageSize=6&sort=updatedAt&dir=desc')
+    const listed = await api.get('/enquiries?pageSize=8&sort=createdAt&dir=desc')
 
     // The dashboard components render full entities, so a trimmed shape here
-    // would mean two competing definitions of a course.
-    expect(summary.body.recentCourses[0]).toEqual(listed.body.items[0])
+    // would mean two competing definitions of an enquiry.
+    expect(summary.body.recentEnquiries[0]).toEqual(listed.body.items[0])
   })
 
   it('needs a session', async () => {
@@ -91,9 +87,8 @@ describe('dashboard summary', () => {
 
 describe('global search', () => {
   beforeEach(async () => {
-    await api.post('/courses', {
-      title: 'React Fundamentals', slug: 'react-fundamentals', shortDescription: 'x',
-      duration: '6w', fee: 100, level: 'beginner', mode: 'online',
+    await api.post('/blogs', {
+      title: 'React Fundamentals', slug: 'react-fundamentals', excerpt: 'x', body: 'text',
     })
   })
 
@@ -101,15 +96,15 @@ describe('global search', () => {
     // Why LIKE rather than FULLTEXT: the box has to match while the user is
     // still typing.
     const res = await api.get('/search?q=rea')
-    const courses = res.body.groups.find((g: any) => g.key === 'courses')
-    expect(courses?.hits?.[0]?.label).toBe('React Fundamentals')
+    const blogs = res.body.groups.find((g: any) => g.key === 'blogs')
+    expect(blogs?.hits?.[0]?.label).toBe('React Fundamentals')
   })
 
   it('groups hits by what they are', async () => {
     await api.post('/enquiries', { studentName: 'React Fan', phone: '9000000002' })
 
     const res = await api.get('/search?q=react')
-    expect(res.body.groups.map((g: any) => g.key).sort()).toEqual(['courses', 'enquiries'])
+    expect(res.body.groups.map((g: any) => g.key).sort()).toEqual(['blogs', 'enquiries'])
   })
 
   it('omits groups with nothing in them', async () => {

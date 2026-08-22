@@ -24,7 +24,6 @@ const SORTABLE: Record<string, string> = {
 const FILTERABLE: Record<string, string> = {
   status: 'e.status',
   source: 'e.source',
-  courseId: 'e.course_id',
   assigneeId: 'e.assignee_id',
   followUpDate: 'e.follow_up_date',
   createdAt: 'e.created_at',
@@ -37,7 +36,6 @@ function toEnquiry(row: Row, notes: unknown[]): unknown {
     studentName: row.student_name,
     phone: row.phone,
     email: row.email ?? undefined,
-    courseId: row.course_id ?? undefined,
     courseName: row.course_name,
     source: row.source,
     formType: row.form_type ?? undefined,
@@ -153,7 +151,7 @@ async function writeNotes(
   }
 }
 
-const COLUMNS = `student_name, phone, email, course_id, course_name,
+const COLUMNS = `student_name, phone, email, course_name,
   source, form_type, source_url, ip, user_agent, message, status, assignee_id, follow_up_date`
 
 function values(input: EnquiryInput): unknown[] {
@@ -161,7 +159,6 @@ function values(input: EnquiryInput): unknown[] {
     input.studentName,
     input.phone,
     input.email || null,
-    input.courseId || null,
     input.courseName,
     input.source,
     input.formType || null,
@@ -194,14 +191,13 @@ export async function create(input: EnquiryInput): Promise<unknown> {
 
 /** Columns where '' means "clear this" — see the note in blogs.repo.ts. */
 const NULLABLE = new Set([
-  'email', 'course_id', 'assignee_id', 'follow_up_date', 'message',
+  'email', 'assignee_id', 'follow_up_date', 'message',
 ])
 
 const MAPPING: Record<string, string> = {
   studentName: 'student_name',
   phone: 'phone',
   email: 'email',
-  courseId: 'course_id',
   courseName: 'course_name',
   source: 'source',
   message: 'message',

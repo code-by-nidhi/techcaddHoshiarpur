@@ -15,7 +15,14 @@
  * components.
  */
 
-/** Digits only, in international form, as wa.me requires. */
+/**
+ * Digits only, in international form, as wa.me requires.
+ *
+ * The fallback, not the source. Settings → Integrations holds the number the
+ * site actually dials, and `useSite().whatsappLink()` is what every CTA calls;
+ * this is what it resolves to when nobody has entered one, or when what they
+ * entered is not a number WhatsApp can route (see `validWhatsappDigits`).
+ */
 export const WHATSAPP_NUMBER = "916284347710";
 
 /** What the chat is pre-filled with when no CTA asks for something narrower. */
@@ -28,8 +35,12 @@ export const WHATSAPP_DEFAULT_MESSAGE =
  * Pass `message` where the context is worth carrying into the chat — a course
  * page can open with the course name, which saves the counsellor a question.
  */
-export function whatsappHref(message: string = WHATSAPP_DEFAULT_MESSAGE): string {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+export function whatsappHref(
+  message: string = WHATSAPP_DEFAULT_MESSAGE,
+  /** The CMS number, when the caller has one. Defaults to the constant above. */
+  number: string = WHATSAPP_NUMBER,
+): string {
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
 
 /**
@@ -61,9 +72,9 @@ export const CTA = {
  *
  *     <motion.a {...whatsappLink()} className="…">Book Demo</motion.a>
  */
-export function whatsappLink(message?: string) {
+export function whatsappLink(message?: string, number?: string) {
   return {
-    href: message ? whatsappHref(message) : CTA.whatsapp,
+    href: whatsappHref(message ?? WHATSAPP_DEFAULT_MESSAGE, number),
     target: "_blank" as const,
     rel: "noopener noreferrer",
   };

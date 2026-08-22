@@ -18,7 +18,7 @@ import { FormFooter } from '../../components/layout/FormFooter'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { useToast } from '../../hooks/useToast'
 import { useUnsavedChanges } from '../../hooks/useUnsavedChanges'
-import { STATUS_OPTIONS } from '../courses/courseSchema'
+import { STATUS_OPTIONS } from '../shared/statusOptions'
 import { categoryHooks } from './useCategories'
 import { categorySchema, emptyCategory, ICON_OPTIONS, type CategoryFormValues } from './categorySchema'
 
@@ -155,7 +155,7 @@ export default function CategoryFormPage() {
                   value={field.value}
                   onChange={field.onChange}
                   source={name}
-                  baseUrl="techcadd.com/courses/category/"
+                  baseUrl="techcadd.com/blog?category="
                 />
               )}
             />

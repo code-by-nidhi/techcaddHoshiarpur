@@ -195,7 +195,7 @@ export function MediaBrowser({ mode, multiple = false, onConfirm }: MediaBrowser
             description={
               list.search
                 ? 'Try a different search term.'
-                : 'Upload images to reuse them across courses, blogs and banners.'
+                : 'Upload images to reuse them across articles and site settings.'
             }
           />
         ) : (

@@ -43,8 +43,8 @@ export function WelcomeSection() {
           </p>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            <Link to="/courses">
-              <Button icon={Plus}>Add Course</Button>
+            <Link to="/blogs/new">
+              <Button icon={Plus}>Write a post</Button>
             </Link>
             <Link to="/enquiries">
               <Button variant="secondary">View Enquiries</Button>

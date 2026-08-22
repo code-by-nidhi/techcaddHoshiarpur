@@ -143,10 +143,9 @@ These are deliberate, not incidental:
 
 - Passwords are **argon2id**. Login compares against a dummy hash when the user
   does not exist, so response timing does not reveal which emails are registered.
-- Unknown email and wrong password return the **same message**, for the same reason.
-- `/auth/forgot-password` **always returns 204**, even for unknown addresses.
-- Password reset stores a **SHA-256 hash of the token**, never the token. A
-  leaked database yields no working reset links.
+- Unknown identifier and wrong password return the **same message**, for the same reason.
+- Sign-in accepts a **username or the email address**. Only the username is shown;
+  the address is a way back in if a username is changed, not a feature.
 - Sessions are **httpOnly, SameSite=Lax, signed cookies** — not a JWT in
   localStorage, which any XSS could read. `secure` turns on in production.
 - Changing a password **revokes other sessions** but keeps the current one.
@@ -154,8 +153,13 @@ These are deliberate, not incidental:
   only hides buttons.
 - Sort and filter columns are **whitelisted**. Column names cannot be
   parameterised, so nothing from the query string ever reaches SQL directly.
-- Rate limits on `/auth/login`, `/auth/forgot-password` and `/auth/reset-password`,
-  and on both public write endpoints (`/public/enquiries`, `/public/newsletter/subscribe`).
+- Rate limits on `/auth/login` and on both public write endpoints
+  (`/public/enquiries`, `/public/newsletter/subscribe`).
+- **There is no password reset.** One administrator signs in with a username, so
+  there is no address to mail a link to and the sign-in screen offers none. A
+  forgotten password is recovered with `SEED_EMAIL=… SEED_PASSWORD=… npm run db:seed`.
+- Passwords are **twelve characters minimum, with no composition rules** — length
+  resists a guess; "must contain a capital" mostly produces `Password1`.
 - Expired sessions and spent reset tokens are **purged on boot and daily**
   (`startSessionHousekeeping`). Neither is exploitable once expired, but a table
   of stale credential material that only grows is not worth keeping.

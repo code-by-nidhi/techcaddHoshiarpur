@@ -20,12 +20,11 @@ import { formatShortDate } from '../../lib/format'
 import type { EnquiryRecord, EnquiryStatus } from '../../types'
 import { EnquiryDrawer } from './EnquiryDrawer'
 import { sourceLabel, SOURCE_OPTIONS, STATUS_OPTIONS, statusLabel } from './enquiryMeta'
-import { courseRefHooks, enquiryHooks, userRefHooks } from './useEnquiries'
+import { enquiryHooks, userRefHooks } from './useEnquiries'
 
 const FILTER_KEYS = [
   'status',
   'source',
-  'courseId',
   'assigneeId',
   'createdAtFrom',
   'createdAtTo',
@@ -61,10 +60,8 @@ export default function EnquiriesListPage() {
   const update = enquiryHooks.useUpdate()
   const remove = enquiryHooks.useRemove()
 
-  const courses = courseRefHooks.useList({ page: 1, pageSize: 200 })
   const users = userRefHooks.useList({ page: 1, pageSize: 200 })
 
-  const courseOptions = (courses.data?.items ?? []).map((c) => ({ value: c.id, label: c.title }))
   const assigneeOptions = (users.data?.items ?? []).map((u) => ({ value: u.id, label: u.name }))
 
   const rows = query.data?.items ?? []
@@ -134,7 +131,6 @@ export default function EnquiriesListPage() {
     const labels: Record<string, string> = {
       status: 'Status',
       source: 'Source',
-      courseId: 'Course',
       assigneeId: 'Assigned',
       createdAtFrom: 'From',
       createdAtTo: 'To',
@@ -143,7 +139,6 @@ export default function EnquiriesListPage() {
     const lookups: Record<string, { value: string; label: string }[]> = {
       status: STATUS_OPTIONS,
       source: SOURCE_OPTIONS,
-      courseId: courseOptions,
       assigneeId: assigneeOptions,
     }
 
@@ -256,16 +251,10 @@ export default function EnquiriesListPage() {
                 value={list.filters.source ?? ''}
                 onChange={(event) => list.setFilter('source', event.target.value || undefined)}
               />
-              {courseOptions.length > 0 && (
-                <Select
-                  className="h-9 w-auto min-w-36"
-                  aria-label="Filter by course"
-                  options={courseOptions}
-                  placeholder="All courses"
-                  value={list.filters.courseId ?? ''}
-                  onChange={(event) => list.setFilter('courseId', event.target.value || undefined)}
-                />
-              )}
+              {/* There was a "filter by course" dropdown here, built from the
+                  Courses module. The course an enquiry names is still shown and
+                  still searchable — it is stored on the enquiry as text — but
+                  there is no longer a list of courses to choose from. */}
               <div className="w-56">
                 <DateRangePicker
                   value={{ from: list.filters.createdAtFrom, to: list.filters.createdAtTo }}

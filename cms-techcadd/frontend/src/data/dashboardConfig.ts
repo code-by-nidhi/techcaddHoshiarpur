@@ -1,4 +1,4 @@
-import { BookOpen, CircleHelp, Mail, PenSquare, Star } from 'lucide-react'
+import { CircleHelp, Mail, PenSquare, Star } from 'lucide-react'
 
 import type { QuickAction, WebsiteStatus } from '../types'
 
@@ -33,13 +33,6 @@ export const quickActions: QuickAction[] = [
     description: 'Record a student outcome',
     icon: Star,
     path: '/reviews/new',
-  },
-  {
-    id: 'add-course',
-    label: 'Add Course',
-    description: 'Publish a new program',
-    icon: BookOpen,
-    path: '/courses/new',
   },
   {
     id: 'view-enquiries',

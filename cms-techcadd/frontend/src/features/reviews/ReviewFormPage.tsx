@@ -20,7 +20,7 @@ import { FormFooter } from '../../components/layout/FormFooter'
 import { PageHeader } from '../../components/layout/PageHeader'
 import { useToast } from '../../hooks/useToast'
 import { useUnsavedChanges } from '../../hooks/useUnsavedChanges'
-import { STATUS_OPTIONS } from '../courses/courseSchema'
+import { STATUS_OPTIONS } from '../shared/statusOptions'
 import { emptyReview, reviewSchema, SOURCE_OPTIONS, type ReviewFormValues } from './reviewSchema'
 import { reviewHooks } from './useReviews'
 
@@ -173,6 +173,19 @@ export default function ReviewFormPage() {
                 description="Only mark it Google if it was genuinely left there — the card shows the Google mark."
               >
                 <Select {...register('source')} options={SOURCE_OPTIONS} />
+              </FormField>
+
+              <FormField
+                label="Link to the Google review"
+                description="Optional. Paste the link to this review on Google and the card becomes clickable, so a visitor can check it for themselves. Leave it blank and the card shows the review without a link."
+                error={errors.googleUrl?.message}
+              >
+                <Input
+                  {...register('googleUrl')}
+                  type="url"
+                  inputMode="url"
+                  placeholder="https://maps.app.goo.gl/…"
+                />
               </FormField>
 
               <FormField

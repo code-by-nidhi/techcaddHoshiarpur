@@ -15,7 +15,7 @@ import { PageHeader } from '../../components/layout/PageHeader'
 import { useConfirm } from '../../hooks/useConfirm'
 import { useToast } from '../../hooks/useToast'
 import type { Category } from '../../types'
-import { categoryHooks, useCategoryCourseCounts } from './useCategories'
+import { categoryHooks, useCategoryUsage } from './useCategories'
 
 // Categories are hand-ordered, so the whole tree loads at once rather than
 // paginating — reordering across pages is meaningless.
@@ -29,7 +29,7 @@ export default function CategoriesListPage() {
   const query = categoryHooks.useList(ALL)
   const update = categoryHooks.useUpdate()
   const remove = categoryHooks.useRemove()
-  const counts = useCategoryCourseCounts()
+  const counts = useCategoryUsage()
 
   const [reordering, setReordering] = useState(false)
 
@@ -61,7 +61,7 @@ export default function CategoriesListPage() {
 
     if (used > 0 || children > 0) {
       const reasons = [
-        used > 0 ? `${used} ${used === 1 ? 'course' : 'courses'}` : null,
+        used > 0 ? `${used} ${used === 1 ? 'post' : 'posts'}` : null,
         children > 0 ? `${children} sub${children === 1 ? '-category' : '-categories'}` : null,
       ].filter(Boolean)
 
@@ -121,7 +121,7 @@ export default function CategoriesListPage() {
           <EmptyState
             icon={Folder}
             title="No categories yet"
-            description="Categories group courses on the website. Add your first one to get started."
+            description="Categories group blog posts on the website. Add your first one to get started."
           />
         ) : (
           <CardBody>
@@ -133,7 +133,7 @@ export default function CategoriesListPage() {
                 renderItem={(category) => (
                   <CategoryRow
                     category={category}
-                    courseCount={counts.data?.get(category.id) ?? 0}
+                    postCount={counts.data?.get(category.id) ?? 0}
                     childCount={childrenOf(category.id).length}
                     onEdit={() => navigate(`/categories/${category.id}/edit`)}
                     onDelete={() => deleteCategory(category)}
@@ -150,13 +150,13 @@ export default function CategoriesListPage() {
 
 interface CategoryRowProps {
   category: Category
-  courseCount: number
+  postCount: number
   childCount: number
   onEdit: () => void
   onDelete: () => void
 }
 
-function CategoryRow({ category, courseCount, childCount, onEdit, onDelete }: CategoryRowProps) {
+function CategoryRow({ category, postCount, childCount, onEdit, onDelete }: CategoryRowProps) {
   return (
     <div className="flex items-center gap-3">
       <span
@@ -174,7 +174,7 @@ function CategoryRow({ category, courseCount, childCount, onEdit, onDelete }: Ca
       </div>
 
       <span className="shrink-0 text-xs text-slate-500">
-        {courseCount} {courseCount === 1 ? 'course' : 'courses'}
+        {postCount} {postCount === 1 ? 'post' : 'posts'}
       </span>
 
       <ContentStatusBadge status={category.status} />

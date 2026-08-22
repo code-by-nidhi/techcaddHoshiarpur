@@ -39,6 +39,7 @@ function toReview(row: Row): unknown {
     badge: row.badge ?? undefined,
     featured: Boolean(row.featured),
     source: row.source,
+    googleUrl: row.google_url ?? undefined,
     order: Number(row.sort_order),
     status: row.status,
     createdAt: row.created_at,
@@ -83,13 +84,13 @@ export async function get(id: string): Promise<unknown> {
 }
 
 const COLUMNS =
-  'author_name, rating, quote, reviewed_on, course_name, badge, featured, source, sort_order, status'
+  'author_name, rating, quote, reviewed_on, course_name, badge, featured, source, google_url, sort_order, status'
 
 export async function create(input: ReviewInput): Promise<unknown> {
   const id = randomUUID()
   await execute(
     `INSERT INTO reviews (id, ${COLUMNS}, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(3), NOW(3))`,
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(3), NOW(3))`,
     [
       id,
       input.authorName,
@@ -100,6 +101,7 @@ export async function create(input: ReviewInput): Promise<unknown> {
       input.badge || null,
       input.featured ? 1 : 0,
       input.source,
+      input.googleUrl || null,
       input.order,
       input.status,
     ],
@@ -108,7 +110,7 @@ export async function create(input: ReviewInput): Promise<unknown> {
 }
 
 /** Columns where '' means "clear this" — see the note in blogs.repo.ts. */
-const NULLABLE = new Set(['reviewed_on', 'course_name', 'badge'])
+const NULLABLE = new Set(['reviewed_on', 'course_name', 'badge', 'google_url'])
 
 export async function update(id: string, patch: ReviewPatch): Promise<unknown> {
   const existing = await queryOne<Row>('SELECT id FROM reviews WHERE id = ? LIMIT 1', [id])
@@ -122,6 +124,7 @@ export async function update(id: string, patch: ReviewPatch): Promise<unknown> {
     courseName: 'course_name',
     badge: 'badge',
     source: 'source',
+    googleUrl: 'google_url',
     order: 'sort_order',
     status: 'status',
   }

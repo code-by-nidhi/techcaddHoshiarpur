@@ -137,6 +137,9 @@ export async function POST(request: Request): Promise<NextResponse> {
         formType: `Book Demo (${data.source})`,
         ip: clientIp(request.headers),
         userAgent: request.headers.get("user-agent") ?? undefined,
+        // Passed straight through: this route relays, and the CMS is the side
+        // that holds the secret and decides whether a token is required.
+        captchaToken: data.captchaToken,
       }),
       // A lead is never worth serving from a cache.
       cache: "no-store",

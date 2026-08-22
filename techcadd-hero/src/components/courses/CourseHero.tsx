@@ -7,15 +7,17 @@ import {
 } from "react-icons/fi";
 import type { IconType } from "react-icons";
 import type { Course } from "@/lib/courses/types";
+import { useSite } from "@/lib/cms/site-context";
 import { DEFAULT_HERO } from "@/lib/courses/shared";
 import Breadcrumbs from "./Breadcrumbs";
-import { whatsappLink } from "@/lib/cta";
+
 
 /**
  * The hero has to answer three questions before anything else on the page:
  * what this is, who it is for, and why it is worth six months.
  */
 export default function CourseHero({ course }: { course: Course }) {
+  const site = useSite();
   const facts: { icon: IconType; label: string; value: string }[] = [
     { icon: FiLayers, label: "Category", value: course.category },
     { icon: FiTrendingUp, label: "Level", value: course.level },
@@ -85,7 +87,7 @@ export default function CourseHero({ course }: { course: Course }) {
 
               <div className="mt-8 flex flex-wrap gap-3">
                 <motion.a
-                  {...whatsappLink()}
+                  {...site.whatsappLink()}
                   whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}
@@ -99,7 +101,7 @@ export default function CourseHero({ course }: { course: Course }) {
                 </motion.a>
 
                 <motion.a
-                  {...whatsappLink()}
+                  {...site.whatsappLink()}
                   whileHover={{ y: -2, scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   transition={{ type: "spring", stiffness: 340, damping: 22 }}

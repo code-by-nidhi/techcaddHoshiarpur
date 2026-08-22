@@ -1,4 +1,4 @@
-import { createHash, randomBytes, randomUUID } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 import argon2 from 'argon2'
 
 import { config, isProduction } from '../../config.js'
@@ -38,14 +38,25 @@ async function verifyPassword(hash: string, plain: string): Promise<boolean> {
   }
 }
 
+/**
+ * Signs in by username or by email address.
+ *
+ * Both, deliberately. The login form asks for a username and says nothing about
+ * email — but the address is still a valid identifier here, so changing a
+ * username can never lock the only administrator out of the CMS. Nothing shows
+ * this to a visitor; it is a way back in, not a feature.
+ */
 export async function login(
   identifier: string,
   password: string,
   userAgent?: string,
 ): Promise<{ sessionId: string; user: SessionUser }> {
   const user = await queryOne<UserRow>(
-    'SELECT id, name, email, password_hash, role, active FROM users WHERE email = ? LIMIT 1',
-    [identifier.trim().toLowerCase()],
+    `SELECT id, name, email, password_hash, role, active
+       FROM users
+      WHERE username = ? OR email = ?
+      LIMIT 1`,
+    [identifier.trim().toLowerCase(), identifier.trim().toLowerCase()],
   )
 
   // Hash a dummy password when the user is missing so the response takes about
@@ -90,55 +101,13 @@ export async function logout(sessionId: string): Promise<void> {
   await execute('DELETE FROM sessions WHERE id = ?', [sessionId])
 }
 
-/** Removes every session for a user — used after a password change. */
-async function revokeAllSessions(userId: string): Promise<void> {
-  await execute('DELETE FROM sessions WHERE user_id = ?', [userId])
-}
-
-const hashToken = (token: string) => createHash('sha256').update(token).digest('hex')
-
-/**
- * Always resolves, whether or not the address exists. Returning an error for
- * unknown emails would turn this endpoint into an account-enumeration oracle.
- * The returned token is only for the caller to email — never store it raw.
+/*
+ * `requestPasswordReset` and `resetPassword` used to sit here, along with the
+ * token hashing they shared. Both went with the endpoints that called them —
+ * see the note in auth.routes.ts. `password_resets` is left in the schema and
+ * still swept by the purge below: the table is empty, dropping it is a
+ * migration nobody needs today, and keeping it costs nothing.
  */
-export async function requestPasswordReset(email: string): Promise<string | undefined> {
-  const user = await queryOne<{ id: string }>(
-    'SELECT id FROM users WHERE email = ? AND active = 1 LIMIT 1',
-    [email.trim().toLowerCase()],
-  )
-  if (!user) return undefined
-
-  const token = randomBytes(32).toString('hex')
-  await execute(
-    `INSERT INTO password_resets (token_hash, user_id, expires_at, created_at)
-     VALUES (?, ?, DATE_ADD(NOW(3), INTERVAL 1 HOUR), NOW(3))`,
-    [hashToken(token), user.id],
-  )
-
-  return token
-}
-
-export async function resetPassword(token: string, newPassword: string): Promise<void> {
-  const row = await queryOne<{ user_id: string }>(
-    `SELECT user_id FROM password_resets
-      WHERE token_hash = ? AND used_at IS NULL AND expires_at > NOW(3)
-      LIMIT 1`,
-    [hashToken(token)],
-  )
-  if (!row) throw unauthorised('This reset link is invalid or has expired.')
-
-  await execute('UPDATE users SET password_hash = ?, updated_at = NOW(3) WHERE id = ?', [
-    await hashPassword(newPassword),
-    row.user_id,
-  ])
-  await execute('UPDATE password_resets SET used_at = NOW(3) WHERE token_hash = ?', [
-    hashToken(token),
-  ])
-
-  // Anyone already signed in with the old password is signed out.
-  await revokeAllSessions(row.user_id)
-}
 
 export async function changePassword(
   userId: string,

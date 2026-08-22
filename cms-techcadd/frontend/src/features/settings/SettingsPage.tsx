@@ -365,7 +365,7 @@ function IntegrationsTab({ settings }: { settings: SiteSettings }) {
       <CardBody className="grid max-w-3xl gap-5 sm:grid-cols-2">
         <FormField
           label="WhatsApp number"
-          description="Used for the enquiry quick-reply link."
+          description="Every Book Demo, Enquire and Talk to a Counsellor button on the website opens a chat with this number. Include the country code and no leading zero, or the site keeps using its built-in number."
         >
           <Input
             value={draft.whatsappNumber ?? ''}
@@ -374,7 +374,10 @@ function IntegrationsTab({ settings }: { settings: SiteSettings }) {
           />
         </FormField>
 
-        <FormField label="Analytics ID">
+        <FormField
+          label="Analytics ID"
+          description="Google Analytics 4. Leave blank and the website loads no tracking script at all. A value that is not a measurement ID is ignored rather than published."
+        >
           <Input
             value={draft.analyticsId ?? ''}
             onChange={(event) => setDraft({ ...draft, analyticsId: event.target.value })}
@@ -383,8 +386,20 @@ function IntegrationsTab({ settings }: { settings: SiteSettings }) {
         </FormField>
 
         <FormField
+          label="reCAPTCHA site key"
+          description="From a reCAPTCHA v3 key pair at google.com/recaptcha. Fill in both this and the secret to switch spam protection on; leave either blank and the forms work exactly as before."
+          className="sm:col-span-2"
+        >
+          <Input
+            value={draft.recaptchaSiteKey ?? ''}
+            onChange={(event) => setDraft({ ...draft, recaptchaSiteKey: event.target.value })}
+            placeholder="6Lc..."
+          />
+        </FormField>
+
+        <FormField
           label="reCAPTCHA secret"
-          description="Masked by default so it is not exposed on a shared screen."
+          description="The other half of the same pair. Kept on the server and never sent to the website — masked here so it is not exposed on a shared screen."
           className="sm:col-span-2"
         >
           <Input
@@ -437,6 +452,7 @@ function UsersTab() {
    */
   const [form, setForm] = useState({
     name: '',
+    username: '',
     email: '',
     authorSlug: '',
     authorTitle: '',
@@ -449,6 +465,7 @@ function UsersTab() {
 
   const EMPTY_FORM = {
     name: '',
+    username: '',
     email: '',
     authorSlug: '',
     authorTitle: '',
@@ -467,6 +484,7 @@ function UsersTab() {
         : {
             name: user.name,
             email: user.email,
+            username: user.username ?? '',
             authorSlug: user.author?.slug ?? '',
             authorTitle: user.author?.title ?? '',
             authorBio: user.author?.bio ?? '',
@@ -487,6 +505,7 @@ function UsersTab() {
        input means. Only the networks that were filled in are sent. */
     const payload = {
       name: form.name,
+      username: form.username.trim().toLowerCase(),
       email: form.email,
       author: {
         slug: form.authorSlug.trim(),
@@ -675,7 +694,22 @@ function UsersTab() {
             />
           </FormField>
 
-          <FormField label="Email" required>
+          <FormField
+            label="Username"
+            description="What this person types at the sign-in screen. Lowercase letters, numbers, dots, dashes and underscores."
+          >
+            <Input
+              value={form.username}
+              onChange={(event) => setForm({ ...form, username: event.target.value })}
+              placeholder="techcadd-team-hsp"
+            />
+          </FormField>
+
+          <FormField
+            label="Email"
+            required
+            description="The contact address for the account. Also accepted at sign-in, so a changed username cannot lock anyone out."
+          >
             <Input
               type="email"
               value={form.email}

@@ -20,6 +20,16 @@ export const reviewSchema = z.object({
   /** Shown first on the student wall. */
   featured: z.boolean(),
   source: z.enum(['google', 'website', 'walk-in']),
+  /**
+   * A link to the review on Google, so a visitor can read it at the source.
+   *
+   * Any full URL is accepted rather than only google.com: the same review is
+   * reachable as a Maps link, a `g.page` short link or a `maps.app.goo.gl` one,
+   * and refusing those would reject links an editor has just watched work.
+   */
+  googleUrl: z
+    .union([z.url('Enter a full link, starting with https://'), z.literal('')])
+    .optional(),
   order: z.number(),
   status: z.enum(['published', 'draft', 'review']),
 })
@@ -36,6 +46,7 @@ export function emptyReview(): ReviewFormValues {
     badge: '',
     featured: false,
     source: 'google',
+    googleUrl: '',
     order: 0,
     status: 'draft',
   }

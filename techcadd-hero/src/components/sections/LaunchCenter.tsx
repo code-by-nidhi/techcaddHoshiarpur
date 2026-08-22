@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, PhoneCall } from "lucide-react";
+import { useSite } from "@/lib/cms/site-context";
 import { LAUNCH } from "@/lib/site";
 import { CTA } from "@/lib/cta";
 import { openLeadCapture } from "@/lib/demoBus";
@@ -11,6 +12,7 @@ import MagneticButton from "@/components/UI/MagneticButton";
 const ACTION_ICONS = [ArrowRight, PhoneCall];
 
 export default function LaunchCenter() {
+  const site = useSite();
   const reduced = useReducedMotion();
 
   return (
@@ -88,10 +90,14 @@ export default function LaunchCenter() {
                  shared enquiry dialog. Passing no href is what makes
                  MagneticButton render a real button rather than an anchor. */
               const lead = a.href === CTA.lead;
+              /* The data file can only name the built-in number, so the CMS
+                 one is substituted here — the same href every other WhatsApp
+                 CTA on the site resolves to. */
+              const href = a.href === CTA.whatsapp ? site.whatsappLink().href : a.href;
               return (
                 <MagneticButton
                   key={a.label}
-                  href={lead ? undefined : a.href}
+                  href={lead ? undefined : href}
                   onClick={lead ? () => openLeadCapture("hero") : undefined}
                   {...(!lead && "external" in a && a.external
                     ? { target: "_blank", rel: "noopener noreferrer" }
