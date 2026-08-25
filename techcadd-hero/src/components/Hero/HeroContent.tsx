@@ -29,11 +29,11 @@ export default function HeroContent() {
         <span className="block">{HEADING.line1}</span>
         <span className="block">{HEADING.line2}</span>
         {/*
-          w-max is load-bearing: bg-clip-text only paints glyphs that fall
-          inside the element's background box, so any letter overflowing a
-          fixed-width box renders transparent — that is the missing "r".
+          The poster's move: the phrase that says what you walk out as is the
+          one in yellow, ruled underneath. `w-max` keeps the rule the width of
+          the words rather than of the column.
         */}
-        <span className="block bg-gradient-to-r from-[#3b82f6] via-[#3b82f6] to-[#60a5fa] bg-clip-text pr-[0.08em] text-transparent lg:w-max">
+        <span className="highlight-rule block pr-[0.08em] lg:w-max">
           {HEADING.gradient}
         </span>
         <span className="block">{HEADING.line4}</span>

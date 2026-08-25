@@ -100,9 +100,17 @@ const BASE_METADATA: Metadata = {
  * The static half of the page metadata, plus the CMS favicon when one is set.
  *
  * `generateMetadata` rather than a `metadata` const purely so the icon can be
- * read from Settings — everything else here is fixed. Without an uploaded
- * favicon nothing is emitted and the browser falls back to its default, which
- * is what happened before this existed.
+ * read from Settings — everything else here is fixed.
+ *
+ * With no favicon uploaded this returns no `icons` at all, which is what lets
+ * Next fall back to the files in this directory: `favicon.ico`, `icon.png` and
+ * `apple-icon.png`, all generated from the techcadd wordmark by
+ * `scripts/build-icons.mjs`. Those are the default the site ships with.
+ *
+ * A CMS favicon still wins — but only over the tab icon. Declaring `icons`
+ * here suppresses *every* file convention, `apple-icon.png` included, so the
+ * touch icon is restated below; otherwise uploading a favicon would silently
+ * cost the site its home-screen icon.
  */
 export async function generateMetadata(): Promise<Metadata> {
   const site = await safely(getSite(), null as CmsSite | null);
@@ -112,7 +120,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     ...BASE_METADATA,
-    icons: { icon: [{ url: favicon, type: site?.favicon?.mimeType }] },
+    icons: {
+      icon: [{ url: favicon, type: site?.favicon?.mimeType }],
+      apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    },
   };
 }
 

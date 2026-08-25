@@ -2,11 +2,48 @@
    @tailwind base; @tailwind components; @tailwind utilities; */
 @import "tailwindcss";
 
+/* ==========================================================================
+   The poster palette
+   --------------------------------------------------------------------------
+   Every colour on the site resolves to one of the five families below, taken
+   off the TechCADD campus poster:
+
+     navy     the dark bands, three stops deep so a band reads as depth
+              rather than one flat fill
+     blue     the brand ramp — the deep `#142C8E` of the billboard through
+              `#2563EB` to the `#93C5FD` used for eyebrows on navy
+     yellow   the highlight, and *only* the highlight (see below)
+     paper    the light bands and the cards that sit on them
+     ink      type on paper
+
+   Yellow is the poster's one loud colour: it carries the emphasis word of a
+   headline, the primary "Enroll Today" action, and the rating stars. It is
+   deliberately scarce — spend it on the thing you want read first and nothing
+   else, or it stops meaning anything.
+   ========================================================================== */
+
 @theme {
+  /* ---- navy ---- */
+  --color-navy-700: #081B63;
+  --color-navy-800: #07164A;
+  --color-navy-900: #04103A;
   --color-void: #101E52;
+
+  /* ---- blue ---- */
+  --color-brand-deep: #142C8E;
   --color-electric: #2563EB;
   --color-violetglow: #60A5FA;
   --color-cyanglow: #60A5FA;
+  --color-skyglow: #93C5FD;
+
+  /* ---- yellow ---- */
+  --color-highlight: #FFD21F;
+  --color-highlight-deep: #E5A800;
+  --color-highlight-soft: #FFE87A;
+
+  /* ---- paper + ink ---- */
+  --color-paper-band: #F2F4F8;
+  --color-ink-strong: #0F172A;
 
   --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -18,17 +55,38 @@
   --void: #101E52;
   --electric: #3b82f6;
   --violetglow: #60a5fa;
-  --cyanglow: #22d3ee;
+
+  /* Was #22d3ee. Cyan is not on the poster; the focus ring and every other
+     consumer of this variable now take the brand's light blue. */
+  --cyanglow: #60a5fa;
 
   /*
-   * The poster palette. Three navies, lightest at the top of a section and
-   * deepest at the foot, which is what gives a band its sense of depth rather
-   * than reading as one flat fill.
+   * Three navies, lightest at the top of a section and deepest at the foot,
+   * which is what gives a band its sense of depth rather than reading as one
+   * flat fill.
    */
   --navy-700: #081b63;
   --navy-800: #07164a;
   --navy-900: #04103a;
+
+  /* The blue ramp, deepest first. */
+  --brand-deep: #142c8e;
+  --brand: #2563eb;
+  --brand-bright-blue: #60a5fa;
+  --brand-sky: #93c5fd;
+
+  /*
+   * The highlight. `--brand-yellow` is the poster value; `-deep` is the one
+   * that clears AA against white (the poster only ever puts yellow on navy,
+   * where the bright value is correct), and `-soft` is for glows and hairlines.
+   */
   --brand-yellow: #ffd21f;
+  --brand-yellow-deep: #e5a800;
+  --brand-yellow-soft: #ffe87a;
+
+  /* Paper: the light band behind "Our Popular Courses", and its cards. */
+  --paper-band: #f2f4f8;
+  --paper-card: #ffffff;
 }
 
 /*
@@ -911,6 +969,76 @@ html.custom-cursor [contenteditable="true"] {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* ==========================================================================
+   The highlight
+   --------------------------------------------------------------------------
+   The poster sets one phrase of the headline in yellow — "Advanced IT Skills"
+   — and rules it with a yellow swoosh. That is the whole idea: exactly one
+   emphasis per heading, so the eye is told where to land.
+
+   `.text-highlight` is surface aware. On navy it is the poster's bright
+   #FFD21F; on a light band that value fails contrast against white, so
+   `.surface-light` (and the plain-white sections that opt in with
+   `.on-paper`) swap it for the deeper #E5A800, which reads as the same colour
+   while clearing AA at headline weight.
+   ========================================================================== */
+
+.text-highlight {
+  color: var(--hl-fg, var(--brand-yellow));
+}
+
+.surface-light,
+.on-paper {
+  --hl-fg: var(--brand-yellow-deep);
+}
+
+/*
+ * The swoosh. Drawn as a background rather than `text-decoration` so it keeps
+ * the poster's proportions: a thick bar, sitting clear of the descenders, and
+ * inset slightly from the ends of the phrase.
+ */
+.highlight-rule {
+  color: var(--hl-fg, var(--brand-yellow));
+  background-image: linear-gradient(
+    to right,
+    var(--hl-fg, var(--brand-yellow)),
+    var(--hl-fg, var(--brand-yellow))
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 0.14em;
+  background-position: 0 calc(100% - 0.06em);
+  padding-bottom: 0.16em;
+}
+
+/*
+ * The "Enroll Today!" button: solid yellow, navy type. It is the loudest
+ * control on any page, so a route should carry at most one.
+ */
+.btn-highlight {
+  background-color: var(--brand-yellow);
+  color: var(--navy-900);
+  box-shadow: 0 0 42px -10px rgb(255 210 31 / 0.85);
+  transition:
+    background-color 0.3s var(--ease-out-soft),
+    box-shadow 0.3s var(--ease-out-soft),
+    transform 0.3s var(--ease-out-soft);
+}
+
+.btn-highlight:hover {
+  background-color: var(--brand-yellow-soft);
+  box-shadow: 0 0 68px -6px rgb(255 210 31 / 1);
+}
+
+/*
+ * A quieter yellow: the chip on a card ("Trending", "Bestseller"), where a
+ * solid fill would compete with the headline highlight.
+ */
+.chip-highlight {
+  background-color: rgb(255 210 31 / 0.14);
+  border: 1px solid rgb(255 210 31 / 0.38);
+  color: var(--hl-fg, var(--brand-yellow));
 }
 
 /* ---------- Surfaces ---------- */
