@@ -1,11 +1,18 @@
+import Navbar from "@/components/Layout/Navbar";
+
 /**
  * Skeleton shown while a course page streams in. It mirrors the real layout —
  * dark hero, fact strip, then content bands — so the shift when content
  * arrives is minimal.
+ *
+ * The navbar is rendered here because `courses/[slug]/page.tsx` renders its own
+ * and there is no courses layout holding one: without this the fixed header
+ * disappeared for as long as the placeholder was up.
  */
 export default function CourseLoading() {
   return (
-    <div aria-busy="true" aria-label="Loading course">
+    <div aria-busy="true" aria-live="polite" aria-label="Loading course">
+      <Navbar />
       <div className="relative overflow-hidden bg-[#101E52] pb-16 pt-[104px] lg:pb-20 lg:pt-[128px]">
         <div className="mx-auto w-full max-w-[1200px] px-5 sm:px-6 lg:px-8">
           <div className="h-3 w-52 animate-pulse rounded-full bg-white/10" />

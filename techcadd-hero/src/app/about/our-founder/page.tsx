@@ -3,8 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiArrowRight, FiAward, FiMessageCircle } from "react-icons/fi";
 
-import Navbar from "@/components/Layout/Navbar";
-import MegaFooter from "@/components/Layout/MegaFooter";
 import Breadcrumbs from "@/components/courses/Breadcrumbs";
 import Reveal from "@/components/UI/Reveal";
 import Counter from "@/components/UI/Counter";
@@ -44,9 +42,9 @@ export default function FounderPage() {
           ]),
         )}
       />
-      <Navbar />
-
-      <main>
+      {/* No Navbar, MegaFooter or <main> here: `about/layout.tsx` already
+          renders all three around this page. Having them here too put two
+          fixed headers, two footers and two <main> landmarks in the markup. */}
         {/* ============================== hero ============================= */}
         <section className="tech-dark relative overflow-hidden pb-20 pt-[104px] lg:pb-28 lg:pt-[132px]">
           <div className="relative mx-auto w-full max-w-[1200px] px-6 lg:px-8">
@@ -491,9 +489,6 @@ export default function FounderPage() {
             </Reveal>
           </div>
         </section>
-      </main>
-
-      <MegaFooter />
     </>
   );
 }

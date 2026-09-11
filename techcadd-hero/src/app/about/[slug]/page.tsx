@@ -3,8 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { FiArrowRight } from "react-icons/fi";
-import Navbar from "@/components/Layout/Navbar";
-import MegaFooter from "@/components/Layout/MegaFooter";
 import { ABOUT_PAGES, aboutSlugs, getAboutPage } from "@/lib/about/pages";
 import { getSiteDetails } from "@/lib/cms/site-details";
 
@@ -57,10 +55,10 @@ export default async function AboutDetailPage({
   const others = ABOUT_PAGES.filter((p) => p.slug !== page.slug);
 
   return (
+    /* No Navbar, MegaFooter or <main> here: `about/layout.tsx` already renders
+       all three around this page. Having them here too put two fixed headers,
+       two footers and two <main> landmarks in the markup. */
     <>
-      <Navbar />
-
-      <main id="content">
         <section className="relative overflow-x-clip bg-[#101E52] pb-16 pt-[calc(var(--nav-h)+3rem)] lg:pb-20">
           <span
             aria-hidden
@@ -161,9 +159,6 @@ export default async function AboutDetailPage({
             </ul>
           </div>
         </section>
-      </main>
-
-      <MegaFooter />
     </>
   );
 }

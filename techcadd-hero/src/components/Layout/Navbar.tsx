@@ -225,21 +225,24 @@ export default function Navbar() {
        */}
       <div
         /*
-         * Two themes, split at the same breakpoint the hamburger is.
+         * Two states, and the scroll position is what splits them — not the
+         * breakpoint. It used to be the other way round (white below `xl`,
+         * navy above), which meant the bar never changed as the page moved.
          *
-         * Below `xl` the bar is white — that is the mobile treatment, and it
-         * stays white at every scroll position rather than turning navy once
-         * the page moves. From `xl` up it is the hero's own ground colour, so
-         * the bar and the hero read as one surface rather than two navy bands.
+         * At the top of the page it is full-bleed navy: no margin, no radius,
+         * so it reaches both screen edges and reads as one surface with the
+         * hero underneath it.
          *
-         * The scrolled state has to carry both: a soft drop shadow and a slate
-         * hairline for the white bar, the deep navy shadow and a white hairline
-         * for the dark one.
+         * Once past the fold it detaches into a centred white capsule. The
+         * width is capped and `mx-auto` centres it, but a cap alone leaves it
+         * flush to the edges on anything narrower than the cap — hence the
+         * explicit `calc` widths, which keep a real gutter at every size and
+         * hand back to `w-full` once `max-w` is doing the work.
          */
-        className={`w-full bg-white transition-all duration-500 xl:bg-[#1E3078] ${
+        className={`mx-auto transition-all duration-500 ${
           scrolled
-            ? "border-b border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.08)] backdrop-blur-xl xl:border-white/10 xl:shadow-[0_18px_50px_-24px_rgba(0,0,0,0.9)]"
-            : "border-b border-transparent"
+            ? "mt-2 w-[calc(100%-1.5rem)] max-w-[1200px] rounded-2xl bg-white/95 shadow-[inset_0_0_0_1px_rgba(203,213,225,0.75),0_18px_50px_-24px_rgba(8,27,99,0.35)] backdrop-blur-xl sm:mt-3 sm:w-[calc(100%-3rem)] sm:rounded-[2rem] xl:w-full"
+            : "w-full border-b border-white/10 bg-[#1E3078]"
         }`}
       >
         {/*
@@ -249,14 +252,50 @@ export default function Navbar() {
          */}
         <nav
           /*
-           * 1400px, centred, 24px of gutter — and the gap between the three
-           * groups is 16px from `lg` rather than 24px. Those 16px matter: at
-           * 1280 the row has 1232px to divide between a 124px logo, a 137px
-           * button and a nav that needs 916px, and the arithmetic only closes
-           * with the tighter gap.
+           * Unscrolled the row is 1400px wide with 24px of gutter, and the gap
+           * between the three groups is 16px from `lg` rather than 24px. Those
+           * 16px matter: the row has 1232px to divide between a 124px logo, a
+           * 137px button and a nav that needs 916px, and the arithmetic only
+           * closes with the tighter gap.
+           *
+           * Scrolled, it takes the page's own column instead: 1200px wide, with
+           * 48px of gutter from `lg` up so the logo lands on the left edge of
+           * the section content below and the CTA on the right edge.
+           *
+           * 48px, and not the 32px that `lg:px-8` would suggest, because the
+           * app loads `bootstrap-grid.min.css` alongside Tailwind and
+           * Bootstrap's spacing utilities are `!important`. Every content
+           * column on the site is `max-w-[1200px] px-5 sm:px-6 lg:px-8`, and
+           * Bootstrap's `.px-5` (3rem, !important) beats all three of those —
+           * so those columns are really 48px in at every width, whatever the
+           * classes read like. The arbitrary values here are deliberate: `px-4`
+           * and `px-5` are names Bootstrap also defines, so using them would
+           * hand the number back to it, while `px-[16px]` is ours alone.
+           *
+           * That costs ~96px of row width against the old 1280/24px, which is
+           * why the scrolled list drops a point of type and a couple of px of
+           * gap below — see the list's own note.
+           *
+           * The gutter is 24 below `xl` and 48 at `xl`, because the capsule's
+           * own margin makes up the difference. Under the 1200px cap the
+           * capsule is inset 24px by `calc(100% - 3rem)` and the content
+           * column is not, so 24 + 24 lands on the column's 48; once the cap
+           * holds (`calc(100vw - 3rem) == 1200` at 1248px) the two left edges
+           * coincide and the gutter has to carry all 48 itself.
+           *
+           * Between 1248 and 1280 the cap has engaged but `xl` has not, so the
+           * logo sits 24px inside the column there. That window is 32px of
+           * viewport wide and below the breakpoint where this list is shown at
+           * all, and the exact switch — `min-[1248px]:` — is an arbitrary
+           * variant this build does not emit, so `xl` is the honest choice.
+           *
+           * Phones keep 16 and give up the alignment: holding it would need
+           * 36, which overflows the row on a 320px screen.
            */
-          className={`mx-auto flex w-full max-w-[1400px] flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap px-4 transition-all duration-500 sm:gap-3 sm:px-6 lg:gap-3 ${
-            scrolled ? "h-[60px] sm:h-[68px]" : "h-[68px] sm:h-[86px]"
+          className={`mx-auto flex w-full flex-nowrap items-center justify-between gap-2.5 whitespace-nowrap transition-all duration-500 sm:gap-3 lg:gap-3 ${
+            scrolled
+              ? "h-[52px] max-w-[1200px] px-[16px] sm:h-[58px] sm:px-[24px] xl:px-[48px]"
+              : "h-[68px] max-w-[1400px] px-4 sm:h-[86px] sm:px-6"
           }`}
         >
           {/*
@@ -280,10 +319,13 @@ export default function Navbar() {
            * 130px at 1280 and 1600. Neither may shrink now; the gaps below are
            * what create the room instead.
            */}
+          {/* The optical margin is dropped in the scrolled state: there the
+              whole point is that the wordmark's left edge sits exactly on the
+              content column's, and a nudge of any size breaks that. */}
           <Link
             href="/"
             aria-label="TechCadd — home"
-            className="ml-1 shrink-0 sm:ml-2 lg:ml-3"
+            className={`shrink-0 ${scrolled ? "ml-0" : "ml-1 sm:ml-2 lg:ml-3"}`}
           >
             {/*
              * Two files rather than a CSS filter.
@@ -296,27 +338,29 @@ export default function Navbar() {
              * Both are `priority`: this sits above the fold on every route, and
              * only one of the pair is ever displayed.
              */}
-            <Image
-              src={site.logo("light").src}
-              alt={site.logo("light").alt}
-              width={site.logo("light").width}
-              height={site.logo("light").height}
-              priority
-              className={`w-auto object-contain transition-all duration-500 sm:max-w-none xl:hidden ${
-                scrolled
-                  ? "h-[30px] max-w-[112px] sm:h-[42px]"
-                  : "h-[34px] max-w-[124px] sm:h-[52px]"
-              }`}
-            />
+            {/* Which ground the bar is drawing on is now a scroll state, so
+                this pair is picked by `scrolled` rather than by breakpoint:
+                the white mark over the navy bar, the blue one over the white
+                capsule. Swapping these two is how you get an invisible logo. */}
             <Image
               src={site.logo("dark").src}
-              alt=""
-              aria-hidden
+              alt={site.logo("dark").alt}
               width={site.logo("dark").width}
               height={site.logo("dark").height}
               priority
-              className={`hidden w-auto object-contain transition-all duration-500 sm:max-w-none xl:block ${
-                scrolled ? "h-[42px]" : "h-[52px]"
+              className={`w-auto object-contain transition-all duration-500 sm:max-w-none ${
+                scrolled ? "hidden" : "h-[34px] max-w-[124px] sm:h-[52px]"
+              }`}
+            />
+            <Image
+              src={site.logo("light").src}
+              alt=""
+              aria-hidden
+              width={site.logo("light").width}
+              height={site.logo("light").height}
+              priority
+              className={`w-auto object-contain transition-all duration-500 sm:max-w-none ${
+                scrolled ? "h-[28px] max-w-[112px] sm:h-[34px]" : "hidden"
               }`}
             />
           </Link>
@@ -333,7 +377,17 @@ export default function Navbar() {
            * gap closes a 233px gap — the labels would have to drop to about
            * 10.6px to fit. Below 1280 the hamburger is the honest answer.
            */}
-          <ul className="hidden min-w-0 shrink-0 flex-nowrap items-center gap-x-[10px] xl:flex 2xl:gap-x-[16px]">
+          {/*
+           * Scrolled, the gap is a flat 9px at every width — no `2xl` bump.
+           * The bump exists because the unscrolled row gets wider as the
+           * viewport does; the scrolled row is pinned to 1200px and does not,
+           * so widening the gaps there would only push the list into the CTA.
+           */}
+          <ul
+            className={`hidden min-w-0 shrink-0 flex-nowrap items-center xl:flex ${
+              scrolled ? "gap-x-[9px]" : "gap-x-[10px] 2xl:gap-x-[16px]"
+            }`}
+          >
             {NAV_LINKS.map((link) => {
               const current = isActive(link.href);
               const megaKey = opensPanel(link.label) ? link.label : null;
@@ -344,9 +398,11 @@ export default function Navbar() {
                    the left on hover for the others */
                 <span
                   aria-hidden
-                  className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] shadow-[0_0_10px_rgba(59,130,246,0.9)] transition-[width] duration-300 ease-out ${
-                    current || thisOpen ? "w-full" : "w-0 group-hover:w-full"
-                  }`}
+                  className={`absolute -bottom-0.5 left-0 h-[2px] rounded-full bg-gradient-to-r from-[#142C8E] to-[#2563EB] transition-[width] duration-300 ease-out ${
+                    /* the glow is what makes it read against navy; over the
+                       white capsule it just smears the underline */
+                    scrolled ? "" : "shadow-[0_0_10px_rgba(59,130,246,0.9)]"
+                  } ${current || thisOpen ? "w-full" : "w-0 group-hover:w-full"}`}
                 />
               );
               const isAi = link.label === "AI";
@@ -365,7 +421,11 @@ export default function Navbar() {
                   {link.dropdown && (
                     <ChevronDown
                       aria-hidden
-                      className={`size-3.5 translate-y-px text-white/60 transition-transform duration-300 group-hover:text-white/90 ${
+                      className={`size-3.5 translate-y-px transition-transform duration-300 ${
+                        scrolled
+                          ? "text-[#64748B] group-hover:text-[#142C8E]"
+                          : "text-white/60 group-hover:text-white/90"
+                      } ${
                         thisOpen ? "translate-y-0.5 rotate-180" : "group-hover:translate-y-0.5"
                       }`}
                     />
@@ -373,8 +433,25 @@ export default function Navbar() {
                   {indicator}
                 </>
               );
-              const face_class = `group relative inline-flex items-center gap-1 whitespace-nowrap py-1 text-[13.5px] transition-colors duration-300 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)] 2xl:text-[15px] ${
-                current || thisOpen ? "font-medium text-white" : "text-white/90"
+              /*
+               * Two palettes, one for each ground. The white-on-navy set is
+               * what the bar has always used; the navy-on-white set is new,
+               * and without it every label goes invisible the moment the
+               * capsule turns white. The blue-glow hover only belongs to the
+               * dark half — on white it reads as a blur, not a highlight.
+               */
+              const face_class = `group relative inline-flex items-center gap-1 whitespace-nowrap py-1 transition-colors duration-300 ${
+                scrolled
+                  ? `text-[12.5px] ${
+                      current || thisOpen
+                        ? "font-medium text-[#142C8E]"
+                        : "text-[#334155] hover:text-[#142C8E]"
+                    }`
+                  : `text-[13.5px] 2xl:text-[15px] ${
+                      current || thisOpen
+                        ? "font-medium text-white"
+                        : "text-white/90 hover:text-white hover:drop-shadow-[0_0_10px_rgba(96,165,250,0.9)]"
+                    }`
               }`;
 
               return (
@@ -442,7 +519,13 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => openLeadCapture("navbar")}
-                className="tap-44 inline-block whitespace-nowrap rounded-full border border-white/20 bg-gradient-to-r from-[#142C8E] to-[#2563EB] px-3.5 py-2 text-[13.5px] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-shadow duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
+                /* the white hairline only does anything against navy; on the
+                   white capsule it eats a pixel off the gradient */
+                className={`tap-44 inline-block whitespace-nowrap rounded-full border bg-gradient-to-r from-[#142C8E] to-[#2563EB] font-semibold text-white shadow-[0_0_30px_-4px_rgba(37,99,235,0.9)] backdrop-blur-xl transition-all duration-300 hover:shadow-[0_0_50px_0_rgba(59,130,246,1)] ${
+                  scrolled
+                    ? "border-transparent px-3.5 py-1.5 text-[12.5px] sm:px-5 sm:py-[7px] sm:text-[13.5px]"
+                    : "border-white/20 px-3.5 py-2 text-[13.5px] sm:px-[26px] sm:py-[11px] sm:text-[15px]"
+                }`}
               >
                 Book Demo
               </button>
@@ -455,7 +538,13 @@ export default function Navbar() {
               aria-expanded={open}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 400, damping: 18 }}
-              className="grid size-9 shrink-0 place-items-center rounded-lg text-[#081B63] transition-colors hover:bg-[#081B63]/[0.07] sm:size-10 xl:hidden"
+              /* navy glyph on the white capsule, white on the navy bar — it
+                 was navy in both, which hid it completely over the hero */
+              className={`grid size-9 shrink-0 place-items-center rounded-lg transition-colors sm:size-10 xl:hidden ${
+                scrolled
+                  ? "text-[#081B63] hover:bg-[#081B63]/[0.07]"
+                  : "text-white hover:bg-white/10"
+              }`}
             >
               {/* the two glyphs cross-fade with a quarter turn */}
               <AnimatePresence mode="wait" initial={false}>
