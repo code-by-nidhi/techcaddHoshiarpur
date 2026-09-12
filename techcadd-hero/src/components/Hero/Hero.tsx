@@ -27,7 +27,17 @@ export default function Hero() {
          * lg, which is exactly the bar height, so the copy began the
          * moment the navbar ended with no breathing room at all.
          */
-        className="mx-auto grid min-h-[100svh] w-full max-w-[1600px] grid-cols-1 items-center gap-10 px-6 pb-16 pt-[calc(var(--nav-h)+1.75rem)] sm:pt-[calc(var(--nav-h)+2.5rem)] lg:grid-cols-[minmax(0,44%)_minmax(0,56%)] lg:gap-4 lg:px-[4.5rem] lg:pb-10 lg:pt-[calc(var(--nav-h)+3.75rem)]">
+        /*
+         * The bottom padding carries `--stats-lift` on top of its own value.
+         *
+         * EnterpriseStats is pulled up by exactly that much to sit on this
+         * section's edge, and without the reserve it landed on the feature
+         * chips and cut them in half. Because the box is border-box, adding it
+         * does not make the hero taller than the 100svh below — the content
+         * simply centres in what is left, which is the intent: the cards
+         * overlap empty navy.
+         */
+        className="mx-auto grid min-h-[100svh] w-full max-w-[1600px] grid-cols-1 items-center gap-10 px-6 pb-[calc(4rem+var(--stats-lift))] pt-[calc(var(--nav-h)+1.75rem)] sm:pt-[calc(var(--nav-h)+2.5rem)] lg:grid-cols-[minmax(0,44%)_minmax(0,56%)] lg:gap-4 lg:px-[4.5rem] lg:pb-[calc(2.5rem+var(--stats-lift))] lg:pt-[calc(var(--nav-h)+3.75rem)]">
         <HeroContent />
         <RobotShowcase />
       </div>

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
-  ArrowRight, Briefcase, Building2, CalendarClock, GraduationCap, Phone, Users,
+  ArrowRight, Briefcase, Building2, Phone, Users,
   type LucideIcon,
 } from "lucide-react";
 import { ABOUT, VALUES } from "@/lib/site";
@@ -71,9 +71,9 @@ const NOISE =
 export default function About() {
   return (
     <section id="about" className="relative overflow-x-clip tech-light">
-      {/* eases the dark hero into the white page */}
-      <div aria-hidden className="h-16 bg-gradient-to-b from-[#101E52] to-white" />
-
+      {/* No hero-to-white gradient here any more: EnterpriseStats sits between
+          the hero and this section now and carries the transition, so by the
+          time About starts the page has already arrived on white. */}
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:px-[4.5rem]">
         {/* opening statement, with the photo collage opposite */}
         <div className="relative section-pad">
@@ -116,8 +116,6 @@ export default function About() {
               <AboutVideo />
             </div>
           </div>
-
-          <EnterpriseStats />
         </div>
 
         <TrainingFormats />
@@ -155,64 +153,6 @@ export default function About() {
         </div>
       </div>
     </section>
-  );
-}
-
-/* ----------------------------- headline stats ----------------------------- */
-
-/** Blue line icons for the stat cards, one per figure. */
-const STAT_ICONS: Record<string, LucideIcon> = {
-  students: Users,
-  partners: Building2,
-  training: Briefcase,
-  years: CalendarClock,
-  trainers: GraduationCap,
-};
-
-/**
- * The five headline numbers, as a row of white cards.
- *
- * Five across on a desktop and two on a phone, which leaves the fifth card
- * alone on its own row — `last:odd:col-span-2` widens it to fill the row rather
- * than leaving a hole beside it.
- */
-function EnterpriseStats() {
-  return (
-    <motion.ul
-      variants={cardStack}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
-      className="mt-16 grid grid-cols-2 gap-4 sm:gap-5 lg:mt-20 lg:grid-cols-5"
-    >
-      {ABOUT.enterpriseStats.map((stat) => {
-        const Icon = STAT_ICONS[stat.icon] ?? Users;
-        return (
-          <motion.li
-            key={stat.label}
-            variants={cardItem}
-            className="group rounded-[20px] border border-slate-200/70 bg-white p-5 text-center shadow-[0_16px_40px_-28px_rgba(15,23,42,0.45)] transition-[transform,box-shadow,border-color] duration-500 ease-out hover:-translate-y-2 hover:border-[#2563EB]/30 hover:shadow-[0_30px_60px_-28px_rgba(37,99,235,0.55)] last:odd:col-span-2 motion-reduce:hover:translate-y-0 lg:p-6 lg:last:odd:col-span-1"
-          >
-            <span
-              aria-hidden
-              className="mx-auto grid size-11 place-content-center rounded-2xl bg-gradient-to-br from-[#2563EB]/12 to-[#60A5FA]/12 ring-1 ring-inset ring-[#2563EB]/15 transition-transform duration-500 group-hover:scale-110 motion-reduce:group-hover:scale-100"
-            >
-              <Icon className="size-5 text-[#2563EB]" />
-            </span>
-
-            <Counter
-              to={stat.to}
-              suffix={stat.suffix}
-              className="mt-3.5 block font-[family-name:var(--font-poppins)] text-[clamp(1.5rem,2.4vw,2.05rem)] font-extrabold leading-none tracking-[-0.03em] text-[#0F172A]"
-            />
-
-            <span className="mt-2 block text-[12.5px] font-medium leading-snug text-[#64748B] lg:text-[13px]">
-              {stat.label}
-            </span>
-          </motion.li>
-        );
-      })}
-    </motion.ul>
   );
 }
 

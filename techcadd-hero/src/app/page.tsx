@@ -2,6 +2,7 @@ import Navbar from "@/components/Layout/Navbar";
 import Hero from "@/components/Hero/Hero";
 import MegaFooter from "@/components/Layout/MegaFooter";
 import About from "@/components/sections/About";
+import EnterpriseStats from "@/components/sections/EnterpriseStats";
 import FeaturedCourses from "@/components/sections/FeaturedCourses";
 import WhyChoose from "@/components/sections/WhyChoose";
 import CareerOutcomes from "@/components/sections/CareerOutcomes";
@@ -55,6 +56,13 @@ export default async function Home() {
       <Navbar />
       <main id="home">
         <Hero />
+        {/*
+         * The headline numbers, between the hero and About rather than inside
+         * About where they used to sit. They also carry the navy-to-white
+         * hand-off the hero needs — the cards are drawn over that gradient —
+         * so this section and About must stay adjacent and in this order.
+         */}
+        <EnterpriseStats />
         <About />
         <FeaturedCourses />
         {/*

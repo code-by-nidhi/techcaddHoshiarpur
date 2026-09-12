@@ -131,8 +131,47 @@ main {
   }
 }
 
+/*
+ * How far the headline-stats row is lifted over the hero.
+ *
+ * Published for the same reason as --nav-h: two components have to agree on it
+ * or the overlap breaks. EnterpriseStats pulls itself up by this much and
+ * starts its ground and its fade at the same offset, and the hero adds it to
+ * its own bottom padding so the cards overlap reserved space rather than the
+ * feature chips. Change it here and both ends move together.
+ *
+ * Smaller on phones: the cards are taller there (two columns, wrapped labels)
+ * and the hero has far less room to give.
+ */
+:root {
+  --stats-lift: 4.5rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --stats-lift: 7rem;
+  }
+}
+
 html {
   scroll-behavior: smooth;
+
+  /*
+   * Positioned so Framer Motion can measure scroll offsets against it.
+   *
+   * `useScroll({ target })` — ProgrammeRoadmap's pinned track uses it — takes
+   * the document element as its scroll container when none is named, and
+   * Framer warns in development that a `static` container makes a target's
+   * relative position hard to measure. This is the container it means.
+   *
+   * Safe here because nothing absolutely positioned on the site resolves
+   * against the initial containing block: every such element sits inside a
+   * `relative` section, and the fixed navbar and floating buttons ignore this
+   * entirely. Verified by diffing full-page screenshots of /, /about,
+   * /courses and /contact at four scroll depths before and after — identical,
+   * with document heights unchanged.
+   */
+  position: relative;
 }
 
 body {
