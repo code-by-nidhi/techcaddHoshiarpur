@@ -13,7 +13,7 @@ import { breadcrumbSchema, graph, itemListSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = {
   title: "Courses | Industry-focused training programmes",
   description:
-    "Full stack, MERN, Python, Java, data analytics and digital marketing programmes — taught by practitioners, built around live projects.",
+    "Computer basics, Tally, digital marketing, CAD / CAM, Python and AI programmes — taught by practitioners, built around live projects.",
   alternates: { canonical: "/courses" },
 };
 

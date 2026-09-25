@@ -13,13 +13,13 @@ import { z } from "zod";
 
 /** The courses offered in the modal's dropdown, in display order. */
 export const COURSES = [
-  "MERN Stack Development",
-  "Full Stack Development",
-  "AI & Machine Learning",
-  "Data Science",
-  "Cloud & DevOps",
+  "Basic Computer & MS Office",
+  "Typing (Punjabi / English)",
+  "Tally & Accounting",
   "Digital Marketing",
-  "AutoCAD / Civil CAD",
+  "CAD / CAM",
+  "Python & Web Development",
+  "Generative AI",
 ] as const;
 
 export type Course = (typeof COURSES)[number];

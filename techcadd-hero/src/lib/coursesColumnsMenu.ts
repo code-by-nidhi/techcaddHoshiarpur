@@ -11,13 +11,14 @@ import type { ColumnsMenu } from "@/lib/internshipMenu";
 
 /** One line under each column heading, matching the Training panel's rhythm. */
 const COLUMN_BLURB: Record<string, string> = {
-  programming: "Languages, frameworks and full stack tracks",
-  marketing: "Campaigns, content and the platforms behind them",
-  ai: "Models, data and the tooling around them",
-  engineering: "Design and drafting for engineering streams",
+  basics: "Office, typing, GST and billing skills",
+  marketing: "Promote a business online",
+  engineering: "Mechanical and civil design",
+  programming: "Python, AI and websites",
 };
 
 export const COURSES_COLUMNS_MENU: ColumnsMenu = {
+  numbered: true,
   columns: COURSE_MENU.map((category) => ({
     id: category.id,
     heading: category.heading,

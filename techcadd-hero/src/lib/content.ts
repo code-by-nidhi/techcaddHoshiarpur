@@ -15,7 +15,6 @@ export const NAV_LINKS = [
   /* Promoted out of the About Us panel to the bar itself. The page it opens is
      the one that was already there — no new route. */
   { label: "Founder", href: "/about/our-founder", dropdown: false },
-  { label: "AI", href: "/courses", dropdown: true },
   { label: "Courses", href: "/courses", dropdown: true },
   { label: "Internship & Training", href: "/#included", dropdown: true },
   { label: "After 12th", href: "/courses", dropdown: true },
@@ -86,14 +85,14 @@ export const COURSE_TAGS: CourseTag[] = [
    * and six, where the full width of the stage is free. That single choice is
    * what lets the robot stay as large as it does while nothing overlaps.
    *
-   *   0 deg  top          Full Stack Development  230px  (widest)
-   *   50     upper right  MERN Stack              155
-   *   90     right        AI / ML                 121  (narrow: side)
-   *   130    lower right  Data Science            161
+   *   0 deg  top          Digital Marketing       230px  (widest)
+   *   50     upper right  SolidWorks              155
+   *   90     right        Gen AI                  121  (narrow: side)
+   *   130    lower right  AutoCAD                 161
    *   180    bottom       Cloud Computing         190
    *   230    lower left   Web Development         187
    *   270    left         Python                  113  (narrowest: side)
-   *   310    upper left   Data Analytics          171
+   *   310    upper left   CNC Programming         171
    *
    * The steps are 50/40/40/50 rather than a flat 45, and that is measured too.
    * At an even 45 the upper-right tag sits only 0.29 x ry below the top one --
@@ -105,12 +104,12 @@ export const COURSE_TAGS: CourseTag[] = [
    * artwork. 50 is the window where both hold. The ring still reads as evenly
    * distributed; it is just no longer a clock face.
    */
-  { id: "aiml", label: "AI / ML", icon: "brain", angle: 90, delay: 0, effect: "holo", color: [0.55, 0.45, 1] },
+  { id: "genai", label: "Gen AI", icon: "brain", angle: 90, delay: 0, effect: "holo", color: [0.55, 0.45, 1] },
   { id: "python", label: "Python", icon: "python", angle: 270, delay: 0.7, effect: "pulse", color: [1, 0.83, 0.23] },
-  { id: "mern", label: "MERN Stack", icon: "layers", angle: 50, delay: 1.4, effect: "pulse", color: [0.24, 0.85, 0.68] },
-  { id: "analytics", label: "Data Analytics", icon: "chart", angle: 310, delay: 2.1, effect: "chart", color: [0.31, 0.72, 1] },
-  { id: "datascience", label: "Data Science", icon: "globe", angle: 130, delay: 2.8, effect: "chart", color: [0.45, 0.62, 1] },
-  { id: "cloud", label: "Cloud Computing", icon: "cloud", angle: 180, delay: 3.5, effect: "holo", color: [0.4, 0.85, 1] },
-  { id: "fullstack", label: "Full Stack Development", icon: "code", angle: 0, delay: 4.2, effect: "pulse", color: [0.7, 0.45, 1] },
+  { id: "solidworks", label: "SolidWorks", icon: "layers", angle: 50, delay: 1.4, effect: "pulse", color: [0.24, 0.85, 0.68] },
+  { id: "cnc", label: "CNC Programming", icon: "code", angle: 310, delay: 2.1, effect: "chart", color: [0.31, 0.72, 1] },
+  { id: "autocad", label: "AutoCAD", icon: "layers", angle: 130, delay: 2.8, effect: "chart", color: [0.45, 0.62, 1] },
+  { id: "tally", label: "Tally Prime", icon: "chart", angle: 180, delay: 3.5, effect: "holo", color: [0.4, 0.85, 1] },
+  { id: "marketing", label: "Digital Marketing", icon: "globe", angle: 0, delay: 4.2, effect: "pulse", color: [0.7, 0.45, 1] },
   { id: "webdev", label: "Web Development", icon: "react", angle: 230, delay: 4.9, effect: "pulse", color: [0.38, 0.85, 0.98] },
 ];

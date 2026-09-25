@@ -1,5 +1,4 @@
 import {
-  Brain, Code2, BarChart3, Megaphone, Cloud,
   Rocket, Users, GraduationCap, FlaskConical, Compass, BadgeCheck,
 } from "lucide-react";
 import { CTA } from "@/lib/cta";
@@ -41,24 +40,6 @@ export const ABOUT = {
     { title: "Mentor Sessions", tone: "from-blue-500/35 to-sky-500/25" },
   ],
 };
-
-/* ------------------------------ courses -------------------------------- */
-
-export const CATEGORIES = [
-  { icon: Brain, title: "Artificial Intelligence", copy: "Neural networks, LLMs and computer vision, taught with the maths that makes them work.", gradient: "from-[#2563EB] to-[#2563EB]" },
-  { icon: Code2, title: "Full Stack Development", copy: "Front to back, database to deploy — MERN, Java and Next.js.", gradient: "from-[#60A5FA] to-[#1D4ED8]" },
-  { icon: BarChart3, title: "Data Science", copy: "Python, statistics and modelling, plus the storytelling that sells the result.", gradient: "from-[#0891B2] to-[#60A5FA]" },
-  { icon: Megaphone, title: "Digital Marketing", copy: "Performance marketing, SEO and analytics that tie spend to revenue.", gradient: "from-[#1D4ED8] to-[#60A5FA]" },
-  { icon: Cloud, title: "Cloud & DevOps", copy: "AWS, Docker, Kubernetes and pipelines that deploy themselves.", gradient: "from-[#0D9488] to-[#60A5FA]" },
-];
-
-export const COURSES = [
-  { icon: Brain, title: "AI & Machine Learning", copy: "Build, train and deploy models — from the maths underneath to a system running in production.", duration: "6 months", accent: "#2563EB" },
-  { icon: Code2, title: "Full Stack Development", copy: "MERN and Next.js end to end, with real code review and three deployed applications to show for it.", duration: "6 months", accent: "#60A5FA" },
-  { icon: BarChart3, title: "Data Science", copy: "Statistics you actually use, SQL you can be tested on, and dashboards a business will act on.", duration: "5 months", accent: "#60A5FA" },
-  { icon: Megaphone, title: "Digital Marketing", copy: "Run live campaigns with a real budget, then report on them the way an agency lead expects.", duration: "4 months", accent: "#60A5FA" },
-  { icon: Cloud, title: "Cloud & DevOps", copy: "Ship a service, containerise it, automate the pipeline and keep it running under load.", duration: "5 months", accent: "#60A5FA" },
-];
 
 /* ------------------------------- why us -------------------------------- */
 
@@ -143,41 +124,35 @@ export type Domain = {
 };
 
 export const UNIVERSE: Domain[] = [
-  { id: "fullstack", label: "Full Stack Development", short: "Full Stack", accent: "#2563EB",
-    tech: ["React", "Next.js", "Node.js", "Express", "MongoDB", "TypeScript"],
-    projects: ["E-Commerce Platform", "CRM Dashboard", "Job Portal", "Admin Panel"],
-    industries: ["SaaS Products", "Startups", "Enterprise Applications"],
-    careers: ["Frontend Developer", "Backend Developer", "MERN Developer", "Full Stack Engineer"],
+  { id: "web", label: "Python & Web Development", short: "Python & Web", accent: "#2563EB",
+    tech: ["Python", "HTML & CSS", "JavaScript", "Django", "WordPress", "Git"],
+    projects: ["Business Website", "Python Automation Scripts", "Blog with CMS", "Web App with Database"],
+    industries: ["Small Businesses", "Startups", "Agencies"],
+    careers: ["Python Developer", "Web Developer", "Web Designer", "WordPress Developer"],
     placement: "95% Placement Assistance" },
-  { id: "ai", label: "Artificial Intelligence", short: "AI", accent: "#2563EB",
-    tech: ["PyTorch", "TensorFlow", "LLMs", "OpenCV", "Hugging Face", "MLOps"],
-    projects: ["Document Q&A with RAG", "Defect detection on a factory line", "Recommendation engine", "Vision inspection pipeline"],
-    industries: ["Support Automation", "Quality Inspection", "Personalisation"],
-    careers: ["ML Engineer", "AI Developer", "Computer Vision Engineer", "Applied Researcher"],
+  { id: "ai", label: "Generative AI", short: "Gen AI", accent: "#2563EB",
+    tech: ["ChatGPT", "Prompting", "Python", "OpenAI API", "Automation", "AI Image Tools"],
+    projects: ["AI Chat Assistant", "Content Generation Workflow", "Document Summariser", "AI-Powered Automation"],
+    industries: ["Support Automation", "Content & Media", "Productivity"],
+    careers: ["AI Developer", "Prompt Engineer", "AI Automation Specialist", "Python Developer"],
     placement: "95% Placement Assistance" },
-  { id: "cloud", label: "Cloud & DevOps", short: "Cloud & DevOps", accent: "#3B82F6",
-    tech: ["AWS", "Docker", "Kubernetes", "Terraform", "Jenkins", "GitHub Actions"],
-    projects: ["Zero-downtime deploy pipeline", "Serverless image pipeline", "Autoscaling K8s cluster", "Infrastructure as code"],
-    industries: ["Infrastructure Migration", "Release Automation", "Platform Reliability"],
-    careers: ["Cloud Engineer", "DevOps Engineer", "Site Reliability Engineer", "Platform Engineer"],
-    placement: "95% Placement Assistance" },
-  { id: "data", label: "Data Analytics", short: "Data Analytics", accent: "#60A5FA",
-    tech: ["Python", "Pandas", "SQL", "Power BI", "Tableau", "Statistics"],
-    projects: ["Churn prediction model", "Sales analytics dashboard", "Pricing experiment analysis", "Customer segmentation"],
-    industries: ["Retention Strategy", "Demand Forecasting", "Executive Reporting"],
-    careers: ["Data Analyst", "Data Scientist", "BI Developer", "Analytics Consultant"],
+  { id: "accounting", label: "Basics & Accounting", short: "Accounting", accent: "#3B82F6",
+    tech: ["MS Office", "Advance Excel", "Tally Prime", "QuickBooks", "GST", "Typing"],
+    projects: ["GST Billing Setup", "Company Accounts in Tally", "Excel MIS Reports", "Payroll Sheet"],
+    industries: ["Retail & Trading", "CA Firms", "Offices"],
+    careers: ["Accountant", "Tally Operator", "Computer Operator", "Data Entry Operator"],
     placement: "95% Placement Assistance" },
   { id: "marketing", label: "Digital Marketing", short: "Digital Marketing", accent: "#60A5FA",
-    tech: ["SEO", "Meta Ads", "Google Ads", "GA4", "Content", "Marketing Automation"],
-    projects: ["Full-funnel campaign with live budget", "SEO audit and rebuild", "Lifecycle email flow", "Landing page CRO test"],
-    industries: ["Lead Generation", "Brand Growth", "Attribution Reporting"],
-    careers: ["Performance Marketer", "SEO Specialist", "Growth Analyst", "Campaign Manager"],
+    tech: ["SEO", "SMO", "Google Ads", "Meta Ads", "GA4", "Content"],
+    projects: ["Full-funnel campaign with live budget", "SEO audit and rebuild", "Social media calendar", "Landing page CRO test"],
+    industries: ["Lead Generation", "Brand Growth", "Local Business"],
+    careers: ["Digital Marketer", "SEO Specialist", "Social Media Manager", "Ads Specialist"],
     placement: "95% Placement Assistance" },
   { id: "cad", label: "CAD / CAM", short: "CAD / CAM", accent: "#0D9488",
-    tech: ["AutoCAD", "SolidWorks", "CATIA", "Creo", "ANSYS", "NX CAM"],
+    tech: ["AutoCAD", "SolidWorks", "CATIA", "NX CAD", "Mastercam", "CNC"],
     projects: ["Parametric part library", "Sheet metal enclosure", "CNC toolpath programme", "Assembly and GD&T drawing set"],
-    industries: ["Manufacturing", "Automotive", "Architecture & Interiors"],
-    careers: ["Design Engineer", "CAD Draughtsman", "CAM Programmer", "Product Designer"],
+    industries: ["Manufacturing", "Automotive", "Tool Rooms"],
+    careers: ["Design Engineer", "CAD Draughtsman", "CAM Programmer", "CNC Programmer"],
     placement: "95% Placement Assistance" },
 ];
 

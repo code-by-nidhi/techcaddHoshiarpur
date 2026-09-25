@@ -75,7 +75,7 @@ export default async function ProgrammePage({
   const category = CATEGORY_META[programme.category];
   /* the enquiry form takes a Course; AI is the safe generic subject here, and
      the programme name travels in the message metadata */
-  const enquirySubject = getCourse("artificial-intelligence");
+  const enquirySubject = getCourse("generative-ai");
 
   return (
     <>

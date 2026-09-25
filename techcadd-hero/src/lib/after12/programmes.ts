@@ -77,7 +77,7 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     badge: "Trending",
     duration: "6 months",
     summary: "The maths that matters, then models you train, evaluate and deploy.",
-    courseSlugs: ["machine-learning", "artificial-intelligence"],
+    courseSlugs: [],
   },
 
   /* ---------------------------- 1 year certificates --------------------- */
@@ -88,7 +88,7 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     badge: "Trending",
     duration: "1 year",
     summary: "A full year on generative systems, from prompting through retrieval to agents.",
-    courseSlugs: ["generative-ai", "prompt-engineering", "rag-retrieval-augmented-generation", "agentic-ai"],
+    courseSlugs: ["generative-ai"],
   },
   {
     slug: "cloud-computing-devops",
@@ -104,7 +104,7 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     category: "1-year-certificates",
     duration: "1 year",
     summary: "Analysis, visualisation and modelling, built around a portfolio of real datasets.",
-    courseSlugs: ["data-science", "data-analytics", "power-bi", "tableau"],
+    courseSlugs: [],
   },
   {
     slug: "machine-learning-deep-learning",
@@ -112,7 +112,7 @@ export const AFTER12_PROGRAMMES: After12Programme[] = [
     category: "1-year-certificates",
     duration: "1 year",
     summary: "Classical models first, then neural networks and the training loop in depth.",
-    courseSlugs: ["machine-learning", "deep-learning"],
+    courseSlugs: [],
   },
 
   /* ----------------------------- civil / mechanical --------------------- */

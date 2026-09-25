@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
-  FiArrowRight, FiAward, FiBarChart2, FiBriefcase, FiCheck, FiCloud, FiCode, FiCpu,
+  FiArrowRight, FiAward, FiBarChart2, FiBriefcase, FiCheck, FiCode, FiCpu,
   FiFileText, FiLayers, FiMail, FiMap, FiMessageCircle, FiPenTool, FiPhone,
   FiTarget, FiTrendingUp, FiUsers,
 } from "react-icons/fi";
@@ -25,60 +25,47 @@ type CareerPath = {
 
 const PATHS: CareerPath[] = [
   {
-    id: "mern",
-    label: "MERN Stack Development",
-    icon: FiLayers,
+    id: "python",
+    label: "Python & Web Development",
+    icon: FiCode,
     tint: "from-[#142C8E] to-[#2563EB]",
     featured: true,
-    roles: [
-      "Frontend Developer",
-      "React Developer",
-      "MERN Stack Developer",
-      "Full Stack Engineer",
-      "Software Engineer",
-    ],
+    roles: ["Python Developer", "Web Developer", "Web Designer", "WordPress Developer", "Backend Developer"],
   },
   {
     id: "ai",
-    label: "AI & Machine Learning",
+    label: "Generative AI",
     icon: FiCpu,
     tint: "from-[#142C8E] to-[#2563EB]",
-    roles: ["ML Engineer", "AI Developer", "Computer Vision Engineer", "NLP Engineer", "Applied Researcher"],
-  },
-  {
-    id: "data",
-    label: "Data Science",
-    icon: FiBarChart2,
-    tint: "from-[#0891B2] to-[#60A5FA]",
-    roles: ["Data Scientist", "Data Analyst", "BI Developer", "Analytics Consultant"],
-  },
-  {
-    id: "cloud",
-    label: "Cloud & DevOps",
-    icon: FiCloud,
-    tint: "from-[#0D9488] to-[#60A5FA]",
-    roles: ["Cloud Engineer", "DevOps Engineer", "Site Reliability Engineer", "Platform Engineer"],
-  },
-  {
-    id: "python",
-    label: "Python Development",
-    icon: FiCode,
-    tint: "from-[#142C8E] to-[#2563EB]",
-    roles: ["Python Developer", "Backend Developer", "Automation Engineer", "Django Developer"],
+    roles: ["AI Developer", "Prompt Engineer", "AI Automation Specialist", "Python Developer"],
   },
   {
     id: "marketing",
     label: "Digital Marketing",
     icon: FiTrendingUp,
     tint: "from-[#1D4ED8] to-[#60A5FA]",
-    roles: ["Performance Marketer", "SEO Specialist", "Growth Analyst", "Campaign Manager"],
+    roles: ["Digital Marketer", "SEO Specialist", "Social Media Manager", "Google Ads Specialist"],
   },
   {
     id: "cad",
-    label: "AutoCAD / Civil CAD",
+    label: "CAD / CAM",
     icon: FiPenTool,
     tint: "from-[#0F766E] to-[#14B8A6]",
-    roles: ["Design Engineer", "CAD Draughtsman", "Civil Designer", "Product Designer"],
+    roles: ["Design Engineer", "CAD Draughtsman", "CAM Programmer", "CNC Programmer"],
+  },
+  {
+    id: "accounting",
+    label: "Tally & Accounting",
+    icon: FiBarChart2,
+    tint: "from-[#0891B2] to-[#60A5FA]",
+    roles: ["Accountant", "Tally Operator", "Billing Executive", "GST Assistant"],
+  },
+  {
+    id: "office",
+    label: "Basic Computer & Office",
+    icon: FiFileText,
+    tint: "from-[#142C8E] to-[#2563EB]",
+    roles: ["Computer Operator", "Data Entry Operator", "Office Assistant", "Typist"],
   },
 ];
 

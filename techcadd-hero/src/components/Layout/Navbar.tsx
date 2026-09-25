@@ -23,8 +23,6 @@ const MegaMenu = dynamic(() => import("./MegaMenu"));
 const MegaMenuMobile = dynamic(() => import("./MegaMenuMobile"));
 const CoursesMegaMenu = dynamic(() => import("./CoursesColumnsMenu"));
 const CoursesMegaMenuMobile = dynamic(() => import("./CoursesMegaMenuMobile"));
-const AiMegaMenu = dynamic(() => import("./AiMegaMenu"));
-const AiMegaMenuMobile = dynamic(() => import("./AiMegaMenu").then((m) => m.AiMegaMenuMobile));
 const InternshipMegaMenu = dynamic(() => import("./InternshipMegaMenu"));
 const InternshipMegaMenuMobile = dynamic(() =>
   import("./InternshipMegaMenu").then((m) => m.InternshipMegaMenuMobile),
@@ -33,9 +31,6 @@ const After12MegaMenu = dynamic(() => import("./After12MegaMenu"));
 const After12MegaMenuMobile = dynamic(() =>
   import("./After12MegaMenu").then((m) => m.After12MegaMenuMobile),
 );
-/* server-rendered, not deferred: it sits above the fold on every route and
-   popping in after hydration would shift the nav row */
-const AiNavButton = dynamic(() => import("./AiNavButton"), { ssr: true });
 const AboutMegaMenu = dynamic(() => import("./AboutMegaMenu"));
 const AboutMegaMenuMobile = dynamic(() =>
   import("./AboutMegaMenu").then((m) => m.AboutMegaMenuMobile),
@@ -53,9 +48,6 @@ const MEGA_PANELS = {
   "About Us": { desktop: AboutMegaMenu, mobile: AboutMegaMenuMobile, width: 1000, centred: true },
   Courses: { desktop: CoursesMegaMenu, mobile: CoursesMegaMenuMobile, width: 1200, centred: true },
   Resources: { desktop: MegaMenu, mobile: MegaMenuMobile, width: 1240 },
-  /* centred on the viewport rather than on its trigger, which sits left of
-     centre in the bar and pulled the panel to the edge */
-  AI: { desktop: AiMegaMenu, mobile: AiMegaMenuMobile, width: 1150, centred: true },
   "Internship & Training": {
     desktop: InternshipMegaMenu,
     mobile: InternshipMegaMenuMobile,
@@ -405,7 +397,6 @@ export default function Navbar() {
                   } ${current || thisOpen ? "w-full" : "w-0 group-hover:w-full"}`}
                 />
               );
-              const isAi = link.label === "AI";
               /*
                * A `#` href means the item has nowhere to go — Branches, whose
                * campuses live on their own sites. It renders as a button so the
@@ -467,15 +458,7 @@ export default function Navbar() {
                    * Hover and focus open the panel; the click still follows the
                    * href, so the item never becomes a dead end.
                    */}
-                  {isAi ? (
-                    <AiNavButton
-                      href={link.href}
-                      active={current || thisOpen}
-                      onMouseEnter={() => setMega(megaKey)}
-                      onFocus={() => setMega(megaKey)}
-                      onClick={() => setMega(null)}
-                    />
-                  ) : placeholder ? (
+                  {placeholder ? (
                     <button
                       type="button"
                       aria-haspopup="true"
@@ -643,20 +626,9 @@ export default function Navbar() {
                 >
                   {opensPanel(link.label) ? (
                     <div className="px-1 py-2">
-                      {link.label === "AI" ? (
-                        <div className="px-2 pb-2">
-                          <AiNavButton
-                            href={link.href}
-                            active={isActive(link.href)}
-                            variant="mobile"
-                            onClick={() => setOpen(false)}
-                          />
-                        </div>
-                      ) : (
-                        <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#64748B]">
-                          {link.label}
-                        </p>
-                      )}
+                      <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#64748B]">
+                        {link.label}
+                      </p>
                       {(() => {
                         if (isSimpleLabel(link.label)) {
                           return (

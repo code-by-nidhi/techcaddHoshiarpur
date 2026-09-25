@@ -41,7 +41,7 @@ export default function ColumnsMegaMenu({
   arrow: number;
   onNavigate: () => void;
 }) {
-  const { columns, strip } = menu;
+  const { columns, strip, numbered } = menu;
   const pathname = usePathname();
 
   /* First link with artwork seeds the panel, so it is never blank and hovering
@@ -62,8 +62,9 @@ export default function ColumnsMegaMenu({
 
         <div className={styles.body}>
           <div className={styles.grid}>
-            {columns.map((col) => (
+            {columns.map((col, i) => (
               <motion.div key={col.id} variants={itemIn} className={styles.col}>
+                {numbered && <span className={styles.colNumber}>{String(i + 1).padStart(2, "0")}</span>}
                 <p className={styles.heading}>{col.heading}</p>
                 <p className={styles.headingSub}>{col.description}</p>
 

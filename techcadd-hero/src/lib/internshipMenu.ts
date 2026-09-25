@@ -19,6 +19,8 @@ export type TrainingLink = {
 export type ColumnsMenu = {
   columns: { id: string; heading: string; description: string; links: TrainingLink[] }[];
   strip: { watermark: string; quote: string; cta: string; href: string };
+  /** prefix each column heading with 01, 02, … */
+  numbered?: boolean;
 };
 
 const ORDER: TrainingCategory[] = ["short-term", "long-term", "programmes"];

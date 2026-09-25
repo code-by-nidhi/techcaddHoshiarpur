@@ -77,7 +77,7 @@ export default async function After12ProgrammePage({
 
   const meta = AFTER12_CATEGORY_META[programme.category];
   const courses = programme.courseSlugs.map(getCourse).filter((c) => c !== undefined);
-  const enquirySubject = courses[0] ?? getCourse("artificial-intelligence");
+  const enquirySubject = courses[0] ?? getCourse("generative-ai");
 
   /* explicit artwork, else the first linked course's, else the default */
   const heroImage = programme.heroImage ?? courses[0]?.heroImage ?? DEFAULT_AFTER12_HERO;

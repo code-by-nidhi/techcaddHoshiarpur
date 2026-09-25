@@ -81,6 +81,14 @@
   }
 }
 
+.colNumber {
+  display: block;
+  margin-bottom: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  color: #6b7280;
+}
+
 .heading {
   font-family: var(--font-sora), sans-serif;
   font-size: 13.5px;
